@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+<form method="post" action="/admins/edit/{{ admin.user_id }}">
+  <div class="form-group">
+    <label for="first_name">Nama</label>
+    <input type="text" class="form-control" id="first_name" name="first_name" value="{{ admin.first_name }}" required>
+  </div>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" name="username" value="{{ admin.username }}" required>
+  </div>
+  <button type="submit" class="btn btn-primary mt-2">Simpan Perubahan</button>
+  <a href="/admins" class="btn btn-secondary mt-2">Batal</a>
+</form>
+{% endblock %}

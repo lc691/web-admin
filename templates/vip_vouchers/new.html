@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">Tambah Voucher VIP</h1>
+
+<form method="post">
+  <div class="form-group">
+    <label for="code">Kode Voucher</label>
+    <input type="text" id="code" name="code" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+    <label for="duration_days">Durasi (hari)</label>
+    <input type="number" id="duration_days" name="duration_days" class="form-control" min="1" required>
+  </div>
+
+  <div class="form-group">
+    <label for="expires_at">Berlaku sampai (opsional)</label>
+    <input type="datetime-local" id="expires_at" name="expires_at" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="created_by">Dibuat oleh</label>
+    <input type="text" id="created_by" name="created_by" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="batch_uuid">Batch UUID (opsional)</label>
+    <input type="text" id="batch_uuid" name="batch_uuid" class="form-control">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Simpan</button>
+  <a href="/vip_vouchers" class="btn btn-secondary">Batal</a>
+</form>
+{% endblock %}

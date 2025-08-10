@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h3 mb-3 text-gray-800">Edit Show</h1>
+
+<form action="/shows/edit/{{ show.id }}" method="POST">
+  <div class="card shadow mb-4">
+    <div class="card-body">
+
+      <!-- Judul -->
+      <div class="form-group">
+        <label for="title">Judul</label>
+        <input type="text" class="form-control" id="title" name="title"
+               value="{{ show.title or '' }}" placeholder="Kosongkan jika tidak ingin diubah">
+      </div>
+
+      <!-- Sinopsis -->
+      <div class="form-group">
+        <label for="sinopsis">Sinopsis</label>
+        <textarea class="form-control" id="sinopsis" name="sinopsis" rows="4"
+                  placeholder="Kosongkan jika tidak ingin diubah">{{ show.sinopsis or '' }}</textarea>
+      </div>
+
+      <!-- Genre -->
+      <div class="form-group">
+        <label for="genre">Genre</label>
+        <select class="form-control" id="genre" name="genre">
+          <option value="">Kosongkan jika tidak ingin diubah</option>
+          <option value="Drama Barat" {{ 'selected' if show.genre == 'Drama Barat' else '' }}>🇺🇸 Drama Barat</option>
+          <option value="Drama China" {{ 'selected' if show.genre == 'Drama China' else '' }}>🇨🇳 Drama China</option>
+          <option value="Drama Jepang" {{ 'selected' if show.genre == 'Drama Jepang' else '' }}>🇯🇵 Drama Jepang</option>
+          <option value="Drama Korea" {{ 'selected' if show.genre == 'Drama Korea' else '' }}>🇰🇷 Drama Korea</option>
+          <option value="Drama Thailand" {{ 'selected' if show.genre == 'Drama Thailand' else '' }}>🇹🇭 Drama Thailand</option>
+          <option value="Drama Indonesia" {{ 'selected' if show.genre == 'Drama Indonesia' else '' }}>🇮🇩 Drama Indonesia</option>
+        </select>
+      </div>
+
+
+      <!-- Hashtags -->
+      <div class="form-group">
+        <label for="hashtags">Hashtags</label>
+        <input type="text" class="form-control" id="hashtags" name="hashtags"
+               value="{{ show.hashtags or '' }}" placeholder="Kosongkan jika tidak ingin diubah">
+      </div>
+
+      <!-- Thumbnail URL -->
+      <div class="form-group">
+        <label for="thumbnail">URL Thumbnail</label>
+        <input type="url" class="form-control" id="thumbnail" name="thumbnail"
+               value="" placeholder="Isi jika ingin mengubah thumbnail">
+        {% if show.resolved_thumbnail %}
+        <small class="form-text text-muted">Preview thumbnail saat ini:</small>
+        <img src="{{ show.resolved_thumbnail }}" class="img-fluid" style="max-width: 300px;">
+        {% endif %}
+      </div>
+
+      <!-- Dewasa -->
+      <div class="form-group">
+        <label for="is_adult">Konten Dewasa?</label>
+        <select class="form-control" id="is_adult" name="is_adult">
+          <option value="0" {% if not show.is_adult %}selected{% endif %}>Tidak</option>
+          <option value="1" {% if show.is_adult %}selected{% endif %}>Ya (18+)</option>
+        </select>
+      </div>
+
+      <!-- Tombol Simpan -->
+      <button type="submit" class="btn btn-success">
+        <i class="fas fa-save"></i> Simpan Perubahan
+      </button>
+      <a href="/shows" class="btn btn-secondary">Batal</a>
+
+    </div>
+  </div>
+</form>
+{% endblock %}

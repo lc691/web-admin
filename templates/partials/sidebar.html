@@ -1,0 +1,163 @@
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+  <!-- Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+    <div class="sidebar-brand-icon rotate-n-15">
+      <i class="fas fa-laugh-wink"></i>
+    </div>
+    <div class="sidebar-brand-text mx-3">Admin</div>
+  </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+
+  <!-- Dashboard -->
+  <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+    <a class="nav-link" href="/">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span>
+    </a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Admin Tools
+  </div>
+
+
+<!-- Admin Dropdown Menu -->
+{% set path = request.url.path %}
+{% set is_admin_section = path.startswith('/admins') or path.startswith('/admin') %}
+<li class="nav-item {% if is_admin_section %}active{% endif %}">
+  <a class="nav-link collapsed {% if is_admin_section %}show{% endif %}" href="#" data-toggle="collapse" data-target="#collapseAdmin"
+    aria-expanded="{{ 'true' if is_admin_section else 'false' }}" aria-controls="collapseAdmin">
+    <i class="fas fa-fw fa-user-shield"></i>
+    <span>Admin</span>
+  </a>
+  <div id="collapseAdmin" class="collapse {% if is_admin_section %}show{% endif %}" aria-labelledby="headingAdmin" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      <h6 class="collapse-header">Manajemen Admin:</h6>
+      <a class="collapse-item {% if path == '/admins' %}active{% endif %}" href="/admins">List Admin</a>
+      <a class="collapse-item {% if path == '/admin/add' %}active{% endif %}" href="/admin/add">Tambah Admin</a>
+    </div>
+  </div>
+</li>
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    User Tools
+  </div>
+
+<!-- User Management Dropdown -->
+<li class="nav-item">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+     aria-expanded="false" aria-controls="collapseUser">
+    <i class="fas fa-fw fa-users"></i>
+    <span>Manajemen Pengguna</span>
+  </a>
+  <div id="collapseUser" class="collapse {% if request.url.path.startswith('/users') %}show{% endif %}"
+       aria-labelledby="headingUser" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      <a class="collapse-item {% if request.url.path == '/users' %}active{% endif %}" href="/users">
+        📋 Semua Pengguna
+      </a>
+      <a class="collapse-item {% if request.url.path == '/users/vip' %}active{% endif %}" href="/users/vip">
+        ⭐ Pengguna VIP
+      </a>
+      <a class="collapse-item {% if request.url.path == '/users/nonvip' %}active{% endif %}" href="/users/nonvip">
+        👤 Pengguna Non-VIP
+      </a>
+      <a class="collapse-item {% if request.url.path == '/users/trial' %}active{% endif %}" href="/users/trial">
+        🎁 Trial Pengguna
+      </a>
+      <a class="collapse-item {% if request.url.path == '/users/referred' %}active{% endif %}" href="/users/referred">
+        🔗 Berdasarkan Referral
+      </a>
+    </div>
+  </div>
+</li>
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Management VIP
+  </div>
+
+<!-- Vip Management Dropdown -->
+<li class="nav-item">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVip"
+     aria-expanded="false" aria-controls="collapseVip">
+    <i class="fas fa-crown fa-fw"></i>
+    <span>Manajemen VIP</span>
+  </a>
+  <div id="collapseVip" class="collapse {% if request.url.path.startswith('/vip') %}show{% endif %}"
+       aria-labelledby="headingVip" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+
+      <h6 class="collapse-header"><i class="fas fa-star mr-1 text-warning"></i> Menu VIP</h6>
+
+      <a class="collapse-item" href="/vip_users">
+        <i class="fas fa-user-shield text-primary mr-2"></i> Pengguna VIP
+      </a>
+
+      <a class="collapse-item" href="/vip_logs">
+        <i class="fas fa-history text-success mr-2"></i> Log Aktivasi
+      </a>
+
+      <a class="collapse-item" href="/vip_packages">
+        <i class="fas fa-tasks text-danger mr-2"></i> Vip Packages
+      </a>
+
+      <a class="collapse-item" href="/vip_vouchers">
+        <i class="fas fa-tasks text-danger mr-2"></i> Vip_vouchers
+      </a>
+
+    </div>
+  </div>
+</li>
+
+
+
+<!-- Heading -->
+<div class="sidebar-heading">
+  Management Files
+</div>
+
+<!-- Files Management -->
+<li class="nav-item">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFiles"
+     aria-expanded="false" aria-controls="collapseFiles">
+    <i class="fas fa-folder-open fa-fw"></i>
+    <span>Manajemen Files</span>
+  </a>
+  <div id="collapseFiles" class="collapse {% if request.url.path.startswith('/files') or request.url.path.startswith('/shows') %}show{% endif %}"
+       aria-labelledby="headingFiles" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+
+      <h6 class="collapse-header"><i class="fas fa-database mr-1 text-info"></i> Menu Files</h6>
+
+      <a class="collapse-item" href="/files">
+        <i class="fas fa-file-alt text-primary mr-2"></i> Daftar Files
+      </a>
+
+      <a class="collapse-item" href="/shows">
+        <i class="fas fa-film text-success mr-2"></i> Daftar Shows
+      </a>
+
+    </div>
+  </div>
+</li>
+
+
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
+
+  <!-- Sidebar Toggler -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+  </div>
+
+</ul>
