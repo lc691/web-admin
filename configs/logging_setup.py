@@ -4,8 +4,7 @@ import sys
 from datetime import datetime
 from logging.handlers import TimedRotatingFileHandler
 
-from colorama import Fore, Style
-from colorama import init as colorama_init
+from colorama import Fore, Style, init as colorama_init
 from pytz import timezone
 
 colorama_init(autoreset=True)  # sekali saja
@@ -34,19 +33,19 @@ class ColoredFormatter(JakartaFormatter):
         return super().format(record)
 
 
-def setup_logger(log_dir="logs", level=logging.INFO):
+def setup_logger(name: str = None, log_dir="logs", level=logging.INFO):
     os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, "bot.log")
+    log_file = os.path.join(log_dir, "app.log")
 
-    logger = logging.getLogger("drac1n")
+    logger = logging.getLogger(name) if name else logging.getLogger()
     logger.setLevel(level)
-    logger.propagate = False  # supaya tidak dobel log
+    logger.propagate = False
 
-    # Clear handler lama jika ada
+    # Clear handler lama
     if logger.hasHandlers():
         logger.handlers.clear()
 
-    # File handler (rotating daily)
+    # File handler (rotasi harian)
     file_handler = TimedRotatingFileHandler(
         filename=log_file,
         when="midnight",
@@ -62,19 +61,22 @@ def setup_logger(log_dir="logs", level=logging.INFO):
     file_handler.setFormatter(file_formatter)
     logger.addHandler(file_handler)
 
-    # Console handler (colored + WIB time)
+    # Console handler (warna + WIB)
     console_handler = logging.StreamHandler(sys.stdout)
     console_formatter = ColoredFormatter(
-        "[%(asctime)s] [%(levelname)s] %(message)s", datefmt="%H:%M:%S"
+        "[%(asctime)s] [%(levelname)s] %(message)s",
+        datefmt="%H:%M:%S"
     )
     console_handler.setFormatter(console_formatter)
     logger.addHandler(console_handler)
 
-    # Turunkan noise modul luar
+    # Kurangi noise dari library luar
     for noisy in ["pyrogram", "apscheduler", "httpx"]:
         logging.getLogger(noisy).setLevel(logging.WARNING)
 
     return logger
 
 
-log = logging.getLogger("drac1n")
+# Contoh penggunaan:
+log = setup_logger(__name__)
+log.info("Logger siap dipakai")
