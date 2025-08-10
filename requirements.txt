@@ -68,4 +68,4 @@ Pillow==10.4.0
 
 jinja2
 python-multipart
-
+diskcache
