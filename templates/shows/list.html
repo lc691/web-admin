@@ -12,7 +12,7 @@
 <div class="card shadow mb-4">
   <div class="card-body">
     <div class="table-responsive">
-      <table id="dataTable" class="table table-bordered" width="100%" cellspacing="0">
+      <table id="showsTable" class="table table-bordered" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>ID</th>
@@ -63,21 +63,22 @@
 {% endblock %}
 
 {% block scripts %}
-
 <script>
   $(document).ready(function () {
-    $('#dataTable').DataTable({
-      language: {
-        search: "Cari:",
-        lengthMenu: "Tampilkan _MENU_ entri",
-        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-        paginate: {
-          previous: "Sebelumnya",
-          next: "Berikutnya"
-        }
+    $('#showsTable').DataTable({
+      "language": {
+        "search": "Cari:",
+        "lengthMenu": "Tampilkan _MENU_ entri",
+        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        "paginate": {
+          "first": "Awal",
+          "last": "Akhir",
+          "next": "Berikutnya",
+          "previous": "Sebelumnya"
+        },
+        "zeroRecords": "Tidak ada data ditemukan",
       }
     });
   });
 </script>
-
 {% endblock %}
