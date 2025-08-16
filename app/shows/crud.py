@@ -5,14 +5,14 @@ from db.connect import get_dict_cursor, get_db_cursor
 def create_show(data):
     with get_db_cursor() as (cur, conn):
         cur.execute("""
-            INSERT INTO shows (title, sinopsis, genre, hashtags, thumbnail, is_adult)
+            INSERT INTO shows (title, sinopsis, genre, hashtags, thumbnail_url, is_adult)
             VALUES (%s, %s, %s, %s, %s, %s)
         """, (
             data.get("title"),
             data.get("sinopsis"),
             data.get("genre"),
             data.get("hashtags"),
-            data.get("thumbnail"),
+            data.get("thumbnail_url"),
             data.get("is_adult", False)
         ))
         conn.commit()
@@ -43,7 +43,7 @@ def update_show(show_id, data):
                 sinopsis = %s,
                 genre = %s,
                 hashtags = %s,
-                thumbnail = %s,
+                thumbnail_url = %s,
                 is_adult = %s
             WHERE id = %s
         """, (
@@ -51,7 +51,7 @@ def update_show(show_id, data):
             data.get("sinopsis"),
             data.get("genre"),
             data.get("hashtags"),
-            data.get("thumbnail"),
+            data.get("thumbnail_url"),
             is_adult,
             show_id
         ))

@@ -14,7 +14,7 @@ from configs.logging_setup import log
 router = APIRouter()
 
 # 🔗 Default thumbnail URL
-DEFAULT_THUMBNAIL_URL = "https://example.com/default.jpg"
+DEFAULT_THUMB = "https://example.com/default.jpg"
 
 # ------------------------
 # UTIL LOG THROTTLE
@@ -32,20 +32,33 @@ def throttled_log(key, message, level="warning", interval=60):
 # ------------------------
 # RESOLVE THUMBNAIL (URL ONLY, ASYNC)
 # ------------------------
-async def resolve_thumbnail(
-    thumbnail_url: Optional[str],
-    for_web: bool = False
-) -> str:
-    """Return URL final untuk thumbnail (hanya pakai URL)."""
-    if thumbnail_url and is_valid_url(thumbnail_url):
-        try:
-            if await is_image_url_accessible(thumbnail_url):
-                return thumbnail_url
-        except Exception as e:
-            throttled_log(thumbnail_url, f"resolve_thumbnail gagal cek: {e}", level="warning")
+async def resolve_thumbnail(url: str | None, for_web: bool = False) -> str:
+    if not url:
+        return DEFAULT_THUMB
 
-    return DEFAULT_THUMBNAIL_URL
+    headers = {
+        "User-Agent": "Mozilla/5.0 (compatible; MyBot/1.0)",
+        "Accept": "image/*,*/*;q=0.8"
+    }
 
+    try:
+        async with httpx.AsyncClient(follow_redirects=True, timeout=10) as client:
+            # HEAD request
+            resp = await client.head(url, headers=headers)
+            content_type = resp.headers.get("content-type", "").lower()
+            if resp.status_code == 200 and content_type.startswith("image/"):
+                return url
+    except Exception as e:
+        if not for_web:  # hanya log di non-web mode
+            print(f"[WARNING] Thumbnail check gagal: {url} → {e}")
+
+    return DEFAULT_THUMB
+
+async def resolve_thumbnail_for_web(thumbnail_url: str):
+    """Khusus dipakai di web (langsung return URL tanpa proxy/download)."""
+    if not thumbnail_url:
+        return None
+    return thumbnail_url
 
 def is_valid_url(url: str) -> bool:
     try:
@@ -85,13 +98,12 @@ async def is_image_url_accessible(url: str, timeout: int = 10) -> bool:
 async def show_list(request: Request):
     shows_raw = get_all_shows()
     shows = []
-    for s in shows_raw:
-        s_dict = dict(s)
-        s_dict["resolved_thumbnail"] = await resolve_thumbnail(
-            s.get("thumbnail_url"), for_web=True
-        )
+    for show in shows_raw:  # ✅ iterate hasil query dari DB
+        s_dict = dict(show)
+        s_dict["resolved_thumbnail"] = await resolve_thumbnail_for_web(show.get("thumbnail_url"))
         shows.append(s_dict)
     return templates.TemplateResponse("shows/list.html", {"request": request, "shows": shows})
+
 
 
 @router.get("/files/edit/{file_id}", response_class=HTMLResponse)

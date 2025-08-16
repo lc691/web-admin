@@ -1,85 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="h3 mb-3 text-gray-800">Edit Show</h1>
+<div class="container mt-4">
+    <h2>Edit Show</h2>
+    <form action="/shows/edit/{{ show.id }}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Judul</label>
+            <input type="text" name="title" value="{{ show.title }}" class="form-control">
+        </div>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+        <div class="mb-3">
+            <label class="form-label">Sinopsis</label>
+            <textarea name="sinopsis" class="form-control" rows="4">{{ show.sinopsis }}</textarea>
+        </div>
 
-<form action="/shows/edit/{{ show.id }}" method="POST">
-  <div class="card shadow mb-4">
-    <div class="card-body">
+        <div class="mb-3">
+            <label class="form-label">Genre</label>
+            <input type="text" name="genre" value="{{ show.genre }}" class="form-control">
+        </div>
 
-      <!-- Judul -->
-      <div class="form-group">
-        <label for="title">Judul</label>
-        <input type="text" class="form-control" id="title" name="title"
-               value="{{ show.title or '' }}" placeholder="Kosongkan jika tidak ingin diubah">
-      </div>
+        <div class="mb-3">
+            <label class="form-label">Hashtags</label>
+            <input type="text" name="hashtags" value="{{ show.hashtags }}" class="form-control">
+        </div>
 
-      <!-- Sinopsis -->
-      <div class="form-group">
-        <label for="sinopsis">Sinopsis</label>
-        <textarea class="form-control" id="sinopsis" name="sinopsis" rows="4"
-                  placeholder="Kosongkan jika tidak ingin diubah">{{ show.sinopsis or '' }}</textarea>
-      </div>
+        <div class="mb-3">
+            <label class="form-label">Thumbnail URL</label>
+            <input type="text" name="thumbnail_url" value="{{ show.thumbnail_url }}" class="form-control">
+        </div>
 
-      <!-- Genre -->
-      <div class="form-group">
-        <label for="genre">Genre</label>
-        <select class="form-control" id="genre" name="genre">
-          <option value="">Kosongkan jika tidak ingin diubah</option>
-          <option value="Drama Barat" {{ 'selected' if show.genre == 'Drama Barat' else '' }}>🇺🇸 Drama Barat</option>
-          <option value="Drama China" {{ 'selected' if show.genre == 'Drama China' else '' }}>🇨🇳 Drama China</option>
-          <option value="Drama Jepang" {{ 'selected' if show.genre == 'Drama Jepang' else '' }}>🇯🇵 Drama Jepang</option>
-          <option value="Drama Korea" {{ 'selected' if show.genre == 'Drama Korea' else '' }}>🇰🇷 Drama Korea</option>
-          <option value="Drama Thailand" {{ 'selected' if show.genre == 'Drama Thailand' else '' }}>🇹🇭 Drama Thailand</option>
-          <option value="Drama Indonesia" {{ 'selected' if show.genre == 'Drama Indonesia' else '' }}>🇮🇩 Drama Indonesia</option>
-        </select>
-      </div>
+        <div class="mb-3">
+            <label class="form-label">Preview Thumbnail</label><br>
+            {% if show.resolved_thumbnail %}
+                <img src="{{ show.resolved_thumbnail }}" alt="Thumbnail" style="max-width: 200px;">
+            {% else %}
+                <span class="text-muted">Tidak ada thumbnail</span>
+            {% endif %}
+        </div>
 
-      <!-- Hashtags -->
-      <div class="form-group">
-        <label for="hashtags">Hashtags</label>
-        <input type="text" class="form-control" id="hashtags" name="hashtags"
-               value="{{ show.hashtags or '' }}" placeholder="Kosongkan jika tidak ingin diubah">
-      </div>
+        <div class="mb-3">
+            <label class="form-label">Konten Dewasa?</label>
+            <select name="is_adult" class="form-select">
+                <option value="0" {% if not show.is_adult %}selected{% endif %}>Tidak</option>
+                <option value="1" {% if show.is_adult %}selected{% endif %}>Ya</option>
+            </select>
+        </div>
 
-      <!-- Thumbnail URL -->
-      <div class="form-group">
-        <label for="thumbnail">URL Thumbnail</label>
-        <input type="url" class="form-control" id="thumbnail" name="thumbnail"
-               value="{{ show.thumbnail or '' }}" placeholder="Isi jika ingin mengubah thumbnail">
-        {% if show.resolved_thumbnail %}
-        <small class="form-text text-muted">Preview thumbnail saat ini:</small>
-        <img src="{{ show.resolved_thumbnail }}" class="img-fluid mt-2 border rounded" style="max-width: 300px;">
-        {% endif %}
-      </div>
-
-      <!-- Dewasa -->
-      <div class="form-group">
-        <label for="is_adult">Konten Dewasa?</label>
-        <select class="form-control" id="is_adult" name="is_adult">
-          <option value="0" {{ 'selected' if not show.is_adult else '' }}>Tidak</option>
-          <option value="1" {{ 'selected' if show.is_adult else '' }}>Ya (18+)</option>
-        </select>
-      </div>
-
-      <!-- Tombol Simpan -->
-      <button type="submit" class="btn btn-success">
-        <i class="fas fa-save"></i> Simpan Perubahan
-      </button>
-      <a href="/shows" class="btn btn-secondary">Batal</a>
-
-    </div>
-  </div>
-</form>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <a href="/shows" class="btn btn-secondary">Batal</a>
+    </form>
+</div>
 {% endblock %}
