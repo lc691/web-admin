@@ -13,7 +13,7 @@ from app.shows.crud import get_all_shows, get_show_by_id, update_show
 from app.templates import templates
 from config import BOT_TOKEN, DEFAULT_THUMBNAIL_FILE_ID
 from configs.logging_setup import log
-
+from fastapi.responses import Response
 cache = Cache("./.thumb_cache")
 router = APIRouter()
 
@@ -36,8 +36,8 @@ def throttled_log(key, message, level="warning", interval=60):
 # ------------------------
 # PROXY TELEGRAM FILE
 # ------------------------
-@router.get("/proxy/{file_id}")
-async def proxy_telegram_file(file_id: str):
+@router.api_route("/proxy/{file_id}", methods=["GET", "HEAD"])
+async def proxy_telegram_file(file_id: str, request: Request):
     # Skip jika kosong atau sama dengan default
     if not file_id or file_id == DEFAULT_THUMBNAIL_FILE_ID:
         raise HTTPException(status_code=404, detail="Thumbnail default tidak perlu proxy.")
@@ -47,6 +47,11 @@ async def proxy_telegram_file(file_id: str):
         content, content_type = cache[file_id]
         if content == b"":  # error cache
             raise HTTPException(status_code=404, detail="Thumbnail tidak ditemukan (cached).")
+
+        if request.method == "HEAD":
+            # 👉 HEAD: balikin header saja
+            return Response(status_code=200, media_type=content_type)
+        # 👉 GET: balikin gambar
         return StreamingResponse(iter([content]), media_type=content_type)
 
     file_url = f"https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}"
@@ -71,6 +76,9 @@ async def proxy_telegram_file(file_id: str):
 
             # Cache sukses
             cache.set(file_id, (content, content_type), expire=6 * 3600)
+
+            if request.method == "HEAD":
+                return Response(status_code=200, media_type=content_type)
             return StreamingResponse(iter([content]), media_type=content_type)
 
         except Exception as e:
