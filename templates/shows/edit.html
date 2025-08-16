@@ -3,6 +3,17 @@
 {% block content %}
 <h1 class="h3 mb-3 text-gray-800">Edit Show</h1>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
 <form action="/shows/edit/{{ show.id }}" method="POST">
   <div class="card shadow mb-4">
     <div class="card-body">
@@ -35,7 +46,6 @@
         </select>
       </div>
 
-
       <!-- Hashtags -->
       <div class="form-group">
         <label for="hashtags">Hashtags</label>
@@ -47,10 +57,10 @@
       <div class="form-group">
         <label for="thumbnail">URL Thumbnail</label>
         <input type="url" class="form-control" id="thumbnail" name="thumbnail"
-               value="" placeholder="Isi jika ingin mengubah thumbnail">
+               value="{{ show.thumbnail or '' }}" placeholder="Isi jika ingin mengubah thumbnail">
         {% if show.resolved_thumbnail %}
         <small class="form-text text-muted">Preview thumbnail saat ini:</small>
-        <img src="{{ show.resolved_thumbnail }}" class="img-fluid" style="max-width: 300px;">
+        <img src="{{ show.resolved_thumbnail }}" class="img-fluid mt-2 border rounded" style="max-width: 300px;">
         {% endif %}
       </div>
 
@@ -58,8 +68,8 @@
       <div class="form-group">
         <label for="is_adult">Konten Dewasa?</label>
         <select class="form-control" id="is_adult" name="is_adult">
-          <option value="0" {% if not show.is_adult %}selected{% endif %}>Tidak</option>
-          <option value="1" {% if show.is_adult %}selected{% endif %}>Ya (18+)</option>
+          <option value="0" {{ 'selected' if not show.is_adult else '' }}>Tidak</option>
+          <option value="1" {{ 'selected' if show.is_adult else '' }}>Ya (18+)</option>
         </select>
       </div>
 

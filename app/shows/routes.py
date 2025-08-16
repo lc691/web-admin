@@ -3,18 +3,14 @@ from typing import Optional
 from urllib.parse import urlparse
 
 import httpx
-import requests
-from diskcache import Cache
 from fastapi import APIRouter, HTTPException, Request, Form
-from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.files.crud import get_file_by_id
 from app.shows.crud import get_all_shows, get_show_by_id, update_show
 from app.templates import templates
-from config import BOT_TOKEN, DEFAULT_THUMBNAIL_FILE_ID
 from configs.logging_setup import log
-from fastapi.responses import Response
-cache = Cache("./.thumb_cache")
+
 router = APIRouter()
 
 # 🔗 Default thumbnail URL
@@ -34,88 +30,21 @@ def throttled_log(key, message, level="warning", interval=60):
 
 
 # ------------------------
-# PROXY TELEGRAM FILE
-# ------------------------
-@router.api_route("/proxy/{file_id}", methods=["GET", "HEAD"])
-async def proxy_telegram_file(file_id: str, request: Request):
-    # Skip jika kosong atau sama dengan default
-    if not file_id or file_id == DEFAULT_THUMBNAIL_FILE_ID:
-        raise HTTPException(status_code=404, detail="Thumbnail default tidak perlu proxy.")
-
-    # Ambil dari cache
-    if file_id in cache:
-        content, content_type = cache[file_id]
-        if content == b"":  # error cache
-            raise HTTPException(status_code=404, detail="Thumbnail tidak ditemukan (cached).")
-
-        if request.method == "HEAD":
-            # 👉 HEAD: balikin header saja
-            return Response(status_code=200, media_type=content_type)
-        # 👉 GET: balikin gambar
-        return StreamingResponse(iter([content]), media_type=content_type)
-
-    file_url = f"https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}"
-    async with httpx.AsyncClient() as client:
-        try:
-            # Ambil path file
-            res = await client.get(file_url)
-            res.raise_for_status()
-            data = res.json()
-            if "result" not in data:
-                cache.set(file_id, (b"", "image/jpeg"), expire=6 * 3600)
-                raise HTTPException(status_code=404, detail="File tidak ditemukan di Telegram.")
-
-            file_path = data["result"]["file_path"]
-            file_download_url = f"https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}"
-
-            # Download
-            file_response = await client.get(file_download_url)
-            file_response.raise_for_status()
-            content = await file_response.aread()
-            content_type = file_response.headers.get("Content-Type", "image/jpeg")
-
-            # Cache sukses
-            cache.set(file_id, (content, content_type), expire=6 * 3600)
-
-            if request.method == "HEAD":
-                return Response(status_code=200, media_type=content_type)
-            return StreamingResponse(iter([content]), media_type=content_type)
-
-        except Exception as e:
-            throttled_log(file_id, f"Gagal proxy file_id: {file_id} → {e}", level="warning")
-            cache.set(file_id, (b"", "image/jpeg"), expire=6 * 3600)
-            raise HTTPException(status_code=404, detail="Gagal memuat gambar.")
-
-
-# ------------------------
-# RESOLVE THUMBNAIL
+# RESOLVE THUMBNAIL (URL ONLY, ASYNC)
 # ------------------------
 async def resolve_thumbnail(
-    thumbnail: Optional[str], request: Optional[Request] = None, for_web: bool = False
+    thumbnail_url: Optional[str],
+    for_web: bool = False
 ) -> str:
-    """Return URL final untuk thumbnail, langsung pakai default kalau invalid."""
-    if not thumbnail:
-        return DEFAULT_THUMBNAIL_URL if for_web else DEFAULT_THUMBNAIL_FILE_ID
-
-    if not thumbnail.startswith("http"):
-        if thumbnail == DEFAULT_THUMBNAIL_FILE_ID:
-            return DEFAULT_THUMBNAIL_URL if for_web else DEFAULT_THUMBNAIL_FILE_ID
-
-        # ✅ generate full URL otomatis
-        if request:
-            base_url = str(request.base_url).rstrip("/")
-            return f"{base_url}/proxy/{thumbnail}" if for_web else thumbnail
-        else:
-            return f"/proxy/{thumbnail}" if for_web else thumbnail
-
-    if is_valid_url(thumbnail):
+    """Return URL final untuk thumbnail (hanya pakai URL)."""
+    if thumbnail_url and is_valid_url(thumbnail_url):
         try:
-            if await is_image_url_accessible(thumbnail):
-                return thumbnail
+            if await is_image_url_accessible(thumbnail_url):
+                return thumbnail_url
         except Exception as e:
-            throttled_log(thumbnail, f"resolve_thumbnail: Gagal cek URL gambar: {e}", level="warning")
+            throttled_log(thumbnail_url, f"resolve_thumbnail gagal cek: {e}", level="warning")
 
-    return DEFAULT_THUMBNAIL_URL if for_web else DEFAULT_THUMBNAIL_FILE_ID
+    return DEFAULT_THUMBNAIL_URL
 
 
 def is_valid_url(url: str) -> bool:
@@ -128,10 +57,12 @@ def is_valid_url(url: str) -> bool:
 
 async def is_image_url_accessible(url: str, timeout: int = 5) -> bool:
     try:
-        response = requests.head(url, timeout=timeout, allow_redirects=True)
-        content_type = response.headers.get("Content-Type", "").lower()
-        return response.status_code == 200 and content_type.startswith("image/")
-    except requests.RequestException:
+        async with httpx.AsyncClient(follow_redirects=True, timeout=timeout) as client:
+            response = await client.head(url)
+            content_type = response.headers.get("content-type", "").lower()
+            return response.status_code == 200 and content_type.startswith("image/")
+    except httpx.RequestError as e:
+        throttled_log(url, f"HTTPX error: {e}", level="warning")
         return False
 
 
@@ -145,7 +76,7 @@ async def show_list(request: Request):
     for s in shows_raw:
         s_dict = dict(s)
         s_dict["resolved_thumbnail"] = await resolve_thumbnail(
-            s.get("thumbnail"), request=request, for_web=True
+            s.get("thumbnail_url"), for_web=True
         )
         shows.append(s_dict)
     return templates.TemplateResponse("shows/list.html", {"request": request, "shows": shows})
@@ -165,7 +96,7 @@ async def edit_show_form(request: Request, show_id: int):
         raise HTTPException(status_code=404, detail="Show tidak ditemukan")
     show = dict(show)
     show["resolved_thumbnail"] = await resolve_thumbnail(
-        show.get("thumbnail"), request=request, for_web=True
+        show.get("thumbnail_url"), for_web=True
     )
     return templates.TemplateResponse("shows/edit.html", {"request": request, "show": show})
 
@@ -178,7 +109,7 @@ async def update_show_data(
     sinopsis: str = Form(""),
     genre: str = Form(""),
     hashtags: str = Form(""),
-    thumbnail: str = Form(""),
+    thumbnail_url: str = Form(""),
     is_adult: Optional[int] = Form(None),
 ):
     show = get_show_by_id(show_id)
@@ -195,10 +126,10 @@ async def update_show_data(
         show_data["genre"] = genre.strip()
     if hashtags.strip():
         show_data["hashtags"] = hashtags.strip()
-    if thumbnail.strip():
-        if not is_valid_url(thumbnail.strip()):
-            raise HTTPException(status_code=400, detail="Thumbnail harus berupa URL valid")
-        show_data["thumbnail"] = thumbnail.strip()
+    if thumbnail_url.strip():
+        if not is_valid_url(thumbnail_url.strip()):
+            raise HTTPException(status_code=400, detail="Thumbnail URL tidak valid")
+        show_data["thumbnail_url"] = thumbnail_url.strip()
     if is_adult is not None:
         show_data["is_adult"] = is_adult
 
