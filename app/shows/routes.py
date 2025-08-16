@@ -90,16 +90,23 @@ async def proxy_telegram_file(file_id: str, request: Request):
 # ------------------------
 # RESOLVE THUMBNAIL
 # ------------------------
-async def resolve_thumbnail(thumbnail: Optional[str], for_web: bool = False) -> str:
+async def resolve_thumbnail(
+    thumbnail: Optional[str], request: Optional[Request] = None, for_web: bool = False
+) -> str:
     """Return URL final untuk thumbnail, langsung pakai default kalau invalid."""
     if not thumbnail:
         return DEFAULT_THUMBNAIL_URL if for_web else DEFAULT_THUMBNAIL_FILE_ID
 
     if not thumbnail.startswith("http"):
-        # Kalau default thumbnail, langsung return default
         if thumbnail == DEFAULT_THUMBNAIL_FILE_ID:
             return DEFAULT_THUMBNAIL_URL if for_web else DEFAULT_THUMBNAIL_FILE_ID
-        return f"/proxy/{thumbnail}" if for_web else thumbnail
+
+        # ✅ generate full URL otomatis
+        if request:
+            base_url = str(request.base_url).rstrip("/")
+            return f"{base_url}/proxy/{thumbnail}" if for_web else thumbnail
+        else:
+            return f"/proxy/{thumbnail}" if for_web else thumbnail
 
     if is_valid_url(thumbnail):
         try:
@@ -137,7 +144,9 @@ async def show_list(request: Request):
     shows = []
     for s in shows_raw:
         s_dict = dict(s)
-        s_dict["resolved_thumbnail"] = await resolve_thumbnail(s.get("thumbnail"), for_web=True)
+        s_dict["resolved_thumbnail"] = await resolve_thumbnail(
+            s.get("thumbnail"), request=request, for_web=True
+        )
         shows.append(s_dict)
     return templates.TemplateResponse("shows/list.html", {"request": request, "shows": shows})
 
@@ -155,7 +164,9 @@ async def edit_show_form(request: Request, show_id: int):
     if not show:
         raise HTTPException(status_code=404, detail="Show tidak ditemukan")
     show = dict(show)
-    show["resolved_thumbnail"] = await resolve_thumbnail(show.get("thumbnail"), for_web=True)
+    show["resolved_thumbnail"] = await resolve_thumbnail(
+        show.get("thumbnail"), request=request, for_web=True
+    )
     return templates.TemplateResponse("shows/edit.html", {"request": request, "show": show})
 
 
