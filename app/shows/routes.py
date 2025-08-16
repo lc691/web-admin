@@ -55,14 +55,26 @@ def is_valid_url(url: str) -> bool:
         return False
 
 
-async def is_image_url_accessible(url: str, timeout: int = 5) -> bool:
+async def is_image_url_accessible(url: str, timeout: int = 10) -> bool:
+    headers = {
+        "User-Agent": "Mozilla/5.0 (compatible; MyBot/1.0)",
+        "Accept": "image/*,*/*;q=0.8"
+    }
     try:
         async with httpx.AsyncClient(follow_redirects=True, timeout=timeout) as client:
-            response = await client.head(url)
-            content_type = response.headers.get("content-type", "").lower()
-            return response.status_code == 200 and content_type.startswith("image/")
-    except httpx.RequestError as e:
-        throttled_log(url, f"HTTPX error: {e}", level="warning")
+            # Coba HEAD dulu
+            try:
+                response = await client.head(url, headers=headers)
+                content_type = response.headers.get("content-type", "").lower()
+                if response.status_code == 200 and content_type.startswith("image/"):
+                    return True
+            except httpx.RequestError:
+                # HEAD gagal → fallback GET (ambil 1KB aja)
+                response = await client.get(url, headers=headers, timeout=timeout, follow_redirects=True)
+                content_type = response.headers.get("content-type", "").lower()
+                return response.status_code in (200, 206) and content_type.startswith("image/")
+    except Exception as e:
+        throttled_log(url, f"Thumbnail check gagal: {e}", level="warning")
         return False
 
 
