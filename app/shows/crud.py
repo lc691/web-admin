@@ -62,3 +62,35 @@ def delete_show(show_id):
     with get_db_cursor() as (cur, conn):
         cur.execute("DELETE FROM shows WHERE id = %s", (show_id,))
         conn.commit()
+
+def delete_show_by_id(show_id: int) -> None:
+    query = "DELETE FROM shows WHERE id = %s"
+
+    with get_db_cursor(commit=True) as (cursor, conn):
+        cursor.execute(query, (show_id,))
+
+# ADD
+def insert_show(show_data: dict) -> int:
+    """
+    Menyimpan show baru ke tabel shows.
+    Return: id show yang baru dibuat.
+    """
+    query = """
+        INSERT INTO shows (title, sinopsis, genre, hashtags, thumbnail_url, is_adult, posted_at)
+        VALUES (%s, %s, %s, %s, %s, %s, NOW())
+        RETURNING id
+    """
+    values = (
+        show_data.get("title"),
+        show_data.get("sinopsis"),
+        show_data.get("genre"),
+        show_data.get("hashtags"),
+        show_data.get("thumbnail_url"),
+        show_data.get("is_adult", False),
+    )
+
+    with get_db_cursor(commit=True) as (cursor, conn):
+        cursor.execute(query, values)
+        new_id = cursor.fetchone()[0]
+
+    return new_id

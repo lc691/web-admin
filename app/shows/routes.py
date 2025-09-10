@@ -7,7 +7,7 @@ from fastapi import APIRouter, HTTPException, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.files.crud import get_file_by_id
-from app.shows.crud import get_all_shows, get_show_by_id, update_show
+from app.shows.crud import get_all_shows, get_show_by_id, update_show, insert_show, delete_show_by_id
 from app.templates import templates
 from configs.logging_setup import log
 
@@ -150,12 +150,63 @@ async def update_show_data(
         show_data["genre"] = genre.strip()
     if hashtags.strip():
         show_data["hashtags"] = hashtags.strip()
+
+    # Thumbnail: kalau kosong biarkan, kalau ada cek valid URL
     if thumbnail_url.strip():
         if not is_valid_url(thumbnail_url.strip()):
             raise HTTPException(status_code=400, detail="Thumbnail URL tidak valid")
         show_data["thumbnail_url"] = thumbnail_url.strip()
+
     if is_adult is not None:
         show_data["is_adult"] = is_adult
 
     update_show(show_id, show_data)
+    return RedirectResponse(url="/shows", status_code=303)
+
+
+
+@router.get("/shows/add")
+async def add_show_form(request: Request):
+    return templates.TemplateResponse("shows/add.html", {"request": request})
+
+@router.post("/shows/add")
+async def create_show(
+    request: Request,
+    title: str = Form(...),
+    sinopsis: str = Form(""),
+    genre: str = Form(""),
+    hashtags: str = Form(""),
+    thumbnail_url: str = Form(""),
+    is_adult: Optional[int] = Form(None),
+):
+    if not title.strip():
+        raise HTTPException(status_code=400, detail="Judul tidak boleh kosong")
+
+    show_data = {
+        "title": title.strip(),
+        "sinopsis": sinopsis.strip(),
+        "genre": genre.strip(),
+        "hashtags": hashtags.strip(),
+        "is_adult": bool(is_adult) if is_adult is not None else False,
+    }
+
+    # Thumbnail opsional → hanya simpan kalau valid
+    if thumbnail_url.strip():
+        if not is_valid_url(thumbnail_url.strip()):
+            raise HTTPException(status_code=400, detail="Thumbnail URL tidak valid")
+        show_data["thumbnail_url"] = thumbnail_url.strip()
+
+    # fungsi insert ke DB (silakan sesuaikan)
+    new_id = insert_show(show_data)
+
+    return RedirectResponse(url="/shows", status_code=303)
+
+
+@router.get("/shows/delete/{show_id}")
+async def delete_show(request: Request, show_id: int):
+    show = get_show_by_id(show_id)
+    if not show:
+        raise HTTPException(status_code=404, detail="Show tidak ditemukan")
+
+    delete_show_by_id(show_id)
     return RedirectResponse(url="/shows", status_code=303)

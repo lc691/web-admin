@@ -51,20 +51,26 @@
 {% block scripts %}
 <script>
   $(document).ready(function () {
-    $('#viplogsTable').DataTable({
-      "language": {
-        "search": "Cari:",
-        "lengthMenu": "Tampilkan _MENU_ entri",
-        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-        "paginate": {
-          "first": "Awal",
-          "last": "Akhir",
-          "next": "Berikutnya",
-          "previous": "Sebelumnya"
-        },
-        "zeroRecords": "Tidak ada data ditemukan",
-      }
-    });
+  $('#viplogsTable').DataTable({
+    "language": {
+      "search": "Cari:",
+      "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+      "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+      "paginate": {
+        "first": "Awal",
+        "last": "Akhir",
+        "next": "Berikutnya",
+        "previous": "Sebelumnya"
+      },
+      "zeroRecords": "Tidak ada data ditemukan"
+    },
+    "pageLength": 10,
+    "lengthMenu": [5, 10, 25, 50, 100],
+    "order": [[0, "desc"]]  // <<< ini men-set kolom pertama (ID) descending
+  });
+
+    // Aktifkan tooltip Bootstrap
+    $('[data-toggle="tooltip"]').tooltip()
   });
 </script>
 {% endblock %}

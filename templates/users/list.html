@@ -81,20 +81,30 @@
 
 {% endblock %}
 
+
 {% block scripts %}
 <script>
   $(document).ready(function () {
-    $('#userTable').DataTable({
-      "language": {
-        "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+  $('#userTable').DataTable({
+    "language": {
+      "search": "Cari:",
+      "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+      "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+      "paginate": {
+        "first": "Awal",
+        "last": "Akhir",
+        "next": "Berikutnya",
+        "previous": "Sebelumnya"
       },
-      "ordering": true,
-      "paging": true,
-      "info": true,
-      "autoWidth": false,
-      "lengthChange": true,
-      "pageLength": 10
-    });
+      "zeroRecords": "Tidak ada data ditemukan"
+    },
+    "pageLength": 10,
+    "lengthMenu": [5, 10, 25, 50, 100],
+    "order": [[0, "desc"]]  // <<< ini men-set kolom pertama (ID) descending
+  });
+
+    // Aktifkan tooltip Bootstrap
+    $('[data-toggle="tooltip"]').tooltip()
   });
 </script>
 {% endblock %}

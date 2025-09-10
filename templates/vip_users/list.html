@@ -5,7 +5,7 @@
 <div class="card shadow mb-4">
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <table class="table table-bordered" id="vipUsers" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>ID</th>
@@ -51,10 +51,10 @@
 {% block scripts %}
 <script>
   $(document).ready(function () {
-    $('#dataTable').DataTable({
+    $('#vipUsers').DataTable({
       "language": {
         "search": "Cari:",
-        "lengthMenu": "Tampilkan _MENU_ entri",
+        "lengthMenu": "Tampilkan _MENU_ entri per halaman",
         "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
         "paginate": {
           "first": "Awal",
@@ -62,9 +62,14 @@
           "next": "Berikutnya",
           "previous": "Sebelumnya"
         },
-        "zeroRecords": "Tidak ada data ditemukan",
-      }
+        "zeroRecords": "Tidak ada data ditemukan"
+      },
+      "pageLength": 10,
+      "lengthMenu": [5, 10, 25, 50, 100]
     });
+
+    // Aktifkan tooltip Bootstrap
+    $('[data-toggle="tooltip"]').tooltip()
   });
 </script>
 {% endblock %}
