@@ -4,6 +4,8 @@ from psycopg2.extras import RealDictCursor
 from starlette.status import HTTP_302_FOUND
 from db.connect import get_dict_cursor
 from app.templates import templates
+from typing import Optional
+
 
 router = APIRouter()
 
@@ -80,23 +82,43 @@ def edit_package(paket_name: str, request: Request, db=Depends(get_dict_cursor))
 @router.post("/vip_packages/{paket_name}/edit")
 def update_vip_package(
     paket_name: str,
-    alias: str = Form(None),
+    alias: Optional[str] = Form(None),
     basic_days: int = Form(...),
     total_days: int = Form(...),
-    is_promo_once: bool = Form(False),
-    is_active: bool = Form(True),
-    display_label: str = Form(None),
-    price: int = Form(None),
+    is_promo_once: Optional[str] = Form(None),
+    is_active: Optional[str] = Form(None),
+    display_label: Optional[str] = Form(None),
+    price: Optional[int] = Form(None),
     db=Depends(get_dict_cursor)
 ):
+    # Checkbox hanya muncul di request jika dicentang
+    is_promo_once_bool = is_promo_once is not None
+    is_active_bool     = is_active is not None
+
     with db as (cursor, conn):
         cursor.execute("""
             UPDATE vip_packages
-            SET alias = %s, basic_days = %s, total_days = %s, is_promo_once = %s,
-                is_active = %s, display_label = %s, price = %s, updated_at = NOW()
-            WHERE paket_name = %s
-        """, (alias, basic_days, total_days, is_promo_once, is_active, display_label, price, paket_name))
+            SET alias         = %s,
+                basic_days    = %s,
+                total_days    = %s,
+                is_promo_once = %s,
+                is_active     = %s,
+                display_label = %s,
+                price         = %s,
+                updated_at    = NOW()
+            WHERE paket_name  = %s
+        """, (
+            alias,
+            basic_days,
+            total_days,
+            is_promo_once_bool,
+            is_active_bool,
+            display_label,
+            price,
+            paket_name
+        ))
         conn.commit()
+
     return RedirectResponse(url="/vip_packages", status_code=HTTP_302_FOUND)
 
 # ---------------------------

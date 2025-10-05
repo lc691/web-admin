@@ -1,7 +1,7 @@
 import time
 from typing import Optional
 from urllib.parse import urlparse
-
+from db.connect import get_dict_cursor, get_db_cursor
 import httpx
 from fastapi import APIRouter, HTTPException, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -96,13 +96,36 @@ async def is_image_url_accessible(url: str, timeout: int = 10) -> bool:
 # ------------------------
 @router.get("/shows", response_class=HTMLResponse)
 async def show_list(request: Request):
-    shows_raw = get_all_shows()
+    """
+    Menampilkan daftar show lengkap, dengan thumbnail yang sudah di-resolve.
+    DataTables akan handle sorting/pagination di sisi client.
+    """
+    # Ambil semua data show
+    with get_dict_cursor() as (cursor, _):
+        cursor.execute("""
+            SELECT id, title, thumbnail_url, sinopsis,
+                   genre, hashtags, is_adult
+            FROM shows
+            ORDER BY id DESC
+        """)
+        shows_raw = cursor.fetchall()
+
+    # Resolve thumbnail secara async
     shows = []
-    for show in shows_raw:  # ✅ iterate hasil query dari DB
+    for show in shows_raw:
         s_dict = dict(show)
-        s_dict["resolved_thumbnail"] = await resolve_thumbnail_for_web(show.get("thumbnail_url"))
+        # pastikan key ada sebelum dipanggil
+        thumb_url = s_dict.get("thumbnail_url")
+        s_dict["resolved_thumbnail"] = await resolve_thumbnail_for_web(thumb_url)
         shows.append(s_dict)
-    return templates.TemplateResponse("shows/list.html", {"request": request, "shows": shows})
+
+    return templates.TemplateResponse(
+        "shows/list.html",
+        {
+            "request": request,
+            "shows": shows
+        }
+    )
 
 
 

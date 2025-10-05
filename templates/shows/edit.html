@@ -14,10 +14,21 @@
             <textarea name="sinopsis" class="form-control" rows="4">{{ show.sinopsis }}</textarea>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Genre</label>
-            <input type="text" name="genre" value="{{ show.genre }}" class="form-control">
-        </div>
+    <div class="mb-3">
+    <label class="form-label">Genre</label>
+    <select name="genre" class="form-control">
+        {% set genre_options = [
+            "🇨🇳 Drama China",
+            "🇺🇸 Drama Barat",
+            "🇰🇷 Drama Korea",
+            "🇯🇵 Drama Jepang",
+            "🇹🇭 Drama Thailand",
+        ] %}
+        {% for g in genre_options %}
+        <option value="{{ g }}" {% if show.genre == g %}selected{% endif %}>{{ g }}</option>
+        {% endfor %}
+    </select>
+    </div>
 
         <div class="mb-3">
             <label class="form-label">Hashtags</label>
