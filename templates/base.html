@@ -19,6 +19,9 @@
 
     <!-- Styles -->
     <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/static/css/dark-mode.css" rel="stylesheet">
+
+
     <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     {% block extra_styles %}{% endblock %}
@@ -368,15 +371,47 @@
                     e.preventDefault();
                     body.classList.toggle('sidebar-toggled');
                     const sidebar = document.getElementById('accordionSidebar');
-                    sidebar.classList.toggle('toggled');
+                    if (sidebar) sidebar.classList.toggle('toggled');
                 });
             }
         });
     </script>
 
+    <!-- Dark Mode Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('darkToggle');
+            const body = document.body;
 
+            // Kalau tombol belum ada (misal di halaman login), jangan error
+            if (!toggle) return;
+
+            // Cek setting tersimpan
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+            }
+
+            // Jika belum ada setting, cek preferensi sistem
+            if (!savedTheme) {
+                const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                if (prefersDark) body.classList.add('dark-mode');
+            }
+
+            // Klik tombol toggle
+            toggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                localStorage.setItem(
+                    'theme',
+                    body.classList.contains('dark-mode') ? 'dark' : 'light'
+                );
+
+                // Opsional: ganti ikon tombol
+                toggle.innerHTML = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+            });
+        });
+    </script>
 
     {% block scripts %}{% endblock %}
 </body>
-
 </html>
