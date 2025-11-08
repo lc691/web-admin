@@ -175,3 +175,167 @@ body.dark-mode {
 .dark-mode .sidebar .nav-link span {
   color: #d1d5db !important;
 }
+
+
+/* ====== CONTENT AREA ====== */
+
+/* Warna background utama area konten */
+.dark-mode #content-wrapper,
+.dark-mode #content,
+.dark-mode .container-fluid {
+  background-color: #1b1d25 !important;
+  color: #e4e6eb !important;
+}
+
+/* Card dan box di dalam content */
+.dark-mode .card {
+  background-color: #262a36 !important;
+  border: 1px solid #2e3241 !important;
+  color: #e4e6eb !important;
+}
+.dark-mode .card-header {
+  background-color: #2a2e3a !important;
+  border-bottom: 1px solid #353849 !important;
+}
+
+/* Text dan heading di dalam konten */
+.dark-mode h1, 
+.dark-mode h2, 
+.dark-mode h3, 
+.dark-mode h4, 
+.dark-mode h5, 
+.dark-mode h6,
+.dark-mode p,
+.dark-mode span,
+.dark-mode label,
+.dark-mode th,
+.dark-mode td {
+  color: #e4e6eb !important;
+}
+
+/* Table borders */
+.dark-mode table {
+  border-color: #353849 !important;
+}
+.dark-mode table.dataTable thead th {
+  background-color: #2a2e3a !important;
+  color: #f3f4f6 !important;
+}
+.dark-mode table.dataTable tbody tr {
+  background-color: #2b2f3a !important;
+}
+.dark-mode table.dataTable tbody tr:hover {
+  background-color: #34394b !important;
+}
+
+/* Forms (input, select, textarea) */
+.dark-mode input.form-control,
+.dark-mode select.form-control,
+.dark-mode textarea.form-control {
+  background-color: #2e3241 !important;
+  border: 1px solid #3a3f52 !important;
+  color: #e4e6eb !important;
+}
+.dark-mode input.form-control:focus,
+.dark-mode select.form-control:focus,
+.dark-mode textarea.form-control:focus {
+  background-color: #353849 !important;
+  border-color: #3b82f6 !important;
+  color: #fff !important;
+}
+
+/* Button di dalam konten */
+.dark-mode .btn {
+  border: none;
+}
+.dark-mode .btn-primary {
+  background-color: #3b82f6 !important;
+}
+.dark-mode .btn-success {
+  background-color: #22c55e !important;
+}
+.dark-mode .btn-danger {
+  background-color: #ef4444 !important;
+}
+
+/* Alert & badge */
+.dark-mode .alert {
+  background-color: #2b2f3a !important;
+  border: 1px solid #3a3f52 !important;
+  color: #e4e6eb !important;
+}
+.dark-mode .badge {
+  filter: brightness(0.9);
+}
+
+
+/* ====== DATATABLES DARK MODE ====== */
+
+.dark-mode .dataTables_wrapper {
+  color: #e4e6eb !important;
+}
+
+/* Table header */
+.dark-mode table.dataTable thead th {
+  background-color: #2a2e3a !important;
+  color: #f3f4f6 !important;
+  border-bottom: 1px solid #3a3f52 !important;
+}
+
+/* Table body */
+.dark-mode table.dataTable tbody tr {
+  background-color: #2b2f3a !important;
+}
+.dark-mode table.dataTable tbody tr:hover {
+  background-color: #34394b !important;
+}
+
+/* Pagination */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: #e4e6eb !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: #34394b !important;
+  color: #fff !important;
+  border-radius: 5px;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: #3b82f6 !important;
+  color: #fff !important;
+  border-radius: 5px;
+}
+
+/* Dropdown “show entries” */
+.dark-mode .dataTables_length select {
+  background-color: #2e3241 !important;
+  color: #e4e6eb !important;
+  border: 1px solid #3a3f52 !important;
+}
+
+/* Search box */
+.dark-mode .dataTables_filter input {
+  background-color: #2e3241 !important;
+  border: 1px solid #3a3f52 !important;
+  color: #e4e6eb !important;
+  border-radius: 5px;
+}
+.dark-mode .dataTables_filter input:focus {
+  background-color: #353849 !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Info text */
+.dark-mode .dataTables_info {
+  color: #9ca3af !important;
+}
+
+/* Table borders */
+.dark-mode table.dataTable {
+  border-color: #353849 !important;
+}
+.dark-mode table.dataTable td, 
+.dark-mode table.dataTable th {
+  border-color: #353849 !important;
+}
