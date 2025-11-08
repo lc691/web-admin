@@ -1,42 +1,141 @@
-/* ======== DARK MODE ======== */
+/* ========== DARK MODE - SB ADMIN 2 CUSTOM ========== */
+
 body.dark-mode {
-  background-color: #1e1e2f !important;
-  color: #e0e0e0;
+  background-color: #1b1d25 !important;
+  color: #e4e6eb !important;
 }
 
 /* Navbar */
-.dark-mode .navbar {
-  background-color: #2b2b3c !important;
-  border-bottom: 1px solid #444;
+.dark-mode .navbar,
+.dark-mode .topbar {
+  background-color: #232735 !important;
+  color: #e4e6eb !important;
+  border-bottom: 1px solid #2e3241;
 }
 
 /* Sidebar */
 .dark-mode .sidebar {
-  background-color: #2b2b3c !important;
+  background-color: #232735 !important;
+}
+.dark-mode .sidebar .nav-item .nav-link,
+.dark-mode .sidebar .collapse-inner a {
+  color: #d0d3dc !important;
+}
+.dark-mode .sidebar .nav-item.active .nav-link,
+.dark-mode .sidebar .nav-item .nav-link:hover {
+  background-color: #2e3241 !important;
+  color: #ffffff !important;
+}
+.dark-mode .sidebar .collapse-inner {
+  background-color: #2a2e3a !important;
+  border-radius: 6px;
 }
 
-.dark-mode .sidebar .nav-item .nav-link {
+/* Cards */
+.dark-mode .card {
+  background-color: #262a36 !important;
+  color: #e4e6eb !important;
+  border: 1px solid #2e3241;
+}
+.dark-mode .card-header {
+  background-color: #2a2e3a !important;
+  border-bottom: 1px solid #353849;
+}
+
+/* Tables (DataTables support) */
+.dark-mode table {
+  color: #e4e6eb !important;
+}
+.dark-mode table.dataTable tbody tr {
+  background-color: #2b2f3a !important;
+}
+.dark-mode table.dataTable tbody tr:hover {
+  background-color: #34394b !important;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
   color: #ccc !important;
+  border: none !important;
+  background: transparent !important;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: #34394b !important;
+  color: white !important;
 }
 
-.dark-mode .sidebar .nav-item .nav-link.active {
-  background-color: #444 !important;
+/* Buttons */
+.dark-mode .btn {
+  border: none;
+}
+.dark-mode .btn-primary {
+  background-color: #3b82f6 !important;
+}
+.dark-mode .btn-secondary {
+  background-color: #475569 !important;
+}
+.dark-mode .btn-danger {
+  background-color: #ef4444 !important;
+}
+.dark-mode .btn-success {
+  background-color: #22c55e !important;
+}
+
+/* Forms */
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  background-color: #2e3241 !important;
+  color: #e4e6eb !important;
+  border: 1px solid #3a3f52 !important;
+}
+.dark-mode input:focus,
+.dark-mode select:focus,
+.dark-mode textarea:focus {
+  border-color: #3b82f6 !important;
+  background-color: #353849 !important;
   color: #fff !important;
 }
 
-/* Card */
-.dark-mode .card {
-  background-color: #2b2b3c !important;
-  color: #ddd !important;
-  border-color: #444;
+/* Badges, alerts, text, dan lain-lain */
+.dark-mode .badge {
+  filter: brightness(0.9);
+}
+.dark-mode .alert {
+  background-color: #2b2f3a !important;
+  border: 1px solid #3a3f52;
+  color: #e4e6eb;
 }
 
-/* Table */
-.dark-mode table {
-  color: #ddd;
+/* Scrollbar */
+.dark-mode ::-webkit-scrollbar {
+  width: 8px;
+}
+.dark-mode ::-webkit-scrollbar-thumb {
+  background-color: #3a3f52;
+  border-radius: 10px;
+}
+.dark-mode ::-webkit-scrollbar-track {
+  background-color: #232735;
 }
 
-/* Text & Link */
+/* Toggle icon transition */
+#darkToggle i {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.dark-mode #darkToggle i {
+  color: #facc15;
+  transform: rotate(180deg);
+}
+
+/* Hover effect on links */
 .dark-mode a {
-  color: #89b4fa;
+  color: #93c5fd !important;
+}
+.dark-mode a:hover {
+  color: #60a5fa !important;
+}
+
+/* Footer */
+.dark-mode footer.sticky-footer {
+  background-color: #232735 !important;
+  color: #9ca3af !important;
 }
