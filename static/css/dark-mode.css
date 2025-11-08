@@ -139,3 +139,39 @@ body.dark-mode {
   background-color: #232735 !important;
   color: #9ca3af !important;
 }
+
+
+/* ====== FIX untuk Sidebar SB Admin 2 ====== */
+
+/* Ganti warna gradient sidebar saat dark mode aktif */
+.dark-mode .sidebar.bg-gradient-primary {
+  background: linear-gradient(180deg, #1f2937 10%, #111827 100%) !important;
+  color: #e4e6eb !important;
+}
+
+/* Hover dan active state */
+.dark-mode .sidebar .nav-item .nav-link:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .sidebar .nav-item.active .nav-link {
+  background-color: #4b5563 !important;
+  color: #ffffff !important;
+}
+
+/* Divider line */
+.dark-mode .sidebar hr.sidebar-divider {
+  border-top: 1px solid #2e3241 !important;
+}
+
+/* Sidebar heading text */
+.dark-mode .sidebar-heading {
+  color: #9ca3af !important;
+}
+
+/* Nav text & icon */
+.dark-mode .sidebar .nav-link i,
+.dark-mode .sidebar .nav-link span {
+  color: #d1d5db !important;
+}
