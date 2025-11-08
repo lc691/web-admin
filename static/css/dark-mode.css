@@ -341,57 +341,59 @@ body.dark-mode {
 }
 
 
-/* ====== DATATABLES PAGINATION (DARK MODE) ====== */
+/* ====== DATATABLES PAGINATION MODERN DARK ====== */
 
 .dark-mode .dataTables_wrapper .dataTables_paginate {
   margin-top: 1rem;
+  text-align: center;
 }
 
-/* Tombol pagination umum */
+/* Tombol umum */
 .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
-  color: #e5e7eb !important;
-  border: 1px solid transparent !important;
+  color: #93c5fd !important;
+  border: none !important;
   background-color: transparent !important;
-  border-radius: 6px;
-  padding: 5px 10px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  border-radius: 8px;
+  margin: 0 2px;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
 }
 
-/* Hover effect */
+/* Hover */
 .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
   background-color: #374151 !important;
   color: #ffffff !important;
-  border: 1px solid #4b5563 !important;
 }
 
-/* Tombol aktif (halaman sekarang) */
+/* Aktif */
 .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current {
   background-color: #3b82f6 !important;
   color: #ffffff !important;
-  border: 1px solid #2563eb !important;
-  box-shadow: 0 0 5px rgba(59, 130, 246, 0.4);
+  font-weight: 600;
+  box-shadow: 0 0 6px rgba(59,130,246,0.4);
 }
 
-/* Hover di tombol aktif */
-.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-  background-color: #2563eb !important;
-}
-
-/* Tombol disabled (misalnya “Previous” saat di halaman pertama) */
-.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
-  color: #6b7280 !important;
-  background-color: transparent !important;
-  border: none !important;
-  cursor: not-allowed !important;
-}
-
-/* Ikon Previous & Next (biar nyatu warna) */
+/* Tombol previous/next */
 .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.previous,
 .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.next {
-  color: #e5e7eb !important;
+  color: #93c5fd !important;
+  font-weight: 500;
 }
 .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover,
 .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.next:hover {
   background-color: #374151 !important;
-  color: #ffffff !important;
+  color: #fff !important;
+}
+
+/* Disabled state */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+  color: #6b7280 !important;
+  background: transparent !important;
+  cursor: not-allowed !important;
+}
+
+/* Hilangkan border putih default Bootstrap */
+.dark-mode .pagination .page-item .page-link {
+  background: transparent !important;
+  border: none !important;
 }
