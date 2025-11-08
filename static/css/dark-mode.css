@@ -339,3 +339,59 @@ body.dark-mode {
 .dark-mode table.dataTable th {
   border-color: #353849 !important;
 }
+
+
+/* ====== DATATABLES PAGINATION (DARK MODE) ====== */
+
+.dark-mode .dataTables_wrapper .dataTables_paginate {
+  margin-top: 1rem;
+}
+
+/* Tombol pagination umum */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: #e5e7eb !important;
+  border: 1px solid transparent !important;
+  background-color: transparent !important;
+  border-radius: 6px;
+  padding: 5px 10px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+  border: 1px solid #4b5563 !important;
+}
+
+/* Tombol aktif (halaman sekarang) */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  border: 1px solid #2563eb !important;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.4);
+}
+
+/* Hover di tombol aktif */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background-color: #2563eb !important;
+}
+
+/* Tombol disabled (misalnya “Previous” saat di halaman pertama) */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+  color: #6b7280 !important;
+  background-color: transparent !important;
+  border: none !important;
+  cursor: not-allowed !important;
+}
+
+/* Ikon Previous & Next (biar nyatu warna) */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.previous,
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+  color: #e5e7eb !important;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover,
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.next:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+}
