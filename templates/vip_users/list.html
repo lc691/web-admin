@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">{{ title }}</h1>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="vipUsers" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Paket</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Status</th>
+            <th>Source</th>
+            <th>Updated At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in users %}
+          <tr>
+            <td>{{ u.id }}</td>
+            <td>{{ u.user_id }}</td>
+            <td>{{ u.username or '-' }}</td>
+            <td>{{ u.paket or '-' }}</td>
+            <td>{{ u.start_date.strftime('%Y-%m-%d') if u.start_date else '-' }}</td>
+            <td>{{ u.end_date.strftime('%Y-%m-%d') if u.end_date else '-' }}</td>
+            <td>
+              {% if u.status == 'active' %}
+                <span class="badge badge-success">Active</span>
+              {% elif u.status == 'expired' %}
+                <span class="badge badge-secondary">Expired</span>
+              {% else %}
+                {{ u.status }}
+              {% endif %}
+            </td>
+            <td>{{ u.source_bot or '-' }}</td>
+            <td>{{ u.updated_at.strftime('%Y-%m-%d %H:%M:%S') if u.updated_at else '-' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#vipUsers').DataTable({
+      "language": {
+        "search": "Cari:",
+        "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        "paginate": {
+          "first": "Awal",
+          "last": "Akhir",
+          "next": "Berikutnya",
+          "previous": "Sebelumnya"
+        },
+        "zeroRecords": "Tidak ada data ditemukan"
+      },
+      "pageLength": 10,
+      "lengthMenu": [5, 10, 25, 50, 100]
+    });
+
+    // Aktifkan tooltip Bootstrap
+    $('[data-toggle="tooltip"]').tooltip()
+  });
+</script>
+{% endblock %}

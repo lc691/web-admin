@@ -1,0 +1,71 @@
+# ─────────────────────────────────────────────
+# Core Utilities
+# ─────────────────────────────────────────────
+# Flask==2.3.3                        # Webhook, healthcheck, minimal web API
+gunicorn==21.2.0                    # WSGI server (for deployment)
+httpx
+
+fastapi
+uvicorn
+
+colorama
+
+requests==2.31.0                    # HTTP client
+python-dotenv==1.0.1                # Load .env configs
+psutil                              # System monitoring (e.g., memory/CPU)
+pytz==2025.2                        # Timezone-aware datetime
+
+# ─────────────────────────────────────────────
+# Telegram Bot via Pyrogram
+# ─────────────────────────────────────────────
+Pyrogram==2.0.106                   # Telegram Bot API client (async)
+TgCrypto==1.2.3                     # Optional: fast MTProto encryption
+
+# ─────────────────────────────────────────────
+# PostgreSQL Database
+# ─────────────────────────────────────────────
+psycopg2-binary==2.9.9              # PostgreSQL adapter (binary version)
+
+# ─────────────────────────────────────────────
+# Task Scheduling
+# ─────────────────────────────────────────────
+schedule==1.2.0                     # Simple interval-based scheduler
+APScheduler==3.11.0                 # Advanced task scheduler (VIP expiry etc.)
+
+# ─────────────────────────────────────────────
+# Retry Logic
+# ─────────────────────────────────────────────
+tenacity==8.2.3                     # Retry on failure decorator
+
+# ─────────────────────────────────────────────
+# Redis Cache (Session, PubSub, Queue)
+# ─────────────────────────────────────────────
+redis==6.2.0                        # Redis client (sync)
+aioredis==2.0.1                     # Redis client (async)
+
+# ─────────────────────────────────────────────
+# Google Drive API (File upload)
+# ─────────────────────────────────────────────
+google-api-python-client==2.125.0  # Core Google API client
+google-auth==2.29.0                # Authentication via service account
+google-auth-httplib2==0.2.0        # Required by Drive API
+
+# ─────────────────────────────────────────────
+# PDF & Report Generation
+# ─────────────────────────────────────────────
+reportlab==4.1.0                    # Generate PDF files (e.g., pembahasan ujian)
+fpdf2
+# ─────────────────────────────────────────────
+# Optional: Chart Visualization (for scores)
+# ─────────────────────────────────────────────
+matplotlib==3.9.0                   # (Optional) Generate score charts
+
+# ─────────────────────────────────────────────
+# OCR (Optical Character Recognition)
+# ─────────────────────────────────────────────
+pytesseract==0.3.10
+Pillow==10.4.0
+
+jinja2
+python-multipart
+diskcache

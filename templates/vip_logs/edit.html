@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">Edit VIP Log</h1>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <form method="post">
+      <div class="form-group">
+        <label for="target_user_id">User ID</label>
+        <input type="number" class="form-control" id="target_user_id" name="target_user_id" value="{{ log.target_user_id }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="paket">Paket</label>
+        <input type="text" class="form-control" id="paket" name="paket" value="{{ log.paket }}">
+      </div>
+
+      <div class="form-group">
+        <label for="durasi_hari">Durasi (hari)</label>
+        <input type="number" class="form-control" id="durasi_hari" name="durasi_hari" value="{{ log.durasi_hari }}">
+      </div>
+
+      <div class="form-group">
+        <label for="expired_baru">Expired Baru</label>
+        <input type="datetime-local" class="form-control" id="expired_baru" name="expired_baru"
+          value="{{ log.expired_baru|replace(' ', 'T') }}">
+      </div>
+
+      <div class="form-group">
+        <label for="keterangan">Keterangan</label>
+        <textarea class="form-control" id="keterangan" name="keterangan">{{ log.keterangan or '' }}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+      <a href="/vip_logs" class="btn btn-secondary">Batal</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
