@@ -4,12 +4,13 @@ from db.connect import get_dict_cursor, get_db_cursor
 def create_show(data):
     with get_db_cursor() as (cur, conn):
         cur.execute("""
-            INSERT INTO shows (title, sinopsis, genre, hashtags, thumbnail_url, source, is_adult)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO shows (title, sinopsis, genre, source, hashtags, thumbnail_url, source, is_adult)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """, (
             data.get("title"),
             data.get("sinopsis"),
             data.get("genre"),
+            data.get("source"),
             data.get("hashtags"),
             data.get("thumbnail_url"),
             data.get("source"),
