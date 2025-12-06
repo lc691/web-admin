@@ -22,6 +22,15 @@ def get_source_by_id(source_id: int) -> Optional[dict]:
         return cur.fetchone()
 
 
+def create_source(name: str):
+    """
+    Tambah source baru
+    """
+    with get_dict_cursor() as (cur, conn):
+        cur.execute("INSERT INTO source (name) VALUES (%s)", (name,))
+        conn.commit()
+
+
 def update_source_by_id(source_id: int, name: str):
     """
     Update nama source berdasarkan ID
