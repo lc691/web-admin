@@ -126,45 +126,39 @@
 
 
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Management Files
-    </div>
+    <!-- Sidebar Heading -->
+    <div class="sidebar-heading">Management Files</div>
 
-    <!-- Files Management -->
+    <!-- Files Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFiles" aria-expanded="false"
-            aria-controls="collapseFiles">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFilesMenu"
+            aria-expanded="false" aria-controls="collapseFilesMenu">
             <i class="fas fa-folder-open fa-fw"></i>
             <span>Manajemen Files</span>
         </a>
-        <div id="collapseFiles"
+        <div id="collapseFilesMenu"
             class="collapse {% if request.url.path.startswith('/files') or request.url.path.startswith('/shows') %}show{% endif %}"
-            aria-labelledby="headingFiles" data-parent="#accordionSidebar">
+            data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-
                 <h6 class="collapse-header"><i class="fas fa-database mr-1 text-info"></i> Menu Files</h6>
-
-                <a class="collapse-item" href="/files">
-                    <i class="fas fa-file-alt text-primary mr-2"></i> Daftar Files
-                </a>
-
-                <a class="collapse-item" href="/shows">
-                    <i class="fas fa-film text-success mr-2"></i> Daftar Shows
-                </a>
-
+                <a class="collapse-item" href="/files"><i class="fas fa-file-alt text-primary mr-2"></i> Daftar
+                    Files</a>
+                <a class="collapse-item" href="/shows"><i class="fas fa-film text-success mr-2"></i> Daftar Shows</a>
             </div>
         </div>
 
-        <div id="collapseFiles" class="collapse {% if request.url.path.startswith('/source') %}show{% endif %}"
-            aria-labelledby="headingFiles" data-parent="#accordionSidebar">
+        <!-- Source Menu -->
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSourceMenu"
+            aria-expanded="false" aria-controls="collapseSourceMenu">
+            <i class="fas fa-folder-open fa-fw"></i>
+            <span>Manajemen Source</span>
+        </a>
+        <div id="collapseSourceMenu" class="collapse {% if request.url.path.startswith('/source') %}show{% endif %}"
+            data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header"><i class="fas fa-database mr-1 text-info"></i> Menu Source</h6>
-
-                <a class="collapse-item" href="/source">
-                    <i class="fas fa-file-alt text-primary mr-2"></i> Daftar Source
-                </a>
-
+                <a class="collapse-item" href="/source"><i class="fas fa-file-alt text-primary mr-2"></i> Daftar
+                    Source</a>
                 {% if sources_sidebar %}
                 {% for src in sources_sidebar %}
                 <a class="collapse-item" href="/source/{{ src.id }}">
