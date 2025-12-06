@@ -1,21 +1,22 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from app.base.routes import get_dashboard_stats
 
-# Routers
-from app.users.routes import router as user_router
+from app.admins.routes import router as admins_router
+from app.base.routes import get_dashboard_stats
 from app.files.routes import router as files_router
 from app.shows.routes import router as shows_router
-from app.admins.routes import router as admins_router
-from app.vip_users.routes import router as vip_user_router
-from app.vip_logs.routes import router as vip_logs_router
-from app.vip_packages.routes import router as vip_pakages_router
-from app.vip_vouchers.routes import router as vip_voucheres_router
-
+from app.source.routes import router as source_router
 
 # Template Engine
 from app.templates import templates
+
+# Routers
+from app.users.routes import router as user_router
+from app.vip_logs.routes import router as vip_logs_router
+from app.vip_packages.routes import router as vip_pakages_router
+from app.vip_users.routes import router as vip_user_router
+from app.vip_vouchers.routes import router as vip_voucheres_router
 
 app = FastAPI()
 
@@ -28,9 +29,11 @@ app.include_router(vip_user_router)
 app.include_router(vip_logs_router)
 app.include_router(vip_pakages_router)
 app.include_router(vip_voucheres_router)
+app.include_router(source_router)
 
 # Static files (CSS, JS, Images, etc.)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 # ========================
 # Route: Dashboard
@@ -38,20 +41,22 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/")
 async def dashboard(request: Request):
     stats = get_dashboard_stats()
-    return templates.TemplateResponse("base.html", {
-        "request": request,
-        "stats": stats
-    })
+    return templates.TemplateResponse("base.html", {"request": request, "stats": stats})
+
 
 # ========================
 # Route: Login
 # ========================
 @app.get("/login", response_class=HTMLResponse)
 async def login(request: Request):
-    return templates.TemplateResponse("login.html", {
-        "request": request,
-        "path": request.url.path,
-    })
+    return templates.TemplateResponse(
+        "login.html",
+        {
+            "request": request,
+            "path": request.url.path,
+        },
+    )
+
 
 # ========================
 # (Optional) POST login
