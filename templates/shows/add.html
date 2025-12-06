@@ -38,7 +38,7 @@
             "Rellshort",
             ] %}
             {% for src in source_options %}
-            <option value="{{ src }}" {% if show.source==src %}selected{% endif %}>{{ src }}</option>
+            <option value="{{ src }}" {% if show and show.source==src %}selected{% endif %}>{{ src }}</option>
             {% endfor %}
         </select>
     </div>

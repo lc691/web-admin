@@ -1,15 +1,22 @@
 import time
 from typing import Optional
 from urllib.parse import urlparse
-from db.connect import get_dict_cursor
+
 import httpx
-from fastapi import APIRouter, HTTPException, Request, Form
+from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.files.crud import get_file_by_id
-from app.shows.crud import get_all_shows, get_show_by_id, update_show, insert_show, delete_show_by_id
+from app.shows.crud import (
+    delete_show_by_id,
+    get_all_shows,
+    get_show_by_id,
+    insert_show,
+    update_show,
+)
 from app.templates import templates
 from configs.logging_setup import log
+from db.connect import get_dict_cursor
 
 router = APIRouter()
 
@@ -43,17 +50,20 @@ async def resolve_thumbnail_for_web(thumbnail_url: str):
 
 # --------------- ROUTES ----------------------------
 
+
 # LIST SHOWS
 @router.get("/shows", response_class=HTMLResponse)
 async def show_list(request: Request):
 
     with get_dict_cursor() as (cursor, _):
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT id, title, thumbnail_url, sinopsis,
                    genre, hashtags, source, is_adult
             FROM shows
             ORDER BY id DESC
-        """)
+        """
+        )
         shows_raw = cursor.fetchall()
 
     shows = []
@@ -62,10 +72,7 @@ async def show_list(request: Request):
         s["resolved_thumbnail"] = await resolve_thumbnail_for_web(s.get("thumbnail_url"))
         shows.append(s)
 
-    return templates.TemplateResponse(
-        "shows/list.html",
-        {"request": request, "shows": shows}
-    )
+    return templates.TemplateResponse("shows/list.html", {"request": request, "shows": shows})
 
 
 # EDIT FILE FORM
@@ -73,7 +80,9 @@ async def show_list(request: Request):
 def edit_file_form(request: Request, file_id: int):
     file = get_file_by_id(file_id)
     shows = get_all_shows()
-    return templates.TemplateResponse("files/edit.html", {"request": request, "file": file, "shows": shows})
+    return templates.TemplateResponse(
+        "files/edit.html", {"request": request, "file": file, "shows": shows}
+    )
 
 
 # EDIT SHOW FORM
@@ -108,11 +117,16 @@ async def update_show_data(
 
     show_data = dict(show)
 
-    if title.strip(): show_data["title"] = title.strip()
-    if sinopsis.strip(): show_data["sinopsis"] = sinopsis.strip()
-    if genre.strip(): show_data["genre"] = genre.strip()
-    if hashtags.strip(): show_data["hashtags"] = hashtags.strip()
-    if source.strip(): show_data["source"] = source.strip()
+    if title.strip():
+        show_data["title"] = title.strip()
+    if sinopsis.strip():
+        show_data["sinopsis"] = sinopsis.strip()
+    if genre.strip():
+        show_data["genre"] = genre.strip()
+    if hashtags.strip():
+        show_data["hashtags"] = hashtags.strip()
+    if source.strip():
+        show_data["source"] = source.strip()
 
     if thumbnail_url.strip():
         if not is_valid_url(thumbnail_url.strip()):
@@ -129,7 +143,9 @@ async def update_show_data(
 # ADD SHOW FORM
 @router.get("/shows/add")
 async def add_show_form(request: Request):
-    return templates.TemplateResponse("shows/add.html", {"request": request})
+    return templates.TemplateResponse(
+        "shows/add.html", {"request": request, "show": None}  # penting supaya template aman
+    )
 
 
 # CREATE SHOW
