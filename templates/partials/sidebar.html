@@ -54,34 +54,55 @@
         User Tools
     </div>
 
-    <!-- User Management Dropdown -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="false"
             aria-controls="collapseUser">
             <i class="fas fa-fw fa-users"></i>
             <span>Manajemen Pengguna</span>
         </a>
-        <div id="collapseUser" class="collapse {% if request.url.path.startswith('/users') %}show{% endif %}"
-            aria-labelledby="headingUser" data-parent="#accordionSidebar">
+
+        <div id="collapseUser" class="collapse
+         {% if request.url.path == '/users' %}
+            show
+         {% endif %}" data-parent="#accordionSidebar">
+
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item {% if request.url.path == '/users' %}active{% endif %}" href="/users">
+
+                <a class="collapse-item
+               {% if not request.query_params.get('filter') %}
+                  active
+               {% endif %}" href="/users">
                     📋 Semua Pengguna
                 </a>
-                <a class="collapse-item {% if request.url.path == '/users/vip' %}active{% endif %}" href="/users/vip">
+
+                <a class="collapse-item
+               {% if request.query_params.get('filter') == 'vip' %}
+                  active
+               {% endif %}" href="/users?filter=vip">
                     ⭐ Pengguna VIP
                 </a>
-                <a class="collapse-item {% if request.url.path == '/users/nonvip' %}active{% endif %}"
-                    href="/users/nonvip">
+
+                <a class="collapse-item
+               {% if request.query_params.get('filter') == 'nonvip' %}
+                  active
+               {% endif %}" href="/users?filter=nonvip">
                     👤 Pengguna Non-VIP
                 </a>
-                <a class="collapse-item {% if request.url.path == '/users/trial' %}active{% endif %}"
-                    href="/users/trial">
+
+                <a class="collapse-item
+               {% if request.query_params.get('filter') == 'trial' %}
+                  active
+               {% endif %}" href="/users?filter=trial">
                     🎁 Trial Pengguna
                 </a>
-                <a class="collapse-item {% if request.url.path == '/users/referred' %}active{% endif %}"
-                    href="/users/referred">
+
+                <a class="collapse-item
+               {% if request.query_params.get('filter') == 'affiliate' %}
+                  active
+               {% endif %}" href="/users?filter=affiliate">
                     🔗 Berdasarkan Referral
                 </a>
+
             </div>
         </div>
     </li>
@@ -91,38 +112,117 @@
         Management VIP
     </div>
 
-    <!-- Vip Management Dropdown -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVip" aria-expanded="false"
             aria-controls="collapseVip">
             <i class="fas fa-crown fa-fw"></i>
             <span>Manajemen VIP</span>
         </a>
-        <div id="collapseVip" class="collapse {% if request.url.path.startswith('/vip') %}show{% endif %}"
-            aria-labelledby="headingVip" data-parent="#accordionSidebar">
+
+        <div id="collapseVip" class="collapse
+         {% if request.url.path.startswith('/vip_') %}
+            show
+         {% endif %}" data-parent="#accordionSidebar">
+
             <div class="bg-white py-2 collapse-inner rounded">
 
-                <h6 class="collapse-header"><i class="fas fa-star mr-1 text-warning"></i> Menu VIP</h6>
+                <h6 class="collapse-header">
+                    <i class="fas fa-star mr-1 text-warning"></i> Sistem VIP
+                </h6>
 
-                <a class="collapse-item" href="/vip_users">
-                    <i class="fas fa-user-shield text-primary mr-2"></i> Pengguna VIP
+                <a class="collapse-item
+               {% if request.url.path == '/vip_logs' %}
+                  active
+               {% endif %}" href="/vip_logs">
+                    <i class="fas fa-history text-success mr-2"></i>
+                    Log Aktivasi
                 </a>
 
-                <a class="collapse-item" href="/vip_logs">
-                    <i class="fas fa-history text-success mr-2"></i> Log Aktivasi
+                <a class="collapse-item
+               {% if request.url.path == '/vip_packages' %}
+                  active
+               {% endif %}" href="/vip_packages">
+                    <i class="fas fa-tasks text-danger mr-2"></i>
+                    VIP Packages
                 </a>
 
-                <a class="collapse-item" href="/vip_packages">
-                    <i class="fas fa-tasks text-danger mr-2"></i> Vip Packages
-                </a>
-
-                <a class="collapse-item" href="/vip_vouchers">
-                    <i class="fas fa-tasks text-danger mr-2"></i> Vip_vouchers
+                <a class="collapse-item
+               {% if request.url.path == '/vip_vouchers' %}
+                  active
+               {% endif %}" href="/vip_vouchers">
+                    <i class="fas fa-ticket-alt text-info mr-2"></i>
+                    VIP Vouchers
                 </a>
 
             </div>
         </div>
     </li>
+
+    <!-- Sidebar Heading -->
+    <div class="sidebar-heading">
+        Management Affiliate
+    </div>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAffiliateMenu"
+            aria-expanded="false" aria-controls="collapseAffiliateMenu">
+            <i class="fas fa-handshake fa-fw"></i>
+            <span>Manajemen Affiliate</span>
+        </a>
+
+        <div id="collapseAffiliateMenu" class="collapse
+         {% if request.url.path.startswith('/referrals') %}
+            show
+         {% endif %}" data-parent="#accordionSidebar">
+
+            <div class="bg-white py-2 collapse-inner rounded">
+
+                <h6 class="collapse-header">
+                    <i class="fas fa-link mr-1 text-primary"></i> Affiliate
+                </h6>
+
+                <a class="collapse-item
+                {% if request.url.path == '/referrals' %}
+                    active
+                {% endif %}" href="/referrals">
+                    🔗 Data Referral
+                </a>
+
+                <a class="collapse-item
+                {% if request.url.path == '/referrals/logs' %}
+                    active
+                {% endif %}" href="/referrals/logs">
+                    📜 Referral Logs
+                </a>
+
+                <a class="collapse-item
+                {% if request.url.path == '/referrals/metrics' %}
+                    active
+                {% endif %}" href="/referrals/metrics">
+                    📊 Referral Metrics
+                </a>
+
+                <a class="collapse-item
+                {% if request.url.path == '/referrals/commissions' %}
+                    active
+                {% endif %}" href="/referrals/commissions">
+                    💰 Referral Commissions
+                </a>
+
+
+
+                <!-- OPTIONAL (kalau nanti nambah) -->
+                {#
+                <a class="collapse-item" href="/affiliate/stats">
+                    📊 Statistik Affiliate
+                </a>
+                #}
+
+            </div>
+        </div>
+    </li>
+
+
 
     <!-- Sidebar Heading -->
     <div class="sidebar-heading">Management Files</div>

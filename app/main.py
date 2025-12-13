@@ -18,6 +18,7 @@ from app.vip_logs.routes import router as vip_logs_router
 from app.vip_packages.routes import router as vip_pakages_router
 from app.vip_users.routes import router as vip_user_router
 from app.vip_vouchers.routes import router as vip_voucheres_router
+from app.referrals.routes import router as referral_router
 
 app = FastAPI()
 
@@ -30,6 +31,7 @@ app.include_router(vip_user_router)
 app.include_router(vip_logs_router)
 app.include_router(vip_pakages_router)
 app.include_router(vip_voucheres_router)
+app.include_router(referral_router)
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # project_root
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")

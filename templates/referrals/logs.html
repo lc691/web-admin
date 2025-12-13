@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-body table-responsive">
+        <table id="referralLogsTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Referrer</th>
+                    <th>Referred</th>
+                    <th>Event</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>
+                        {{ log.referrer_username or log.referrer_user_id }}
+                    </td>
+                    <td>
+                        {{ log.referred_username or log.referred_user_id }}
+                    </td>
+                    <td>
+                        <span class="badge badge-info">
+                            {{ log.event_type }}
+                        </span>
+                    </td>
+                    <td>{{ log.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function () {
+        $('#referralLogsTable').DataTable({
+            order: [[4, "desc"]],
+            pageLength: 25,
+            language: {
+                search: "Cari:",
+                zeroRecords: "Tidak ada log referral"
+            }
+        });
+    });
+</script>
+{% endblock %}
