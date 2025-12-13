@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -6,7 +8,6 @@ from app.admins.routes import router as admins_router
 from app.base.routes import get_dashboard_stats
 from app.files.routes import router as files_router
 from app.shows.routes import router as shows_router
-from app.source.routes import router as source_router
 
 # Template Engine
 from app.templates import templates
@@ -29,10 +30,9 @@ app.include_router(vip_user_router)
 app.include_router(vip_logs_router)
 app.include_router(vip_pakages_router)
 app.include_router(vip_voucheres_router)
-app.include_router(source_router)
 
-# Static files (CSS, JS, Images, etc.)
-app.mount("/static", StaticFiles(directory="static"), name="static")
+BASE_DIR = Path(__file__).resolve().parent.parent  # project_root
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 
 # ========================

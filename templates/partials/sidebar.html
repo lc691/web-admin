@@ -124,13 +124,11 @@
         </div>
     </li>
 
-
-
     <!-- Sidebar Heading -->
     <div class="sidebar-heading">Management Files</div>
 
-    <!-- Files Menu -->
     <li class="nav-item">
+        <!-- Files -->
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFilesMenu"
             aria-expanded="false" aria-controls="collapseFilesMenu">
             <i class="fas fa-folder-open fa-fw"></i>
@@ -153,24 +151,24 @@
             <i class="fas fa-folder-open fa-fw"></i>
             <span>Manajemen Source</span>
         </a>
-        <div id="collapseSourceMenu" class="collapse {% if request.url.path.startswith('/source') %}show{% endif %}"
+        <div id="collapseSourceMenu"
+            class="collapse {% if request.url.path.startswith('/source/source') %}show{% endif %}"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header"><i class="fas fa-database mr-1 text-info"></i> Menu Source</h6>
-                <a class="collapse-item" href="/source"><i class="fas fa-file-alt text-primary mr-2"></i> Daftar
-                    Source</a>
                 {% if sources_sidebar %}
                 {% for src in sources_sidebar %}
-                <a class="collapse-item" href="/source/{{ src.id }}">
-                    <i class="fas fa-play-circle text-success mr-2"></i> {{ src.name }}
+                <a class="collapse-item" href="/shows/source/{{ src }}">
+                    <i class="fas fa-play-circle text-success mr-2"></i> {{ src }}
                 </a>
                 {% endfor %}
+                {% else %}
+                <span class="text-muted small">Belum ada source</span>
                 {% endif %}
+
             </div>
         </div>
     </li>
-
-
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

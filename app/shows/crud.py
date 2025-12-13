@@ -1,21 +1,25 @@
-from db.connect import get_dict_cursor, get_db_cursor
+from db.connect import get_db_cursor, get_dict_cursor
+
 
 # CREATE
 def create_show(data):
     with get_db_cursor() as (cur, conn):
-        cur.execute("""
+        cur.execute(
+            """
             INSERT INTO shows (title, sinopsis, genre, source, hashtags, thumbnail_url, source, is_adult)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """, (
-            data.get("title"),
-            data.get("sinopsis"),
-            data.get("genre"),
-            data.get("source"),
-            data.get("hashtags"),
-            data.get("thumbnail_url"),
-            data.get("source"),
-            data.get("is_adult", False)
-        ))
+        """,
+            (
+                data.get("title"),
+                data.get("sinopsis"),
+                data.get("genre"),
+                data.get("source"),
+                data.get("hashtags"),
+                data.get("thumbnail_url"),
+                data.get("source"),
+                data.get("is_adult", False),
+            ),
+        )
         conn.commit()
 
 
@@ -52,7 +56,8 @@ def get_show_by_id(show_id):
 def update_show(show_id, data):
     with get_db_cursor() as (cur, conn):
         is_adult = bool(data.get("is_adult", False))
-        cur.execute("""
+        cur.execute(
+            """
             UPDATE shows SET
                 title = %s,
                 sinopsis = %s,
@@ -62,16 +67,18 @@ def update_show(show_id, data):
                 source = %s,
                 is_adult = %s
             WHERE id = %s
-        """, (
-            data.get("title"),
-            data.get("sinopsis"),
-            data.get("genre"),
-            data.get("hashtags"),
-            data.get("thumbnail_url"),
-            data.get("source"),
-            is_adult,
-            show_id
-        ))
+        """,
+            (
+                data.get("title"),
+                data.get("sinopsis"),
+                data.get("genre"),
+                data.get("hashtags"),
+                data.get("thumbnail_url"),
+                data.get("source"),
+                is_adult,
+                show_id,
+            ),
+        )
         conn.commit()
 
 

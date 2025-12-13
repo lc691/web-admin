@@ -1,110 +1,137 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1 class="h3 mb-2 text-gray-800">{{ title }}</h1>
+<h1 class="h3 mb-3 text-gray-800">{{ title }}</h1>
 
-<!-- Table -->
 <div class="card shadow mb-4">
-  <div class="card-body table-responsive">
-      <table id="userTable" class="table table-bordered" width="100%" cellspacing="0">
-      <thead>
-        <tr>
-          {% if users %}
-            {% for col in users[0].keys() %}
-              <th>{{ col }}</th>
-            {% endfor %}
-            <th>Aksi</th>
-          {% else %}
-            <th colspan="100%">Tidak ada data</th>
-          {% endif %}
-        </tr>
-      </thead>
-      <tbody>
-        {% for user in users %}
-          <tr>
-            {% for val in user.values() %}
-              <td>{{ val }}</td>
-            {% endfor %}
-            <td>
-              <a href="/users/{{ user['id'] }}/edit" class="btn btn-warning btn-circle btn-sm" title="Edit">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-              <button type="button" class="btn btn-danger btn-circle btn-sm"
-                      data-toggle="modal"
-                      data-target="#deleteModal"
-                      data-userid="{{ user['id'] }}"
-                      title="Hapus">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    <div class="card-body table-responsive">
+
+        <table id="userTable" class="table table-bordered table-hover" width="100%">
+            <thead class="thead-light">
+                <tr>
+                    <th>ID</th>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Nama</th>
+                    <th>VIP</th>
+                    <th>VIP Expired</th>
+                    <th>Status</th>
+                    <th>Dibuat</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ u.id }}</td>
+                    <td>{{ u.user_id }}</td>
+                    <td>{{ u.username or "-" }}</td>
+                    <td>{{ u.first_name or "-" }}</td>
+
+                    <!-- VIP -->
+                    <td class="text-center">
+                        {% if u.is_vip %}
+                        <span class="badge badge-success">VIP</span>
+                        {% else %}
+                        <span class="badge badge-secondary">No</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- VIP expired -->
+                    <td>
+                        {{ u.vip_expired.strftime('%Y-%m-%d %H:%M') if u.vip_expired else '-' }}
+                    </td>
+
+                    <!-- Active -->
+                    <td class="text-center">
+                        {% if u.is_active %}
+                        <span class="badge badge-primary">Aktif</span>
+                        {% else %}
+                        <span class="badge badge-danger">Nonaktif</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Created -->
+                    <td>
+                        {{ u.created_at.strftime('%Y-%m-%d %H:%M') }}
+                    </td>
+
+                    <!-- Action -->
+                    <td class="text-center">
+                        <a href="/users/{{ u.id }}/edit" class="btn btn-warning btn-sm" data-toggle="tooltip"
+                            title="Edit">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
+                            data-userid="{{ u.id }}" title="Hapus">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
 </div>
 
-<!-- Modal Hapus -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <form method="post" action="" id="deleteForm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Tutup">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Anda yakin ingin menghapus pengguna ini?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-danger">Hapus</button>
-        </div>
-      </div>
-    </form>
-  </div>
+<!-- DELETE MODAL -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form method="post" id="deleteForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    Yakin ingin menghapus user ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
-
-<!-- Script untuk set action delete -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const deleteModal = document.getElementById('deleteModal');
-    deleteModal.addEventListener('show.bs.modal', function (event) {
-      const button = event.relatedTarget;
-      const userId = button.getAttribute('data-userid');
-      const form = document.getElementById('deleteForm');
-      form.action = `/users/${userId}/delete`;
-    });
-  });
-</script>
-
 {% endblock %}
 
 
 {% block scripts %}
 <script>
-  $(document).ready(function () {
-  $('#userTable').DataTable({
-    "language": {
-      "search": "Cari:",
-      "lengthMenu": "Tampilkan _MENU_ entri per halaman",
-      "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-      "paginate": {
-        "first": "Awal",
-        "last": "Akhir",
-        "next": "Berikutnya",
-        "previous": "Sebelumnya"
-      },
-      "zeroRecords": "Tidak ada data ditemukan"
-    },
-    "pageLength": 10,
-    "lengthMenu": [5, 10, 25, 50, 100],
-    "order": [[0, "desc"]]  // <<< ini men-set kolom pertama (ID) descending
-  });
+    document.addEventListener('DOMContentLoaded', function () {
 
-    // Aktifkan tooltip Bootstrap
-    $('[data-toggle="tooltip"]').tooltip()
-  });
+        $('#userTable').DataTable({
+            paging: true,
+            searching: true,
+            info: true,
+            pageLength: 10,
+            lengthMenu: [10, 25, 50],
+            order: [[0, 'desc']],
+            language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_",
+                info: "Menampilkan _START_–_END_ dari _TOTAL_",
+                zeroRecords: "Data tidak ditemukan",
+                paginate: {
+                    previous: "‹",
+                    next: "›"
+                }
+            }
+        });
+
+        // tooltip
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // delete modal
+        $('#deleteModal').on('show.bs.modal', function (e) {
+            const userId = $(e.relatedTarget).data('userid');
+            $('#deleteForm').attr('action', `/users/${userId}/delete`);
+        });
+
+    });
 </script>
 {% endblock %}
