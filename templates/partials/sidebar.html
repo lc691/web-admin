@@ -148,22 +148,25 @@
                     Referrals
                 </h6>
 
-                <a class="collapse-item {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
+                <a class="collapse-item
+               {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
                     🔗 Semua Referral
                 </a>
 
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/user') %}active{% endif %}"
-                    href="/referrals">
+                <a class="collapse-item
+   {% if request.url.path.startswith('/referrals/users')
+      or request.url.path.startswith('/referrals/user/') %}active{% endif %}" href="/referrals/users">
                     👤 Referral by User
                 </a>
 
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/referrer') %}active{% endif %}"
-                    href="/referrals">
+                <a class="collapse-item
+   {% if request.url.path.startswith('/referrals/referrers')
+      or request.url.path.startswith('/referrals/referrer/') %}active{% endif %}" href="/referrals/referrers">
                     🧑‍💼 Referral by Referrer
                 </a>
 
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}"
-                    href="/referrals/logs">
+                <a class="collapse-item
+               {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}" href="/referrals/logs">
                     📜 Referral Logs
                 </a>
 
@@ -175,19 +178,27 @@
                     Affiliate Activity
                 </h6>
 
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}"
+                <a class="collapse-item
+               {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}"
+                    href="/affiliate/leaderboard">
+                    🏆 Leaderboard
+                </a>
+
+                <a class="collapse-item
+               {% if request.url.path.startswith('/affiliate/payouts') %}active{% endif %}" href="/affiliate/payouts">
+                    📦 Payout Batch
+                </a>
+
+                <a class="collapse-item
+               {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}"
                     href="/affiliate/transactions">
                     💸 Transactions
                 </a>
 
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}"
+                <a class="collapse-item
+               {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}"
                     href="/affiliate/commission-logs">
                     🪙 Commission Logs
-                </a>
-
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/commissions') %}active{% endif %}"
-                    href="/referrals/commissions">
-                    💰 Referral Commissions
                 </a>
 
                 <hr class="dropdown-divider">
@@ -198,7 +209,8 @@
                     Finance
                 </h6>
 
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}"
+                <a class="collapse-item
+               {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}"
                     href="/affiliate/withdraw-requests">
                     💵 Withdraw Requests
                 </a>
@@ -211,17 +223,20 @@
                     Monitoring & Security
                 </h6>
 
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}"
+                <a class="collapse-item
+               {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}"
                     href="/affiliate/abuse-logs">
                     🚨 Abuse Logs
                 </a>
 
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}"
+                <a class="collapse-item
+               {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}"
                     href="/affiliate/admin-actions">
                     🛠️ Admin Actions
                 </a>
 
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}"
+                <a class="collapse-item
+               {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}"
                     href="/affiliate/admin-audit-logs">
                     🛡️ Admin Audit Logs
                 </a>
@@ -229,6 +244,7 @@
             </div>
         </div>
     </li>
+
 
 
     {# ================= FILE MANAGEMENT ================= #}

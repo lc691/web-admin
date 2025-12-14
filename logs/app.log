@@ -194,3 +194,140 @@ LINE 12:     LEFT JOIN admins a ON a.admin_id = aal.admin_id
 HINT:  Perhaps you meant to reference the column "aal.admin_id".
 
 [2025-12-14 11:35:44] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:29:18] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:29:21] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-14 22:30:46] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:30:49] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:32:33] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:32:51] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:32:53] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:33:05] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:33:35] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:33:45] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 21, in get_db_connection
+    yield conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 52, in get_dict_cursor
+    yield cursor, conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\app\affiliate\crud.py", line 23, in get_all_transactions
+    cursor.execute(
+  File "C:\Users\ANGGAR WULAN\web-admin-main\.venv\Lib\site-packages\psycopg2\extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column acl.tx_id does not exist
+LINE 4:                 acl.tx_id,
+                        ^
+
+[2025-12-14 22:33:48] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-14 22:33:55] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 21, in get_db_connection
+    yield conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 52, in get_dict_cursor
+    yield cursor, conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\app\affiliate\crud.py", line 23, in get_all_transactions
+    cursor.execute(
+  File "C:\Users\ANGGAR WULAN\web-admin-main\.venv\Lib\site-packages\psycopg2\extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column acl.tx_id does not exist
+LINE 4:                 acl.tx_id,
+                        ^
+
+[2025-12-14 22:36:13] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:36:19] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 21, in get_db_connection
+    yield conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 52, in get_dict_cursor
+    yield cursor, conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\app\affiliate\crud.py", line 23, in get_all_transactions
+    cursor.execute(
+  File "C:\Users\ANGGAR WULAN\web-admin-main\.venv\Lib\site-packages\psycopg2\extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column acl.status does not exist
+LINE 9:                 acl.status,
+                        ^
+
+[2025-12-14 22:38:24] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:44:20] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:44:26] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:49:39] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:49:58] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:51:36] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 22:51:52] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:05:33] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:06:53] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:07:21] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:07:29] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:09:49] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:09:56] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:10:10] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:10:13] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:14:20] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:14:26] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:14:35] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:14:39] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:14:47] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:14:51] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:16:19] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:17:39] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:17:56] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:18:31] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:18:43] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:18:46] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:18:49] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:19:12] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:19:28] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:19:43] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:19:45] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:24:25] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:25:56] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:27:28] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:27:37] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:27:41] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:27:52] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:29:30] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:30:51] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:30:56] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:33:16] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:33:27] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:33:33] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:33:54] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:34:10] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:34:14] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:37:46] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:38:01] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:38:04] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:38:08] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:38:14] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:38:22] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:38:25] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:38:32] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:38:35] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:42:29] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-14 23:42:30] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-14 23:48:42] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:48:43] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:48:55] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:49:00] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:49:21] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:49:46] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:55:51] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:56:15] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-14 23:56:23] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:00:11] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:00:14] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:00:28] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:00:30] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:01:09] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:01:11] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:02:26] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:05:09] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:05:21] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:05:23] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:13:24] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:13:29] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:15:35] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-15 00:15:42] [INFO] configs.logging_setup: Logger siap dipakai

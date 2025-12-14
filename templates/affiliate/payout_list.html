@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-4">💸 Affiliate Payout Batch</h3>
+
+<div class="card shadow">
+    <div class="card-body table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Periode</th>
+                    <th>Total Affiliate</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Dibuat</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in batches %}
+                <tr>
+                    <td>{{ b.id }}</td>
+                    <td>{{ b.period_start }} → {{ b.period_end }}</td>
+                    <td>{{ b.total_affiliate }}</td>
+                    <td class="fw-bold">
+                        Rp {{ "{:,.0f}".format(b.total_amount).replace(",", ".") }}
+                    </td>
+                    <td>
+                        {% if b.status == 'paid' %}
+                        <span class="badge bg-success">PAID</span>
+                        {% elif b.status == 'processing' %}
+                        <span class="badge bg-warning text-dark">PROCESSING</span>
+                        {% else %}
+                        <span class="badge bg-secondary">DRAFT</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ b.created_at.strftime("%d-%m %H:%M") }}</td>
+                    <td>
+                        <a href="/affiliate/payouts/{{ b.id }}" class="btn btn-sm btn-primary">
+                            Detail
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

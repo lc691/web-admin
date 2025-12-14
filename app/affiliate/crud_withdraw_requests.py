@@ -1,121 +1,182 @@
+# app/affiliate/crud_withdraw_requests.py
+
+from typing import List, Optional
+
 from db.connect import get_dict_cursor
 
 
-# =========================
-# 📋 Semua Withdraw Requests
-# =========================
-def get_all_withdraw_requests():
-    with get_dict_cursor() as (cur, _):
-        cur.execute(
+# =====================================================
+# GET PENDING WITHDRAW (ADMIN DASHBOARD)
+# =====================================================
+def get_pending_withdraws(limit: int = 50, offset: int = 0) -> List[dict]:
+    with get_dict_cursor() as (cursor, _):
+        cursor.execute(
             """
-            SELECT
-                awr.id,
-                awr.user_id,
-                u.username,
-                awr.amount,
-                awr.status,
-                awr.note,
-                awr.created_at,
-                awr.updated_at
-            FROM affiliate_withdraw_requests awr
-            JOIN users u ON u.user_id = awr.user_id
-            ORDER BY awr.created_at DESC
-        """
+            SELECT *
+            FROM affiliate_withdraw_requests
+            WHERE status = 'pending'
+            ORDER BY created_at ASC
+            LIMIT %s OFFSET %I
+        """,
+            (limit, offset),
         )
-        return cur.fetchall()
+        return cursor.fetchall()
 
 
-# =========================
-# ⏳ Withdraw Pending
-# =========================
-def get_pending_withdraw_requests():
-    with get_dict_cursor() as (cur, _):
-        cur.execute(
+# =====================================================
+# GET WITHDRAW BY ID
+# =====================================================
+def get_withdraw_by_id(wd_id: int) -> Optional[dict]:
+    with get_dict_cursor() as (cursor, _):
+        cursor.execute(
             """
-            SELECT
-                awr.id,
-                awr.user_id,
-                u.username,
-                awr.amount,
-                awr.note,
-                awr.created_at
-            FROM affiliate_withdraw_requests awr
-            JOIN users u ON u.user_id = awr.user_id
-            WHERE awr.status = 'pending'
-            ORDER BY awr.created_at ASC
-        """
+            SELECT *
+            FROM affiliate_withdraw_requests
+            WHERE id = %s
+            LIMIT 1
+        """,
+            (wd_id,),
         )
-        return cur.fetchall()
+        return cursor.fetchone()
 
 
-# =========================
-# 👤 Withdraw by User
-# =========================
-def get_withdraw_requests_by_user(user_id: int):
-    with get_dict_cursor() as (cur, _):
-        cur.execute(
+# =====================================================
+# GET WITHDRAW HISTORY PER USER
+# =====================================================
+def get_withdraw_history(user_id: int, limit: int = 20, offset: int = 0) -> List[dict]:
+    with get_dict_cursor() as (cursor, _):
+        cursor.execute(
             """
-            SELECT
-                id,
-                amount,
-                status,
-                note,
-                created_at,
-                updated_at
+            SELECT *
             FROM affiliate_withdraw_requests
             WHERE user_id = %s
             ORDER BY created_at DESC
+            LIMIT %s OFFSET %s
         """,
-            (user_id,),
+            (user_id, limit, offset),
         )
-        return cur.fetchall()
+        return cursor.fetchall()
 
 
-# =========================
-# ➕ Create Withdraw Request
-# =========================
-def create_withdraw_request(user_id: int, amount: int, note: str | None = None):
-    with get_dict_cursor() as (cur, conn):
-        cur.execute(
+# =====================================================
+# GET WITHDRAW BY STATUS (GLOBAL)
+# =====================================================
+def get_withdraws_by_status(status: str, limit: int = 50, offset: int = 0) -> List[dict]:
+    with get_dict_cursor() as (cursor, _):
+        cursor.execute(
             """
-            INSERT INTO affiliate_withdraw_requests (
-                user_id,
-                amount,
-                note
-            ) VALUES (%s, %s, %s)
-            RETURNING id
+            SELECT *
+            FROM affiliate_withdraw_requests
+            WHERE status = %s
+            ORDER BY created_at DESC
+            LIMIT %s OFFSET %s
         """,
-            (user_id, amount, note),
+            (status, limit, offset),
         )
-
-        wd_id = cur.fetchone()["id"]
-        conn.commit()
-        return wd_id
+        return cursor.fetchall()
 
 
-# =========================
-# ✅ Update Withdraw Status
-# =========================
-def update_withdraw_status(
-    withdraw_id: int,
-    status: str,
-    note: str | None = None,
-):
-    with get_dict_cursor() as (cur, conn):
-        cur.execute(
+# =====================================================
+# COUNT WITHDRAW (UNTUK PAGINATION)
+# =====================================================
+def count_withdraws(status: Optional[str] = None) -> int:
+    with get_dict_cursor() as (cursor, _):
+        if status:
+            cursor.execute(
+                """
+                SELECT COUNT(*)
+                FROM affiliate_withdraw_requests
+                WHERE status = %s
+            """,
+                (status,),
+            )
+        else:
+            cursor.execute("SELECT COUNT(*) FROM affiliate_withdraw_requests")
+
+        return cursor.fetchone()["count"]
+
+
+from psycopg2 import sql
+
+from db.connect import get_db_cursor, get_dict_cursor
+
+
+def approve_withdraw(wd_id: int, admin_id: int):
+    with get_db_cursor(commit=True) as (cursor, _):
+
+        # lock row
+        cursor.execute(
+            """
+            SELECT user_id, amount, status
+            FROM affiliate_withdraw_requests
+            WHERE id = %s
+            FOR UPDATE
+        """,
+            (wd_id,),
+        )
+        wd = cursor.fetchone()
+
+        if not wd:
+            raise ValueError("Withdraw tidak ditemukan")
+
+        user_id, amount, status = wd
+
+        if status != "pending":
+            raise ValueError("Withdraw sudah diproses")
+
+        # update withdraw status
+        cursor.execute(
             """
             UPDATE affiliate_withdraw_requests
-            SET
-                status = %s,
-                note = %s
+            SET status = 'approved',
+                approved_by = %s,
+                approved_at = NOW()
             WHERE id = %s
-            RETURNING id
         """,
-            (status, note, withdraw_id),
+            (admin_id, wd_id),
         )
 
-        updated = cur.fetchone()
-        conn.commit()
-        return bool(updated)
+        # potong saldo affiliate user
+        cursor.execute(
+            """
+            UPDATE users
+            SET affiliate_balance = affiliate_balance - %s
+            WHERE user_id = %s
+        """,
+            (amount, user_id),
+        )
+
+        return user_id, amount
 
 
+def reject_withdraw(wd_id: int, admin_id: int, reason: str):
+    with get_db_cursor(commit=True) as (cursor, _):
+
+        cursor.execute(
+            """
+            SELECT status
+            FROM affiliate_withdraw_requests
+            WHERE id = %s
+            FOR UPDATE
+        """,
+            (wd_id,),
+        )
+        wd = cursor.fetchone()
+
+        if not wd:
+            raise ValueError("Withdraw tidak ditemukan")
+
+        if wd[0] != "pending":
+            raise ValueError("Withdraw sudah diproses")
+
+        cursor.execute(
+            """
+            UPDATE affiliate_withdraw_requests
+            SET status = 'rejected',
+                rejected_by = %s,
+                rejected_at = NOW(),
+                reject_reason = %s
+            WHERE id = %s
+        """,
+            (admin_id, reason, wd_id),
+        )

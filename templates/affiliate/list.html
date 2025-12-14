@@ -1,125 +1,121 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="container-fluid">
 
-    <!-- ================= PAGE HEADER ================= -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">
-            {{ title or "Affiliate Transactions" }}
-        </h1>
+<div class="card shadow mb-4">
+
+    <!-- ========================= -->
+    <!-- TITLE -->
+    <!-- ========================= -->
+    <div class="card-header py-3">
+        <h5 class="m-0 font-weight-bold text-primary">{{ title }}</h5>
     </div>
 
-    <!-- ================= CARD ================= -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-primary">
-                💸 Daftar Transaksi Affiliate
-            </h6>
+    <div class="card-body">
+
+        {% if referrer_user_id %}
+        <div class="alert alert-info">
+            Referrer ID: <b>{{ referrer_user_id }}</b>
+        </div>
+        {% endif %}
+
+        {% if referred_user_id %}
+        <div class="alert alert-info">
+            Referred User ID: <b>{{ referred_user_id }}</b>
+        </div>
+        {% endif %}
+
+        {% if vip_package_name %}
+        <div class="alert alert-info">
+            Paket VIP: <b>{{ vip_package_name }}</b>
+        </div>
+        {% endif %}
+
+        <!-- ========================= -->
+        <!-- TABLE -->
+        <!-- ========================= -->
+        <div class="table-responsive">
+            <table id="affiliateTable" class="table table-bordered table-hover" width="100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Waktu</th>
+                        <th>Referrer</th>
+                        <th>User</th>
+                        <th>Paket</th>
+                        <th>Harga</th>
+                        <th>Komisi</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for tx in transactions %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+
+                        <td>
+                            {{ tx.created_at.strftime("%d-%m-%Y %H:%M") }}
+                        </td>
+
+                        <td>
+                            <a href="/affiliate/transactions/referrer/{{ tx.referrer_user_id }}">
+                                {{ tx.referrer_user_id }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="/affiliate/transactions/referred/{{ tx.referred_user_id }}">
+                                {{ tx.referred_user_id }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="/affiliate/transactions/package/{{ tx.paket }}">
+                                {{ tx.paket }}
+                            </a>
+                        </td>
+
+                        <td>
+                            Rp {{ "{:,.0f}".format(tx.price).replace(",", ".") }}
+                        </td>
+
+                        <td class="fw-bold text-success">
+                            Rp {{ "{:,.0f}".format(tx.commission).replace(",", ".") }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
         </div>
 
-        <div class="card-body">
-
-            {% if transactions %}
-            <div class="table-responsive">
-                <table id="transactionsTable" class="table table-bordered" width="100%" cellspacing="0">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Referrer</th>
-                            <th>Referred User</th>
-                            <th>Paket VIP</th>
-                            <th>Harga VIP</th>
-                            <th>Komisi</th>
-                            <th>Tanggal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for t in transactions %}
-                        <tr>
-                            <td>{{ loop.index }}</td>
-
-                            <td>
-                                <span class="font-weight-bold">
-                                    {{ t.referrer_username or t.referrer_user_id }}
-                                </span><br>
-                                <small class="text-muted">
-                                    ID: {{ t.referrer_user_id }}
-                                </small>
-                            </td>
-
-                            <td>
-                                <span class="font-weight-bold">
-                                    {{ t.referred_username or t.referred_user_id }}
-                                </span><br>
-                                <small class="text-muted">
-                                    ID: {{ t.referred_user_id }}
-                                </small>
-                            </td>
-
-                            <td>
-                                <span class="badge badge-info">
-                                    {{ t.vip_package_name }}
-                                </span>
-                            </td>
-
-                            <td>
-                                Rp {{ "{:,}".format(t.vip_price) }}
-                            </td>
-
-                            <td>
-                                <span class="badge badge-success">
-                                    Rp {{ "{:,}".format(t.commission_amount) }}
-                                </span>
-                            </td>
-
-                            <td>
-                                {{ t.created_at.strftime("%d %b %Y %H:%M") if t.created_at else "-" }}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            {% else %}
-            <!-- EMPTY STATE -->
-            <div class="text-center py-5">
-                <i class="fas fa-info-circle fa-2x text-muted mb-3"></i>
-                <p class="text-muted mb-0">
-                    Tidak ada transaksi affiliate ditemukan.
-                </p>
-            </div>
-            {% endif %}
-
-        </div>
     </div>
-
 </div>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
-    $(document).ready(function () {
-        $('#transactionsTable').DataTable({
-            "language": {
-                "search": "Cari:",
-                "lengthMenu": "Tampilkan _MENU_ entri per halaman",
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-                "paginate": {
-                    "first": "Awal",
-                    "last": "Akhir",
-                    "next": "Berikutnya",
-                    "previous": "Sebelumnya"
-                },
-                "zeroRecords": "Tidak ada data ditemukan"
-            },
-            "pageLength": 10,
-            "lengthMenu": [5, 10, 25, 50, 100],
-            "order": [[0, "desc"]]
+    document.addEventListener('DOMContentLoaded', function () {
+
+        $('#affiliateTable').DataTable({
+            paging: true,
+            searching: true,
+            info: true,
+            pageLength: 10,
+            lengthMenu: [10, 25, 50],
+            order: [[1, 'desc']],
+            language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_",
+                info: "Menampilkan _START_–_END_ dari _TOTAL_",
+                zeroRecords: "Data tidak ditemukan",
+                paginate: {
+                    previous: "‹",
+                    next: "›"
+                }
+            }
         });
 
-        $('[data-toggle="tooltip"]').tooltip()
     });
 </script>
 {% endblock %}

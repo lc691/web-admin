@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Form, HTTPException, Query, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.affiliate import (
     crud,
@@ -17,81 +17,137 @@ router = APIRouter(
 )
 
 
-# =========================
-# 📋 Semua Transaksi Affiliate
-# =========================
-@router.get("/transactions", response_class=HTMLResponse)
-def list_affiliate_transactions(request: Request):
-    transactions = crud.get_all_transactions()
+# ============================================================
+# HELPER: Render List Template
+# ============================================================
+def render_affiliate_list(request: Request, transactions: list, title: str, **context):
+    if not transactions:
+        raise HTTPException(status_code=404, detail="Data transaksi tidak ditemukan")
+
     return templates.TemplateResponse(
         "affiliate/list.html",
         {
             "request": request,
             "transactions": transactions,
+            "title": title,
+            **context,
+        },
+    )
+
+
+# ============================================================
+# 📋 Semua Transaksi Affiliate
+# ============================================================
+@router.get("/transactions", response_class=HTMLResponse)
+def list_affiliate_transactions(
+    request: Request,
+    page: int = 1,
+    limit: int = 20,
+):
+    data = crud.get_all_transactions(page, limit)
+    return templates.TemplateResponse(
+        "affiliate/list.html",
+        {
+            "request": request,
+            "transactions": data["items"],
+            "page": data["page"],
+            "limit": data["limit"],
+            "total": data["total"],
             "title": "Affiliate Transactions",
         },
     )
 
 
-# =========================
+# ============================================================
 # 👤 Transaksi oleh Referrer
-# =========================
-@router.get("/transactions/referrer/{user_id}", response_class=HTMLResponse)
-def transactions_by_referrer(user_id: int, request: Request):
-    transactions = crud.get_transactions_by_referrer(user_id)
+# ============================================================
+@router.get("/transactions/referrer/{referrer_user_id}", response_class=HTMLResponse)
+def transactions_by_referrer(
+    referrer_user_id: int,
+    request: Request,
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+):
+    transactions = crud.get_transactions_by_referrer(
+        referrer_user_id,
+        limit=limit,
+        offset=offset,
+    )
 
-    if not transactions:
-        raise HTTPException(404, "Tidak ada transaksi untuk referrer ini")
-
-    return templates.TemplateResponse(
-        "affiliate/list.html",
-        {
-            "request": request,
-            "transactions": transactions,
-            "referrer_user_id": user_id,
-            "title": f"Transaksi Affiliate - Referrer {user_id}",
-        },
+    return render_affiliate_list(
+        request=request,
+        transactions=transactions,
+        title=f"Transaksi Affiliate — Referrer {referrer_user_id}",
+        referrer_user_id=referrer_user_id,
     )
 
 
-# =========================
+# ============================================================
 # 👥 Transaksi oleh Referred User
-# =========================
-@router.get("/transactions/referred/{user_id}", response_class=HTMLResponse)
-def transactions_by_referred_user(user_id: int, request: Request):
-    transactions = crud.get_transactions_by_referred_user(user_id)
+# ============================================================
+@router.get("/transactions/referred/{referred_user_id}", response_class=HTMLResponse)
+def transactions_by_referred_user(
+    referred_user_id: int,
+    request: Request,
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+):
+    transactions = crud.get_transactions_by_referred_user(
+        referred_user_id,
+        limit=limit,
+        offset=offset,
+    )
 
-    if not transactions:
-        raise HTTPException(404, "Tidak ada transaksi untuk user ini")
-
-    return templates.TemplateResponse(
-        "affiliate/list.html",
-        {
-            "request": request,
-            "transactions": transactions,
-            "referred_user_id": user_id,
-            "title": f"Transaksi Affiliate - User {user_id}",
-        },
+    return render_affiliate_list(
+        request=request,
+        transactions=transactions,
+        title=f"Transaksi Affiliate — User {referred_user_id}",
+        referred_user_id=referred_user_id,
     )
 
 
-# =========================
+# ============================================================
 # 💎 Transaksi berdasarkan Paket VIP
-# =========================
+# ============================================================
 @router.get("/transactions/package/{package_name}", response_class=HTMLResponse)
-def transactions_by_package(package_name: str, request: Request):
-    transactions = crud.get_transactions_by_package(package_name)
+def transactions_by_package(
+    package_name: str,
+    request: Request,
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+):
+    transactions = crud.get_transactions_by_package(
+        package_name=package_name,
+        limit=limit,
+        offset=offset,
+    )
 
-    if not transactions:
-        raise HTTPException(404, "Tidak ada transaksi untuk paket ini")
+    return render_affiliate_list(
+        request=request,
+        transactions=transactions,
+        title=f"Transaksi Affiliate — Paket {package_name}",
+        vip_package_name=package_name,
+    )
+
+
+from app.affiliate import crud_leaderboard
+
+
+# =========================
+# 🏆 Affiliate Leaderboard
+# =========================
+@router.get("/leaderboard", response_class=HTMLResponse)
+def affiliate_leaderboard(request: Request):
+
+    leaderboard = crud_leaderboard.get_affiliate_leaderboard(limit=20)
 
     return templates.TemplateResponse(
-        "affiliate/list.html",
+        "affiliate/leaderboard.html",
         {
             "request": request,
-            "transactions": transactions,
-            "vip_package_name": package_name,
-            "title": f"Transaksi Affiliate - Paket {package_name}",
+            "leaderboard": leaderboard,
+            "title": "Affiliate Leaderboard",
+            "active_menu": "affiliate_leaderboard",
         },
     )
 
@@ -282,8 +338,13 @@ def admin_actions_by_target(
 # 📋 Semua Withdraw
 # =========================
 @router.get("/withdraw-requests", response_class=HTMLResponse)
-def list_withdraw_requests(request: Request):
-    requests_ = crud_withdraw_requests.get_all_withdraw_requests()
+def list_withdraw_requests(request: Request, status: str | None = None):
+    requests_ = (
+        crud_withdraw_requests.get_withdraws_by_status(status)
+        if status
+        else crud_withdraw_requests.get_withdraws_by_status("pending")
+    )
+
     return templates.TemplateResponse(
         "affiliate/withdraw_requests.html",
         {
@@ -299,7 +360,8 @@ def list_withdraw_requests(request: Request):
 # =========================
 @router.get("/withdraw-requests/pending", response_class=HTMLResponse)
 def pending_withdraw_requests(request: Request):
-    requests_ = crud_withdraw_requests.get_pending_withdraw_requests()
+    requests_ = crud_withdraw_requests.get_withdraws_by_status("pending")
+
     return templates.TemplateResponse(
         "affiliate/withdraw_requests.html",
         {
@@ -315,10 +377,10 @@ def pending_withdraw_requests(request: Request):
 # =========================
 @router.get("/withdraw-requests/user/{user_id}", response_class=HTMLResponse)
 def withdraw_requests_by_user(user_id: int, request: Request):
-    requests_ = crud_withdraw_requests.get_withdraw_requests_by_user(user_id)
+    requests_ = crud_withdraw_requests.get_withdraw_history(user_id)
 
     if not requests_:
-        raise HTTPException(404, "Withdraw request tidak ditemukan")
+        raise HTTPException(status_code=404, detail="Withdraw request tidak ditemukan")
 
     return templates.TemplateResponse(
         "affiliate/withdraw_requests.html",
@@ -329,6 +391,61 @@ def withdraw_requests_by_user(user_id: int, request: Request):
             "title": f"Withdraw Requests - User {user_id}",
         },
     )
+
+
+# =========================
+# ✅ APPROVE WITHDRAW
+# =========================
+@router.post("/withdraw/{wd_id}/approve")
+def approve_withdraw(
+    wd_id: int,
+    request: Request,
+):
+    admin_id = request.state.admin.id  # asumsi middleware admin
+
+    try:
+        user_id, amount = crud_withdraw_requests.approve_withdraw(wd_id, admin_id)
+
+        crud_admin_audit_logs.log_admin_action(
+            admin_id=admin_id,
+            action="approve_withdraw",
+            target_type="affiliate_withdraw",
+            target_id=wd_id,
+            notes=f"user_id={user_id}, amount={amount}",
+        )
+
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+    return RedirectResponse("/affiliate/withdraw-requests/pending", status_code=303)
+
+
+# =========================
+# ❌ REJECT WITHDRAW
+# =========================
+@router.post("/withdraw/{wd_id}/reject")
+def reject_withdraw(
+    wd_id: int,
+    reason: str = Form(...),
+    request: Request = None,
+):
+    admin_id = request.state.admin.id
+
+    try:
+        crud_withdraw_requests.reject_withdraw(wd_id, admin_id, reason)
+
+        crud_admin_audit_logs.log_admin_action(
+            admin_id=admin_id,
+            action="reject_withdraw",
+            target_type="affiliate_withdraw",
+            target_id=wd_id,
+            notes=reason,
+        )
+
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+    return RedirectResponse("/affiliate/withdraw-requests/pending", status_code=303)
 
 
 # =========================

@@ -1,148 +1,82 @@
 from db.connect import get_dict_cursor
 
+DEFAULT_LIMIT = 20
+MAX_LIMIT = 100
 
-# =========================
-# 📋 Semua Transaksi Affiliate
-# =========================
-def get_all_transactions():
-    with get_dict_cursor() as (cur, _):
-        cur.execute("""
+
+def _paginate(page: int, limit: int):
+    page = max(page, 1)
+    limit = min(max(limit, 1), MAX_LIMIT)
+    return limit, (page - 1) * limit
+
+
+def get_all_transactions(page=1, limit=DEFAULT_LIMIT):
+    limit, offset = _paginate(page, limit)
+
+    with get_dict_cursor() as (cursor, _):
+        cursor.execute(
+            """
             SELECT
-                at.id,
-                at.referrer_user_id,
-                u1.username AS referrer_username,
-
-                at.referred_user_id,
-                u2.username AS referred_username,
-
-                at.vip_package_name,
-                at.vip_price,
-                at.commission_amount,
-                at.created_at
-            FROM affiliate_transactions at
-            JOIN users u1 ON u1.user_id = at.referrer_user_id
-            JOIN users u2 ON u2.user_id = at.referred_user_id
-            ORDER BY at.created_at DESC
-        """)
-        return cur.fetchall()
-
-
-# =========================
-# 👤 Transaksi by Referrer
-# =========================
-def get_transactions_by_referrer(referrer_user_id: int):
-    with get_dict_cursor() as (cur, _):
-        cur.execute("""
-            SELECT
-                at.id,
-                at.referred_user_id,
-                u.username AS referred_username,
-
-                at.vip_package_name,
-                at.vip_price,
-                at.commission_amount,
-                at.created_at
-            FROM affiliate_transactions at
-            JOIN users u ON u.user_id = at.referred_user_id
-            WHERE at.referrer_user_id = %s
-            ORDER BY at.created_at DESC
-        """, (referrer_user_id,))
-        return cur.fetchall()
-
-
-# =========================
-# 👥 Transaksi by Referred User
-# =========================
-def get_transactions_by_referred_user(referred_user_id: int):
-    with get_dict_cursor() as (cur, _):
-        cur.execute("""
-            SELECT
-                at.id,
-                at.referrer_user_id,
-                u.username AS referrer_username,
-
-                at.vip_package_name,
-                at.vip_price,
-                at.commission_amount,
-                at.created_at
-            FROM affiliate_transactions at
-            JOIN users u ON u.user_id = at.referrer_user_id
-            WHERE at.referred_user_id = %s
-            ORDER BY at.created_at DESC
-        """, (referred_user_id,))
-        return cur.fetchall()
-
-
-# =========================
-# 💎 Transaksi by VIP Package
-# =========================
-def get_transactions_by_package(vip_package_name: str):
-    with get_dict_cursor() as (cur, _):
-        cur.execute("""
-            SELECT
-                at.id,
-                at.referrer_user_id,
-                u1.username AS referrer_username,
-
-                at.referred_user_id,
-                u2.username AS referred_username,
-
-                at.vip_price,
-                at.commission_amount,
-                at.created_at
-            FROM affiliate_transactions at
-            JOIN users u1 ON u1.user_id = at.referrer_user_id
-            JOIN users u2 ON u2.user_id = at.referred_user_id
-            WHERE at.vip_package_name = %s
-            ORDER BY at.created_at DESC
-        """, (vip_package_name,))
-        return cur.fetchall()
-
-
-# =========================
-# ➕ Create Transaction
-# =========================
-def create_affiliate_transaction(
-    referrer_user_id: int,
-    referred_user_id: int,
-    vip_package_name: str,
-    vip_price: int,
-    commission_amount: int,
-):
-    with get_dict_cursor() as (cur, conn):
-        cur.execute("""
-            INSERT INTO affiliate_transactions (
+                id,
                 referrer_user_id,
                 referred_user_id,
-                vip_package_name,
-                vip_price,
-                commission_amount
-            ) VALUES (%s, %s, %s, %s, %s)
-            RETURNING id
-        """, (
-            referrer_user_id,
-            referred_user_id,
-            vip_package_name,
-            vip_price,
-            commission_amount
-        ))
+                paket,
+                price,
+                commission,
+                created_at,
+                notes
+            FROM affiliate_commission_logs
+            ORDER BY created_at DESC
+            LIMIT %s OFFSET %s
+        """,
+            (limit, offset),
+        )
 
-        transaction_id = cur.fetchone()["id"]
-        conn.commit()
-        return transaction_id
+        items = cursor.fetchall()
+
+        cursor.execute("SELECT COUNT(*) FROM affiliate_commission_logs")
+        total = cursor.fetchone()["count"]
+
+    return {"items": items, "page": page, "limit": limit, "total": total}
 
 
-# =========================
-# ❌ Delete Transaction
-# =========================
-def delete_transaction(transaction_id: int):
-    with get_dict_cursor() as (cur, conn):
-        cur.execute("""
-            DELETE FROM affiliate_transactions
-            WHERE id = %s
-            RETURNING id
-        """, (transaction_id,))
+def get_transactions_by_referrer(user_id: int):
+    with get_dict_cursor() as (cursor, _):
+        cursor.execute(
+            """
+            SELECT *
+            FROM affiliate_commission_logs
+            WHERE referrer_user_id = %s
+            ORDER BY created_at DESC
+        """,
+            (user_id,),
+        )
+        return cursor.fetchall()
 
-        deleted = cur.fetchone()
-        conn.commit()
-        return bool(deleted)
+
+def get_transactions_by_referred_user(user_id: int):
+    with get_dict_cursor() as (cursor, _):
+        cursor.execute(
+            """
+            SELECT *
+            FROM affiliate_commission_logs
+            WHERE referred_user_id = %s
+            ORDER BY created_at DESC
+        """,
+            (user_id,),
+        )
+        return cursor.fetchall()
+
+
+def get_transactions_by_package(paket: str):
+    with get_dict_cursor() as (cursor, _):
+        cursor.execute(
+            """
+            SELECT *
+            FROM affiliate_commission_logs
+            WHERE paket = %s
+            ORDER BY created_at DESC
+        """,
+            (paket,),
+        )
+        return cursor.fetchall()

@@ -5,6 +5,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.admins.routes import router as admins_router
+from app.affiliate.router_payout import router as affiliate_router_payout
 from app.affiliate.routes import router as affiliate_router
 from app.base.routes import get_dashboard_stats
 from app.files.routes import router as files_router
@@ -34,6 +35,7 @@ app.include_router(vip_pakages_router)
 app.include_router(vip_voucheres_router)
 app.include_router(referral_router)
 app.include_router(affiliate_router)
+app.include_router(affiliate_router_payout)
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # project_root
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
