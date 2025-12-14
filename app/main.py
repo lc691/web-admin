@@ -5,8 +5,10 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.admins.routes import router as admins_router
+from app.affiliate.routes import router as affiliate_router
 from app.base.routes import get_dashboard_stats
 from app.files.routes import router as files_router
+from app.referrals.routes import router as referral_router
 from app.shows.routes import router as shows_router
 
 # Template Engine
@@ -18,7 +20,6 @@ from app.vip_logs.routes import router as vip_logs_router
 from app.vip_packages.routes import router as vip_pakages_router
 from app.vip_users.routes import router as vip_user_router
 from app.vip_vouchers.routes import router as vip_voucheres_router
-from app.referrals.routes import router as referral_router
 
 app = FastAPI()
 
@@ -32,6 +33,7 @@ app.include_router(vip_logs_router)
 app.include_router(vip_pakages_router)
 app.include_router(vip_voucheres_router)
 app.include_router(referral_router)
+app.include_router(affiliate_router)
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # project_root
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <h1 class="h3 mb-4 text-gray-800">
+        {{ title or "Affiliate Withdraw Requests" }}
+    </h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-warning">
+                💸 Affiliate Withdraw Requests
+            </h6>
+        </div>
+
+        <div class="card-body">
+
+            {% if requests %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>User</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Note</th>
+                            <th>Created</th>
+                            <th>Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in requests %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+
+                            <td>
+                                <strong>{{ r.username or r.user_id }}</strong><br>
+                                <small>ID: {{ r.user_id }}</small>
+                            </td>
+
+                            <td>
+                                <span class="badge badge-success">
+                                    Rp {{ "{:,}".format(r.amount) }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {% if r.status == 'pending' %}
+                                <span class="badge badge-warning">Pending</span>
+                                {% elif r.status == 'approved' %}
+                                <span class="badge badge-success">Approved</span>
+                                {% elif r.status == 'rejected' %}
+                                <span class="badge badge-danger">Rejected</span>
+                                {% else %}
+                                <span class="badge badge-secondary">{{ r.status }}</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {{ r.note if r.note else "-" }}
+                            </td>
+
+                            <td>
+                                {{ r.created_at.strftime("%d %b %Y %H:%M") }}
+                            </td>
+
+                            <td>
+                                {{ r.updated_at.strftime("%d %b %Y %H:%M") }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted text-center">
+                Tidak ada withdraw request.
+            </p>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

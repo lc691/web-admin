@@ -1,0 +1,60 @@
+[2025-12-13 09:44:19] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-13 09:44:30] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-13 09:46:51] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 21, in get_db_connection
+    yield conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 52, in get_dict_cursor
+    yield cursor, conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\app\users\routes.py", line 83, in list_users
+    cursor.execute(query, params)
+  File "C:\Users\ANGGAR WULAN\web-admin-main\.venv\Lib\site-packages\psycopg2\extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column "trial_given" does not exist
+LINE 12:         WHERE trial_given = TRUE AND (is_vip = FALSE OR vip_...
+                       ^
+
+[2025-12-13 09:47:49] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 21, in get_db_connection
+    yield conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 52, in get_dict_cursor
+    yield cursor, conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\app\users\routes.py", line 83, in list_users
+    cursor.execute(query, params)
+  File "C:\Users\ANGGAR WULAN\web-admin-main\.venv\Lib\site-packages\psycopg2\extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column "trial_given" does not exist
+LINE 12:         WHERE trial_given = TRUE AND (is_vip = FALSE OR vip_...
+                       ^
+
+[2025-12-13 09:50:10] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 21, in get_db_connection
+    yield conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 52, in get_dict_cursor
+    yield cursor, conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\app\users\routes.py", line 83, in list_users
+    cursor.execute(query, params)
+  File "C:\Users\ANGGAR WULAN\web-admin-main\.venv\Lib\site-packages\psycopg2\extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column "trial_given" does not exist
+LINE 12:         WHERE trial_given = TRUE AND (is_vip = FALSE OR vip_...
+                       ^
+
+[2025-12-13 15:14:42] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-13 15:14:44] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-13 15:14:53] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-13 15:15:42] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-13 15:19:09] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-13 15:19:59] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-13 15:24:09] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-13 15:25:08] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-13 15:27:47] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-13 15:28:02] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-13 15:30:04] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-13 15:30:16] [INFO] configs.logging_setup: Logger siap dipakai
+[2025-12-13 15:30:26] [INFO] configs.logging_setup: Logger siap dipakai

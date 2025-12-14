@@ -1,17 +1,16 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-    <!-- Brand -->
+    {# ================= BRAND ================= #}
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Admin</div>
+        <div class="sidebar-brand-text mx-3">Admin Panel</div>
     </a>
 
-    <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Dashboard -->
+    {# ================= DASHBOARD ================= #}
     <li class="nav-item {% if request.path == '/' %}active{% endif %}">
         <a class="nav-link" href="/">
             <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -19,261 +18,248 @@
         </a>
     </li>
 
-    <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Admin Tools
-    </div>
-
-
-    <!-- Admin Dropdown Menu -->
     {% set path = request.url.path %}
-    {% set is_admin_section = path.startswith('/admins') or path.startswith('/admin') %}
-    <li class="nav-item {% if is_admin_section %}active{% endif %}">
-        <a class="nav-link collapsed {% if is_admin_section %}show{% endif %}" href="#" data-toggle="collapse"
-            data-target="#collapseAdmin" aria-expanded="{{ 'true' if is_admin_section else 'false' }}"
-            aria-controls="collapseAdmin">
-            <i class="fas fa-fw fa-user-shield"></i>
-            <span>Admin</span>
+
+    {# ================= ADMIN TOOLS ================= #}
+    <div class="sidebar-heading">Admin Tools</div>
+
+    {% set admin_active = path.startswith('/admin') or path.startswith('/admins') %}
+    <li class="nav-item {% if admin_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuAdmin"
+            aria-expanded="{{ 'true' if admin_active else 'false' }}">
+            <i class="fas fa-user-shield fa-fw"></i>
+            <span>Admin Management</span>
         </a>
-        <div id="collapseAdmin" class="collapse {% if is_admin_section %}show{% endif %}" aria-labelledby="headingAdmin"
-            data-parent="#accordionSidebar">
+
+        <div id="menuAdmin" class="collapse {% if admin_active %}show{% endif %}" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Manajemen Admin:</h6>
-                <a class="collapse-item {% if path == '/admins' %}active{% endif %}" href="/admins">List Admin</a>
-                <a class="collapse-item {% if path == '/admin/add' %}active{% endif %}" href="/admin/add">Tambah
-                    Admin</a>
+                <h6 class="collapse-header">Admin Controls</h6>
+
+                <a class="collapse-item {% if path == '/admins' %}active{% endif %}" href="/admins">
+                    List Admin
+                </a>
+
+                <a class="collapse-item {% if path == '/admin/add' %}active{% endif %}" href="/admin/add">
+                    Tambah Admin
+                </a>
             </div>
         </div>
     </li>
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        User Tools
-    </div>
+    {# ================= USER TOOLS ================= #}
+    <div class="sidebar-heading">User Tools</div>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="false"
-            aria-controls="collapseUser">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Manajemen Pengguna</span>
+    {% set user_active = path == '/users' %}
+    <li class="nav-item {% if user_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuUsers"
+            aria-expanded="{{ 'true' if user_active else 'false' }}">
+            <i class="fas fa-users fa-fw"></i>
+            <span>User Management</span>
         </a>
 
-        <div id="collapseUser" class="collapse
-         {% if request.url.path == '/users' %}
-            show
-         {% endif %}" data-parent="#accordionSidebar">
-
+        <div id="menuUsers" class="collapse {% if user_active %}show{% endif %}" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
 
-                <a class="collapse-item
-               {% if not request.query_params.get('filter') %}
-                  active
-               {% endif %}" href="/users">
+                <a class="collapse-item {% if not request.query_params.get('filter') %}active{% endif %}" href="/users">
                     📋 Semua Pengguna
                 </a>
 
-                <a class="collapse-item
-               {% if request.query_params.get('filter') == 'vip' %}
-                  active
-               {% endif %}" href="/users?filter=vip">
+                <a class="collapse-item {% if request.query_params.get('filter') == 'vip' %}active{% endif %}"
+                    href="/users?filter=vip">
                     ⭐ Pengguna VIP
                 </a>
 
-                <a class="collapse-item
-               {% if request.query_params.get('filter') == 'nonvip' %}
-                  active
-               {% endif %}" href="/users?filter=nonvip">
-                    👤 Pengguna Non-VIP
+                <a class="collapse-item {% if request.query_params.get('filter') == 'nonvip' %}active{% endif %}"
+                    href="/users?filter=nonvip">
+                    👤 Non-VIP
                 </a>
 
-                <a class="collapse-item
-               {% if request.query_params.get('filter') == 'trial' %}
-                  active
-               {% endif %}" href="/users?filter=trial">
-                    🎁 Trial Pengguna
+                <a class="collapse-item {% if request.query_params.get('filter') == 'trial' %}active{% endif %}"
+                    href="/users?filter=trial">
+                    🎁 Trial
                 </a>
 
-                <a class="collapse-item
-               {% if request.query_params.get('filter') == 'affiliate' %}
-                  active
-               {% endif %}" href="/users?filter=affiliate">
-                    🔗 Berdasarkan Referral
+                <a class="collapse-item {% if request.query_params.get('filter') == 'affiliate' %}active{% endif %}"
+                    href="/users?filter=affiliate">
+                    🔗 Referral
                 </a>
 
             </div>
         </div>
     </li>
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Management VIP
-    </div>
+    {# ================= VIP MANAGEMENT ================= #}
+    <div class="sidebar-heading">VIP Management</div>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseVip" aria-expanded="false"
-            aria-controls="collapseVip">
+    {% set vip_active = path.startswith('/vip_') %}
+    <li class="nav-item {% if vip_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuVip"
+            aria-expanded="{{ 'true' if vip_active else 'false' }}">
             <i class="fas fa-crown fa-fw"></i>
-            <span>Manajemen VIP</span>
+            <span>VIP System</span>
         </a>
 
-        <div id="collapseVip" class="collapse
-         {% if request.url.path.startswith('/vip_') %}
-            show
-         {% endif %}" data-parent="#accordionSidebar">
-
+        <div id="menuVip" class="collapse {% if vip_active %}show{% endif %}" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
 
                 <h6 class="collapse-header">
-                    <i class="fas fa-star mr-1 text-warning"></i> Sistem VIP
+                    <i class="fas fa-star text-warning mr-1"></i> VIP Controls
                 </h6>
 
-                <a class="collapse-item
-               {% if request.url.path == '/vip_logs' %}
-                  active
-               {% endif %}" href="/vip_logs">
-                    <i class="fas fa-history text-success mr-2"></i>
-                    Log Aktivasi
+                <a class="collapse-item {% if path == '/vip_logs' %}active{% endif %}" href="/vip_logs">
+                    <i class="fas fa-history text-success mr-2"></i> Aktivasi Logs
                 </a>
 
-                <a class="collapse-item
-               {% if request.url.path == '/vip_packages' %}
-                  active
-               {% endif %}" href="/vip_packages">
-                    <i class="fas fa-tasks text-danger mr-2"></i>
-                    VIP Packages
+                <a class="collapse-item {% if path == '/vip_packages' %}active{% endif %}" href="/vip_packages">
+                    <i class="fas fa-box text-danger mr-2"></i> VIP Packages
                 </a>
 
-                <a class="collapse-item
-               {% if request.url.path == '/vip_vouchers' %}
-                  active
-               {% endif %}" href="/vip_vouchers">
-                    <i class="fas fa-ticket-alt text-info mr-2"></i>
-                    VIP Vouchers
+                <a class="collapse-item {% if path == '/vip_vouchers' %}active{% endif %}" href="/vip_vouchers">
+                    <i class="fas fa-ticket-alt text-info mr-2"></i> VIP Vouchers
                 </a>
 
             </div>
         </div>
     </li>
 
-    <!-- Sidebar Heading -->
+    {# ================= AFFILIATE MANAGEMENT ================= #}
     <div class="sidebar-heading">
-        Management Affiliate
+        Affiliate Management
     </div>
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAffiliateMenu"
-            aria-expanded="false" aria-controls="collapseAffiliateMenu">
+    <li class="nav-item {% if affiliate_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuAffiliate"
+            aria-expanded="{{ 'true' if affiliate_active else 'false' }}" aria-controls="menuAffiliate">
+
             <i class="fas fa-handshake fa-fw"></i>
-            <span>Manajemen Affiliate</span>
+            <span>Affiliate System</span>
         </a>
 
-        <div id="collapseAffiliateMenu" class="collapse
-         {% if request.url.path.startswith('/referrals') %}
-            show
-         {% endif %}" data-parent="#accordionSidebar">
+        <div id="menuAffiliate" class="collapse {% if affiliate_active %}show{% endif %}"
+            data-parent="#accordionSidebar">
 
             <div class="bg-white py-2 collapse-inner rounded">
 
+                {# ================= REFERRALS ================= #}
                 <h6 class="collapse-header">
-                    <i class="fas fa-link mr-1 text-primary"></i> Affiliate
+                    <i class="fas fa-link text-primary mr-1"></i>
+                    Referrals
                 </h6>
 
-                <a class="collapse-item
-                {% if request.url.path == '/referrals' %}
-                    active
-                {% endif %}" href="/referrals">
-                    🔗 Data Referral
+                <a class="collapse-item {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
+                    🔗 Semua Referral
                 </a>
 
-                <a class="collapse-item
-                {% if request.url.path == '/referrals/logs' %}
-                    active
-                {% endif %}" href="/referrals/logs">
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/user') %}active{% endif %}"
+                    href="/referrals">
+                    👤 Referral by User
+                </a>
+
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/referrer') %}active{% endif %}"
+                    href="/referrals">
+                    🧑‍💼 Referral by Referrer
+                </a>
+
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}"
+                    href="/referrals/logs">
                     📜 Referral Logs
                 </a>
 
-                <a class="collapse-item
-                {% if request.url.path == '/referrals/metrics' %}
-                    active
-                {% endif %}" href="/referrals/metrics">
-                    📊 Referral Metrics
+                <hr class="dropdown-divider">
+
+                {# ================= AFFILIATE ACTIVITY ================= #}
+                <h6 class="collapse-header">
+                    <i class="fas fa-exchange-alt text-info mr-1"></i>
+                    Affiliate Activity
+                </h6>
+
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}"
+                    href="/affiliate/transactions">
+                    💸 Transactions
                 </a>
 
-                <a class="collapse-item
-                {% if request.url.path == '/referrals/commissions' %}
-                    active
-                {% endif %}" href="/referrals/commissions">
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}"
+                    href="/affiliate/commission-logs">
+                    🪙 Commission Logs
+                </a>
+
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/commissions') %}active{% endif %}"
+                    href="/referrals/commissions">
                     💰 Referral Commissions
                 </a>
 
+                <hr class="dropdown-divider">
 
+                {# ================= FINANCE ================= #}
+                <h6 class="collapse-header">
+                    <i class="fas fa-wallet text-warning mr-1"></i>
+                    Finance
+                </h6>
 
-                <!-- OPTIONAL (kalau nanti nambah) -->
-                {#
-                <a class="collapse-item" href="/affiliate/stats">
-                    📊 Statistik Affiliate
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}"
+                    href="/affiliate/withdraw-requests">
+                    💵 Withdraw Requests
                 </a>
-                #}
+
+                <hr class="dropdown-divider">
+
+                {# ================= MONITORING ================= #}
+                <h6 class="collapse-header">
+                    <i class="fas fa-shield-alt text-danger mr-1"></i>
+                    Monitoring & Security
+                </h6>
+
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}"
+                    href="/affiliate/abuse-logs">
+                    🚨 Abuse Logs
+                </a>
+
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}"
+                    href="/affiliate/admin-actions">
+                    🛠️ Admin Actions
+                </a>
+
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}"
+                    href="/affiliate/admin-audit-logs">
+                    🛡️ Admin Audit Logs
+                </a>
 
             </div>
         </div>
     </li>
 
 
+    {# ================= FILE MANAGEMENT ================= #}
+    <div class="sidebar-heading">File Management</div>
 
-    <!-- Sidebar Heading -->
-    <div class="sidebar-heading">Management Files</div>
-
-    <li class="nav-item">
-        <!-- Files -->
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFilesMenu"
-            aria-expanded="false" aria-controls="collapseFilesMenu">
+    {% set files_active = path.startswith('/files') or path.startswith('/shows') %}
+    <li class="nav-item {% if files_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuFiles"
+            aria-expanded="{{ 'true' if files_active else 'false' }}">
             <i class="fas fa-folder-open fa-fw"></i>
-            <span>Manajemen Files</span>
+            <span>Files & Shows</span>
         </a>
-        <div id="collapseFilesMenu"
-            class="collapse {% if request.url.path.startswith('/files') or request.url.path.startswith('/shows') %}show{% endif %}"
-            data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header"><i class="fas fa-database mr-1 text-info"></i> Menu Files</h6>
-                <a class="collapse-item" href="/files"><i class="fas fa-file-alt text-primary mr-2"></i> Daftar
-                    Files</a>
-                <a class="collapse-item" href="/shows"><i class="fas fa-film text-success mr-2"></i> Daftar Shows</a>
-            </div>
-        </div>
 
-        <!-- Source Menu -->
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSourceMenu"
-            aria-expanded="false" aria-controls="collapseSourceMenu">
-            <i class="fas fa-folder-open fa-fw"></i>
-            <span>Manajemen Source</span>
-        </a>
-        <div id="collapseSourceMenu"
-            class="collapse {% if request.url.path.startswith('/source/source') %}show{% endif %}"
-            data-parent="#accordionSidebar">
+        <div id="menuFiles" class="collapse {% if files_active %}show{% endif %}" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header"><i class="fas fa-database mr-1 text-info"></i> Menu Source</h6>
-                {% if sources_sidebar %}
-                {% for src in sources_sidebar %}
-                <a class="collapse-item" href="/shows/source/{{ src }}">
-                    <i class="fas fa-play-circle text-success mr-2"></i> {{ src }}
+
+                <a class="collapse-item {% if path == '/files' %}active{% endif %}" href="/files">
+                    <i class="fas fa-file-alt mr-2"></i> Daftar Files
                 </a>
-                {% endfor %}
-                {% else %}
-                <span class="text-muted small">Belum ada source</span>
-                {% endif %}
+
+                <a class="collapse-item {% if path == '/shows' %}active{% endif %}" href="/shows">
+                    <i class="fas fa-film mr-2"></i> Daftar Shows
+                </a>
 
             </div>
         </div>
     </li>
 
-    <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
-    <!-- Sidebar Toggler -->
+    {# ================= TOGGLER ================= #}
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>

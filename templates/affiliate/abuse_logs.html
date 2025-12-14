@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <h1 class="h3 mb-4 text-gray-800">
+        {{ title or "Affiliate Abuse Logs" }}
+    </h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-danger">
+                🚨 Affiliate Abuse Detection
+            </h6>
+        </div>
+
+        <div class="card-body">
+
+            {% if logs %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>User</th>
+                            <th>Referrer</th>
+                            <th>Event</th>
+                            <th>Reason</th>
+                            <th>Severity</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+
+                            <td>
+                                <strong>{{ log.username or log.user_id }}</strong><br>
+                                <small>ID: {{ log.user_id }}</small>
+                            </td>
+
+                            <td>
+                                {% if log.referrer_user_id %}
+                                <strong>{{ log.referrer_username or log.referrer_user_id }}</strong><br>
+                                <small>ID: {{ log.referrer_user_id }}</small>
+                                {% else %}
+                                <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <span class="badge badge-danger">
+                                    {{ log.event_type }}
+                                </span>
+                            </td>
+
+                            <td>{{ log.reason }}</td>
+
+                            <td>
+                                <span
+                                    class="badge badge-{% if log.severity >= 3 %}danger{% elif log.severity == 2 %}warning{% else %}secondary{% endif %}">
+                                    Level {{ log.severity }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {{ log.created_at.strftime("%d %b %Y %H:%M") }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted text-center">Tidak ada abuse log.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

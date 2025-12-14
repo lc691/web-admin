@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <h1 class="h3 mb-4 text-gray-800">
+        {{ title or "Affiliate Admin Actions" }}
+    </h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-info">
+                🛠️ Affiliate Admin Activity Log
+            </h6>
+        </div>
+
+        <div class="card-body">
+
+            {% if actions %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Admin</th>
+                            <th>Action</th>
+                            <th>Target</th>
+                            <th>Notes</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in actions %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+
+                            <td>
+                                <strong>{{ a.admin_username or a.admin_id }}</strong><br>
+                                <small>ID: {{ a.admin_id }}</small>
+                            </td>
+
+                            <td>
+                                <span class="badge badge-primary">
+                                    {{ a.action }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="badge badge-secondary">
+                                    {{ a.target_type }}
+                                </span>
+                                <br>
+                                <small>ID: {{ a.target_id }}</small>
+                            </td>
+
+                            <td>
+                                {{ a.notes if a.notes else "-" }}
+                            </td>
+
+                            <td>
+                                {{ a.created_at.strftime("%d %b %Y %H:%M") }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted text-center">
+                Tidak ada admin action tercatat.
+            </p>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
