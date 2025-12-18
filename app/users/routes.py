@@ -34,7 +34,7 @@ def list_users(
     q: str = "",
     filter: str = "all",
     page: int = 1,
-    limit: int = 50,
+    limit: int = 2000,
 ):
     if page < 1:
         page = 1

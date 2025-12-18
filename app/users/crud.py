@@ -11,8 +11,8 @@ from db.connect import get_db_cursor, get_dict_cursor
 def get_users(
     where_sql: str = "is_active = TRUE",
     params: dict | None = None,
-    limit: int = 50,
-    offset: int = 0,
+    limit: int = None,
+    offset: int = 2000,
 ) -> List[Dict]:
     """
     Ambil list user dengan filter + pagination

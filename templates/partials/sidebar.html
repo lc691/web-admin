@@ -91,9 +91,16 @@
     </li>
 
     {# ================= VIP MANAGEMENT ================= #}
+
+    {% set path = request.url.path %}
+
     <div class="sidebar-heading">VIP Management</div>
 
-    {% set vip_active = path.startswith('/vip_') %}
+    {% set vip_active = path.startswith('/vip_packages')
+    or path.startswith('/vip_vouchers')
+    or path.startswith('/vip_logs')
+    %}
+
     <li class="nav-item {% if vip_active %}active{% endif %}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuVip"
             aria-expanded="{{ 'true' if vip_active else 'false' }}">
@@ -102,27 +109,38 @@
         </a>
 
         <div id="menuVip" class="collapse {% if vip_active %}show{% endif %}" data-parent="#accordionSidebar">
+
             <div class="bg-white py-2 collapse-inner rounded">
 
                 <h6 class="collapse-header">
-                    <i class="fas fa-star text-warning mr-1"></i> VIP Controls
+                    <i class="fas fa-star text-warning mr-1"></i>
+                    VIP Controls
                 </h6>
 
-                <a class="collapse-item {% if path == '/vip_logs' %}active{% endif %}" href="/vip_logs">
-                    <i class="fas fa-history text-success mr-2"></i> Aktivasi Logs
+                <!-- VIP Logs -->
+                <a class="collapse-item {% if path.startswith('/vip_logs') %}active{% endif %}" href="/vip_logs">
+                    <i class="fas fa-history text-success mr-2"></i>
+                    Aktivasi Logs
                 </a>
 
-                <a class="collapse-item {% if path == '/vip_packages' %}active{% endif %}" href="/vip_packages">
-                    <i class="fas fa-box text-danger mr-2"></i> VIP Packages
+                <!-- VIP Packages -->
+                <a class="collapse-item {% if path.startswith('/vip_packages') %}active{% endif %}"
+                    href="/vip_packages">
+                    <i class="fas fa-box text-danger mr-2"></i>
+                    VIP Packages
                 </a>
 
-                <a class="collapse-item {% if path == '/vip_vouchers' %}active{% endif %}" href="/vip_vouchers">
-                    <i class="fas fa-ticket-alt text-info mr-2"></i> VIP Vouchers
+                <!-- VIP Vouchers -->
+                <a class="collapse-item {% if path.startswith('/vip_vouchers') %}active{% endif %}"
+                    href="/vip_vouchers">
+                    <i class="fas fa-ticket-alt text-info mr-2"></i>
+                    VIP Vouchers
                 </a>
 
             </div>
         </div>
     </li>
+
 
     {# ================= AFFILIATE MANAGEMENT ================= #}
     <div class="sidebar-heading">
