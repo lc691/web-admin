@@ -36,19 +36,18 @@
             <select name="source" class="form-control">
                 {% set source_options = [
                     "Dramabox",
-                    "Netshort",
+                    "NetShort",
                     "Dramawave",
                     "Melolo",
                     "Stardust",
                     "Iqiyi",
                     "GoodShort",
                     "BiliTV",
-                    "Rellshort",
+                    "ReelShort",
                     "Moboreels",
                     "RapidTV",
                     "Shortmax",
                     "Dotdrama",
-                    "Rellshort",
                 ] %}
                 {% for src in source_options %}
                 <option value="{{ src }}" {% if show.source == src %}selected{% endif %}>{{ src }}</option>
