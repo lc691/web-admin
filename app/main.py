@@ -8,6 +8,7 @@ from app.admins.routes import router as admins_router
 from app.affiliate.router_payout import router as affiliate_router_payout
 from app.affiliate.routes import router as affiliate_router
 from app.base.routes import get_dashboard_stats
+from app.channel.routes import router as channel_router
 from app.files.routes import router as files_router
 from app.referrals.routes import router as referral_router
 from app.shows.routes import router as shows_router
@@ -36,6 +37,7 @@ app.include_router(vip_voucheres_router)
 app.include_router(referral_router)
 app.include_router(affiliate_router)
 app.include_router(affiliate_router_payout)
+app.include_router(channel_router)
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # project_root
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")

@@ -3,78 +3,82 @@ from typing import Dict, List, Optional
 
 from db.connect import get_db_cursor, get_dict_cursor
 
-# ==========================================================
-# GET USER LIST (UNTUK ADMIN / LIST PAGE)
-# ==========================================================
 
-
+# =========================
+# GET USERS (LIST)
+# =========================
 def get_users(
-    where_sql: str = "is_active = TRUE",
+    where_sql: str = "u.is_active = TRUE",
     params: dict | None = None,
-    limit: int = None,
-    offset: int = 2000,
+    limit: int = 100,
+    offset: int = 0,
+    
 ) -> List[Dict]:
-    """
-    Ambil list user dengan filter + pagination
-    """
     if params is None:
         params = {}
 
-    params.update(
-        {
-            "limit": limit,
-            "offset": offset,
-        }
-    )
+    params.update({"limit": limit, "offset": offset})
 
     query = f"""
         SELECT
-            id,
-            user_id,
-            username,
-            first_name,
-            is_vip,
-            vip_expired,
-            is_active,
-            created_at
-        FROM users
+            u.id,
+            u.user_id,
+            u.username,
+            u.first_name,
+            u.is_vip,
+            u.vip_expired,
+            COALESCE(v.vip_count, 0) AS vip_purchases,
+            u.is_active,
+            u.created_at
+        FROM users u
+        LEFT JOIN (
+            SELECT user_id, COUNT(*) AS vip_count
+            FROM vip_transactions
+            GROUP BY user_id
+        ) v ON v.user_id = u.user_id
         WHERE {where_sql}
-        ORDER BY id DESC
+        ORDER BY u.id DESC
         LIMIT %(limit)s OFFSET %(offset)s
     """
 
     with get_dict_cursor() as (cursor, _):
         cursor.execute(query, params)
-        return cursor.fetchall()
+        rows = cursor.fetchall()
+
+    # 🔹 Konversi DictRow ke dict biasa supaya template bisa pakai dot
+    return [dict(row) for row in rows]
 
 
-# ==========================================================
-# GET USER BY ID (EDIT PAGE)
-# ==========================================================
-
-
+# =========================
+# GET USER BY ID
+# =========================
 def get_user_by_id(id: int) -> Optional[Dict]:
-    """
-    Ambil 1 user untuk edit (kolom lengkap yang dibutuhkan form)
-    """
     query = """
         SELECT
-            id,
-            user_id,
-            username,
-            first_name,
-            is_vip,
-            vip_expired,
-            vip_start,
-            is_active
-        FROM users
-        WHERE id = %s
+            u.id,
+            u.user_id,
+            u.username,
+            u.first_name,
+            u.is_vip,
+            u.vip_expired,
+            COALESCE(v.vip_count, 0) AS vip_purchases,
+            u.vip_start,
+            u.is_active
+        FROM users u
+        LEFT JOIN (
+            SELECT user_id, COUNT(*) AS vip_count
+            FROM vip_transactions
+            GROUP BY user_id
+        ) v ON v.user_id = u.user_id
+        WHERE u.id = %s
         LIMIT 1
     """
 
     with get_dict_cursor() as (cursor, _):
         cursor.execute(query, (id,))
-        return cursor.fetchone()
+        row = cursor.fetchone()
+
+    return dict(row) if row else None
 
 
 # ==========================================================

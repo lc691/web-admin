@@ -147,74 +147,59 @@
         Affiliate Management
     </div>
 
+    {% set affiliate_active = request.url.path.startswith('/referrals')
+    or request.url.path.startswith('/affiliate') %}
+
     <li class="nav-item {% if affiliate_active %}active{% endif %}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuAffiliate"
             aria-expanded="{{ 'true' if affiliate_active else 'false' }}" aria-controls="menuAffiliate">
-
             <i class="fas fa-handshake fa-fw"></i>
             <span>Affiliate System</span>
         </a>
 
         <div id="menuAffiliate" class="collapse {% if affiliate_active %}show{% endif %}"
             data-parent="#accordionSidebar">
-
             <div class="bg-white py-2 collapse-inner rounded">
 
                 {# ================= REFERRALS ================= #}
-                <h6 class="collapse-header">
-                    <i class="fas fa-link text-primary mr-1"></i>
-                    Referrals
-                </h6>
+                <h6 class="collapse-header"><i class="fas fa-link text-primary mr-1"></i> Referrals</h6>
 
-                <a class="collapse-item
-               {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
+                <a class="collapse-item {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
                     🔗 Semua Referral
                 </a>
-
-                <a class="collapse-item
-   {% if request.url.path.startswith('/referrals/users')
-      or request.url.path.startswith('/referrals/user/') %}active{% endif %}" href="/referrals/users">
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/users') 
+                                       or request.url.path.startswith('/referrals/user/') %}active{% endif %}"
+                    href="/referrals/users">
                     👤 Referral by User
                 </a>
-
-                <a class="collapse-item
-   {% if request.url.path.startswith('/referrals/referrers')
-      or request.url.path.startswith('/referrals/referrer/') %}active{% endif %}" href="/referrals/referrers">
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/referrers') 
+                                       or request.url.path.startswith('/referrals/referrer/') %}active{% endif %}"
+                    href="/referrals/referrers">
                     🧑‍💼 Referral by Referrer
                 </a>
-
-                <a class="collapse-item
-               {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}" href="/referrals/logs">
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}"
+                    href="/referrals/logs">
                     📜 Referral Logs
                 </a>
 
                 <hr class="dropdown-divider">
 
                 {# ================= AFFILIATE ACTIVITY ================= #}
-                <h6 class="collapse-header">
-                    <i class="fas fa-exchange-alt text-info mr-1"></i>
-                    Affiliate Activity
-                </h6>
+                <h6 class="collapse-header"><i class="fas fa-exchange-alt text-info mr-1"></i> Affiliate Activity</h6>
 
-                <a class="collapse-item
-               {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}"
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}"
                     href="/affiliate/leaderboard">
                     🏆 Leaderboard
                 </a>
-
-                <a class="collapse-item
-               {% if request.url.path.startswith('/affiliate/payouts') %}active{% endif %}" href="/affiliate/payouts">
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/payouts') %}active{% endif %}"
+                    href="/affiliate/payouts">
                     📦 Payout Batch
                 </a>
-
-                <a class="collapse-item
-               {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}"
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}"
                     href="/affiliate/transactions">
                     💸 Transactions
                 </a>
-
-                <a class="collapse-item
-               {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}"
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}"
                     href="/affiliate/commission-logs">
                     🪙 Commission Logs
                 </a>
@@ -222,13 +207,9 @@
                 <hr class="dropdown-divider">
 
                 {# ================= FINANCE ================= #}
-                <h6 class="collapse-header">
-                    <i class="fas fa-wallet text-warning mr-1"></i>
-                    Finance
-                </h6>
+                <h6 class="collapse-header"><i class="fas fa-wallet text-warning mr-1"></i> Finance</h6>
 
-                <a class="collapse-item
-               {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}"
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}"
                     href="/affiliate/withdraw-requests">
                     💵 Withdraw Requests
                 </a>
@@ -236,25 +217,18 @@
                 <hr class="dropdown-divider">
 
                 {# ================= MONITORING ================= #}
-                <h6 class="collapse-header">
-                    <i class="fas fa-shield-alt text-danger mr-1"></i>
-                    Monitoring & Security
+                <h6 class="collapse-header"><i class="fas fa-shield-alt text-danger mr-1"></i> Monitoring & Security
                 </h6>
 
-                <a class="collapse-item
-               {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}"
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}"
                     href="/affiliate/abuse-logs">
                     🚨 Abuse Logs
                 </a>
-
-                <a class="collapse-item
-               {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}"
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}"
                     href="/affiliate/admin-actions">
                     🛠️ Admin Actions
                 </a>
-
-                <a class="collapse-item
-               {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}"
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}"
                     href="/affiliate/admin-audit-logs">
                     🛡️ Admin Audit Logs
                 </a>
@@ -265,10 +239,11 @@
 
 
 
+
     {# ================= FILE MANAGEMENT ================= #}
     <div class="sidebar-heading">File Management</div>
 
-    {% set files_active = path.startswith('/files') or path.startswith('/shows') %}
+    {% set files_active = path.startswith('/files') or path.startswith('/shows') or path.startswith('/channel') %}
     <li class="nav-item {% if files_active %}active{% endif %}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuFiles"
             aria-expanded="{{ 'true' if files_active else 'false' }}">
@@ -285,6 +260,10 @@
 
                 <a class="collapse-item {% if path == '/shows' %}active{% endif %}" href="/shows">
                     <i class="fas fa-film mr-2"></i> Daftar Shows
+                </a>
+
+                <a class="collapse-item {% if path == '/channel' %}active{% endif %}" href="/channel">
+                    <i class="fas fa-file-alt mr-2"></i> Daftar Channel
                 </a>
 
             </div>

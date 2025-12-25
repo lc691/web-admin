@@ -15,6 +15,7 @@
                     <th>Nama</th>
                     <th>VIP</th>
                     <th>VIP Expired</th>
+                    <th>VIP Purchases</th>
                     <th>Status</th>
                     <th>Dibuat</th>
                     <th>Aksi</th>
@@ -29,49 +30,50 @@
                     <td>{{ u.username or "-" }}</td>
                     <td>{{ u.first_name or "-" }}</td>
 
-                    <!-- VIP -->
+                    <!-- VIP Status -->
                     <td class="text-center">
-                        {% if u.is_vip %}
-                        <span class="badge badge-success">VIP</span>
+                        <span class="badge badge-{{ 'success' if u.is_vip else 'secondary' }}">
+                            {{ 'VIP' if u.is_vip else 'No' }}
+                        </span>
+                    </td>
+
+                    <!-- VIP Expired -->
+                    <td>{{ u.vip_expired.strftime('%Y-%m-%d %H:%M') if u.vip_expired else '-' }}</td>
+
+                    <!-- VIP Purchases -->
+                    <td class="text-center">
+                        {% if u.vip_purchases > 0 %}
+                        <span class="badge badge-info">{{ u.vip_purchases }}</span>
                         {% else %}
-                        <span class="badge badge-secondary">No</span>
+                        0
                         {% endif %}
                     </td>
 
-                    <!-- VIP expired -->
-                    <td>
-                        {{ u.vip_expired.strftime('%Y-%m-%d %H:%M') if u.vip_expired else '-' }}
-                    </td>
 
-                    <!-- Active -->
+                    <!-- Active Status -->
                     <td class="text-center">
-                        {% if u.is_active %}
-                        <span class="badge badge-primary">Aktif</span>
-                        {% else %}
-                        <span class="badge badge-danger">Nonaktif</span>
-                        {% endif %}
+                        <span class="badge badge-{{ 'primary' if u.is_active else 'danger' }}">
+                            {{ 'Aktif' if u.is_active else 'Nonaktif' }}
+                        </span>
                     </td>
 
-                    <!-- Created -->
-                    <td>
-                        {{ u.created_at.strftime('%Y-%m-%d %H:%M') }}
-                    </td>
+                    <!-- Created At -->
+                    <td>{{ u.created_at.strftime('%Y-%m-%d %H:%M') if u.created_at else '-' }}</td>
 
                     <!-- Action -->
                     <td class="text-center">
-                        <a href="/users/{{ u.id }}/edit" class="btn btn-warning btn-sm" data-toggle="tooltip"
-                            title="Edit">
+                        <a href="/users/{{ u.id }}/edit" class="btn btn-warning btn-sm">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-
                         <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
-                            data-userid="{{ u.id }}" title="Hapus">
+                            data-userid="{{ u.id }}">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
+
         </table>
 
     </div>

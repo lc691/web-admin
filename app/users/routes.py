@@ -41,10 +41,7 @@ def list_users(
 
     offset = (page - 1) * limit
     where_clauses = []
-    params = {
-        "limit": limit,
-        "offset": offset,
-    }
+    params = {"limit": limit, "offset": offset}
 
     # filter utama
     where_clauses.append(FILTER_SQL.get(filter, "is_active = TRUE"))
@@ -63,25 +60,32 @@ def list_users(
 
     where_sql = " AND ".join(where_clauses)
 
+    # Query termasuk vip_purchases
     query = f"""
         SELECT
-            id,
-            user_id,
-            username,
-            first_name,
-            is_vip,
-            vip_expired,
-            is_active,
-            created_at
-        FROM users
+            u.id,
+            u.user_id,
+            u.username,
+            u.first_name,
+            u.is_vip,
+            u.vip_expired,
+            u.is_active,
+            u.created_at,
+            COALESCE(v.vip_count, 0) AS vip_purchases
+        FROM users u
+        LEFT JOIN (
+            SELECT user_id, COUNT(*) AS vip_count
+            FROM vip_transactions
+            GROUP BY user_id
+        ) v ON v.user_id = u.user_id
         WHERE {where_sql}
-        ORDER BY id DESC
+        ORDER BY u.id DESC
         LIMIT %(limit)s OFFSET %(offset)s
     """
 
     with get_dict_cursor() as (cursor, _):
         cursor.execute(query, params)
-        users = cursor.fetchall()
+        users = [dict(row) for row in cursor.fetchall()]  # 🔹 konversi ke dict
 
     return templates.TemplateResponse(
         "users/list.html",
