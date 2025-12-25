@@ -108,7 +108,7 @@ async def update_show_data(
     genre: str = Form(""),
     hashtags: str = Form(""),
     source: str = Form(""),
-    thumbnail_url: str = Form(""),
+    thumbnail_url: str = Form(None),  # bisa None
     is_adult: Optional[int] = Form(None),
 ):
     show = get_show_by_id(show_id)
@@ -128,10 +128,14 @@ async def update_show_data(
     if source.strip():
         show_data["source"] = source.strip()
 
-    if thumbnail_url.strip():
-        if not is_valid_url(thumbnail_url.strip()):
+    # Update thumbnail, boleh dikosongkan
+    if thumbnail_url is not None:
+        if thumbnail_url.strip() == "":
+            show_data["thumbnail_url"] = None  # hapus thumbnail
+        elif not is_valid_url(thumbnail_url.strip()):
             raise HTTPException(status_code=400, detail="Thumbnail URL tidak valid")
-        show_data["thumbnail_url"] = thumbnail_url.strip()
+        else:
+            show_data["thumbnail_url"] = thumbnail_url.strip()
 
     if is_adult is not None:
         show_data["is_adult"] = is_adult
