@@ -9,11 +9,14 @@ from app.affiliate.router_payout import router as affiliate_router_payout
 from app.affiliate.routes import router as affiliate_router
 from app.base.routes import get_dashboard_stats
 from app.channel.routes import router as channel_router
+from app.donation_logs.routes import router as donation_logs_router
 from app.files.routes import router as files_router
 from app.referrals.routes import router as referral_router
 from app.shows.routes import router as shows_router
+
 # Template Engine
 from app.templates import templates
+
 # Routers
 from app.users.routes import router as user_router
 from app.vip_logs.routes import router as vip_logs_router
@@ -30,6 +33,7 @@ app.include_router(files_router)
 app.include_router(shows_router)
 app.include_router(vip_user_router)
 app.include_router(vip_logs_router)
+app.include_router(donation_logs_router)
 app.include_router(vip_pakages_router)
 app.include_router(vip_voucheres_router)
 app.include_router(referral_router)

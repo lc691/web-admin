@@ -99,6 +99,7 @@
     {% set vip_active = path.startswith('/vip_packages')
     or path.startswith('/vip_vouchers')
     or path.startswith('/vip_logs')
+    or path.startswith('/donation_logs')
     %}
 
     <li class="nav-item {% if vip_active %}active{% endif %}">
@@ -121,6 +122,13 @@
                 <a class="collapse-item {% if path.startswith('/vip_logs') %}active{% endif %}" href="/vip_logs">
                     <i class="fas fa-history text-success mr-2"></i>
                     Aktivasi Logs
+                </a>
+
+                <!-- Donations Logs -->
+                <a class="collapse-item {% if path.startswith('/donation_logs') %}active{% endif %}"
+                    href="/donation_logs">
+                    <i class="fas fa-hand-holding-heart text-success mr-2"></i>
+                    Donation Logs
                 </a>
 
                 <!-- VIP Packages -->

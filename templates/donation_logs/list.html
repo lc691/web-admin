@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">Donation Logs</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-body table-responsive">
+        <table class="table table-bordered" id="donationLogsTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>User ID</th>
+                    <th>Amount</th>
+                    <th>Paket</th>
+                    <th>Message</th>
+                    <th>Type</th>
+                    <th>Timestamp</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.email or '-' }}</td>
+                    <td>{{ log.user_id or '-' }}</td>
+                    <td>{{ log.amount or 0 }}</td>
+                    <td>{{ log.paket or '-' }}</td>
+                    <td>{{ log.message or '' }}</td>
+                    <td>{{ log.type or '-' }}</td>
+                    <td>{{ log.timestamp }}</td>
+                    <td>
+                        <a href="/donation_logs/{{ log.id }}/edit" class="btn btn-warning btn-circle btn-sm"
+                            title="Edit">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+
+                        <form method="post" action="/donation_logs/{{ log.id }}/delete" style="display:inline;"
+                            onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+                            <button type="submit" class="btn btn-danger btn-circle btn-sm" title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('#donationLogsTable').DataTable({
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "Berikutnya",
+                    "previous": "Sebelumnya"
+                },
+                "zeroRecords": "Tidak ada data ditemukan"
+            },
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100],
+            "order": [[0, "desc"]]
+        });
+
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+</script>
+{% endblock %}

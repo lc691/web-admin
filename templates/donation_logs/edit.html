@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-2 text-gray-800">Edit Donation Log</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <form method="post" action="/donation_logs/{{ log.id }}/edit">
+
+            <div class="form-group">
+                <label>ID</label>
+                <input type="text" class="form-control" value="{{ log.id }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" name="email" value="{{ log.email or '' }}">
+            </div>
+
+            <div class="form-group">
+                <label>User ID</label>
+                <input type="number" class="form-control" name="user_id" value="{{ log.user_id or '' }}">
+            </div>
+
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="number" class="form-control" name="amount" value="{{ log.amount or '' }}">
+            </div>
+
+            <div class="form-group">
+                <label>Paket</label>
+                <input type="text" class="form-control" name="paket" value="{{ log.paket or '' }}">
+            </div>
+
+            <div class="form-group">
+                <label>Message</label>
+                <textarea class="form-control" name="message" rows="3">{{ log.message or '' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Type</label>
+                <input type="text" class="form-control" name="type" value="{{ log.type or '' }}">
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" class="form-control">
+                    <option value="pending" {% if log.status=='pending' %}selected{% endif %}>Pending</option>
+                    <option value="confirmed" {% if log.status=='confirmed' %}selected{% endif %}>Confirmed</option>
+                    <option value="failed" {% if log.status=='failed' %}selected{% endif %}>Failed</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Notified</label><br>
+                <input type="checkbox" name="is_notified" value="true" {% if log.is_notified %}checked{% endif %}>
+                Sudah Dikirim Notifikasi
+            </div>
+
+            <div class="form-group">
+                <label>Source Bot</label>
+                <input type="text" class="form-control" value="{{ log.source_bot }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Timestamp</label>
+                <input type="text" class="form-control" value="{{ log.timestamp }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Confirmed At</label>
+                <input type="text" class="form-control" value="{{ log.confirmed_at or '-' }}" readonly>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Simpan
+            </button>
+
+            <a href="/donation_logs" class="btn btn-secondary">
+                Kembali
+            </a>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
