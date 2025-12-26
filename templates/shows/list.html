@@ -31,9 +31,12 @@
                     <tr>
                         <td>{{ show.id }}</td>
                         <td>
-                            <img src="{{ show.thumbnail_url }}" onerror="this.src='/static/images/default-thumb.png';"
+                            <img src="{{ show.thumbnail_url or url_for('static', path='images/default-thumb.png') }}"
+                                onerror="this.onerror=null;this.src='{{ url_for('static', path='images/default-thumb.png') }}';"
                                 loading="lazy" width="160" height="90" style="object-fit: cover;">
+
                         </td>
+
                         <td>{{ show.title }}</td>
                         <td style="max-width: 300px;" title="{{ show.sinopsis or 'Tidak tersedia' }}">
                             {{ (show.sinopsis or 'Tidak tersedia') | truncate(100, True, '...') }}

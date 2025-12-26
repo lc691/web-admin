@@ -12,10 +12,8 @@ from app.channel.routes import router as channel_router
 from app.files.routes import router as files_router
 from app.referrals.routes import router as referral_router
 from app.shows.routes import router as shows_router
-
 # Template Engine
 from app.templates import templates
-
 # Routers
 from app.users.routes import router as user_router
 from app.vip_logs.routes import router as vip_logs_router

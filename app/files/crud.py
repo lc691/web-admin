@@ -1,5 +1,7 @@
-from db.connect import get_db_cursor, get_dict_cursor
 from typing import Optional
+
+from db.connect import get_db_cursor, get_dict_cursor
+
 
 def get_all_files():
     with get_dict_cursor() as (cur, _):

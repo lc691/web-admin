@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Request, Form, HTTPException
+from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette import status
-from db.connect import get_dict_cursor
+
 from app.templates import templates
+from db.connect import get_dict_cursor
 
 router = APIRouter(prefix="/vip_vouchers", tags=["VIP Vouchers"])
 

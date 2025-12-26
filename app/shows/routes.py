@@ -7,13 +7,8 @@ from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.files.crud import get_file_by_id
-from app.shows.crud import (
-    delete_show_by_id,
-    get_all_shows,
-    get_show_by_id,
-    insert_show,
-    update_show,
-)
+from app.shows.crud import (delete_show_by_id, get_all_shows, get_show_by_id,
+                            insert_show, update_show)
 from app.templates import templates
 from configs.logging_setup import log
 from db.connect import get_dict_cursor

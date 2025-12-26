@@ -1,4 +1,5 @@
-from db.connect import get_dict_cursor, get_db_cursor
+from db.connect import get_db_cursor, get_dict_cursor
+
 
 def get_all_channels() -> list[dict]:
     with get_dict_cursor() as (cur, _):

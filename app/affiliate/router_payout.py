@@ -3,7 +3,6 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.affiliate import crud_payout
 from app.affiliate.crud_admin_audit_logs import log_admin_action
-
 # from app.auth.dependencies import admin_required
 from app.templates import templates
 

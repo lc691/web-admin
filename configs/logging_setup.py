@@ -4,18 +4,23 @@ import sys
 from datetime import datetime
 from logging.handlers import TimedRotatingFileHandler
 
-from colorama import Fore, Style, init as colorama_init
+from colorama import Fore, Style
+from colorama import init as colorama_init
 from pytz import timezone
 
-colorama_init(autoreset=True)  # sekali saja
+colorama_init(autoreset=True)  # init sekali saja
 
 
+# =====================================================
+# === FORMATTER =======================================
+# =====================================================
 class JakartaFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
-        dt = datetime.fromtimestamp(record.created, tz=timezone("Asia/Jakarta"))
-        if datefmt:
-            return dt.strftime(datefmt)
-        return dt.isoformat()
+        dt = datetime.fromtimestamp(
+            record.created,
+            tz=timezone("Asia/Jakarta"),
+        )
+        return dt.strftime(datefmt) if datefmt else dt.isoformat()
 
 
 class ColoredFormatter(JakartaFormatter):
@@ -33,19 +38,60 @@ class ColoredFormatter(JakartaFormatter):
         return super().format(record)
 
 
-def setup_logger(name: str = None, log_dir="logs", level=logging.INFO):
+# =====================================================
+# === SETUP LOGGER ====================================
+# =====================================================
+def setup_logger(
+    name: str | None = None,
+    log_dir: str = "logs",
+    level: int = logging.INFO,
+):
     os.makedirs(log_dir, exist_ok=True)
     log_file = os.path.join(log_dir, "app.log")
 
     logger = logging.getLogger(name) if name else logging.getLogger()
+
+    # =================================================
+    # 🔇 SILENCE UVICORN & WEB NOISE (PENTING)
+    # =================================================
+    logging.getLogger("uvicorn.access").setLevel(logging.WARNING)
+    logging.getLogger("uvicorn.access").propagate = False
+
+    logging.getLogger("uvicorn.error").setLevel(logging.WARNING)
+    logging.getLogger("uvicorn.error").propagate = False
+
+    # =================================================
+    # === NOISE REDUCTION (WAJIB) ======================
+    # =================================================
+    for noisy in (
+        "pyrogram",
+        "apscheduler",
+        "httpx",
+        "uvicorn.access",
+        "uvicorn.error",
+        "fastapi",
+    ):
+        logging.getLogger(noisy).setLevel(logging.WARNING)
+
+    logger.warning(
+        "Logger initialized | level=%s | DEBUG=%s",
+        logging.getLevelName(level),
+        os.getenv("DEBUG"),
+    )
+
+    return logger
+
+    # =================================================
     logger.setLevel(level)
     logger.propagate = False
 
-    # Clear handler lama
-    if logger.hasHandlers():
+    # Clear handler lama (hindari duplikasi)
+    if logger.handlers:
         logger.handlers.clear()
 
-    # File handler (rotasi harian)
+    # =================================================
+    # FILE HANDLER (rotasi harian)
+    # =================================================
     file_handler = TimedRotatingFileHandler(
         filename=log_file,
         when="midnight",
@@ -54,29 +100,31 @@ def setup_logger(name: str = None, log_dir="logs", level=logging.INFO):
         encoding="utf-8",
         utc=True,
     )
-    file_formatter = JakartaFormatter(
-        "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
+    file_handler.setFormatter(
+        JakartaFormatter(
+            "[%(asctime)s] [%(levelname)s] %(name)s: %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
     )
-    file_handler.setFormatter(file_formatter)
     logger.addHandler(file_handler)
 
-    # Console handler (warna + WIB)
+    # =================================================
+    # CONSOLE HANDLER (warna + WIB)
+    # =================================================
     console_handler = logging.StreamHandler(sys.stdout)
-    console_formatter = ColoredFormatter(
-        "[%(asctime)s] [%(levelname)s] %(message)s",
-        datefmt="%H:%M:%S"
+    console_handler.setFormatter(
+        ColoredFormatter(
+            "[%(asctime)s] [%(levelname)s] %(message)s",
+            datefmt="%H:%M:%S",
+        )
     )
-    console_handler.setFormatter(console_formatter)
     logger.addHandler(console_handler)
-
-    # Kurangi noise dari library luar
-    for noisy in ["pyrogram", "apscheduler", "httpx"]:
-        logging.getLogger(noisy).setLevel(logging.WARNING)
 
     return logger
 
 
-# Contoh penggunaan:
+# =====================================================
+# === USAGE ===========================================
+# =====================================================
 log = setup_logger(__name__)
-log.info("Logger siap dipakai")
+log.info("✅ Logger siap dipakai (low-IO mode)")

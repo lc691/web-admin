@@ -3,7 +3,8 @@ from typing import Optional
 from fastapi import APIRouter, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from app.files.crud import delete_file, get_all_files, get_file_by_id, update_file_by_id
+from app.files.crud import (delete_file, get_all_files, get_file_by_id,
+                            update_file_by_id)
 from app.templates import templates
 
 router = APIRouter()

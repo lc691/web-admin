@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
+
 from app.templates import templates
 from db.connect import get_dict_cursor
 

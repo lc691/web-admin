@@ -1,14 +1,9 @@
 from fastapi import APIRouter, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from app.affiliate import (
-    crud,
-    crud_abuse_logs,
-    crud_admin_actions,
-    crud_admin_audit_logs,
-    crud_commission_logs,
-    crud_withdraw_requests,
-)
+from app.affiliate import (crud, crud_abuse_logs, crud_admin_actions,
+                           crud_admin_audit_logs, crud_commission_logs,
+                           crud_withdraw_requests)
 from app.templates import templates
 
 router = APIRouter(

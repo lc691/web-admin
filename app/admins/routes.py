@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Form, Request
+from fastapi.responses import HTMLResponse, RedirectResponse
+from starlette.status import HTTP_302_FOUND
+
 from app.templates import templates
 from db.connect import get_dict_cursor
-from fastapi import Form
-from fastapi.responses import RedirectResponse
-from starlette.status import HTTP_302_FOUND
 
 router = APIRouter()
 
