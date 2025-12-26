@@ -54,32 +54,15 @@ def setup_logger(
     # =================================================
     # 🔇 SILENCE UVICORN & WEB NOISE (PENTING)
     # =================================================
-    logging.getLogger("uvicorn.access").setLevel(logging.WARNING)
-    logging.getLogger("uvicorn.access").propagate = False
-
-    logging.getLogger("uvicorn.error").setLevel(logging.WARNING)
-    logging.getLogger("uvicorn.error").propagate = False
-
-    # =================================================
-    # === NOISE REDUCTION (WAJIB) ======================
-    # =================================================
     for noisy in (
-        "pyrogram",
-        "apscheduler",
         "httpx",
+        "apscheduler",
+        "asyncio",
         "uvicorn.access",
         "uvicorn.error",
-        "fastapi",
+        "starlette",
     ):
         logging.getLogger(noisy).setLevel(logging.WARNING)
-
-    logger.warning(
-        "Logger initialized | level=%s | DEBUG=%s",
-        logging.getLevelName(level),
-        os.getenv("DEBUG"),
-    )
-
-    return logger
 
     # =================================================
     logger.setLevel(level)
