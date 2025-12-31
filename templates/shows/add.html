@@ -24,18 +24,18 @@
             {% set source_options = [
             "Dramabox",
             "Netshort",
+            "ReelShort",
             "Dramawave",
             "Melolo",
             "Stardust",
             "Iqiyi",
             "GoodShort",
             "BiliTV",
-            "Rellshort",
             "Moboreels",
             "RapidTV",
             "Shortmax",
             "Dotdrama",
-            "Rellshort",
+
             ] %}
             {% for src in source_options %}
             <option value="{{ src }}" {% if show and show.source==src %}selected{% endif %}>{{ src }}</option>

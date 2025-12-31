@@ -42,13 +42,10 @@
 
                     <!-- VIP Purchases -->
                     <td class="text-center">
-                        {% if u.vip_purchases > 0 %}
-                        <span class="badge badge-info">{{ u.vip_purchases }}</span>
-                        {% else %}
-                        0
-                        {% endif %}
+                        <span class="badge badge-info">
+                            {{ u.total_purchases }}
+                        </span>
                     </td>
-
 
                     <!-- Active Status -->
                     <td class="text-center">

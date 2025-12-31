@@ -1,0 +1,15 @@
+[2025-12-27 17:16:43] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-27 17:16:53] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-27 21:30:24] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-27 21:30:33] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-27 23:31:55] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 21, in get_db_connection
+    yield conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 39, in get_db_cursor
+    yield cursor, conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\app\shows\crud.py", line 117, in insert_show
+    cursor.execute(query, values)
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "unique_shows_title_series"
+DETAIL:  Key (title, series_no)=(Cinta Tak Terduga, 1) already exists.
+

@@ -9,9 +9,11 @@
           <tr>
             <th>ID</th>
             <th>User ID</th>
+            <th>Username</th>
             <th>Paket</th>
             <th>Durasi</th>
-            <th>Expired Baru</th>
+            <th>Mulai VIP</th>
+            <th>Berakhir VIP</th>
             <th>Keterangan</th>
             <th>Timestamp</th>
             <th>Aksi</th>
@@ -22,23 +24,29 @@
           <tr>
             <td>{{ log.id }}</td>
             <td>{{ log.target_user_id }}</td>
+            <td>{{ log.username or log.first_name or '-' }}</td>
             <td>{{ log.paket }}</td>
-            <td>{{ log.durasi_hari }} hari</td>
-            <td>{{ log.expired_baru }}</td>
+
+            <!-- Durasi rinci -->
+            <td>{{ log.durasi_rinci }}</td>
+
+            <!-- Start & End datetime -->
+            <td>{{ log.start_date.strftime("%Y-%m-%d %H:%M:%S") if log.start_date else '-' }}</td>
+            <td>{{ log.expired_baru.strftime("%Y-%m-%d %H:%M:%S") if log.expired_baru else '-' }}</td>
+
             <td>{{ log.keterangan or '' }}</td>
-            <td>{{ log.timestamp }}</td>
+            <td>{{ log.timestamp.strftime("%Y-%m-%d %H:%M:%S") if log.timestamp else '-' }}</td>
+
             <td>
               <a href="/vip_logs/{{ log.id }}/edit" class="btn btn-warning btn-circle btn-sm" title="Edit">
                 <i class="fas fa-pencil-alt"></i>
               </a>
 
-              <!-- Tombol Hapus -->
-              <form method="post" action="/vip_logs/{{ log.id }}/delete" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus file ini?');">
+              <form method="post" action="/vip_logs/{{ log.id }}/delete" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus log ini?');">
                 <button type="submit" class="btn btn-danger btn-circle btn-sm" title="Hapus">
                   <i class="fas fa-trash"></i>
                 </button>
               </form>
-
             </td>
           </tr>
           {% endfor %}
@@ -48,29 +56,31 @@
 </div>
 {% endblock %}
 
+
+
 {% block scripts %}
 <script>
-  $(document).ready(function () {
-  $('#viplogsTable').DataTable({
-    "language": {
-      "search": "Cari:",
-      "lengthMenu": "Tampilkan _MENU_ entri per halaman",
-      "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-      "paginate": {
-        "first": "Awal",
-        "last": "Akhir",
-        "next": "Berikutnya",
-        "previous": "Sebelumnya"
-      },
-      "zeroRecords": "Tidak ada data ditemukan"
-    },
-    "pageLength": 10,
-    "lengthMenu": [5, 10, 25, 50, 100],
-    "order": [[0, "desc"]]  // <<< ini men-set kolom pertama (ID) descending
-  });
+    $(document).ready(function () {
+        $('#viplogsTable').DataTable({
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "Berikutnya",
+                    "previous": "Sebelumnya"
+                },
+                "zeroRecords": "Tidak ada data ditemukan"
+            },
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100],
+            "order": [[0, "desc"]]  // <<< ini men-set kolom pertama (ID) descending
+        });
 
-    // Aktifkan tooltip Bootstrap
-    $('[data-toggle="tooltip"]').tooltip()
-  });
+        // Aktifkan tooltip Bootstrap
+        $('[data-toggle="tooltip"]').tooltip()
+    });
 </script>
 {% endblock %}
