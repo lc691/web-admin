@@ -30,7 +30,6 @@
                         <th>Message ID</th>
                         <th>Main Title</th>
                         <th>Show ID</th>
-                        <th>PAID</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -67,13 +66,6 @@
                         <td>{{ file.show_file_message_id }}</td>
                         <td>{{ file.main_title }}</td>
                         <td>{{ file.show_id }}</td>
-                        <td class="text-center">
-                            {% if file.is_paid %}
-                            <span style="color: green;">✔</span>
-                            {% else %}
-                            <span style="color: red;">✖</span>
-                            {% endif %}
-                        </td>
                         <td>
                             <!-- Tombol Edit -->
                             <a href="/files/edit/{{ file.id }}?q={{ q }}" class="btn btn-warning btn-circle btn-sm"

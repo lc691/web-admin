@@ -61,7 +61,6 @@ def update_file_handler(
     file_size: int = Form(...),
     main_title: str = Form(...),
     channel_username: str = Form(...),
-    is_paid: str = Form(...),  # ⬅️ TAMBAHAN
     message_id: Optional[str] = Form(None),
     show_id: Optional[str] = Form(None),
     q: Optional[str] = Query(None),
@@ -73,7 +72,6 @@ def update_file_handler(
         file_size=file_size,
         main_title=main_title,
         channel_username=channel_username,
-        is_paid=is_paid,
         message_id=int(message_id) if message_id else None,
         show_id=int(show_id) if show_id else None,
     )

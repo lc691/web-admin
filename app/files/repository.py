@@ -133,7 +133,6 @@ class FileRepository:
         file_size: int,
         main_title: str,
         channel_username: str,
-        is_paid: bool,  # ⬅️ TAMBAHAN
         message_id: Optional[int],
         show_id: Optional[int],
     ) -> None:
@@ -146,7 +145,6 @@ class FileRepository:
                     file_size=%s,
                     main_title=%s,
                     channel_username=%s,
-                    is_paid=%s,
                     message_id=%s,
                     show_id=%s
                 WHERE id=%s
@@ -157,7 +155,6 @@ class FileRepository:
                     file_size,
                     main_title,
                     channel_username,
-                    is_paid,
                     message_id,
                     show_id,
                     file_id,
