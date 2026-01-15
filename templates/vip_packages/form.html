@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h3 mb-3">{{ package and "Edit" or "Tambah" }} Paket VIP</h1>
+
+<form method="post">
+  <div class="form-group">
+    <label>Nama Paket</label>
+    <input type="text" name="paket_name" class="form-control" required
+           value="{{ package.paket_name if package else '' }}" {{ 'readonly' if package }}>
+  </div>
+
+  <div class="form-group">
+    <label>Alias</label>
+    <input type="text" name="alias" class="form-control"
+           value="{{ package.alias if package else '' }}">
+  </div>
+
+  <div class="form-group">
+    <label>Durasi Awal (basic_days)</label>
+    <input type="number" name="basic_days" class="form-control" required
+           value="{{ package.basic_days if package else 0 }}">
+  </div>
+
+  <div class="form-group">
+    <label>Total Durasi (total_days)</label>
+    <input type="number" name="total_days" class="form-control" required
+           value="{{ package.total_days if package else 0 }}">
+  </div>
+
+  <div class="form-group">
+    <label>Label Tampilan (display_label)</label>
+    <input type="text" name="display_label" class="form-control"
+           value="{{ package.display_label if package else '' }}">
+  </div>
+
+  <div class="form-group">
+    <label>Harga</label>
+    <input type="number" name="price" class="form-control"
+           value="{{ package.price if package else '' }}">
+  </div>
+
+  <div class="form-group form-check">
+    <input type="checkbox" name="is_promo_once" class="form-check-input" id="is_promo_once"
+           {% if package and package.is_promo_once %}checked{% endif %}>
+    <label class="form-check-label" for="is_promo_once">Promo Sekali</label>
+  </div>
+
+  <div class="form-group form-check">
+    <input type="checkbox" name="is_active" class="form-check-input" id="is_active"
+           {% if package is none or package.is_active %}checked{% endif %}>
+    <label class="form-check-label" for="is_active">Aktif</label>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Simpan</button>
+  <a href="/vip_packages" class="btn btn-secondary">Batal</a>
+</form>
+{% endblock %}

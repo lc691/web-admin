@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">
+    {{ title }}
+</h1>
+
+<a href="/users/{{ referrer_user_id }}/edit" class="btn btn-sm btn-primary mb-3">
+    👤 Lihat User Referrer
+</a>
+
+<div class="card shadow mb-4">
+    <div class="card-body table-responsive">
+        <table id="referrerTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID Referral</th>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in referrals %}
+                <tr>
+                    <td>{{ r.id }}</td>
+                    <td>{{ r.referred_user_id }}</td>
+                    <td>{{ r.referred_username }}</td>
+                    <td>{{ r.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function () {
+        $('#referrerTable').DataTable({
+            order: [[3, "desc"]],
+            pageLength: 10
+        });
+    });
+</script>
+{% endblock %}

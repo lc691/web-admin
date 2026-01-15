@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Edit Pengguna</h1>
+
+<form method="post" action="/users/{{ user.id }}/edit">
+
+    <!-- USERNAME -->
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-control" value="{{ user.username or '' }}"
+            required>
+    </div>
+
+    <!-- VIP STATUS -->
+    <div class="form-group">
+        <label for="is_vip">Status VIP</label>
+        <select id="is_vip" name="is_vip" class="form-control">
+            <option value="true" {{ 'selected' if user.is_vip else '' }}>Aktif</option>
+            <option value="false" {{ 'selected' if not user.is_vip else '' }}>Nonaktif</option>
+        </select>
+    </div>
+
+    <!-- VIP EXPIRED -->
+    <div class="form-group">
+        <label for="vip_expired">VIP Expired</label>
+        <input type="datetime-local" id="vip_expired" name="vip_expired" class="form-control"
+            value="{{ user.vip_expired.strftime('%Y-%m-%dT%H:%M') if user.vip_expired else '' }}">
+        <small class="form-text text-muted">
+            Kosongkan jika non-VIP
+        </small>
+    </div>
+
+    <!-- ACTIVE STATUS -->
+    <div class="form-group">
+        <label for="is_active">Status Akun</label>
+        <select id="is_active" name="is_active" class="form-control">
+            <option value="true" {{ 'selected' if user.is_active else '' }}>Aktif</option>
+            <option value="false" {{ 'selected' if not user.is_active else '' }}>Nonaktif</option>
+        </select>
+    </div>
+
+    <!-- ACTION -->
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Simpan Perubahan
+        </button>
+        <a href="/users" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Batal
+        </a>
+    </div>
+
+</form>
+{% endblock %}
+
+<script>
+    document.getElementById('is_vip').addEventListener('change', function () {
+        if (this.value === 'false') {
+            document.getElementById('vip_expired').value = '';
+        }
+    });
+</script>

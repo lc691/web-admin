@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-4">🏆 Affiliate Leaderboard</h3>
+
+<!-- ========================= -->
+<!-- SUMMARY -->
+<!-- ========================= -->
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h6>Total Affiliate</h6>
+                <h3>{{ leaderboard | length }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h6>Total Komisi</h6>
+                <h4>
+                    Rp {{
+                    "{:,.0f}"
+                    .format(leaderboard | sum(attribute="total_commission"))
+                    .replace(",", ".")
+                    }}
+                </h4>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- CHART -->
+<!-- ========================= -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <canvas id="leaderboardChart" height="120"></canvas>
+    </div>
+</div>
+
+<!-- ========================= -->
+<!-- TABLE -->
+<!-- ========================= -->
+<div class="card shadow">
+    <div class="card-body table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Affiliate ID</th>
+                    <th>Total Referral</th>
+                    <th>Total Komisi</th>
+                    <th>Last Activity</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for a in leaderboard %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+
+                    <td>
+                        <a href="/affiliate/transactions/referrer/{{ a.referrer_user_id }}">
+                            {{ a.referrer_user_id }}
+                        </a>
+                    </td>
+
+                    <td>{{ a.total_referral }}</td>
+
+                    <td class="fw-bold text-success">
+                        Rp {{ "{:,.0f}".format(a.total_commission).replace(",", ".") }}
+                    </td>
+
+                    <td>
+                        {{ a.last_activity.strftime("%d-%m-%Y %H:%M") if a.last_activity else "-" }}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">
+                        Belum ada data affiliate
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const ctx = document.getElementById("leaderboardChart");
+        if (!ctx) return;
+
+        new Chart(ctx.getContext("2d"), {
+            type: "bar",
+            data: {
+                labels: [
+                    {% for a in leaderboard %}
+                    "{{ a.referrer_user_id }}"{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            ],
+        datasets: [{
+            label: "Total Komisi",
+            data: [
+                {% for a in leaderboard %}
+                        {{ a.total_commission }}{% if not loop.last %}, {% endif %}
+    {% endfor %}
+                ],
+    backgroundColor: "rgba(54, 162, 235, 0.7)",
+        borderRadius: 6
+            }]
+        },
+    options: {
+        responsive: true,
+            plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: ctx => "Rp " + ctx.raw.toLocaleString("id-ID")
+                }
+            }
+        },
+        scales: {
+            y: {
+                ticks: {
+                    callback: value =>
+                        "Rp " + value.toLocaleString("id-ID")
+                }
+            }
+        }
+    }
+    });
+
+});
+</script>
+{% endblock %}

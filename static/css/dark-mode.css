@@ -1,0 +1,399 @@
+/* ========== DARK MODE - SB ADMIN 2 CUSTOM ========== */
+
+body.dark-mode {
+  background-color: #1b1d25 !important;
+  color: #e4e6eb !important;
+}
+
+/* Navbar */
+.dark-mode .navbar,
+.dark-mode .topbar {
+  background-color: #232735 !important;
+  color: #e4e6eb !important;
+  border-bottom: 1px solid #2e3241;
+}
+
+/* Sidebar */
+.dark-mode .sidebar {
+  background-color: #232735 !important;
+}
+.dark-mode .sidebar .nav-item .nav-link,
+.dark-mode .sidebar .collapse-inner a {
+  color: #d0d3dc !important;
+}
+.dark-mode .sidebar .nav-item.active .nav-link,
+.dark-mode .sidebar .nav-item .nav-link:hover {
+  background-color: #2e3241 !important;
+  color: #ffffff !important;
+}
+.dark-mode .sidebar .collapse-inner {
+  background-color: #2a2e3a !important;
+  border-radius: 6px;
+}
+
+/* Cards */
+.dark-mode .card {
+  background-color: #262a36 !important;
+  color: #e4e6eb !important;
+  border: 1px solid #2e3241;
+}
+.dark-mode .card-header {
+  background-color: #2a2e3a !important;
+  border-bottom: 1px solid #353849;
+}
+
+/* Tables (DataTables support) */
+.dark-mode table {
+  color: #e4e6eb !important;
+}
+.dark-mode table.dataTable tbody tr {
+  background-color: #2b2f3a !important;
+}
+.dark-mode table.dataTable tbody tr:hover {
+  background-color: #34394b !important;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: #ccc !important;
+  border: none !important;
+  background: transparent !important;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: #34394b !important;
+  color: white !important;
+}
+
+/* Buttons */
+.dark-mode .btn {
+  border: none;
+}
+.dark-mode .btn-primary {
+  background-color: #3b82f6 !important;
+}
+.dark-mode .btn-secondary {
+  background-color: #475569 !important;
+}
+.dark-mode .btn-danger {
+  background-color: #ef4444 !important;
+}
+.dark-mode .btn-success {
+  background-color: #22c55e !important;
+}
+
+/* Forms */
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  background-color: #2e3241 !important;
+  color: #e4e6eb !important;
+  border: 1px solid #3a3f52 !important;
+}
+.dark-mode input:focus,
+.dark-mode select:focus,
+.dark-mode textarea:focus {
+  border-color: #3b82f6 !important;
+  background-color: #353849 !important;
+  color: #fff !important;
+}
+
+/* Badges, alerts, text, dan lain-lain */
+.dark-mode .badge {
+  filter: brightness(0.9);
+}
+.dark-mode .alert {
+  background-color: #2b2f3a !important;
+  border: 1px solid #3a3f52;
+  color: #e4e6eb;
+}
+
+/* Scrollbar */
+.dark-mode ::-webkit-scrollbar {
+  width: 8px;
+}
+.dark-mode ::-webkit-scrollbar-thumb {
+  background-color: #3a3f52;
+  border-radius: 10px;
+}
+.dark-mode ::-webkit-scrollbar-track {
+  background-color: #232735;
+}
+
+/* Toggle icon transition */
+#darkToggle i {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.dark-mode #darkToggle i {
+  color: #facc15;
+  transform: rotate(180deg);
+}
+
+/* Hover effect on links */
+.dark-mode a {
+  color: #93c5fd !important;
+}
+.dark-mode a:hover {
+  color: #60a5fa !important;
+}
+
+/* Footer */
+.dark-mode footer.sticky-footer {
+  background-color: #232735 !important;
+  color: #9ca3af !important;
+}
+
+
+/* ====== FIX untuk Sidebar SB Admin 2 ====== */
+
+/* Ganti warna gradient sidebar saat dark mode aktif */
+.dark-mode .sidebar.bg-gradient-primary {
+  background: linear-gradient(180deg, #1f2937 10%, #111827 100%) !important;
+  color: #e4e6eb !important;
+}
+
+/* Hover dan active state */
+.dark-mode .sidebar .nav-item .nav-link:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .sidebar .nav-item.active .nav-link {
+  background-color: #4b5563 !important;
+  color: #ffffff !important;
+}
+
+/* Divider line */
+.dark-mode .sidebar hr.sidebar-divider {
+  border-top: 1px solid #2e3241 !important;
+}
+
+/* Sidebar heading text */
+.dark-mode .sidebar-heading {
+  color: #9ca3af !important;
+}
+
+/* Nav text & icon */
+.dark-mode .sidebar .nav-link i,
+.dark-mode .sidebar .nav-link span {
+  color: #d1d5db !important;
+}
+
+
+/* ====== CONTENT AREA ====== */
+
+/* Warna background utama area konten */
+.dark-mode #content-wrapper,
+.dark-mode #content,
+.dark-mode .container-fluid {
+  background-color: #1b1d25 !important;
+  color: #e4e6eb !important;
+}
+
+/* Card dan box di dalam content */
+.dark-mode .card {
+  background-color: #262a36 !important;
+  border: 1px solid #2e3241 !important;
+  color: #e4e6eb !important;
+}
+.dark-mode .card-header {
+  background-color: #2a2e3a !important;
+  border-bottom: 1px solid #353849 !important;
+}
+
+/* Text dan heading di dalam konten */
+.dark-mode h1, 
+.dark-mode h2, 
+.dark-mode h3, 
+.dark-mode h4, 
+.dark-mode h5, 
+.dark-mode h6,
+.dark-mode p,
+.dark-mode span,
+.dark-mode label,
+.dark-mode th,
+.dark-mode td {
+  color: #e4e6eb !important;
+}
+
+/* Table borders */
+.dark-mode table {
+  border-color: #353849 !important;
+}
+.dark-mode table.dataTable thead th {
+  background-color: #2a2e3a !important;
+  color: #f3f4f6 !important;
+}
+.dark-mode table.dataTable tbody tr {
+  background-color: #2b2f3a !important;
+}
+.dark-mode table.dataTable tbody tr:hover {
+  background-color: #34394b !important;
+}
+
+/* Forms (input, select, textarea) */
+.dark-mode input.form-control,
+.dark-mode select.form-control,
+.dark-mode textarea.form-control {
+  background-color: #2e3241 !important;
+  border: 1px solid #3a3f52 !important;
+  color: #e4e6eb !important;
+}
+.dark-mode input.form-control:focus,
+.dark-mode select.form-control:focus,
+.dark-mode textarea.form-control:focus {
+  background-color: #353849 !important;
+  border-color: #3b82f6 !important;
+  color: #fff !important;
+}
+
+/* Button di dalam konten */
+.dark-mode .btn {
+  border: none;
+}
+.dark-mode .btn-primary {
+  background-color: #3b82f6 !important;
+}
+.dark-mode .btn-success {
+  background-color: #22c55e !important;
+}
+.dark-mode .btn-danger {
+  background-color: #ef4444 !important;
+}
+
+/* Alert & badge */
+.dark-mode .alert {
+  background-color: #2b2f3a !important;
+  border: 1px solid #3a3f52 !important;
+  color: #e4e6eb !important;
+}
+.dark-mode .badge {
+  filter: brightness(0.9);
+}
+
+
+/* ====== DATATABLES DARK MODE ====== */
+
+.dark-mode .dataTables_wrapper {
+  color: #e4e6eb !important;
+}
+
+/* Table header */
+.dark-mode table.dataTable thead th {
+  background-color: #2a2e3a !important;
+  color: #f3f4f6 !important;
+  border-bottom: 1px solid #3a3f52 !important;
+}
+
+/* Table body */
+.dark-mode table.dataTable tbody tr {
+  background-color: #2b2f3a !important;
+}
+.dark-mode table.dataTable tbody tr:hover {
+  background-color: #34394b !important;
+}
+
+/* Pagination */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: #e4e6eb !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: #34394b !important;
+  color: #fff !important;
+  border-radius: 5px;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: #3b82f6 !important;
+  color: #fff !important;
+  border-radius: 5px;
+}
+
+/* Dropdown “show entries” */
+.dark-mode .dataTables_length select {
+  background-color: #2e3241 !important;
+  color: #e4e6eb !important;
+  border: 1px solid #3a3f52 !important;
+}
+
+/* Search box */
+.dark-mode .dataTables_filter input {
+  background-color: #2e3241 !important;
+  border: 1px solid #3a3f52 !important;
+  color: #e4e6eb !important;
+  border-radius: 5px;
+}
+.dark-mode .dataTables_filter input:focus {
+  background-color: #353849 !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Info text */
+.dark-mode .dataTables_info {
+  color: #9ca3af !important;
+}
+
+/* Table borders */
+.dark-mode table.dataTable {
+  border-color: #353849 !important;
+}
+.dark-mode table.dataTable td, 
+.dark-mode table.dataTable th {
+  border-color: #353849 !important;
+}
+
+
+/* ====== DATATABLES PAGINATION MODERN DARK ====== */
+
+.dark-mode .dataTables_wrapper .dataTables_paginate {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* Tombol umum */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: #93c5fd !important;
+  border: none !important;
+  background-color: transparent !important;
+  border-radius: 8px;
+  margin: 0 2px;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+}
+
+/* Aktif */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 0 6px rgba(59,130,246,0.4);
+}
+
+/* Tombol previous/next */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.previous,
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+  color: #93c5fd !important;
+  font-weight: 500;
+}
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover,
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.next:hover {
+  background-color: #374151 !important;
+  color: #fff !important;
+}
+
+/* Disabled state */
+.dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+  color: #6b7280 !important;
+  background: transparent !important;
+  cursor: not-allowed !important;
+}
+
+/* Hilangkan border putih default Bootstrap */
+.dark-mode .pagination .page-item .page-link {
+  background: transparent !important;
+  border: none !important;
+}

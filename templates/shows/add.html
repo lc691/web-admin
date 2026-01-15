@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post" action="/shows/add">
+    <div class="mb-3">
+        <label for="title" class="form-label">Judul</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="sinopsis" class="form-label">Sinopsis</label>
+        <textarea class="form-control" id="sinopsis" name="sinopsis"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="genre" class="form-label">Genre</label>
+        <input type="text" class="form-control" id="genre" name="genre">
+    </div>
+
+    <!-- ✅ FIELD BARU: SOURCE -->
+    <div class="mb-3">
+        <label class="form-label">Source</label>
+        <select name="source" class="form-control">
+            {% set source_options = [
+            "Dramabox",
+            "Netshort",
+            "ReelShort",
+            "Dramawave",
+            "Melolo",
+            "Stardust",
+            "Iqiyi",
+            "GoodShort",
+            "BiliTV",
+            "Moboreels",
+            "RapidTV",
+            "Shortmax",
+            "Dotdrama",
+
+            ] %}
+            {% for src in source_options %}
+            <option value="{{ src }}" {% if show and show.source==src %}selected{% endif %}>{{ src }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <!-- END SOURCE -->
+
+    <div class="mb-3">
+        <label for="hashtags" class="form-label">Hashtags</label>
+        <input type="text" class="form-control" id="hashtags" name="hashtags">
+    </div>
+
+    <div class="mb-3">
+        <label for="thumbnail_url" class="form-label">Thumbnail URL</label>
+        <input type="url" class="form-control" id="thumbnail_url" name="thumbnail_url">
+    </div>
+
+    <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" id="is_adult" name="is_adult" value="1">
+        <label class="form-check-label" for="is_adult">Konten Dewasa</label>
+    </div>
+
+    <button type="submit" class="btn btn-success">Simpan</button>
+    <a href="/shows" class="btn btn-danger">Batal</a>
+</form>
+{% endblock %}

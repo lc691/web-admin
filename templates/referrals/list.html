@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-body table-responsive">
+        <table id="referralTable" class="table table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Referrer ID</th>
+                    <th>Referrer Username</th>
+                    <th>Referred ID</th>
+                    <th>Referred Username</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in referrals %}
+                <tr>
+                    <td>{{ r.id }}</td>
+                    <td>{{ r.referrer_user_id }}</td>
+                    <td>{{ r.referrer_username }}</td>
+                    <td>{{ r.referred_user_id }}</td>
+                    <td>{{ r.referred_username }}</td>
+                    <td>{{ r.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('#referralTable').DataTable({
+            pageLength: 10,
+            order: [[5, "desc"]],
+            language: {
+                search: "Cari:",
+                zeroRecords: "Tidak ada data referral"
+            }
+        });
+    });
+</script>
+{% endblock %}

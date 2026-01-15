@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-body table-responsive">
+        <table id="commissionTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Upline</th>
+                    <th>Downline</th>
+                    <th>Paket</th>
+                    <th>Harga</th>
+                    <th>Komisi</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in commissions %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>
+                        {{ c.upline_username or c.upline_user_id }}
+                    </td>
+                    <td>
+                        {{ c.downline_username or c.downline_user_id }}
+                    </td>
+                    <td>{{ c.paket_name }}</td>
+                    <td>
+                        Rp {{ "{:,}".format(c.price) }}
+                    </td>
+                    <td>
+                        <span class="badge badge-success">
+                            Rp {{ "{:,}".format(c.commission) }}
+                        </span>
+                    </td>
+                    <td>{{ c.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function () {
+        $('#commissionTable').DataTable({
+            order: [[6, "desc"]],
+            pageLength: 25,
+            language: {
+                search: "Cari:",
+                zeroRecords: "Tidak ada data komisi"
+            }
+        });
+    });
+</script>
+{% endblock %}

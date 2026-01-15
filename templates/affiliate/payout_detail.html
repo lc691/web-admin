@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-3">📦 Payout Batch #{{ batch.id }}</h3>
+
+<div class="mb-3">
+    <b>Periode:</b> {{ batch.period_start }} → {{ batch.period_end }} <br>
+    <b>Status:</b>
+    {% if batch.status == 'paid' %}
+    <span class="badge bg-success">PAID</span>
+    {% else %}
+    <span class="badge bg-warning text-dark">{{ batch.status.upper() }}</span>
+    {% endif %}
+</div>
+
+{% if batch.status != 'paid' %}
+<form method="post" action="/affiliate/payouts/{{ batch.id }}/paid">
+    <button class="btn btn-success mb-3" onclick="return confirm('Tandai batch ini sebagai PAID?')">
+        ✅ Mark as Paid
+    </button>
+</form>
+{% endif %}
+
+<div class="card shadow">
+    <div class="card-body table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Affiliate ID</th>
+                    <th>Total Transaksi</th>
+                    <th>Total Komisi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in details %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>
+                        <a href="/affiliate/transactions/referrer/{{ a.referrer_user_id }}">
+                            {{ a.referrer_user_id }}
+                        </a>
+                    </td>
+                    <td>{{ a.total_tx }}</td>
+                    <td class="fw-bold text-success">
+                        Rp {{ "{:,.0f}".format(a.total_commission).replace(",", ".") }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

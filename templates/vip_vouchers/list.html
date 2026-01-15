@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">Daftar Voucher VIP</h1>
+
+<a href="/vip_vouchers/new" class="btn btn-primary mb-3">
+  <i class="fas fa-plus-circle mr-1"></i> Tambah Voucher
+</a>
+
+<div class="table-responsive">
+`<table class="table table-bordered" id="vipVouchersTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Kode</th>
+            <th>Durasi (hari)</th>
+            <th>Sudah Dipakai</th>
+            <th>Kedaluwarsa</th>
+            <th>Dibuat Oleh</th>
+            <th>Dipakai Oleh</th>
+            <th>Tanggal Dibuat</th>
+            <th>Tanggal Dipakai</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for v in vouchers %}
+        <tr>
+            <td>{{ v.code }}</td>
+            <td>{{ v.duration_days }}</td>
+            <td>
+                {% if v.is_used %}
+                    <span class="badge badge-success">Ya</span>
+                {% else %}
+                    <span class="badge badge-secondary">Belum</span>
+                {% endif %}
+            </td>
+            <td>{{ v.expires_at or '-' }}</td>
+            <td>{{ v.created_by or '-' }}</td>
+            <td>{{ v.used_by or '-' }}</td>
+            <td>{{ v.created_at }}</td>
+            <td>{{ v.used_at or '-' }}</td>
+            <td>
+                <a href="/vip_vouchers/{{ v.code }}/edit" class="btn btn-sm btn-warning btn-circle" title="Edit">
+                  <i class="fas fa-pencil-alt"></i>
+                </a>
+                <form action="/vip_vouchers/{{ v.code }}/delete" method="post" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus voucher ini?');">
+                  <button type="submit" class="btn btn-sm btn-danger btn-circle" title="Hapus">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#vipVouchersTable').DataTable({
+      "language": {
+        "search": "Cari:",
+        "lengthMenu": "Tampilkan _MENU_ entri",
+        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        "paginate": {
+          "first": "Awal",
+          "last": "Akhir",
+          "next": "Berikutnya",
+          "previous": "Sebelumnya"
+        },
+        "zeroRecords": "Tidak ada data ditemukan",
+      }
+    });
+  });
+</script>
+{% endblock %}

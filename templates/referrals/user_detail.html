@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+<div class="card shadow">
+    <div class="card-body">
+
+        <p>
+            <strong>Referrer User ID:</strong>
+            {{ referral.referrer_user_id }}
+        </p>
+
+        <p>
+            <strong>Referrer Username:</strong>
+            {{ referral.referrer_username }}
+        </p>
+
+        <p>
+            <strong>Tanggal Referral:</strong>
+            {{ referral.created_at }}
+        </p>
+
+        <a href="/users/{{ referral.referrer_user_id }}/edit" class="btn btn-primary btn-sm">
+            👤 Lihat User Referrer
+        </a>
+
+        <a href="/referrals" class="btn btn-secondary btn-sm">
+            Kembali
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

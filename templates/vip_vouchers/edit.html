@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-4 text-gray-800">Edit Voucher</h1>
+
+<form method="post" action="/vip_vouchers/{{ voucher.code }}/edit">
+  <div class="form-group">
+    <label for="code">Kode Voucher</label>
+    <input type="text" class="form-control" id="code" name="code" value="{{ voucher.code }}" readonly>
+  </div>
+
+  <div class="form-group">
+    <label for="duration_days">Durasi (hari)</label>
+    <input type="number" class="form-control" id="duration_days" name="duration_days" value="{{ voucher.duration_days }}" required>
+  </div>
+
+  <div class="form-group">
+    <label for="is_used">Sudah digunakan?</label>
+    <select class="form-control" id="is_used" name="is_used">
+      <option value="false" {% if not voucher.is_used %}selected{% endif %}>Belum</option>
+      <option value="true" {% if voucher.is_used %}selected{% endif %}>Sudah</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="expires_at">Kadaluarsa</label>
+    <input type="datetime-local" class="form-control" id="expires_at" name="expires_at" value="{{ voucher.expires_at|default('', true)|replace(' ', 'T') }}">
+  </div>
+
+  <div class="form-group">
+    <label for="created_by">Dibuat oleh</label>
+    <input type="text" class="form-control" id="created_by" name="created_by" value="{{ voucher.created_by }}">
+  </div>
+
+  <div class="form-group">
+    <label for="batch_uuid">Batch UUID</label>
+    <input type="text" class="form-control" id="batch_uuid" name="batch_uuid" value="{{ voucher.batch_uuid }}">
+  </div>
+
+  <div class="form-group">
+    <label for="used_by">Digunakan oleh (User ID)</label>
+    <input type="number" class="form-control" id="used_by" name="used_by" value="{{ voucher.used_by }}">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+  <a href="/vip_vouchers" class="btn btn-secondary">Batal</a>
+</form>
+{% endblock %}

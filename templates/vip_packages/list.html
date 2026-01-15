@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">VIP Packages</h1>
+
+<a href="/vip_packages/new" class="btn btn-primary mb-3">
+  <i class="fas fa-plus-circle mr-1"></i> Tambah Paket
+</a>
+
+<div class="card shadow mb-4">
+  <div class="card-body table-responsive">
+    <table class="table table-bordered" id="vipPackagesTable" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Paket</th>
+          <th>Alias</th>
+          <th>Durasi</th>
+          <th>Harga</th>
+          <th>Promo</th>
+          <th>Status</th>
+          <th>Label</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pkg in packages %}
+        <tr>
+          <td><b>{{ pkg.paket_name }}</b></td>
+          <td>{{ pkg.alias or '-' }}</td>
+          <td>{{ pkg.basic_days }} / {{ pkg.total_days }} hari</td>
+          <td>{{ pkg.price or '-' }}</td>
+          <td>
+            {% if pkg.is_promo_once %}
+              <span class="badge badge-warning">Sekali</span>
+            {% else %}
+              <span class="badge badge-secondary">-</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if pkg.is_active %}
+              <span class="badge badge-success">Aktif</span>
+            {% else %}
+              <span class="badge badge-danger">Nonaktif</span>
+            {% endif %}
+          </td>
+          <td>{{ pkg.display_label or '-' }}</td>
+          <td>
+            <a href="/vip_packages/{{ pkg.paket_name }}/edit" class="btn btn-sm btn-warning btn-circle" title="Edit">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+            <form action="/vip_packages/{{ pkg.paket_name }}/delete" method="post" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus paket ini?');">
+              <button type="submit" class="btn btn-sm btn-danger btn-circle" title="Hapus">
+                <i class="fas fa-trash"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#vipPackagesTable').DataTable({
+      "language": {
+        "search": "Cari:",
+        "lengthMenu": "Tampilkan _MENU_ entri",
+        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        "paginate": {
+          "first": "Awal",
+          "last": "Akhir",
+          "next": "Berikutnya",
+          "previous": "Sebelumnya"
+        },
+        "zeroRecords": "Tidak ada data ditemukan",
+      }
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,288 @@
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    {# ================= BRAND ================= #}
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Admin Panel</div>
+    </a>
+
+    <hr class="sidebar-divider my-0">
+
+    {# ================= DASHBOARD ================= #}
+    <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+        <a class="nav-link" href="/">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider">
+
+    {% set path = request.url.path %}
+
+    {# ================= ADMIN TOOLS ================= #}
+    <div class="sidebar-heading">Admin Tools</div>
+
+    {% set admin_active = path.startswith('/admin') or path.startswith('/admins') %}
+    <li class="nav-item {% if admin_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuAdmin"
+            aria-expanded="{{ 'true' if admin_active else 'false' }}">
+            <i class="fas fa-user-shield fa-fw"></i>
+            <span>Admin Management</span>
+        </a>
+
+        <div id="menuAdmin" class="collapse {% if admin_active %}show{% endif %}" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Admin Controls</h6>
+
+                <a class="collapse-item {% if path == '/admins' %}active{% endif %}" href="/admins">
+                    List Admin
+                </a>
+
+                <a class="collapse-item {% if path == '/admin/add' %}active{% endif %}" href="/admin/add">
+                    Tambah Admin
+                </a>
+            </div>
+        </div>
+    </li>
+
+    {# ================= USER TOOLS ================= #}
+    <div class="sidebar-heading">User Tools</div>
+
+    {% set user_active = path == '/users' %}
+    <li class="nav-item {% if user_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuUsers"
+            aria-expanded="{{ 'true' if user_active else 'false' }}">
+            <i class="fas fa-users fa-fw"></i>
+            <span>User Management</span>
+        </a>
+
+        <div id="menuUsers" class="collapse {% if user_active %}show{% endif %}" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+
+                <a class="collapse-item {% if not request.query_params.get('filter') %}active{% endif %}" href="/users">
+                    📋 Semua Pengguna
+                </a>
+
+                <a class="collapse-item {% if request.query_params.get('filter') == 'vip' %}active{% endif %}"
+                    href="/users?filter=vip">
+                    ⭐ Pengguna VIP
+                </a>
+
+                <a class="collapse-item {% if request.query_params.get('filter') == 'nonvip' %}active{% endif %}"
+                    href="/users?filter=nonvip">
+                    👤 Non-VIP
+                </a>
+
+                <a class="collapse-item {% if request.query_params.get('filter') == 'trial' %}active{% endif %}"
+                    href="/users?filter=trial">
+                    🎁 Trial
+                </a>
+
+                <a class="collapse-item {% if request.query_params.get('filter') == 'affiliate' %}active{% endif %}"
+                    href="/users?filter=affiliate">
+                    🔗 Referral
+                </a>
+
+            </div>
+        </div>
+    </li>
+
+    {# ================= VIP MANAGEMENT ================= #}
+
+    {% set path = request.url.path %}
+
+    <div class="sidebar-heading">VIP Management</div>
+
+    {% set vip_active = path.startswith('/vip_packages')
+    or path.startswith('/vip_vouchers')
+    or path.startswith('/vip_logs')
+    or path.startswith('/donation_logs')
+    %}
+
+    <li class="nav-item {% if vip_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuVip"
+            aria-expanded="{{ 'true' if vip_active else 'false' }}">
+            <i class="fas fa-crown fa-fw"></i>
+            <span>VIP System</span>
+        </a>
+
+        <div id="menuVip" class="collapse {% if vip_active %}show{% endif %}" data-parent="#accordionSidebar">
+
+            <div class="bg-white py-2 collapse-inner rounded">
+
+                <h6 class="collapse-header">
+                    <i class="fas fa-star text-warning mr-1"></i>
+                    VIP Controls
+                </h6>
+
+                <!-- VIP Logs -->
+                <a class="collapse-item {% if path.startswith('/vip_logs') %}active{% endif %}" href="/vip_logs">
+                    <i class="fas fa-history text-success mr-2"></i>
+                    Aktivasi Logs
+                </a>
+
+                <!-- Donations Logs -->
+                <a class="collapse-item {% if path.startswith('/donation_logs') %}active{% endif %}"
+                    href="/donation_logs">
+                    <i class="fas fa-hand-holding-heart text-success mr-2"></i>
+                    Donation Logs
+                </a>
+
+                <!-- VIP Packages -->
+                <a class="collapse-item {% if path.startswith('/vip_packages') %}active{% endif %}"
+                    href="/vip_packages">
+                    <i class="fas fa-box text-danger mr-2"></i>
+                    VIP Packages
+                </a>
+
+                <!-- VIP Vouchers -->
+                <a class="collapse-item {% if path.startswith('/vip_vouchers') %}active{% endif %}"
+                    href="/vip_vouchers">
+                    <i class="fas fa-ticket-alt text-info mr-2"></i>
+                    VIP Vouchers
+                </a>
+
+            </div>
+        </div>
+    </li>
+
+
+    {# ================= AFFILIATE MANAGEMENT ================= #}
+    <div class="sidebar-heading">
+        Affiliate Management
+    </div>
+
+    {% set affiliate_active = request.url.path.startswith('/referrals')
+    or request.url.path.startswith('/affiliate') %}
+
+    <li class="nav-item {% if affiliate_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuAffiliate"
+            aria-expanded="{{ 'true' if affiliate_active else 'false' }}" aria-controls="menuAffiliate">
+            <i class="fas fa-handshake fa-fw"></i>
+            <span>Affiliate System</span>
+        </a>
+
+        <div id="menuAffiliate" class="collapse {% if affiliate_active %}show{% endif %}"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+
+                {# ================= REFERRALS ================= #}
+                <h6 class="collapse-header"><i class="fas fa-link text-primary mr-1"></i> Referrals</h6>
+
+                <a class="collapse-item {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
+                    🔗 Semua Referral
+                </a>
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/users') 
+                                       or request.url.path.startswith('/referrals/user/') %}active{% endif %}"
+                    href="/referrals/users">
+                    👤 Referral by User
+                </a>
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/referrers') 
+                                       or request.url.path.startswith('/referrals/referrer/') %}active{% endif %}"
+                    href="/referrals/referrers">
+                    🧑‍💼 Referral by Referrer
+                </a>
+                <a class="collapse-item {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}"
+                    href="/referrals/logs">
+                    📜 Referral Logs
+                </a>
+
+                <hr class="dropdown-divider">
+
+                {# ================= AFFILIATE ACTIVITY ================= #}
+                <h6 class="collapse-header"><i class="fas fa-exchange-alt text-info mr-1"></i> Affiliate Activity</h6>
+
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}"
+                    href="/affiliate/leaderboard">
+                    🏆 Leaderboard
+                </a>
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/payouts') %}active{% endif %}"
+                    href="/affiliate/payouts">
+                    📦 Payout Batch
+                </a>
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}"
+                    href="/affiliate/transactions">
+                    💸 Transactions
+                </a>
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}"
+                    href="/affiliate/commission-logs">
+                    🪙 Commission Logs
+                </a>
+
+                <hr class="dropdown-divider">
+
+                {# ================= FINANCE ================= #}
+                <h6 class="collapse-header"><i class="fas fa-wallet text-warning mr-1"></i> Finance</h6>
+
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}"
+                    href="/affiliate/withdraw-requests">
+                    💵 Withdraw Requests
+                </a>
+
+                <hr class="dropdown-divider">
+
+                {# ================= MONITORING ================= #}
+                <h6 class="collapse-header"><i class="fas fa-shield-alt text-danger mr-1"></i> Monitoring & Security
+                </h6>
+
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}"
+                    href="/affiliate/abuse-logs">
+                    🚨 Abuse Logs
+                </a>
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}"
+                    href="/affiliate/admin-actions">
+                    🛠️ Admin Actions
+                </a>
+                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}"
+                    href="/affiliate/admin-audit-logs">
+                    🛡️ Admin Audit Logs
+                </a>
+
+            </div>
+        </div>
+    </li>
+
+
+
+
+    {# ================= FILE MANAGEMENT ================= #}
+    <div class="sidebar-heading">File Management</div>
+
+    {% set files_active = path.startswith('/files') or path.startswith('/shows') or path.startswith('/channel') %}
+    <li class="nav-item {% if files_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuFiles"
+            aria-expanded="{{ 'true' if files_active else 'false' }}">
+            <i class="fas fa-folder-open fa-fw"></i>
+            <span>Files & Shows</span>
+        </a>
+
+        <div id="menuFiles" class="collapse {% if files_active %}show{% endif %}" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+
+                <a class="collapse-item {% if path == '/files' %}active{% endif %}" href="/files">
+                    <i class="fas fa-file-alt mr-2"></i> Daftar Files
+                </a>
+
+                <a class="collapse-item {% if path == '/shows' %}active{% endif %}" href="/shows">
+                    <i class="fas fa-film mr-2"></i> Daftar Shows
+                </a>
+
+                <a class="collapse-item {% if path == '/channel' %}active{% endif %}" href="/channel">
+                    <i class="fas fa-file-alt mr-2"></i> Daftar Channel
+                </a>
+
+            </div>
+        </div>
+    </li>
+
+    <hr class="sidebar-divider d-none d-md-block">
+
+    {# ================= TOGGLER ================= #}
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+</ul>

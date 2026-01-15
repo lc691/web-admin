@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-4">{{ title }}</h3>
+
+<div class="card shadow">
+    <div class="card-body table-responsive">
+
+        {% if users %}
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>User</th>
+                    <th>Referrer</th>
+                    <th>Joined At</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+
+                    <td>
+                        <strong>{{ u.username }}</strong><br>
+                        <small>ID: {{ u.user_id }}</small>
+                    </td>
+
+                    <td>
+                        <strong>{{ u.referrer_name }}</strong><br>
+                        <small>ID: {{ u.referrer_user_id }}</small>
+                    </td>
+
+                    <td>
+                        {{ u.created_at.strftime("%d-%m-%Y %H:%M") }}
+                    </td>
+
+                    <td>
+                        <a class="btn btn-sm btn-info" href="/referrals/referrer/{{ u.referrer_user_id }}">
+                            View Referrer
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% elif referral %}
+        <!-- DETAIL MODE (single user) -->
+        <table class="table table-bordered">
+            <tr>
+                <th>User ID</th>
+                <td>{{ referral.referred_user_id }}</td>
+            </tr>
+            <tr>
+                <th>Referrer</th>
+                <td>
+                    {{ referral.referrer_username }}
+                    (ID: {{ referral.referrer_user_id }})
+                </td>
+            </tr>
+            <tr>
+                <th>Joined At</th>
+                <td>{{ referral.created_at.strftime("%d-%m-%Y %H:%M") }}</td>
+            </tr>
+        </table>
+
+        {% else %}
+        <p class="text-muted text-center">Tidak ada data.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

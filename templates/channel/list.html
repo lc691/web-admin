@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">Channel Management</h1>
+
+<div class="card shadow mb-4">
+  <div class="card-body table-responsive">
+    <table class="table table-bordered" id="channelsTable" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama Variabel</th>
+          <th>Alias</th>
+          <th>Nilai</th>
+          <th>Keterangan</th>
+          <th>Status Aktif</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in channels %}
+        <tr>
+          <td>{{ c.id }}</td>
+          <td>{{ c.nama_variabel }}</td>
+          <td>{{ c.alias or '-' }}</td>
+          <td>{{ c.nilai }}</td>
+          <td>{{ c.keterangan or '-' }}</td>
+          <td>
+            {% if c.is_active %}
+              <span class="badge badge-success">Aktif</span>
+            {% else %}
+              <span class="badge badge-danger">Nonaktif</span>
+            {% endif %}
+          </td>
+          <td>
+            <form action="/channel/set_active" method="post" style="display:inline;">
+              <input type="hidden" name="id" value="{{ c.id }}">
+              <button type="submit" class="btn btn-sm btn-primary btn-circle" title="Set Aktif">
+                <i class="fas fa-check"></i>
+              </button>
+            </form>
+            <a href="/channel/edit/{{ c.id }}" class="btn btn-sm btn-warning btn-circle" title="Edit">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#channelsTable').DataTable({
+      "language": {
+        "search": "Cari:",
+        "lengthMenu": "Tampilkan _MENU_ entri",
+        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        "paginate": {
+          "first": "Awal",
+          "last": "Akhir",
+          "next": "Berikutnya",
+          "previous": "Sebelumnya"
+        },
+        "zeroRecords": "Tidak ada data ditemukan",
+      }
+    });
+  });
+</script>
+{% endblock %}

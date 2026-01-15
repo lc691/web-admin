@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">Daftar Show</h1>
+
+<!-- Tombol Tambah -->
+<a href="/shows/add" class="btn btn-primary mb-3">
+    <i class="fas fa-plus"></i> Tambah Show Baru
+</a>
+
+<!-- Tabel Shows -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="showsTable" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Thumbnail</th>
+                        <th>Judul</th>
+                        <th>Sinopsis</th>
+                        <th>Genre</th>
+                        <th>Source</th>
+                        <th>Hashtags</th>
+                        <th>Dewasa</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for show in shows %}
+                    <tr>
+                        <td>{{ show.id }}</td>
+                        <td>
+                            <img src="{{ show.thumbnail_url or url_for('static', path='images/default-thumb.png') }}"
+                                onerror="this.onerror=null;this.src='{{ url_for('static', path='images/default-thumb.png') }}';"
+                                loading="lazy" width="160" height="90" style="object-fit: cover;">
+
+                        </td>
+
+                        <td>{{ show.title }}</td>
+                        <td style="max-width: 300px;" title="{{ show.sinopsis or 'Tidak tersedia' }}">
+                            {{ (show.sinopsis or 'Tidak tersedia') | truncate(100, True, '...') }}
+                        </td>
+
+                        <td>{{ show.genre or '-' }}</td>
+                        <td>{{ show.source or '-' }}</td> <!-- ✅ tambah ini -->
+                        <td>{{ show.hashtags or '-' }}</td>
+
+                        <td>
+                            {% if show.is_adult %}
+                            <span class="badge badge-danger">18+</span>
+                            {% else %}
+                            <span class="badge badge-success">Umum</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <a href="/shows/edit/{{ show.id }}" class="btn btn-warning btn-circle btn-sm"
+                                data-toggle="tooltip" title="Edit Show">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <a href="/shows/delete/{{ show.id }}" class="btn btn-danger btn-circle btn-sm"
+                                data-toggle="tooltip" title="Hapus Show"
+                                onclick="return confirm('Yakin ingin menghapus show ini?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('#showsTable').DataTable({
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "Berikutnya",
+                    "previous": "Sebelumnya"
+                },
+                "zeroRecords": "Tidak ada data ditemukan"
+            },
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100],
+            "order": [[0, "desc"]]
+        });
+
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+</script>
+{% endblock %}

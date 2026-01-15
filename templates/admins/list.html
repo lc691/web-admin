@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">{{ title }}</h1>
+
+<a href="/admins/add" class="btn btn-primary mb-3">+ Tambah Admin</a>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <div class="table-responsive">
+      <p>Jumlah admin ditemukan: {{ admins|length }}</p>
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Nama</th>
+            <th>Username</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for admin in admins %}
+            <tr>
+              <td>{{ admin.user_id }}</td>
+              <td>{{ admin.first_name }}</td>
+              <td>{{ admin.username }}</td>
+              <td>
+                <a href="/admins/edit/{{ admin.user_id }}" class="btn btn-sm btn-warning">Edit</a>
+                <form method="post" action="/admins/delete/{{ admin.user_id }}" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus admin ini?');">
+                  <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#dataTable').DataTable({
+      "language": {
+        "search": "Cari:",
+        "lengthMenu": "Tampilkan _MENU_ entri",
+        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        "paginate": {
+          "first": "Awal",
+          "last": "Akhir",
+          "next": "Berikutnya",
+          "previous": "Sebelumnya"
+        },
+        "zeroRecords": "Tidak ada data ditemukan",
+      }
+    });
+  });
+</script>
+{% endblock %}

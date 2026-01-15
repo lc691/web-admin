@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-body table-responsive">
+        <table id="metricsTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Referrer ID</th>
+                    <th>Username</th>
+                    <th>Window Start</th>
+                    <th>Jumlah Referral</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in metrics %}
+                <tr>
+                    <td>{{ m.referrer_user_id }}</td>
+                    <td>{{ m.referrer_username or '-' }}</td>
+                    <td>{{ m.window_start }}</td>
+                    <td>
+                        <span class="badge badge-primary">
+                            {{ m.count }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function () {
+        $('#metricsTable').DataTable({
+            order: [[2, "desc"]],
+            pageLength: 25,
+            language: {
+                search: "Cari:",
+                zeroRecords: "Tidak ada data metrics"
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Show</h2>
+    <form action="/shows/edit/{{ show.id }}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Judul</label>
+            <input type="text" name="title" value="{{ show.title }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Sinopsis</label>
+            <textarea name="sinopsis" class="form-control" rows="4">{{ show.sinopsis }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Genre</label>
+            <select name="genre" class="form-control">
+                {% set genre_options = [
+                "🇨🇳 Drama China",
+                "🇺🇸 Drama Barat",
+                "🇰🇷 Drama Korea",
+                "🇯🇵 Drama Jepang",
+                "🇹🇭 Drama Thailand",
+                ] %}
+                {% for g in genre_options %}
+                <option value="{{ g }}" {% if show.genre==g %}selected{% endif %}>{{ g }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- ✅ FIELD BARU: SOURCE -->
+        <div class="mb-3">
+            <label class="form-label">Source</label>
+            <select name="source" class="form-control">
+                {% set source_options = [
+                "Dramabox",
+                "NetShort",
+                "Dramawave",
+                "Melolo",
+                "Stardust",
+                "Iqiyi",
+                "GoodShort",
+                "BiliTV",
+                "ReelShort",
+                "Moboreels",
+                "RapidTV",
+                "Shortmax",
+                "Dotdrama",
+                ] %}
+                {% for src in source_options %}
+                <option value="{{ src }}" {% if show.source==src %}selected{% endif %}>{{ src }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <!-- END SOURCE -->
+
+        <div class="mb-3">
+            <label class="form-label">Hashtags</label>
+            <input type="text" name="hashtags" value="{{ show.hashtags }}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Thumbnail URL</label>
+            <input type="text" name="thumbnail_url" value="{{ show.thumbnail_url or '' }}" class="form-control"
+                placeholder="Kosongkan untuk menghapus thumbnail">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Preview Thumbnail</label><br>
+            {% if show.resolved_thumbnail %}
+            <img src="{{ show.resolved_thumbnail }}" alt="Thumbnail" style="max-width: 200px;">
+            {% else %}
+            <img src="/static/img/placeholder.png" alt="No Thumbnail" style="max-width: 200px; opacity:0.5;">
+            <span class="text-muted">Tidak ada thumbnail</span>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Konten Dewasa?</label>
+            <select name="is_adult" class="form-select">
+                <option value="0" {% if not show.is_adult %}selected{% endif %}>Tidak</option>
+                <option value="1" {% if show.is_adult %}selected{% endif %}>Ya</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <a href="/shows" class="btn btn-secondary">Batal</a>
+    </form>
+</div>
+{% endblock %}

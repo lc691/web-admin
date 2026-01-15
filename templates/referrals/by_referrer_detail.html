@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="mb-4">
+    Referral oleh User {{ referrer_user_id }}
+</h3>
+
+<div class="card shadow">
+    <div class="card-body table-responsive">
+
+        {% if referrals %}
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Referred User</th>
+                    <th>Username</th>
+                    <th>Joined At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in referrals %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+
+                    <td>
+                        <strong>{{ r.referred_user_id }}</strong>
+                    </td>
+
+                    <td>
+                        {{ r.referred_username or "-" }}
+                    </td>
+
+                    <td>
+                        {{ r.created_at.strftime("%d-%m-%Y %H:%M") }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+        <p class="text-muted text-center">
+            User ini belum memiliki referral.
+        </p>
+        {% endif %}
+
+        <a href="/referrals/referrers" class="btn btn-secondary mt-3">
+            ⬅ Back to Referrers
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

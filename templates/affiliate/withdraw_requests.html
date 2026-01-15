@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+
+    <h1 class="h3 mb-4 text-gray-800">
+        {{ title or "Affiliate Withdraw Requests" }}
+    </h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-warning">
+                💸 Affiliate Withdraw Requests
+            </h6>
+        </div>
+
+        <div class="card-body">
+
+            {% if requests %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>User</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Note</th>
+                            <th>Created</th>
+                            <th>Updated</th>
+                            <th width="160">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in requests %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+
+                            <td>
+                                <strong>{{ r.username or r.user_id }}</strong><br>
+                                <small class="text-muted">ID: {{ r.user_id }}</small>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    Rp {{ "{:,.0f}".format(r.amount).replace(",", ".") }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {% if r.status == 'pending' %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                                {% elif r.status == 'approved' %}
+                                <span class="badge bg-success">Approved</span>
+                                {% elif r.status == 'rejected' %}
+                                <span class="badge bg-danger">Rejected</span>
+                                {% else %}
+                                <span class="badge bg-secondary">{{ r.status }}</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {{ r.note or "-" }}
+                            </td>
+
+                            <td>
+                                {{ r.created_at.strftime("%d %b %Y %H:%M") }}
+                            </td>
+
+                            <td>
+                                {{ r.updated_at.strftime("%d %b %Y %H:%M") if r.updated_at else "-" }}
+                            </td>
+
+                            <td>
+                                {% if r.status == "pending" %}
+                                <!-- APPROVE -->
+                                <form method="post" action="/affiliate/withdraw/{{ r.id }}/approve"
+                                    style="display:inline">
+                                    <button class="btn btn-sm btn-success">
+                                        Approve
+                                    </button>
+                                </form>
+
+                                <!-- REJECT -->
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#rejectModal{{ r.id }}">
+                                    Reject
+                                </button>
+
+                                <!-- Reject Modal -->
+                                <div class="modal fade" id="rejectModal{{ r.id }}" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <form method="post" action="/affiliate/withdraw/{{ r.id }}/reject">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">
+                                                        Reject Withdraw #{{ r.id }}
+                                                    </h5>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <textarea name="reason" class="form-control" rows="3"
+                                                        placeholder="Alasan reject" required></textarea>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-danger">
+                                                        Reject
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% else %}
+                                —
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted text-center">
+                Tidak ada withdraw request.
+            </p>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

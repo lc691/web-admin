@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">VIP Logs</h1>
+
+<div class="card shadow mb-4">
+  <div class="card-body table-responsive">
+      <table class="table table-bordered" id="viplogsTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Paket</th>
+            <th>Durasi</th>
+            <th>Mulai VIP</th>
+            <th>Berakhir VIP</th>
+            <th>Keterangan</th>
+            <th>Timestamp</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in logs %}
+          <tr>
+            <td>{{ log.id }}</td>
+            <td>{{ log.target_user_id }}</td>
+            <td>{{ log.username or log.first_name or '-' }}</td>
+            <td>{{ log.paket }}</td>
+
+            <!-- Durasi rinci -->
+            <td>{{ log.durasi_rinci }}</td>
+
+            <!-- Start & End datetime -->
+            <td>{{ log.start_date.strftime("%Y-%m-%d %H:%M:%S") if log.start_date else '-' }}</td>
+            <td>{{ log.expired_baru.strftime("%Y-%m-%d %H:%M:%S") if log.expired_baru else '-' }}</td>
+
+            <td>{{ log.keterangan or '' }}</td>
+            <td>{{ log.timestamp.strftime("%Y-%m-%d %H:%M:%S") if log.timestamp else '-' }}</td>
+
+            <td>
+              <a href="/vip_logs/{{ log.id }}/edit" class="btn btn-warning btn-circle btn-sm" title="Edit">
+                <i class="fas fa-pencil-alt"></i>
+              </a>
+
+              <form method="post" action="/vip_logs/{{ log.id }}/delete" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus log ini?');">
+                <button type="submit" class="btn btn-danger btn-circle btn-sm" title="Hapus">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('#viplogsTable').DataTable({
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "Berikutnya",
+                    "previous": "Sebelumnya"
+                },
+                "zeroRecords": "Tidak ada data ditemukan"
+            },
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100],
+            "order": [[0, "desc"]]  // <<< ini men-set kolom pertama (ID) descending
+        });
+
+        // Aktifkan tooltip Bootstrap
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+</script>
+{% endblock %}
