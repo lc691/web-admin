@@ -1,0 +1,67 @@
+[2025-12-31 09:33:58] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 09:34:05] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 14:41:03] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 14:41:14] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 19:51:28] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 19:51:35] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 19:54:44] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 21, in get_db_connection
+    yield conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 52, in get_dict_cursor
+    yield cursor, conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\app\shows\repository.py", line 8, in list_all
+    cur.execute("""
+  File "C:\Users\ANGGAR WULAN\web-admin-main\.venv\Lib\site-packages\psycopg2\extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[2025-12-31 19:54:44] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 14, in get_db_connection
+    conn = psycopg2.connect(
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\ANGGAR WULAN\web-admin-main\.venv\Lib\site-packages\psycopg2\__init__.py", line 135, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: could not translate host name "ballast.proxy.rlwy.net" to address: Name or service not known
+
+[2025-12-31 19:59:33] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 19:59:42] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 20:04:00] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 20:04:15] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 20:12:16] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 20:12:27] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 21:37:53] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 21:37:58] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 21:39:18] [ERROR] configs.logging_setup: ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 21, in get_db_connection
+    yield conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\db\connect.py", line 52, in get_dict_cursor
+    yield cursor, conn
+  File "C:\Users\ANGGAR WULAN\web-admin-main\app\files\repository.py", line 23, in list_all_with_show_files
+    cur.execute(
+  File "C:\Users\ANGGAR WULAN\web-admin-main\.venv\Lib\site-packages\psycopg2\extras.py", line 146, in execute
+    return super().execute(query, vars)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[2025-12-31 21:39:35] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 21:40:51] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 22:41:55] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 22:42:02] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 22:42:05] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
+[2025-12-31 22:49:16] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2025-12-31 22:49:18] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.

@@ -6,7 +6,7 @@ from psycopg2.extras import RealDictCursor
 from starlette.status import HTTP_302_FOUND
 
 from app.templates import templates
-from db.connect import get_dict_cursor
+from db.connect import get_dict_cursor, get_dict_cursor_dep
 
 router = APIRouter()
 
@@ -49,27 +49,31 @@ def create_vip_package(
     is_active: bool = Form(True),
     display_label: str = Form(None),
     price: int = Form(None),
-    db=Depends(get_dict_cursor),
+    db=Depends(get_dict_cursor_dep),
 ):
-    with db as (cursor, conn):
-        cursor.execute(
-            """
-            INSERT INTO vip_packages (paket_name, alias, basic_days, total_days, is_promo_once,
-                is_active, display_label, price)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """,
-            (
-                paket_name,
-                alias,
-                basic_days,
-                total_days,
-                is_promo_once,
-                is_active,
-                display_label,
-                price,
-            ),
+    cursor, conn = db
+
+    cursor.execute(
+        """
+        INSERT INTO vip_packages (
+            paket_name, alias, basic_days, total_days,
+            is_promo_once, is_active, display_label, price
         )
-        conn.commit()
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """,
+        (
+            paket_name,
+            alias,
+            basic_days,
+            total_days,
+            is_promo_once,
+            is_active,
+            display_label,
+            price,
+        ),
+    )
+    conn.commit()
+
     return RedirectResponse(url="/vip_packages", status_code=HTTP_302_FOUND)
 
 
@@ -145,8 +149,17 @@ def update_vip_package(
 # Delete VIP package
 # ---------------------------
 @router.post("/vip_packages/{paket_name}/delete")
-def delete_vip_package(paket_name: str, db=Depends(get_dict_cursor)):
-    with db as (cursor, conn):
-        cursor.execute("DELETE FROM vip_packages WHERE paket_name = %s", (paket_name,))
-        conn.commit()
-    return RedirectResponse(url="/vip_packages", status_code=HTTP_302_FOUND)
+def delete_vip_package(
+    paket_name: str,
+    db=Depends(get_dict_cursor_dep),
+):
+    cursor, conn = db
+    cursor.execute(
+        "DELETE FROM vip_packages WHERE paket_name = %s",
+        (paket_name,),
+    )
+    conn.commit()
+    return RedirectResponse(
+        url="/vip_packages",
+        status_code=HTTP_302_FOUND,
+    )

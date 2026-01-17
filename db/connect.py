@@ -61,3 +61,19 @@ def get_autocommit_cursor():
         conn.autocommit = True
         with conn.cursor() as cursor:
             yield cursor
+
+
+def get_dict_cursor_dep():
+    conn = psycopg2.connect(
+        host=PGHOST,
+        port=PGPORT,
+        dbname=PGDATABASE,
+        user=PGUSER,
+        password=PGPASSWORD,
+    )
+    cursor = conn.cursor(cursor_factory=DictCursor)
+    try:
+        yield cursor, conn
+    finally:
+        cursor.close()
+        conn.close()
