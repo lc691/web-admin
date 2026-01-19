@@ -19,38 +19,40 @@
             <textarea name="sinopsis" class="form-control" rows="4">{{ show.sinopsis }}</textarea>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Genre</label>
-            <select name="genre" class="form-select" required>
-                {% set genre_options = [
-                "🇨🇳 Drama China",
-                "🇺🇸 Drama Barat",
-                "🇰🇷 Drama Korea",
-                "🇯🇵 Drama Jepang",
-                "🇹🇭 Drama Thailand"
-                ] %}
-                {% for g in genre_options %}
-                <option value="{{ g }}" {{ "selected" if show.genre==g else "" }}>
-                    {{ g }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Genre</label>
+                <select name="genre" class="form-select" required>
+                    {% set genre_options = [
+                    "🇨🇳 Drama China",
+                    "🇺🇸 Drama Barat",
+                    "🇰🇷 Drama Korea",
+                    "🇯🇵 Drama Jepang",
+                    "🇹🇭 Drama Thailand"
+                    ] %}
+                    {% for g in genre_options %}
+                    <option value="{{ g }}" {{ "selected" if show.genre==g else "" }}>
+                        {{ g }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class="mb-3">
-            <label class="form-label">Source</label>
-            <select name="source" class="form-select" required>
-                {% set source_options = [
-                "Dramabox","FlickReels","NetShort","Dramawave","Melolo",
-                "Stardust","Iqiyi","GoodShort","BiliTV","ReelShort",
-                "Moboreels","RapidTV","Shortmax","Dotdrama"
-                ] %}
-                {% for src in source_options %}
-                <option value="{{ src }}" {{ "selected" if show.source==src else "" }}>
-                    {{ src }}
-                </option>
-                {% endfor %}
-            </select>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Source</label>
+                <select name="source" class="form-select" required>
+                    {% set source_options = [
+                    "Dramabox","FlickReels","NetShort","Dramawave","Melolo",
+                    "Stardust","Iqiyi","GoodShort","BiliTV","ReelShort",
+                    "Moboreels","RapidTV","Shortmax","Dotdrama"
+                    ] %}
+                    {% for src in source_options %}
+                    <option value="{{ src }}" {{ "selected" if show.source==src else "" }}>
+                        {{ src }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
 
         <div class="mb-3">
