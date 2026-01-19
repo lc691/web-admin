@@ -1,26 +1,2 @@
-[2026-01-18 01:35:28] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:35:33] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.
-[2026-01-18 01:37:07] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:37:24] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:37:41] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:37:49] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:38:32] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:38:34] [ERROR] configs.logging_setup: [Dashboard Stats] ❌ Gagal mengambil data keseluruhan: 'generator' object does not support the context manager protocol
-Traceback (most recent call last):
-  File "C:\Users\ANGGAR WULAN\web-admin\app\base\routes.py", line 39, in get_dashboard_stats
-    with get_db_cursor() as (cursor, _):
-TypeError: 'generator' object does not support the context manager protocol
-[2026-01-18 01:40:07] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:40:08] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:40:35] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:44:34] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:45:22] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:45:24] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:45:31] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:53:20] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:53:24] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:53:28] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:53:36] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:53:45] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:53:46] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
-[2026-01-18 01:55:09] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2026-01-19 16:52:57] [INFO] configs.logging_setup: ✅ Logger siap dipakai (low-IO mode)
+[2026-01-19 16:53:11] [INFO] configs.logging_setup: [Dashboard Stats] Statistik berhasil diperoleh.

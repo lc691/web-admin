@@ -3,6 +3,8 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Edit Show</h2>
+
+    <!-- ================= EDIT SHOW FORM ================= -->
     <form action="/shows/edit/{{ show.id }}" method="post">
         <div class="mb-3">
             <label class="form-label">Judul</label>
@@ -25,36 +27,28 @@
                 "🇹🇭 Drama Thailand",
                 ] %}
                 {% for g in genre_options %}
-                <option value="{{ g }}" {% if show.genre==g %}selected{% endif %}>{{ g }}</option>
+                <option value="{{ g }}" {% if show.genre==g %}selected{% endif %}>
+                    {{ g }}
+                </option>
                 {% endfor %}
             </select>
         </div>
 
-        <!-- ✅ FIELD BARU: SOURCE -->
         <div class="mb-3">
             <label class="form-label">Source</label>
             <select name="source" class="form-control">
                 {% set source_options = [
-                "Dramabox",
-                "NetShort",
-                "Dramawave",
-                "Melolo",
-                "Stardust",
-                "Iqiyi",
-                "GoodShort",
-                "BiliTV",
-                "ReelShort",
-                "Moboreels",
-                "RapidTV",
-                "Shortmax",
-                "Dotdrama",
+                "Dramabox","FlickReels","NetShort","Dramawave","Melolo","Stardust","Iqiyi",
+                "GoodShort","BiliTV","ReelShort","Moboreels","RapidTV",
+                "Shortmax","Dotdrama",
                 ] %}
                 {% for src in source_options %}
-                <option value="{{ src }}" {% if show.source==src %}selected{% endif %}>{{ src }}</option>
+                <option value="{{ src }}" {% if show.source==src %}selected{% endif %}>
+                    {{ src }}
+                </option>
                 {% endfor %}
             </select>
         </div>
-        <!-- END SOURCE -->
 
         <div class="mb-3">
             <label class="form-label">Hashtags</label>
@@ -70,9 +64,9 @@
         <div class="mb-3">
             <label class="form-label">Preview Thumbnail</label><br>
             {% if show.resolved_thumbnail %}
-            <img src="{{ show.resolved_thumbnail }}" alt="Thumbnail" style="max-width: 200px;">
+            <img src="{{ show.resolved_thumbnail }}" style="max-width:200px;">
             {% else %}
-            <img src="/static/img/placeholder.png" alt="No Thumbnail" style="max-width: 200px; opacity:0.5;">
+            <img src="/static/img/placeholder.png" style="max-width:200px; opacity:0.5;">
             <span class="text-muted">Tidak ada thumbnail</span>
             {% endif %}
         </div>
@@ -88,5 +82,128 @@
         <button type="submit" class="btn btn-primary">Simpan</button>
         <a href="/shows" class="btn btn-secondary">Batal</a>
     </form>
+
+    <!-- ================= IMPORT FILES SECTION ================= -->
+    <hr class="my-4">
+
+    <div class="card border-left-info shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title text-info">🔁 Import Files dari Show Lain</h5>
+            <p class="text-muted">
+                Menyalin semua file dari show lain ke show ini.
+            </p>
+
+            {% if shows|length <= 1 %} <div class="alert alert-warning">
+                Tidak ada show lain yang bisa diimport.
+        </div>
+        {% else %}
+
+        {% if request.query_params.get("error") %}
+        <div class="alert alert-danger">
+            {{ request.query_params.get("error") }}
+        </div>
+        {% endif %}
+
+        <form method="post" action="/shows/{{ show.id }}/import-files"
+            onsubmit="return confirm('Yakin ingin mengimport semua file dari show ini?')">
+
+            <div class="mb-3">
+                <label class="form-label">Source Show</label>
+
+                <select name="source_show_id" class="form-select select-show" required>
+                    {% for s in shows %}
+                    {% if s.id != show.id %}
+                    <option value="{{ s.id }}" data-thumbnail="{{ s.thumbnail_url or '/static/img/placeholder.png' }}">
+                        {{ s.id }} — {{ s.title }}
+                    </option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Message ID</label>
+                <input type="text" id="message_id_input" name="message_id" class="form-control"
+                    placeholder="Contoh: 4669 atau https://t.me/channel/4669" required>
+            </div>
+
+            <button type="submit" class="btn btn-info">
+                <i class="fas fa-copy"></i> Import Files
+            </button>
+        </form>
+
+        {% if request.query_params.get("imported") %}
+        <div class="alert alert-success mt-3">
+            ✅ {{ request.query_params.get("imported") }} file berhasil diimport
+        </div>
+        {% endif %}
+
+        {% endif %}
+    </div>
+
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('message_id_input').addEventListener('input', function () {
+        let val = this.value.trim();
+
+        // Jika URL Telegram
+        const match = val.match(/\/(\d+)(?:\?|$)/);
+
+        if (match) {
+            this.value = match[1]; // ambil angka terakhir
+        }
+
+        // Jika user paste teks campur, ambil angka saja
+        if (/^\D*\d+\D*$/.test(val)) {
+            const nums = val.match(/\d+/g);
+            if (nums) {
+                this.value = nums[nums.length - 1];
+            }
+        }
+    });
+</script>
+
+<script>
+    function formatShowDropdown(option) {
+        if (!option.id) return option.text;
+
+        const thumb = $(option.element).data('thumbnail');
+
+        return $(`
+        <div style="display:flex; align-items:center; gap:12px;">
+            <img src="${thumb}"
+                 style="width:96px; height:54px;
+                        object-fit:cover;
+                        border-radius:6px;
+                        border:1px solid #ddd;"
+                 onerror="this.src='/static/img/placeholder.png'">
+            <div>
+                <div style="font-weight:600;">${option.text}</div>
+            </div>
+        </div>
+    `);
+    }
+
+    function formatShowSelected(option) {
+        if (!option.id) return option.text;
+
+        // selected cukup teks + ID (tanpa thumbnail besar)
+        return option.text;
+    }
+
+    $(document).ready(function () {
+        $('.select-show').select2({
+            width: '100%',
+            placeholder: 'Cari show berdasarkan ID atau judul...',
+            templateResult: formatShowDropdown,   // dropdown list
+            templateSelection: formatShowSelected // selected value
+        });
+    });
+</script>
+
+
 {% endblock %}

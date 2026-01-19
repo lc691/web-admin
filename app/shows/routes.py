@@ -1,21 +1,19 @@
-from fastapi import APIRouter, Request, Form, HTTPException
+from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.templates import templates
-from .service import (
-    list_shows,
-    get_show,
-    create_show,
-    update_show,
-    delete_show,
-)
+
+from .file_import import import_show_files
+from .service import create_show, delete_show, get_show, list_shows, update_show
 from .validators import is_valid_url
 
 router = APIRouter()
 
+
 async def resolve_thumbnail_for_web(thumbnail_url: str | None):
     # web TIDAK download, hanya pass-through
     return thumbnail_url
+
 
 @router.get("/shows", response_class=HTMLResponse)
 async def show_list(request: Request):
@@ -77,22 +75,26 @@ async def create_show_post(
     )
 
 
-
 @router.get("/shows/edit/{show_id}", response_class=HTMLResponse)
 async def edit_show_form(request: Request, show_id: int):
     show = get_show(show_id)
     if not show:
-        raise HTTPException(status_code=404, detail="Show tidak ditemukan")
+        raise HTTPException(status_code=404)
+
+    shows = list_shows()  # ← ini penting
 
     s = dict(show)
-    s["resolved_thumbnail"] = await resolve_thumbnail_for_web(
-        s.get("thumbnail_url")
-    )
+    s["resolved_thumbnail"] = await resolve_thumbnail_for_web(s.get("thumbnail_url"))
 
     return templates.TemplateResponse(
         "shows/edit.html",
-        {"request": request, "show": s},
+        {
+            "request": request,
+            "show": s,
+            "shows": shows,
+        },
     )
+
 
 @router.post("/shows/edit/{show_id}")
 async def update_show_post(
@@ -135,6 +137,27 @@ async def update_show_post(
         status_code=303,
     )
 
+
+@router.post("/shows/{show_id}/import-files")
+async def import_files_post(
+    request: Request,
+    show_id: int,
+    source_show_id: int = Form(...),
+    message_id: int = Form(...),
+):
+    if show_id == source_show_id:
+        raise HTTPException(status_code=400, detail="Source dan target show tidak boleh sama")
+
+    inserted = import_show_files(
+        source_show_id=source_show_id,
+        target_show_id=show_id,
+        message_id=message_id,
+    )
+
+    return RedirectResponse(
+        url=f"/shows/edit/{show_id}?imported={inserted}",
+        status_code=303,
+    )
 
 
 @router.get("/shows/delete/{show_id}")

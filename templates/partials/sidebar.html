@@ -251,32 +251,43 @@
     {# ================= FILE MANAGEMENT ================= #}
     <div class="sidebar-heading">File Management</div>
 
-    {% set files_active = path.startswith('/files') or path.startswith('/shows') or path.startswith('/channel') %}
+    {# aktif jika berada di files / shows / channel #}
+    {% set files_active =
+    path.startswith('/files')
+    or path.startswith('/shows')
+    or path.startswith('/channel')
+    %}
+
     <li class="nav-item {% if files_active %}active{% endif %}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuFiles"
-            aria-expanded="{{ 'true' if files_active else 'false' }}">
+            aria-expanded="{{ 'true' if files_active else 'false' }}" aria-controls="menuFiles">
             <i class="fas fa-folder-open fa-fw"></i>
             <span>Files & Shows</span>
         </a>
 
         <div id="menuFiles" class="collapse {% if files_active %}show{% endif %}" data-parent="#accordionSidebar">
+
             <div class="bg-white py-2 collapse-inner rounded">
 
-                <a class="collapse-item {% if path == '/files' %}active{% endif %}" href="/files">
+                <a class="collapse-item
+                {% if path == '/files' or path.startswith('/files/') %}active{% endif %}" href="/files">
                     <i class="fas fa-file-alt mr-2"></i> Daftar Files
                 </a>
 
-                <a class="collapse-item {% if path == '/shows' %}active{% endif %}" href="/shows">
+                <a class="collapse-item
+                {% if path == '/shows' or path.startswith('/shows/') %}active{% endif %}" href="/shows">
                     <i class="fas fa-film mr-2"></i> Daftar Shows
                 </a>
 
-                <a class="collapse-item {% if path == '/channel' %}active{% endif %}" href="/channel">
-                    <i class="fas fa-file-alt mr-2"></i> Daftar Channel
+                <a class="collapse-item
+                {% if path == '/channel' or path.startswith('/channel/') %}active{% endif %}" href="/channel">
+                    <i class="fas fa-bullhorn mr-2"></i> Daftar Channel
                 </a>
 
             </div>
         </div>
     </li>
+
 
     <hr class="sidebar-divider d-none d-md-block">
 
