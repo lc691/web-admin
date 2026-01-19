@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h3 mb-2 text-gray-800">Daftar File</h1>
+
+<!-- Form Pencarian -->
+<form method="get" action="/files" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Cari nama file..." value="{{ q }}">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Cari</button>
+        </div>
+    </div>
+</form>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="filesTable" class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>File Name</th>
+                        <th>Free</th>
+                        <th>Paid</th>
+                        <th>Added</th>
+                        <th>Channel</th>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th>Message ID</th>
+                        <th>Main Title</th>
+                        <th>Show ID</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if files %}
+                    {% for file in files %}
+                    <tr>
+                        <td>{{ file.id }}</td>
+                        <td class="text-break">{{ file.file_name }}</td>
+                        <td>
+                            {% if file.free_hash %}
+                            <span class="badge badge-success">✓</span>
+                            {% else %}
+                            <span class="badge badge-secondary">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if file.paid_hash %}
+                            <span class="badge badge-success">✓</span>
+                            {% else %}
+                            <span class="badge badge-secondary">-</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ file.date_added.strftime('%Y-%m-%d %H:%M') if file.date_added else '' }}</td>
+                        <td>{{ file.channel_username }}</td>
+                        <td>{{ file.file_type }}</td>
+                        <td>
+                            {% if file.file_size %}
+                            {{ (file.file_size / (1024 * 1024)) | round(2) }} MB
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                        <td>{{ file.show_file_message_id }}</td>
+                        <td>{{ file.main_title }}</td>
+                        <td>{{ file.show_id }}</td>
+                        <td>
+                            <!-- Tombol Edit -->
+                            <a href="/files/edit/{{ file.id }}?q={{ q }}" class="btn btn-warning btn-circle btn-sm"
+                                title="Edit">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <!-- Tombol Hapus -->
+                            <form action="/files/delete/{{ file.id }}" method="post" style="display:inline;"
+                                onsubmit="return confirm('Yakin ingin menghapus file ini?');">
+                                <button type="submit" class="btn btn-danger btn-circle btn-sm" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="12" class="text-center">Tidak ada data ditemukan.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    $(document).ready(function () {
+        $('#filesTable').DataTable({
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "Berikutnya",
+                    "previous": "Sebelumnya"
+                },
+                "zeroRecords": "Tidak ada data ditemukan"
+            },
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100],
+            "order": [[0, "desc"]]  // <<< ini men-set kolom pertama (ID) descending
+        });
+
+        // Aktifkan tooltip Bootstrap
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+</script>
+{% endblock %}

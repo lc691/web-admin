@@ -10,8 +10,11 @@ from app.affiliate.routes import router as affiliate_router
 from app.base.routes import get_dashboard_stats
 from app.channel.routes import router as channel_router
 from app.donation_logs.routes import router as donation_logs_router
-from app.files.routes import router as files_router
 from app.referrals.routes import router as referral_router
+
+# from app.files.routes import router as files_router
+from app.routers.files import router as files_router
+from app.routers.show_files import router as shows_files_router
 from app.shows.routes import router as shows_router
 
 # Template Engine
@@ -30,6 +33,7 @@ app = FastAPI()
 app.include_router(admins_router)
 app.include_router(user_router)
 app.include_router(files_router)
+app.include_router(shows_files_router)
 app.include_router(shows_router)
 app.include_router(vip_user_router)
 app.include_router(vip_logs_router)

@@ -251,12 +251,13 @@
     {# ================= FILE MANAGEMENT ================= #}
     <div class="sidebar-heading">File Management</div>
 
-    {# aktif jika berada di files / shows / channel #}
-    {% set files_active =
-    path.startswith('/files')
-    or path.startswith('/shows')
-    or path.startswith('/channel')
-    %}
+    {# Path helper #}
+    {% set is_files = path.startswith('/files') %}
+    {% set is_show_files = path.startswith('/show_files') %}
+    {% set is_shows = path.startswith('/shows') %}
+    {% set is_channel = path.startswith('/channel') %}
+
+    {% set files_active = is_files or is_show_files or is_shows or is_channel %}
 
     <li class="nav-item {% if files_active %}active{% endif %}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuFiles"
@@ -269,19 +270,24 @@
 
             <div class="bg-white py-2 collapse-inner rounded">
 
-                <a class="collapse-item
-                {% if path == '/files' or path.startswith('/files/') %}active{% endif %}" href="/files">
-                    <i class="fas fa-file-alt mr-2"></i> Daftar Files
+                <a class="collapse-item {% if is_files %}active{% endif %}" href="/files">
+                    <i class="fas fa-file-alt mr-2"></i>
+                    Daftar Files
                 </a>
 
-                <a class="collapse-item
-                {% if path == '/shows' or path.startswith('/shows/') %}active{% endif %}" href="/shows">
-                    <i class="fas fa-film mr-2"></i> Daftar Shows
+                <a class="collapse-item {% if is_show_files %}active{% endif %}" href="/show_files">
+                    <i class="fas fa-link mr-2"></i>
+                    Show Files
                 </a>
 
-                <a class="collapse-item
-                {% if path == '/channel' or path.startswith('/channel/') %}active{% endif %}" href="/channel">
-                    <i class="fas fa-bullhorn mr-2"></i> Daftar Channel
+                <a class="collapse-item {% if is_shows %}active{% endif %}" href="/shows">
+                    <i class="fas fa-film mr-2"></i>
+                    Daftar Shows
+                </a>
+
+                <a class="collapse-item {% if is_channel %}active{% endif %}" href="/channel">
+                    <i class="fas fa-bullhorn mr-2"></i>
+                    Daftar Channel
                 </a>
 
             </div>

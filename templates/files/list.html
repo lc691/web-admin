@@ -1,92 +1,83 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="h3 mb-2 text-gray-800">Daftar File</h1>
+<h1 class="h3 mb-3">Daftar File (Master)</h1>
 
-<!-- Form Pencarian -->
-<form method="get" action="/files" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Cari nama file..." value="{{ q }}">
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="submit">Cari</button>
-        </div>
-    </div>
-</form>
-
-<div class="card shadow mb-4">
+<div class="card shadow">
     <div class="card-body">
         <div class="table-responsive">
-            <table id="filesTable" class="table table-bordered" width="100%" cellspacing="0">
-                <thead>
+            <table id="filesTable" class="table table-bordered table-hover">
+                <thead class="thead-light">
                     <tr>
                         <th>ID</th>
                         <th>File Name</th>
-                        <th>Free</th>
-                        <th>Paid</th>
-                        <th>Added</th>
-                        <th>Channel</th>
-                        <th>Type</th>
-                        <th>Size</th>
-                        <th>Message ID</th>
+                        <th>Akses</th>
                         <th>Main Title</th>
+                        <th>Dipakai</th>
                         <th>Show ID</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% if files %}
-                    {% for file in files %}
+                    {% for f in files %}
                     <tr>
-                        <td>{{ file.id }}</td>
-                        <td class="text-break">{{ file.file_name }}</td>
-                        <td>
-                            {% if file.free_hash %}
-                            <span class="badge badge-success">✓</span>
+                        <td>{{ f.id }}</td>
+                        <td class="text-break">{{ f.file_name }}</td>
+                        <td class="text-center">
+                            {% if f.is_paid %}
+                            <span class="text-success" title="Paid">✅</span>
                             {% else %}
-                            <span class="badge badge-secondary">-</span>
+                            <span class="text-danger" title="Free">⛔️</span>
                             {% endif %}
                         </td>
+                        <td>{{ f.main_title or "-" }}</td>
+
                         <td>
-                            {% if file.paid_hash %}
-                            <span class="badge badge-success">✓</span>
+                            {% if f.show_count > 1 %}
+                            <span class="badge badge-warning">
+                                {{ f.show_count }} shows
+                            </span>
+                            {% elif f.show_count == 1 %}
+                            <span class="badge badge-success">1 show</span>
                             {% else %}
-                            <span class="badge badge-secondary">-</span>
+                            <span class="badge badge-secondary">unused</span>
                             {% endif %}
                         </td>
-                        <td>{{ file.date_added.strftime('%Y-%m-%d %H:%M') if file.date_added else '' }}</td>
-                        <td>{{ file.channel_username }}</td>
-                        <td>{{ file.file_type }}</td>
-                        <td>
-                            {% if file.file_size %}
-                            {{ (file.file_size / (1024 * 1024)) | round(2) }} MB
-                            {% else %}
-                            -
-                            {% endif %}
-                        </td>
-                        <td>{{ file.show_file_message_id }}</td>
-                        <td>{{ file.main_title }}</td>
-                        <td>{{ file.show_id }}</td>
-                        <td>
-                            <!-- Tombol Edit -->
-                            <a href="/files/edit/{{ file.id }}?q={{ q }}" class="btn btn-warning btn-circle btn-sm"
-                                title="Edit">
+                        <td>{{ f.show_id }}</td>
+                        <td class="text-nowrap">
+                            <!-- Tombol Edit (SELALU BOLEH) -->
+                            <a href="/files/edit/{{ f.id }}" class="btn btn-warning btn-circle btn-sm"
+                                title="Edit file (berlaku ke semua show)">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
-                            <!-- Tombol Hapus -->
-                            <form action="/files/delete/{{ file.id }}" method="post" style="display:inline;"
-                                onsubmit="return confirm('Yakin ingin menghapus file ini?');">
-                                <button type="submit" class="btn btn-danger btn-circle btn-sm" title="Hapus">
+
+                            <!-- Tombol Hapus (SELALU BOLEH, TAPI DENGAN PERINGATAN) -->
+                            <form action="/files/delete/{{ f.id }}" method="post" style="display:inline;" onsubmit="
+                                {% if f.show_count > 0 %}
+                                    return confirm(
+                                    '⚠️ File ini dipakai oleh {{ f.show_count }} show.\n\n' +
+                                    'Menghapus file ini akan menghapusnya dari SEMUA show.\n\n' +
+                                    'Yakin ingin melanjutkan?'
+                                    );
+                                {% else %}
+                                    return confirm('Yakin ingin menghapus file ini?');
+                                {% endif %}
+                            ">
+                                <button type="submit" class="btn btn-danger btn-circle btn-sm"
+                                    title="Hapus file (global)">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                         </td>
+
                     </tr>
-                    {% endfor %}
                     {% else %}
                     <tr>
-                        <td colspan="12" class="text-center">Tidak ada data ditemukan.</td>
+                        <td colspan="8" class="text-center text-muted">
+                            Tidak ada data
+                        </td>
                     </tr>
-                    {% endif %}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

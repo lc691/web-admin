@@ -18,10 +18,8 @@
                         <th>ID</th>
                         <th>Thumbnail</th>
                         <th>Judul</th>
-                        <th>Sinopsis</th>
                         <th>Genre</th>
                         <th>Source</th>
-                        <th>Hashtags</th>
                         <th>Dewasa</th>
                         <th>Aksi</th>
                     </tr>
@@ -38,13 +36,9 @@
                         </td>
 
                         <td>{{ show.title }}</td>
-                        <td style="max-width: 300px;" title="{{ show.sinopsis or 'Tidak tersedia' }}">
-                            {{ (show.sinopsis or 'Tidak tersedia') | truncate(100, True, '...') }}
-                        </td>
 
                         <td>{{ show.genre or '-' }}</td>
                         <td>{{ show.source or '-' }}</td> <!-- ✅ tambah ini -->
-                        <td>{{ show.hashtags or '-' }}</td>
 
                         <td>
                             {% if show.is_adult %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h3 mb-3">Daftar File per Show</h1>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="showfilesTable" class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Show</th>
+                        <th>File Name</th>
+                        <th>Show_id</th>
+                        <th>Message ID</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in rows %}
+                    <tr>
+                        <td>{{ r.show_file_id }}</td>
+                        <td>{{ r.show_title }}</td>
+                        <td class="text-break">{{ r.file_name }}</td>
+                        <td>{{ r.show_id or "-" }}</td>
+                        <td>{{ r.message_id or "-" }}</td>
+                        <td class="text-nowrap">
+                            <a href="/show_files/edit/{{ r.show_file_id }}" class="btn btn-warning btn-circle btn-sm"
+                                title="Edit">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">
+                            Tidak ada data
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+<script>
+    $(document).ready(function () {
+        $('#showfilesTable').DataTable({
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "Berikutnya",
+                    "previous": "Sebelumnya"
+                },
+                "zeroRecords": "Tidak ada data ditemukan"
+            },
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100],
+            "order": [[0, "desc"]]  // <<< ini men-set kolom pertama (ID) descending
+        });
+
+        // Aktifkan tooltip Bootstrap
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+</script>
+{% endblock %}

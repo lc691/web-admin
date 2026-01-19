@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h3 mb-3">Edit File dalam Show</h1>
+
+<div class="card shadow">
+    <div class="card-body">
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Show</label>
+                <input type="text" class="form-control" value="{{ row.show_title }}" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">File</label>
+                <input type="text" class="form-control" value="{{ row.file_name }}" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Show ID</label>
+                <input type="number" name="show_id" value="{{ row.show_id }}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Message ID</label>
+                <input type="number" name="message_id" value="{{ row.message_id }}" class="form-control">
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    Simpan
+                </button>
+                <a href="/show_files" class="btn btn-danger ml-2">
+                    Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
