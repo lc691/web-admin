@@ -159,6 +159,22 @@
 {% endblock %}
 
 {% block scripts %}
+
+{% if request.query_params.get("imported") %}
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Import Berhasil',
+        text: '{{ request.query_params.get("imported") }} file berhasil diimport',
+        timer: 1800,
+        showConfirmButton: false,
+        allowOutsideClick: false
+    }).then(() => {
+        window.location.replace('/shows');
+    });
+</script>
+{% endif %}
+
 <script>
     (function () {
         const input = document.getElementById('message_id_input');
