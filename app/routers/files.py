@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
@@ -38,13 +40,15 @@ def update_file_handler(
     file_name: str = Form(...),
     main_title: str | None = Form(None),
     is_paid: int = Form(...),
+    show_id: str | None = Form(None),
 ):
     update_file_service(
         file_id,
         {
             "file_name": file_name.strip(),
             "main_title": main_title.strip() if main_title else None,
-            "is_paid": bool(int(is_paid)),
+            "is_paid": is_paid == 1,
+            "show_id": int(show_id) if show_id else None,
         },
     )
 

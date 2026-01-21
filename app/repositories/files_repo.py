@@ -47,12 +47,14 @@ def update_file(file_id: int, data: dict):
                 file_name = %s,
                 main_title = %s,
                 is_paid = %s,
+                show_id = %s
             WHERE id = %s
             """,
             (
                 data["file_name"],
                 data["main_title"],
                 data["is_paid"],
+                data["show_id"],
                 file_id,
             ),
         )
