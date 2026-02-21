@@ -69,8 +69,7 @@ def get_referrer_summary():
     - last referral activity
     """
     with get_dict_cursor() as (cur, _):
-        cur.execute(
-            """
+        cur.execute("""
             SELECT
                 r.referrer_user_id,
                 COALESCE(u.username, u.first_name, 'Unknown') AS referrer_name,
@@ -80,8 +79,7 @@ def get_referrer_summary():
             JOIN users u ON u.user_id = r.referrer_user_id
             GROUP BY r.referrer_user_id, referrer_name
             ORDER BY total_referrals DESC, last_activity DESC
-        """
-        )
+        """)
         return cur.fetchall()
 
 
@@ -93,8 +91,7 @@ def get_users_with_referrals():
     - waktu join via referral
     """
     with get_dict_cursor() as (cur, _):
-        cur.execute(
-            """
+        cur.execute("""
             SELECT
                 r.referred_user_id AS user_id,
                 COALESCE(u2.username, u2.first_name, 'Unknown') AS username,
@@ -107,8 +104,7 @@ def get_users_with_referrals():
             JOIN users u1 ON u1.user_id = r.referrer_user_id
             JOIN users u2 ON u2.user_id = r.referred_user_id
             ORDER BY r.created_at DESC
-        """
-        )
+        """)
         return cur.fetchall()
 
 

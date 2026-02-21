@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import APIRouter, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
@@ -17,8 +15,8 @@ repo = ChannelAdminRepository()
 @router.get("/", response_class=HTMLResponse)
 def list_channels(
     request: Request,
-    q: Optional[str] = Query(None),
-    is_active: Optional[bool] = Query(None),
+    q: str | None = Query(None),
+    is_active: bool | None = Query(None),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
 ):
@@ -63,7 +61,7 @@ def create_channel_handler(
     nilai: int = Form(...),
     alias: str = Form(""),
     keterangan: str = Form(""),
-    is_active: Optional[bool] = Form(False),
+    is_active: bool | None = Form(False),
 ):
     try:
         repo.create(
@@ -107,7 +105,7 @@ def update_channel_handler(
     nilai: int = Form(...),
     alias: str = Form(""),
     keterangan: str = Form(""),
-    is_active: Optional[bool] = Form(False),
+    is_active: bool | None = Form(False),
 ):
     channel = repo.get_by_id(channel_id)
     if not channel:

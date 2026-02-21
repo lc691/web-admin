@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Form, HTTPException, Request
+from fastapi import APIRouter, Form, HTTPException, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.templates import templates
@@ -302,10 +302,21 @@ async def import_files_post(
     )
 
 
-# ==========================================================
+# =====================================================
 # DELETE SHOW
-# ==========================================================
-@router.get("/shows/delete/{show_id}")
-async def delete_show_post(show_id: int):
-    delete_show(show_id)
-    return RedirectResponse("/shows", status_code=303)
+# =====================================================
+@router.post("/shows/delete/{show_id}")
+async def delete_show_route(show_id: int):
+    try:
+        delete_show(show_id)
+
+        return RedirectResponse(url="/shows", status_code=status.HTTP_303_SEE_OTHER)
+
+    except ValueError as e:
+        # show tidak ditemukan / id tidak valid
+        raise HTTPException(status_code=404, detail=str(e))
+
+    except Exception:
+        raise HTTPException(
+            status_code=500, detail="Terjadi kesalahan saat menghapus show"
+        )

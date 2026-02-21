@@ -6,6 +6,7 @@ from db.connect import get_dict_cursor
 
 router = APIRouter()
 
+
 @router.get("/vip_users", response_class=HTMLResponse)
 async def list_vip_users(request: Request):
     with get_dict_cursor() as (cursor, _):
@@ -16,8 +17,11 @@ async def list_vip_users(request: Request):
         """)
         vip_users = cursor.fetchall()
 
-    return templates.TemplateResponse("vip_users/list.html", {
-        "request": request,
-        "title": "Daftar VIP Users",
-        "users": vip_users,
-    })
+    return templates.TemplateResponse(
+        "vip_users/list.html",
+        {
+            "request": request,
+            "title": "Daftar VIP Users",
+            "users": vip_users,
+        },
+    )

@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Dict, Optional
 
 from .cache import UserCache
 from .repository import UserRepository
@@ -24,15 +23,13 @@ def list_users(
         ]
 
     elif filter == "nonvip":
-        where.append(
-            """
+        where.append("""
             (
                 u.is_vip = FALSE
                 OR u.vip_expired IS NULL
                 OR u.vip_expired <= NOW()
             )
-            """
-        )
+            """)
 
     elif filter == "trial":
         where += [
@@ -53,7 +50,7 @@ def list_users(
     )
 
 
-def get_user(user_id: int) -> Optional[Dict]:
+def get_user(user_id: int) -> dict | None:
     cached = _cache.get(user_id)
     if cached:
         return cached
@@ -67,8 +64,8 @@ def get_user(user_id: int) -> Optional[Dict]:
 
 def create_user(
     user_id: int,
-    username: Optional[str],
-    first_name: Optional[str],
+    username: str | None,
+    first_name: str | None,
     is_vip: bool = False,
 ):
     _repo.create(user_id, username, first_name, is_vip)
@@ -77,9 +74,9 @@ def create_user(
 
 def update_user(
     id: int,
-    username: Optional[str],
+    username: str | None,
     is_vip: bool,
-    vip_expired: Optional[datetime],
+    vip_expired: datetime | None,
     is_active: bool,
 ):
     _repo.update(id, username, is_vip, vip_expired, is_active)

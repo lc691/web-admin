@@ -19,7 +19,7 @@ def get_db_connection():
             password=PGPASSWORD,
         )
         yield conn
-    except psycopg2.Error as e:
+    except psycopg2.Error:
         log.error("❌ Gagal koneksi ke database:", exc_info=True)
         raise
     finally:
@@ -33,13 +33,12 @@ def get_db_cursor(commit=False):
     """
     Mendapatkan cursor standar, dengan opsi commit otomatis jika diperlukan.
     """
-    with get_db_connection() as conn:
-        with conn.cursor() as cursor:
-            try:
-                yield cursor, conn
-            finally:
-                if commit:
-                    conn.commit()
+    with get_db_connection() as conn, conn.cursor() as cursor:
+        try:
+            yield cursor, conn
+        finally:
+            if commit:
+                conn.commit()
 
 
 @contextmanager

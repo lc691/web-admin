@@ -1,5 +1,3 @@
-from typing import Optional
-
 from configs.logging_setup import log
 from db.connect import get_db_cursor, get_dict_cursor
 
@@ -49,8 +47,8 @@ def log_admin_action(
     admin_id: int,
     action: str,
     target_type: str,
-    target_id: Optional[int] = None,
-    notes: Optional[str] = None,
+    target_id: int | None = None,
+    notes: str | None = None,
 ):
     """
     Centralized admin audit logger.
@@ -80,7 +78,8 @@ def log_admin_action(
             )
 
         log.info(
-            f"[ADMIN_AUDIT] admin={admin_id} action={action} " f"target={target_type}:{target_id}"
+            f"[ADMIN_AUDIT] admin={admin_id} action={action} "
+            f"target={target_type}:{target_id}"
         )
 
     except Exception as e:

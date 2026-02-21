@@ -48,4 +48,3 @@ def auth_middleware_factory():
         return await call_next(request)
 
     return auth_middleware
-

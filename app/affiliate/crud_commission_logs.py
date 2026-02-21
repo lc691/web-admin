@@ -6,8 +6,7 @@ from db.connect import get_dict_cursor
 # =========================
 def get_all_commission_logs():
     with get_dict_cursor() as (cur, _):
-        cur.execute(
-            """
+        cur.execute("""
             SELECT
                 acl.id,
 
@@ -26,8 +25,7 @@ def get_all_commission_logs():
             JOIN users u1 ON u1.user_id = acl.referrer_user_id
             JOIN users u2 ON u2.user_id = acl.referred_user_id
             ORDER BY acl.created_at DESC
-        """
-        )
+        """)
         return cur.fetchall()
 
 

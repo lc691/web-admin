@@ -11,7 +11,6 @@ from app.services.show_files_service import (
     update_show_files_bulk_service,
 )
 from app.templates import templates
-from db.connect import get_dict_cursor
 
 router = APIRouter()
 

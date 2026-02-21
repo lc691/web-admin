@@ -29,11 +29,10 @@ async def list_donation_logs(request: Request):
         """)
         logs = cursor.fetchall()
 
-    return templates.TemplateResponse("donation_logs/list.html", {
-        "request": request,
-        "logs": logs,
-        "title": "Donation Logs"
-    })
+    return templates.TemplateResponse(
+        "donation_logs/list.html",
+        {"request": request, "logs": logs, "title": "Donation Logs"},
+    )
 
 
 @router.get("/donation_logs/{log_id}/edit", response_class=HTMLResponse)
@@ -45,11 +44,10 @@ async def edit_donation_log_form(request: Request, log_id: int):
     if not log:
         return RedirectResponse("/donation_logs", status_code=302)
 
-    return templates.TemplateResponse("donation_logs/edit.html", {
-        "request": request,
-        "log": log,
-        "title": "Edit Donation Log"
-    })
+    return templates.TemplateResponse(
+        "donation_logs/edit.html",
+        {"request": request, "log": log, "title": "Edit Donation Log"},
+    )
 
 
 @router.post("/donation_logs/{log_id}/edit")
@@ -65,7 +63,8 @@ async def edit_donation_log_submit(
     is_notified: bool = Form(False),
 ):
     with get_dict_cursor() as (cursor, conn):
-        cursor.execute("""
+        cursor.execute(
+            """
             UPDATE donation_log
             SET email = %s,
                 amount = %s,
@@ -76,17 +75,9 @@ async def edit_donation_log_submit(
                 status = %s,
                 is_notified = %s
             WHERE id = %s
-        """, (
-            email,
-            amount,
-            message,
-            user_id,
-            paket,
-            type,
-            status,
-            is_notified,
-            log_id
-        ))
+        """,
+            (email, amount, message, user_id, paket, type, status, is_notified, log_id),
+        )
         conn.commit()
 
     return RedirectResponse("/donation_logs", status_code=303)

@@ -110,7 +110,6 @@
         cursor: not-allowed;
         box-shadow: none;
     }
-
 </style>
 
 <div class="page-wrapper">
@@ -123,31 +122,23 @@
             <i class="fas fa-plus me-1"></i> Tambah Show
         </a>
 
-        <form id="bulkEditForm"
-            method="get"
-            action="/shows/bulk-edit"
-            class="m-0 d-inline">
+        <form id="bulkEditForm" method="get" action="/shows/bulk-edit" class="m-0 d-inline">
 
             <input type="hidden" name="ids" id="bulkEditIds">
 
-            <button id="bulkEditBtn"
-                    type="button"
-                    class="btn-bulk"
-                    disabled>
+            <button id="bulkEditBtn" type="button" class="btn-bulk" disabled>
                 ✏ Edit Terpilih
             </button>
 
         </form>
 
     </div>
-
-
-
+    
     <div class="lux-card">
         <div class="card-body p-4">
 
             <div class="table-responsive">
-                <table id="showsTable" class="table align-middle mb-0">
+                <table id="showsTable" class="table align-middle table-hover">
                     <thead>
                         <tr>
                             <th style="width:40px;">
@@ -198,13 +189,22 @@
                                 <a href="/shows/edit/{{ show.id }}" class="btn-icon btn-edit me-1" title="Edit">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
+                                <form action="/shows/delete/{{ show.id }}" method="post" class="d-inline delete-form"
+                                    data-show-count="{{ show.show_count }}">
 
-                                <a href="/shows/delete/{{ show.id }}" class="btn-icon btn-delete" title="Hapus"
-                                    onclick="return confirm('Yakin ingin menghapus show ini?')">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+
+                                </form>
                             </td>
 
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">
+                                Tidak ada data
+                            </td>
                         </tr>
                         {% endfor %}
 
@@ -218,8 +218,9 @@
 </div>
 
 {% endblock %}
-
 {% block scripts %}
+{{ super() }}
+
 <script>
     $(document).ready(function () {
 
@@ -231,7 +232,6 @@
         // ================= BULK BUTTON TOGGLE =================
         function toggleBulk() {
             const count = $('.row-check:checked').length;
-            $('#bulkDeleteBtn').prop('disabled', count === 0);
             $('#bulkEditBtn').prop('disabled', count === 0);
         }
 
@@ -258,6 +258,36 @@
 
             $('#bulkEditIds').val(ids.join(','));
             $('#bulkEditForm').submit();
+        });
+
+        // ================= SINGLE DELETE =================
+        $('.delete-form').on('submit', function (e) {
+            e.preventDefault();
+
+            const showCount =
+                parseInt($(this).data('show-count'), 10);
+
+            let text = "File akan dihapus.";
+
+            if (showCount > 0) {
+                text =
+                    `File ini dipakai oleh ${showCount} show.\n` +
+                    `Menghapus akan berdampak global.\n\n` +
+                    `Yakin?`;
+            }
+
+            Swal.fire({
+                title: 'Hapus File?',
+                text: text,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+
         });
 
     });

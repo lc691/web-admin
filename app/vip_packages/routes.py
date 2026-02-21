@@ -1,8 +1,5 @@
-from typing import Optional
-
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
-from psycopg2.extras import RealDictCursor
 from starlette.status import HTTP_302_FOUND
 
 from app.templates import templates
@@ -83,7 +80,9 @@ def create_vip_package(
 @router.get("/vip_packages/{paket_name}/edit", response_class=HTMLResponse)
 def edit_package(paket_name: str, request: Request):
     with get_dict_cursor() as (cursor, _):
-        cursor.execute("SELECT * FROM vip_packages WHERE paket_name = %s", (paket_name,))
+        cursor.execute(
+            "SELECT * FROM vip_packages WHERE paket_name = %s", (paket_name,)
+        )
         package = cursor.fetchone()
 
     if not package:
@@ -104,13 +103,13 @@ def edit_package(paket_name: str, request: Request):
 @router.post("/vip_packages/{paket_name}/edit")
 def update_vip_package(
     paket_name: str,
-    alias: Optional[str] = Form(None),
+    alias: str | None = Form(None),
     basic_days: int = Form(...),
     total_days: int = Form(...),
-    is_promo_once: Optional[str] = Form(None),
-    is_active: Optional[str] = Form(None),
-    display_label: Optional[str] = Form(None),
-    price: Optional[int] = Form(None),
+    is_promo_once: str | None = Form(None),
+    is_active: str | None = Form(None),
+    display_label: str | None = Form(None),
+    price: int | None = Form(None),
 ):
     is_promo_once_bool = is_promo_once is not None
     is_active_bool = is_active is not None

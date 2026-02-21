@@ -1,27 +1,24 @@
-from typing import Dict, List, Optional
-
 from db.connect import get_db_cursor, get_dict_cursor
 
 
 class FileRepository:
 
-    def list_all(self) -> List[Dict]:
+    def list_all(self) -> list[dict]:
         with get_dict_cursor() as (cur, _):
             cur.execute("SELECT * FROM files ORDER BY id DESC")
             return cur.fetchall()
 
-    def get_by_id(self, file_id: int) -> Optional[Dict]:
+    def get_by_id(self, file_id: int) -> dict | None:
         with get_dict_cursor() as (cur, _):
             cur.execute("SELECT * FROM files WHERE id=%s", (file_id,))
             return cur.fetchone()
 
-    def list_all_with_show_files(self) -> List[Dict]:
+    def list_all_with_show_files(self) -> list[dict]:
         """
         List semua file beserta show_files terkait (jika ada)
         """
         with get_dict_cursor() as (cur, _):
-            cur.execute(
-                """
+            cur.execute("""
                 SELECT 
                     f.*, 
                     sf.id AS show_file_id,
@@ -31,11 +28,10 @@ class FileRepository:
                 FROM files f
                 LEFT JOIN show_files sf ON sf.file_id = f.id
                 ORDER BY f.id DESC
-            """
-            )
+            """)
             return cur.fetchall()
 
-    def get_by_id_with_show_files(self, file_id: int) -> Optional[Dict]:
+    def get_by_id_with_show_files(self, file_id: int) -> dict | None:
         """
         Ambil file berdasarkan id beserta show_files terkait (jika ada)
         """
@@ -66,8 +62,8 @@ class FileRepository:
         file_type: str,
         file_size: int,
         message_id: int,
-        main_title: Optional[str] = None,
-        show_id: Optional[int] = None,
+        main_title: str | None = None,
+        show_id: int | None = None,
     ) -> int:
         with get_db_cursor(commit=True) as (cur, _):
             cur.execute(
@@ -102,7 +98,7 @@ class FileRepository:
         channel_username: str,
         file_type: str,
         main_title: str,
-        show_id: Optional[int],
+        show_id: int | None,
     ) -> None:
         with get_db_cursor(commit=True) as (cur, _):
             cur.execute(
@@ -133,8 +129,8 @@ class FileRepository:
         file_size: int,
         main_title: str,
         channel_username: str,
-        message_id: Optional[int],
-        show_id: Optional[int],
+        message_id: int | None,
+        show_id: int | None,
     ) -> None:
         with get_db_cursor(commit=True) as (cur, _):
             cur.execute(

@@ -3,8 +3,7 @@ from db.connect import get_db_cursor
 
 def list_payout_batches():
     with get_db_cursor() as (cur, _):
-        cur.execute(
-            """
+        cur.execute("""
             SELECT
                 id,
                 period_start,
@@ -16,8 +15,7 @@ def list_payout_batches():
                 paid_at
             FROM affiliate_payout_batches
             ORDER BY created_at DESC
-        """
-        )
+        """)
         return cur.fetchall()
 
 

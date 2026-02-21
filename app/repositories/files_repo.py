@@ -1,10 +1,9 @@
-from db.connect import get_db_cursor, get_dict_cursor
+from db.connect import get_dict_cursor
 
 
 def list_files():
     with get_dict_cursor() as (cur, _):
-        cur.execute(
-            """
+        cur.execute("""
             SELECT
                 f.id,
                 f.file_name,
@@ -17,8 +16,7 @@ def list_files():
             LEFT JOIN show_files sf ON sf.file_id = f.id
             GROUP BY f.id
             ORDER BY f.id DESC
-            """
-        )
+            """)
         return cur.fetchall()
 
 

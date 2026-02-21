@@ -1,14 +1,13 @@
-from typing import Optional, List, Dict
 from .repository import FileRepository
 
 _repo = FileRepository()
 
 
-def list_files() -> List[Dict]:
+def list_files() -> list[dict]:
     return _repo.list_all_with_show_files()
 
 
-def get_file(file_id: int) -> Optional[Dict]:
+def get_file(file_id: int) -> dict | None:
     return _repo.get_by_id(file_id)
 
 

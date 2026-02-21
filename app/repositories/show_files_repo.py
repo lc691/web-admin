@@ -1,5 +1,3 @@
-from typing import Dict, List, Optional
-
 from db.connect import get_dict_cursor
 
 # =========================
@@ -18,7 +16,7 @@ ALLOWED_UPDATE_FIELDS = {
 # =========================
 
 
-def list_show_files() -> List[Dict]:
+def list_show_files() -> list[dict]:
     """
     Return all show_files with joined show & file info.
     """
@@ -40,7 +38,7 @@ def list_show_files() -> List[Dict]:
         return cur.fetchall()
 
 
-def get_show_file(show_file_id: int) -> Optional[Dict]:
+def get_show_file(show_file_id: int) -> dict | None:
     """
     Return single show_file by id.
     """
@@ -69,7 +67,7 @@ def get_show_file(show_file_id: int) -> Optional[Dict]:
 # =========================
 # UPDATE OPERATION
 # =========================
-def update_show_file(show_file_id: int, data: Dict) -> int:
+def update_show_file(show_file_id: int, data: dict) -> int:
     """
     Update show_file by id.
     Returns affected row count.
@@ -115,7 +113,7 @@ def update_show_file(show_file_id: int, data: Dict) -> int:
         return cur.rowcount
 
 
-def update_show_files_bulk(ids: List[int], data: Dict) -> int:
+def update_show_files_bulk(ids: list[int], data: dict) -> int:
     """
     Update multiple show_files by id list.
     Returns affected row count.
@@ -164,7 +162,7 @@ def update_show_files_bulk(ids: List[int], data: Dict) -> int:
 # =========================
 # DELETE OPERATION
 # =========================
-def delete_show_files_bulk(ids: List[int]) -> int:
+def delete_show_files_bulk(ids: list[int]) -> int:
     """
     Delete multiple show_files by id list.
     Returns affected row count.

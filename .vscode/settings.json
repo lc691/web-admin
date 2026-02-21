@@ -1,59 +1,20 @@
 {
-  // =========================
-  // PYTHON
-  // =========================
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
   "python.analysis.typeCheckingMode": "off",
-  "python.analysis.autoImportCompletions": true,
-  "python.analysis.completeFunctionParens": true,
-  "python.analysis.importFormat": "absolute",
-  "python.analysis.useLibraryCodeForTypes": true,
-  "python.analysis.autoSearchPaths": true,
-  "python.analysis.indexing": false,
 
-  "python.analysis.diagnosticSeverityOverrides": {
-    "reportMissingImports": "none"
-  },
-
-  // =========================
-  // FORMAT & LINT
-  // =========================
   "editor.formatOnSave": true,
+  "editor.defaultFormatter": "ms-python.black-formatter",
+
   "editor.codeActionsOnSave": {
+    "source.fixAll.ruff": "explicit",
     "source.organizeImports": "explicit"
   },
-  "python.formatting.provider": "black",
-  "python.formatting.blackArgs": ["--line-length", "88"],
 
-  // =========================
-  // FILE HYGIENE
-  // =========================
+  "ruff.enable": true,
+
   "files.exclude": {
     "**/__pycache__": true,
     "**/*.pyc": true,
     ".venv": true
-  },
-
-  // =========================
-  // TERMINAL
-  // =========================
-  "terminal.integrated.defaultProfile.linux": "bash",
-  "terminal.integrated.env.linux": {
-    "PYTHONUNBUFFERED": "1"
-  },
-
-  // =========================
-  // JINJA / HTML
-  // =========================
-  "[html]": {
-    "editor.defaultFormatter": "vscode.html-language-features"
-  },
-
-  // =========================
-  // SEARCH
-  // =========================
-  "search.exclude": {
-    "**/.venv": true,
-    "**/__pycache__": true
   }
 }

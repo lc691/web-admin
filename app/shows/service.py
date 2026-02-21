@@ -1,5 +1,3 @@
-from typing import Dict, List, Optional
-
 from .repository import ShowRepository
 
 _repo = ShowRepository()
@@ -10,11 +8,11 @@ _repo = ShowRepository()
 # =====================================================
 
 
-def list_shows() -> List[Dict]:
+def list_shows() -> list[dict]:
     return _repo.list_all()
 
 
-def get_show(show_id: int) -> Optional[Dict]:
+def get_show(show_id: int) -> dict | None:
     if not isinstance(show_id, int) or show_id <= 0:
         return None
     return _repo.get_by_id(show_id)
@@ -25,7 +23,7 @@ def get_show(show_id: int) -> Optional[Dict]:
 # =====================================================
 
 
-def create_show(data: Dict) -> int:
+def create_show(data: dict) -> int:
     """
     Create new show.
     Returns affected row count.
@@ -41,7 +39,7 @@ def create_show(data: Dict) -> int:
 # =====================================================
 
 
-def update_show(show_id: int, data: Dict) -> int:
+def update_show(show_id: int, data: dict) -> int:
     """
     Update single show.
     Raises error if not found.
@@ -68,7 +66,7 @@ def update_show(show_id: int, data: Dict) -> int:
 # =====================================================
 
 
-def bulk_update_shows(ids: List[int], data: Dict) -> int:
+def bulk_update_shows(ids: list[int], data: dict) -> int:
     """
     Update multiple shows.
     Raises error if any id not found.
@@ -95,7 +93,7 @@ def bulk_update_shows(ids: List[int], data: Dict) -> int:
     return affected
 
 
-def bulk_update_shows_safe(ids: list[int], data: Dict) -> int:
+def bulk_update_shows_safe(ids: list[int], data: dict) -> int:
     if not ids:
         raise ValueError("IDs kosong")
 

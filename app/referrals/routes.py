@@ -99,7 +99,6 @@ def referral_of_user(user_id: int, request: Request):
     )
 
 
-
 from app.referrals import logs_crud
 
 
@@ -110,7 +109,8 @@ from app.referrals import logs_crud
 def referral_logs(request: Request):
     logs = logs_crud.get_all_referral_logs()
     return templates.TemplateResponse(
-        "referrals/logs.html", {"request": request, "logs": logs, "title": "Referral Logs"}
+        "referrals/logs.html",
+        {"request": request, "logs": logs, "title": "Referral Logs"},
     )
 
 
@@ -163,7 +163,11 @@ def referral_commissions(request: Request):
     commissions = commissions_crud.get_all_commissions()
     return templates.TemplateResponse(
         "referrals/commissions.html",
-        {"request": request, "commissions": commissions, "title": "Referral Commissions"},
+        {
+            "request": request,
+            "commissions": commissions,
+            "title": "Referral Commissions",
+        },
     )
 
 

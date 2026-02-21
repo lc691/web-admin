@@ -3,7 +3,8 @@ from db.connect import get_dict_cursor
 
 def get_all_referral_logs(limit: int = 500):
     with get_dict_cursor() as (cur, _):
-        cur.execute("""
+        cur.execute(
+            """
             SELECT
                 l.id,
                 l.referrer_user_id,
@@ -17,13 +18,16 @@ def get_all_referral_logs(limit: int = 500):
             LEFT JOIN users u2 ON u2.user_id = l.referred_user_id
             ORDER BY l.created_at DESC
             LIMIT %s
-        """, (limit,))
+        """,
+            (limit,),
+        )
         return cur.fetchall()
 
 
 def get_logs_by_referrer(referrer_user_id: int):
     with get_dict_cursor() as (cur, _):
-        cur.execute("""
+        cur.execute(
+            """
             SELECT
                 l.id,
                 l.referred_user_id,
@@ -34,5 +38,7 @@ def get_logs_by_referrer(referrer_user_id: int):
             LEFT JOIN users u ON u.user_id = l.referred_user_id
             WHERE l.referrer_user_id = %s
             ORDER BY l.created_at DESC
-        """, (referrer_user_id,))
+        """,
+            (referrer_user_id,),
+        )
         return cur.fetchall()

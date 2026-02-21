@@ -1,11 +1,10 @@
-from typing import Optional
-
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.status import HTTP_302_FOUND
 
 from app.templates import templates
 from db.connect import get_dict_cursor, get_dict_cursor_dep
+
 from .services.trusted_ip import invalidate_trusted_ip_cache
 
 router = APIRouter()
@@ -17,9 +16,7 @@ router = APIRouter()
 @router.get("/trusted_ips", response_class=HTMLResponse)
 async def list_trusted_ips(request: Request):
     with get_dict_cursor() as (cursor, _):
-        cursor.execute(
-            "SELECT * FROM trusted_ips ORDER BY created_at DESC"
-        )
+        cursor.execute("SELECT * FROM trusted_ips ORDER BY created_at DESC")
         items = cursor.fetchall()
 
     return templates.TemplateResponse(
@@ -52,7 +49,7 @@ def new_trusted_ip_form(request: Request):
 @router.post("/trusted_ips/new")
 def create_trusted_ip(
     ip: str = Form(...),
-    description: Optional[str] = Form(None),
+    description: str | None = Form(None),
     db=Depends(get_dict_cursor_dep),
 ):
     cursor, conn = db
@@ -107,7 +104,7 @@ def edit_trusted_ip(ip: str, request: Request):
 @router.post("/trusted_ips/{ip}/edit")
 def update_trusted_ip(
     ip: str,
-    description: Optional[str] = Form(None),
+    description: str | None = Form(None),
     db=Depends(get_dict_cursor_dep),
 ):
     cursor, conn = db

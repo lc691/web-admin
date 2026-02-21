@@ -87,48 +87,40 @@ async def retention_dashboard(request: Request):
     with get_dict_cursor() as (cursor, _):
 
         # Total reminder
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT COUNT(*)
             FROM retention_log
             WHERE stage = 'strong_10d';
-        """
-        )
+        """)
         total = cursor.fetchone()["count"]
 
         # Total converted
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT COUNT(*)
             FROM retention_log
             WHERE stage = 'strong_10d'
             AND converted = TRUE;
-        """
-        )
+        """)
         converted = cursor.fetchone()["count"]
 
         # 14 hari terakhir
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT
                 COUNT(*) AS total,
                 COUNT(*) FILTER (WHERE converted = TRUE) AS converted
             FROM retention_log
             WHERE stage = 'strong_10d'
             AND sent_at >= NOW() - INTERVAL '14 days';
-        """
-        )
+        """)
         last_14 = cursor.fetchone()
 
         # Adaptive distribution
-        cursor.execute(
-            """
+        cursor.execute("""
             SELECT offset_days, COUNT(*) AS users
             FROM retention_adaptive
             GROUP BY offset_days
             ORDER BY offset_days;
-        """
-        )
+        """)
         adaptive = cursor.fetchall()
 
     rate_all = (converted / total * 100) if total else 0

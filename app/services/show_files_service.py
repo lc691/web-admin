@@ -1,5 +1,3 @@
-from typing import Dict, List
-
 from app.repositories.show_files_repo import (
     delete_show_files_bulk,
     get_show_file,
@@ -13,11 +11,11 @@ from app.repositories.show_files_repo import (
 # =========================
 
 
-def list_show_files_service() -> List[Dict]:
+def list_show_files_service() -> list[dict]:
     return list_show_files()
 
 
-def get_show_file_service(show_file_id: int) -> Dict | None:
+def get_show_file_service(show_file_id: int) -> dict | None:
     if not isinstance(show_file_id, int) or show_file_id <= 0:
         return None
 
@@ -29,7 +27,7 @@ def get_show_file_service(show_file_id: int) -> Dict | None:
 # =========================
 
 
-def update_show_file_service(show_file_id: int, data: Dict) -> int:
+def update_show_file_service(show_file_id: int, data: dict) -> int:
     """
     Update single show_file.
     Returns affected row count.
@@ -49,7 +47,7 @@ def update_show_file_service(show_file_id: int, data: Dict) -> int:
 # =========================
 
 
-def update_show_files_bulk_service(ids: List[int], data: Dict) -> int:
+def update_show_files_bulk_service(ids: list[int], data: dict) -> int:
     """
     Update multiple show_files.
     Returns affected row count.
@@ -67,7 +65,7 @@ def update_show_files_bulk_service(ids: List[int], data: Dict) -> int:
 # =========================
 # DELETE BULK
 # =========================
-def delete_show_files_bulk_service(ids: List[int]) -> int:
+def delete_show_files_bulk_service(ids: list[int]) -> int:
     if not ids:
         return 0
 

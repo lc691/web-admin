@@ -1,5 +1,3 @@
-from fastapi import HTTPException
-
 from app.repositories.files_repo import (
     delete_file,
     get_file,

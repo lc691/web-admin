@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Dict, List, Optional
 
 from db.connect import get_db_cursor, get_dict_cursor
 
@@ -12,7 +11,7 @@ class UserRepository:
         params: dict | None = None,
         limit: int = 100,
         offset: int = 0,
-    ) -> List[Dict]:
+    ) -> list[dict]:
 
         params = dict(params or {})
         params.update({"limit": limit, "offset": offset})
@@ -42,7 +41,7 @@ class UserRepository:
             cur.execute(query, params)
             return [dict(row) for row in cur.fetchall()]
 
-    def get_by_id(self, id: int) -> Optional[Dict]:
+    def get_by_id(self, id: int) -> dict | None:
         query = """
             SELECT
                 u.id,
@@ -71,8 +70,8 @@ class UserRepository:
     def create(
         self,
         user_id: int,
-        username: Optional[str],
-        first_name: Optional[str],
+        username: str | None,
+        first_name: str | None,
         is_vip: bool = False,
     ) -> None:
         with get_db_cursor(commit=True) as (cur, _):
@@ -88,9 +87,9 @@ class UserRepository:
     def update(
         self,
         id: int,
-        username: Optional[str],
+        username: str | None,
         is_vip: bool,
-        vip_expired: Optional[datetime],
+        vip_expired: datetime | None,
         is_active: bool,
     ) -> None:
         with get_db_cursor(commit=True) as (cur, _):

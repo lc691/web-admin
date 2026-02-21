@@ -1,5 +1,3 @@
-from typing import Dict, List, Optional, Tuple
-
 from db.connect import get_db_cursor, get_dict_cursor
 
 
@@ -27,7 +25,7 @@ class ShowRepository:
     # =====================================================
     # INTERNAL HELPERS
     # =====================================================
-    def _build_update_clause(self, data: Dict) -> Tuple[str, List]:
+    def _build_update_clause(self, data: dict) -> tuple[str, list]:
         """
         Build dynamic SET clause for UPDATE query.
         Returns:
@@ -55,7 +53,7 @@ class ShowRepository:
     # =====================================================
     # LIST ALL
     # =====================================================
-    def list_all(self) -> List[Dict]:
+    def list_all(self) -> list[dict]:
         query = f"""
             SELECT 
                 s.id,
@@ -80,7 +78,7 @@ class ShowRepository:
     # =====================================================
     # GET BY ID
     # =====================================================
-    def get_by_id(self, show_id: int) -> Optional[Dict]:
+    def get_by_id(self, show_id: int) -> dict | None:
         if not isinstance(show_id, int) or show_id <= 0:
             return None
 
@@ -101,7 +99,7 @@ class ShowRepository:
     # =====================================================
     # INSERT
     # =====================================================
-    def insert(self, data: Dict) -> int:
+    def insert(self, data: dict) -> int:
         """
         Insert new show.
         Returns inserted rowcount (1 if success).
@@ -140,7 +138,7 @@ class ShowRepository:
     # =====================================================
     # UPDATE ONE
     # =====================================================
-    def update_one(self, show_id: int, data: Dict) -> int:
+    def update_one(self, show_id: int, data: dict) -> int:
         """
         Update single show by id.
         Returns affected row count.
@@ -167,7 +165,7 @@ class ShowRepository:
     # =====================================================
     # UPDATE BULK
     # =====================================================
-    def update_bulk(self, ids: List[int], data: Dict) -> int:
+    def update_bulk(self, ids: list[int], data: dict) -> int:
         """
         Update multiple shows by id list.
         Returns affected row count.

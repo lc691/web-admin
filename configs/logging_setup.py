@@ -72,9 +72,7 @@ def setup_logger(
         utc=True,
     )
     file_handler.setFormatter(
-        JakartaFormatter(
-            "[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s"
-        )
+        JakartaFormatter("[%(asctime)s] [%(levelname)s] [%(name)s] %(message)s")
     )
     logger.addHandler(file_handler)
 

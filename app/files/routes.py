@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import APIRouter, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
@@ -14,7 +12,7 @@ router = APIRouter()
 # LIST FILES
 # =======================
 @router.get("/files", response_class=HTMLResponse)
-def list_files_view(request: Request, q: Optional[str] = None):
+def list_files_view(request: Request, q: str | None = None):
     files = list_files()
 
     # filter di memory (cache hit → NO DB)
@@ -61,9 +59,9 @@ def update_file_handler(
     file_size: int = Form(...),
     main_title: str = Form(...),
     channel_username: str = Form(...),
-    message_id: Optional[str] = Form(None),
-    show_id: Optional[str] = Form(None),
-    q: Optional[str] = Query(None),
+    message_id: str | None = Form(None),
+    show_id: str | None = Form(None),
+    q: str | None = Query(None),
 ):
     update_file(
         file_id=file_id,

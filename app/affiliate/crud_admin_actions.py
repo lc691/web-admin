@@ -6,8 +6,7 @@ from db.connect import get_dict_cursor
 # =========================
 def get_all_admin_actions():
     with get_dict_cursor() as (cur, _):
-        cur.execute(
-            """
+        cur.execute("""
             SELECT
                 aaa.id,
                 aaa.admin_id,
@@ -20,8 +19,7 @@ def get_all_admin_actions():
             FROM affiliate_admin_actions aaa
             LEFT JOIN users u ON u.user_id = aaa.admin_id
             ORDER BY aaa.created_at DESC
-        """
-        )
+        """)
         return cur.fetchall()
 
 
@@ -101,5 +99,3 @@ def create_admin_action(
         action_id = cur.fetchone()["id"]
         conn.commit()
         return action_id
-
-

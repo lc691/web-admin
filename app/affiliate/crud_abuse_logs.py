@@ -6,8 +6,7 @@ from db.connect import get_dict_cursor
 # =========================
 def get_all_abuse_logs():
     with get_dict_cursor() as (cur, _):
-        cur.execute(
-            """
+        cur.execute("""
             SELECT
                 aal.id,
                 aal.user_id,
@@ -25,8 +24,7 @@ def get_all_abuse_logs():
             LEFT JOIN users u1 ON u1.user_id = aal.user_id
             LEFT JOIN users u2 ON u2.user_id = aal.referrer_user_id
             ORDER BY aal.created_at DESC
-        """
-        )
+        """)
         return cur.fetchall()
 
 

@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from psycopg2 import errors
 
@@ -15,10 +15,10 @@ class ChannelAdminRepository:
         self,
         nama_variabel: str,
         nilai: int,
-        alias: Optional[str] = None,
-        keterangan: Optional[str] = None,
+        alias: str | None = None,
+        keterangan: str | None = None,
         is_active: bool = False,
-        created_by: Optional[int] = None,
+        created_by: int | None = None,
     ) -> int:
 
         if not nama_variabel or not isinstance(nilai, int):
@@ -49,7 +49,7 @@ class ChannelAdminRepository:
     # ==============================
     # READ
     # ==============================
-    def get_all(self) -> List[Dict]:
+    def get_all(self) -> list[dict]:
         query = f"""
             SELECT *
             FROM {self.TABLE_NAME}
@@ -59,7 +59,7 @@ class ChannelAdminRepository:
             cur.execute(query)
             return cur.fetchall()
 
-    def get_by_id(self, channel_id: int) -> Optional[Dict]:
+    def get_by_id(self, channel_id: int) -> dict | None:
         if channel_id <= 0:
             return None
 
@@ -72,7 +72,7 @@ class ChannelAdminRepository:
             cur.execute(query, (channel_id,))
             return cur.fetchone()
 
-    def get_active(self) -> Optional[Dict]:
+    def get_active(self) -> dict | None:
         query = f"""
             SELECT *
             FROM {self.TABLE_NAME}
@@ -86,7 +86,7 @@ class ChannelAdminRepository:
     # ==============================
     # UPDATE (Partial)
     # ==============================
-    def update(self, channel_id: int, data: Dict[str, Any]) -> int:
+    def update(self, channel_id: int, data: dict[str, Any]) -> int:
 
         if channel_id <= 0:
             raise ValueError("Invalid channel_id")
@@ -180,9 +180,9 @@ class ChannelAdminRepository:
     # ==============================
     def search(
         self,
-        keyword: Optional[str] = None,
-        is_active: Optional[bool] = None,
-    ) -> List[Dict]:
+        keyword: str | None = None,
+        is_active: bool | None = None,
+    ) -> list[dict]:
 
         conditions = []
         values = []

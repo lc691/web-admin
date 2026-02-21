@@ -7,6 +7,7 @@ from db.connect import get_dict_cursor
 
 router = APIRouter(prefix="/vip_vouchers", tags=["VIP Vouchers"])
 
+
 # ============================
 # List vouchers
 # ============================
@@ -16,11 +17,10 @@ def list_vouchers(request: Request):
         cursor.execute("SELECT * FROM vip_vouchers ORDER BY created_at DESC")
         vouchers = cursor.fetchall()
 
-    return templates.TemplateResponse("vip_vouchers/list.html", {
-        "request": request,
-        "vouchers": vouchers,
-        "title": "VIP Vouchers"
-    })
+    return templates.TemplateResponse(
+        "vip_vouchers/list.html",
+        {"request": request, "vouchers": vouchers, "title": "VIP Vouchers"},
+    )
 
 
 # ============================
@@ -40,10 +40,13 @@ def create_voucher(
     batch_uuid: str = Form(None),
 ):
     with get_dict_cursor() as (cursor, conn):
-        cursor.execute("""
+        cursor.execute(
+            """
             INSERT INTO vip_vouchers (code, duration_days, expires_at, created_by, batch_uuid)
             VALUES (%s, %s, %s, %s, %s)
-        """, (code, duration_days, expires_at, created_by, batch_uuid))
+        """,
+            (code, duration_days, expires_at, created_by, batch_uuid),
+        )
         conn.commit()
 
     return RedirectResponse(url="/vip_vouchers", status_code=status.HTTP_303_SEE_OTHER)
@@ -61,10 +64,9 @@ def edit_voucher_form(code: str, request: Request):
     if not voucher:
         raise HTTPException(status_code=404, detail="Voucher not found")
 
-    return templates.TemplateResponse("vip_vouchers/edit.html", {
-        "request": request,
-        "voucher": voucher
-    })
+    return templates.TemplateResponse(
+        "vip_vouchers/edit.html", {"request": request, "voucher": voucher}
+    )
 
 
 @router.post("/{code}/edit")
@@ -78,7 +80,8 @@ def edit_voucher(
     used_by: int = Form(None),
 ):
     with get_dict_cursor() as (cursor, conn):
-        cursor.execute("""
+        cursor.execute(
+            """
             UPDATE vip_vouchers
             SET duration_days = %s,
                 is_used = %s,
@@ -87,7 +90,9 @@ def edit_voucher(
                 batch_uuid = %s,
                 used_by = %s
             WHERE code = %s
-        """, (duration_days, is_used, expires_at, created_by, batch_uuid, used_by, code))
+        """,
+            (duration_days, is_used, expires_at, created_by, batch_uuid, used_by, code),
+        )
         conn.commit()
 
     return RedirectResponse(url="/vip_vouchers", status_code=status.HTTP_303_SEE_OTHER)
