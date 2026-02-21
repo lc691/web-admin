@@ -1,4 +1,115 @@
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<style>
+    /* ================= BASE ================= */
+
+    .sidebar {
+        font-size: 14px;
+    }
+
+    .custom-sidebar {
+        background: linear-gradient(180deg, #1f2937, #111827);
+    }
+
+    /* ================= BRAND ================= */
+
+    .sidebar-brand {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    /* ================= HEADING ================= */
+
+    .sidebar-heading {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        opacity: 0.75;
+        margin-top: 14px;
+    }
+
+    /* ================= NAV LINK ================= */
+
+    .sidebar .nav-link {
+        border-radius: 10px;
+        margin: 4px 12px;
+        padding: 10px 14px;
+        transition: all 0.2s ease;
+    }
+
+    /* Hover */
+    .sidebar .nav-link:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Active item */
+    .sidebar .nav-item.active>.nav-link {
+        background: rgba(255, 255, 255, 0.15);
+        font-weight: 600;
+        position: relative;
+    }
+
+    /* Active indicator bar */
+    .sidebar .nav-item.active>.nav-link::before {
+        content: "";
+        position: absolute;
+        left: -6px;
+        top: 8px;
+        bottom: 8px;
+        width: 4px;
+        border-radius: 4px;
+        background: #3b82f6;
+    }
+
+    /* ================= COLLAPSE ================= */
+
+    .sidebar .collapse-inner {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        margin: 6px 12px;
+        padding: 8px 0;
+        transition: all 0.2s ease;
+    }
+
+    /* Collapse text fix */
+    .sidebar .collapse-item {
+        color: #e5e7eb !important;
+    }
+
+    .sidebar .collapse-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff !important;
+    }
+
+
+    /* Active collapse item */
+    .sidebar .collapse-item.active {
+        background: rgba(255, 255, 255, 0.12);
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+
+    .sidebar .collapse-item.active .sidebar-icon {
+        color: #3b82f6;
+    }
+
+    /* ================= ICON ================= */
+
+    .sidebar .nav-link i {
+        width: 20px;
+        text-align: center;
+    }
+
+    /* ================= DIVIDER ================= */
+
+    .sidebar-divider {
+        margin: 18px 0;
+        opacity: 0.2;
+    }
+</style>
+
+
+
+
+<ul class="navbar-nav sidebar sidebar-dark accordion custom-sidebar " id="accordionSidebar">
 
     {# ================= BRAND ================= #}
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
@@ -34,7 +145,7 @@
         </a>
 
         <div id="menuAdmin" class="collapse {% if admin_active %}show{% endif %}" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
+            <div class="collapse-inner">
                 <h6 class="collapse-header">Admin Controls</h6>
 
                 <a class="collapse-item {% if path == '/admins' %}active{% endif %}" href="/admins">
@@ -47,6 +158,50 @@
             </div>
         </div>
     </li>
+    {# ================= RETENTION ================= #}
+    <div class="sidebar-heading">Analytics</div>
+
+    {% set retention_active = path.startswith('/admin/retention') %}
+
+    <li class="nav-item {% if retention_active %}active{% endif %}">
+        <a class="nav-link {% if not retention_active %}collapsed{% endif %}" href="/admins/retention">
+            <i class="fas fa-chart-line fa-fw"></i>
+            <span>Retention</span>
+        </a>
+    </li>
+
+    {# ================= SECURITY ================= #}
+    <div class="sidebar-heading">Security</div>
+
+    {% set security_active = path.startswith('/trusted_ips') %}
+
+    <li class="nav-item {% if security_active %}active{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuSecurity"
+            aria-expanded="{{ 'true' if security_active else 'false' }}">
+            <i class="fas fa-shield-alt fa-fw"></i>
+            <span>Security</span>
+        </a>
+
+        <div id="menuSecurity" class="collapse {% if security_active %}show{% endif %}" data-parent="#accordionSidebar">
+            <div class="collapse-inner">
+
+                <h6 class="collapse-header">
+                    <i class="fas fa-lock text-danger mr-1"></i>
+                    Access Control
+                </h6>
+
+                <a class="collapse-item {% if path == '/trusted_ips' %}active{% endif %}" href="/trusted_ips">
+                    🌐 Trusted IPs
+                </a>
+
+                <a class="collapse-item {% if path == '/trusted_ips/new' %}active{% endif %}" href="/trusted_ips/new">
+                    ➕ Add Trusted IP
+                </a>
+
+            </div>
+        </div>
+    </li>
+
 
     {# ================= USER TOOLS ================= #}
     <div class="sidebar-heading">User Tools</div>
@@ -60,7 +215,7 @@
         </a>
 
         <div id="menuUsers" class="collapse {% if user_active %}show{% endif %}" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
+            <div class="collapse-inner">
 
                 <a class="collapse-item {% if not request.query_params.get('filter') %}active{% endif %}" href="/users">
                     📋 Semua Pengguna
@@ -111,7 +266,7 @@
 
         <div id="menuVip" class="collapse {% if vip_active %}show{% endif %}" data-parent="#accordionSidebar">
 
-            <div class="bg-white py-2 collapse-inner rounded">
+            <div class="collapse-inner">
 
                 <h6 class="collapse-header">
                     <i class="fas fa-star text-warning mr-1"></i>
@@ -167,7 +322,7 @@
 
         <div id="menuAffiliate" class="collapse {% if affiliate_active %}show{% endif %}"
             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
+            <div class="collapse-inner">
 
                 {# ================= REFERRALS ================= #}
                 <h6 class="collapse-header"><i class="fas fa-link text-primary mr-1"></i> Referrals</h6>
@@ -193,7 +348,8 @@
                 <hr class="dropdown-divider">
 
                 {# ================= AFFILIATE ACTIVITY ================= #}
-                <h6 class="collapse-header"><i class="fas fa-exchange-alt text-info mr-1"></i> Affiliate Activity</h6>
+                <h6 class="collapse-header"><i class="fas fa-exchange-alt text-info mr-1"></i> Affiliate Activity
+                </h6>
 
                 <a class="collapse-item {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}"
                     href="/affiliate/leaderboard">
@@ -256,8 +412,9 @@
     {% set is_show_files = path.startswith('/show_files') %}
     {% set is_shows = path.startswith('/shows') %}
     {% set is_channel = path.startswith('/channel') %}
+    {% set is_platform = path.startswith('/platform') %}
 
-    {% set files_active = is_files or is_show_files or is_shows or is_channel %}
+    {% set files_active = is_files or is_show_files or is_shows or is_channel or is_platform %}
 
     <li class="nav-item {% if files_active %}active{% endif %}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuFiles"
@@ -268,15 +425,15 @@
 
         <div id="menuFiles" class="collapse {% if files_active %}show{% endif %}" data-parent="#accordionSidebar">
 
-            <div class="bg-white py-2 collapse-inner rounded">
+            <div class="collapse-inner">
 
                 <a class="collapse-item {% if is_files %}active{% endif %}" href="/files">
-                    <i class="fas fa-file-alt mr-2"></i>
+                    <i class="fas fa-file-video mr-2"></i>
                     Daftar Files
                 </a>
 
                 <a class="collapse-item {% if is_show_files %}active{% endif %}" href="/show_files">
-                    <i class="fas fa-link mr-2"></i>
+                    <i class="fas fa-layer-group mr-2"></i>
                     Show Files
                 </a>
 
@@ -285,10 +442,16 @@
                     Daftar Shows
                 </a>
 
+                <a class="collapse-item {% if is_platform %}active{% endif %}" href="/platform">
+                    <i class="fas fa-globe mr-2"></i>
+                    Daftar Platform
+                </a>
+
                 <a class="collapse-item {% if is_channel %}active{% endif %}" href="/channel">
-                    <i class="fas fa-bullhorn mr-2"></i>
+                    <i class="fas fa-broadcast-tower mr-2"></i>
                     Daftar Channel
                 </a>
+
 
             </div>
         </div>

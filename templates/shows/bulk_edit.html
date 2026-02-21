@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .page-wrapper {
+        background: #f4f6f9;
+        padding: 30px;
+    }
+
+    .lux-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        margin-bottom: 40px;
+    }
+
+    .lux-header {
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #1f2937, #374151);
+        color: white;
+    }
+
+    .lux-body {
+        padding: 30px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 12px;
+        padding: 12px 15px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        border-color: #3b82f6;
+    }
+
+    .thumbnail-preview {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .ratio-box {
+        position: relative;
+        width: 100%;
+        padding-top: 150%;
+        overflow: hidden;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        background: #f3f4f6;
+    }
+
+    .preview-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .btn-save,
+    .btn-import {
+        border: none;
+        padding: 10px 26px;
+        border-radius: 12px;
+        font-weight: 500;
+        color: white;
+        transition: all 0.25s ease;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-import {
+        background: linear-gradient(135deg, #0ea5e9, #0284c7);
+        box-shadow: 0 6px 16px rgba(14, 165, 233, 0.25);
+    }
+
+    .btn-save:hover,
+    .btn-import:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+        background: #f3f4f6;
+        color: #374151;
+        padding: 10px 22px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        text-decoration: none;
+    }
+
+    @media (max-width:768px) {
+
+        .btn-save,
+        .btn-cancel,
+        .btn-import {
+            width: 100%;
+        }
+
+        .action-group {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="page-wrapper">
+
+    <div class="lux-card">
+
+        <div class="lux-header">
+            <div class="fw-semibold">Bulk Edit Show</div>
+            <small class="opacity-75">
+                Edit {{ ids.split(',')|length }} show terpilih
+            </small>
+        </div>
+
+        <div class="lux-body">
+
+            <form method="post" action="/shows/bulk-edit">
+
+                <input type="hidden" name="ids" value="{{ ids }}">
+
+                <div class="row g-4">
+
+                    <!-- LEFT COLUMN -->
+                    <div class="col-md-8">
+
+                        <!-- TITLE -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <input type="checkbox" class="form-check-input me-2 bulk-check"
+                                    data-target="#titleInput" name="apply_title">
+                                Judul
+                            </label>
+                            <input type="text" id="titleInput" name="title" class="form-control" disabled>
+                        </div>
+
+                        <!-- SINOPSIS -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <input type="checkbox" class="form-check-input me-2 bulk-check"
+                                    data-target="#sinopsisInput" name="apply_sinopsis">
+                                Sinopsis
+                            </label>
+                            <textarea id="sinopsisInput" name="sinopsis" rows="5" class="form-control"
+                                disabled></textarea>
+                        </div>
+
+                        <!-- GENRE + SOURCE -->
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <input type="checkbox" class="form-check-input me-2 bulk-check"
+                                        data-target="#genreInput" name="apply_genre">
+                                    Genre
+                                </label>
+                                <select id="genreInput" name="genre" class="form-select" disabled>
+                                    <option value="">-- Pilih Genre --</option>
+                                    {% set genre_options = [
+                                    "🇨🇳 Drama China",
+                                    "🇺🇸 Drama Barat",
+                                    "🇰🇷 Drama Korea",
+                                    "🇯🇵 Drama Jepang",
+                                    "🇹🇭 Drama Thailand"
+                                    ] %}
+                                    {% for g in genre_options %}
+                                    <option value="{{ g }}">{{ g }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <input type="checkbox" class="form-check-input me-2 bulk-check"
+                                        data-target="#sourceInput" name="apply_source_id">
+                                    Source
+                                </label>
+                                <select id="sourceInput" name="source_id" class="form-select" disabled>
+                                    <option value="">-- Pilih Source --</option>
+                                    {% for src in sources %}
+                                    <option value="{{ src.id }}">
+                                        {{ src.label }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <!-- HASHTAGS -->
+                        <div class="mt-4">
+                            <label class="form-label fw-semibold">
+                                <input type="checkbox" class="form-check-input me-2 bulk-check"
+                                    data-target="#hashtagsInput" name="apply_hashtags">
+                                Hashtags
+                            </label>
+                            <input type="text" id="hashtagsInput" name="hashtags" class="form-control" disabled>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="col-md-4">
+
+                        <!-- THUMBNAIL -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <input type="checkbox" class="form-check-input me-2 bulk-check"
+                                    data-target="#thumbInput" name="apply_thumbnail_url">
+                                Thumbnail URL
+                            </label>
+                            <input type="url" id="thumbInput" name="thumbnail_url" class="form-control" disabled>
+                        </div>
+
+                        <!-- ADULT -->
+                        <div>
+                            <label class="form-label fw-semibold">
+                                <input type="checkbox" class="form-check-input me-2 bulk-check"
+                                    data-target="#adultInput" name="apply_is_adult">
+                                Konten Dewasa
+                            </label>
+                            <select id="adultInput" name="is_adult" class="form-select" disabled>
+                                <option value="0">Tidak</option>
+                                <option value="1">Ya</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="pt-4 mt-4 border-top d-flex gap-3">
+
+                    <button type="submit" class="btn-save">
+                        Simpan Perubahan
+                    </button>
+
+                    <a href="/shows" class="btn-cancel">
+                        Batal
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    $(document).ready(function () {
+
+        $('.bulk-check').on('change', function () {
+            const target = $(this).data('target');
+            $(target)
+                .prop('disabled', !this.checked)
+                .val('');
+        });
+
+    });
+</script>
+{% endblock %}

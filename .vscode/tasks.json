@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Reload Daemon + Restart Web Admin",
+      "type": "shell",
+      "command": "sudo systemctl daemon-reload && sudo systemctl restart web-admin",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "View Web Admin Logs",
+      "type": "shell",
+      "command": "journalctl -u web-admin -f",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Uvicorn (Dev)",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/uvicorn app.main:app --reload",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Restart Web Admin Service",
+      "type": "shell",
+      "command": "sudo systemctl restart web-admin",
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

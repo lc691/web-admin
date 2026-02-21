@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-4 text-gray-800">Tambah Platform</h1>
+
+{% if flash %}
+<div class="alert alert-{{ flash.category }} alert-dismissible fade show shadow-sm" role="alert">
+    <i class="fas 
+        {% if flash.category == 'success' %}fa-check-circle
+        {% elif flash.category == 'danger' %}fa-times-circle
+        {% elif flash.category == 'warning' %}fa-exclamation-triangle
+        {% else %}fa-info-circle{% endif %}
+        mr-2"></i>
+    {{ flash.message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span>&times;</span>
+    </button>
+</div>
+{% endif %}
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+
+        <form method="post" action="/platform/create">
+
+            <div class="form-group">
+                <label for="code"><strong>Code</strong></label>
+                <input type="text" class="form-control" id="code" name="code" placeholder="contoh: dramashorts"
+                    pattern="[a-z0-9_]+" title="Hanya huruf kecil, angka, dan underscore" required>
+                <small class="form-text text-muted">
+                    Gunakan huruf kecil tanpa spasi (identifier unik).
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="label"><strong>Label</strong></label>
+                <input type="text" class="form-control" id="label" name="label" placeholder="contoh: 🎭 DramaShorts"
+                    required>
+                <small class="form-text text-muted">
+                    Label yang akan ditampilkan di UI (boleh pakai emoji).
+                </small>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between">
+                <a href="/platform" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-1"></i> Kembali
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save mr-1"></i> Simpan
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto lowercase + hapus spasi
+    const codeInput = document.getElementById("code");
+    if (codeInput) {
+        codeInput.addEventListener("input", function () {
+            this.value = this.value.toLowerCase().replace(/\s+/g, '');
+        });
+    }
+
+    // Auto dismiss flash
+    setTimeout(function () {
+        $(".alert").fadeOut("slow");
+    }, 3000);
+</script>
+{% endblock %}

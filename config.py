@@ -1,80 +1,178 @@
 # config.py
-
 import os
+import logging
 from typing import List, Tuple
-
 from dotenv import load_dotenv
 
-load_dotenv()  # Penting: ini harus dipanggil sebelum akses os.environ
+# =====================
+# ENV LOADING
+# =====================
+load_dotenv()
+
+# =====================
+# LOGGING (SAFE FOR VPS)
+# =====================
+from configs.logging_setup import log
 
 
-def get_env(name, cast=str):
+# =====================
+# HELPERS
+# =====================
+def require_env(name: str, cast=str):
+    value = os.getenv(name)
+    if value is None or value == "":
+        raise RuntimeError(f"ENV '{name}' is required")
     try:
-        value = os.environ[name]
-        if cast is bool:
-            return value.lower() in ("1", "true", "yes", "on")
         return cast(value)
-    except KeyError:
-        raise RuntimeError(f"❌ ENV '{name}' tidak ditemukan!")
-    except ValueError:
-        raise RuntimeError(f"❌ ENV '{name}' harus bertipe {cast.__name__}!")
+    except Exception:
+        raise RuntimeError(f"ENV '{name}' must be {cast.__name__}")
 
 
-# === Telegram Bot Config ===
-API_ID = get_env("API_ID", int)
-API_HASH = get_env("API_HASH")
-BOT_TOKEN_KELOLA = get_env("BOT_TOKEN_KELOLA")
-BOT_TOKEN = get_env("BOT_TOKEN")
-BOT_TOKEN_UTBK = get_env("BOT_TOKEN_UTBK")
-TRAKTEER_SECRET_KEY = get_env("TRAKTEER_SECRET_KEY")
+def optional_env(name: str, default=None, cast=str):
+    value = os.getenv(name)
+    if value is None or value == "":
+        return default
+    try:
+        return cast(value)
+    except Exception:
+        log.warning("ENV %s invalid, fallback to default", name)
+        return default
 
 
-# === PostgreSQL Config ===
-PGDATABASE = get_env("PGDATABASE")
-PGUSER = get_env("PGUSER")
-PGPASSWORD = get_env("PGPASSWORD")
-PGHOST = get_env("PGHOST")
-PGPORT = get_env("PGPORT", int)
+def parse_int_list(raw: str) -> List[int]:
+    if not raw:
+        return []
+    return [int(x) for x in raw.split(",") if x.strip().isdigit()]
 
-# === Channel & Admin ===
-DB_DRAMA = get_env("DB_DRAMA", int)
-POSTING_CHANNEL = get_env("POSTING_CHANNEL", int)
-POSTING_UTBK = get_env("POSTING_UTBK")
 
-admin_ids_raw = get_env("ADMIN_IDS", str)
-if admin_ids_raw:
-    ADMIN_IDS = [
-        int(x.strip()) for x in admin_ids_raw.split(",") if x.strip().isdigit()
-    ]
-else:
-    ADMIN_IDS = []
+# =====================
+# MODE
+# =====================
+MODE = optional_env("MODE", "production")
+IS_DEV = MODE == "development"
+
+
+# =====================
+# TELEGRAM CORE (WAJIB)
+# =====================
+API_ID = require_env("API_ID", int)
+API_HASH = require_env("API_HASH")
+
+BOT_TOKEN = optional_env("BOT_TOKEN_DEV") if IS_DEV else require_env("BOT_TOKEN")
+
+BOT_USERNAME = optional_env("BOT_USERNAME", "drac1n_bot")
+
+
+# =====================
+# MULTI BOT TOKEN
+# =====================
+BOT_TOKEN_KELOLA = optional_env("BOT_TOKEN_KELOLA")
+BOT_TOKEN_UTBK = optional_env("BOT_TOKEN_UTBK")
+BOT_TOKEN_CARI = optional_env("BOT_TOKEN_CARI")
+
+
+# =====================
+# DATABASE (WAJIB)
+# =====================
+PGDATABASE = require_env("PGDATABASE")
+PGUSER = require_env("PGUSER")
+PGPASSWORD = require_env("PGPASSWORD")
+PGHOST = optional_env("PGHOST", "127.0.0.1")
+PGPORT = optional_env("PGPORT", 5432, int)
+
+
+# =====================
+# CHANNEL / GROUP
+# =====================
+DB_DRAMA = optional_env("DB_DRAMA", 0, int)
+POSTING_TEST = optional_env("POSTING_TEST", 0, int)
+POSTING_CHANNEL = optional_env("POSTING_CHANNEL", 0, int)
+GROUP_DISKUSI = optional_env("GROUP_DISKUSI", 0, int)
+
+BACKUP_CHANNEL = optional_env("BACKUP_CHANNEL", "@dramacinavip")
+
+
+# =====================
+# ADMIN
+# =====================
+ADMIN_IDS = parse_int_list(optional_env("ADMIN_IDS", ""))
+
+
+# =====================
+# LIMIT & VIP
+# =====================
+DAILY_FREE_LIMIT = optional_env("DAILY_FREE_LIMIT", 5, int)
+UNLIMITED = optional_env("UNLIMITED", 999999, int)
+
+
+# =====================
+# PAYMENT / TRAKTEER
+# =====================
+TRAKTEER_SECRET_KEY = optional_env("TRAKTEER_SECRET_KEY")
+MANUAL_TRX_TOKEN = optional_env("MANUAL_TRX_TOKEN")
+
+
+# =====================
+# SMTP
+# =====================
+SMTP_USER = optional_env("SMTP_USER")
+SMTP_PASS = optional_env("SMTP_PASS")
+
+
+# =====================
+# CRON / WORKER
+# =====================
+CLEANUP_INTERVAL = optional_env("CLEANUP_INTERVAL", 600, int)
+UPLOAD_DELAY = optional_env("UPLOAD_DELAY", 1.5, float)
+
+
+# =====================
+# STATIC CONFIG
+# =====================
+TARGET_CHANNELS = [
+    "reelshortx",
+    "dramawavee",
+    "netshortt",
+    "listfilmdcstv",
+]
 
 REQUIRED_CHANNELS: List[Tuple[str, str]] = [
     ("dracinshort", "https://t.me/dracinshort"),
     ("dramacinavip", "https://t.me/dramacinavip"),
+    ("dracinshortgroup", "https://t.me/dracinshortgroup"),
 ]
 
 REQUEST_CHANNELS: List[Tuple[str, str]] = [
-    ("requestdcstv", "t.me/requestdcstv"),
+    ("requestdcstv", "https://t.me/requestdcstv"),
 ]
 
 REQUIRED_CHANNELS_UTBK: List[Tuple[str, str]] = [
-    ("dcstutbk2025", "https://t.me/dcstutbk2025"),  # tanpa @
+    ("dcstutbk2025", "https://t.me/dcstutbk2025"),
 ]
 
-SMTP_USER = get_env("SMTP_USER")
-SMTP_PASS = get_env("SMTP_PASS")
 
-
-adding_channel_users = set()
-
-SPECIAL_DONORS = {
-    "vipuser@example.com": "🎉 Hai VIP! Terima kasih banyak atas dukungannya!",
-    "admin@project.com": "🙏 Terima kasih, Admin! Donasimu sangat berarti.",
-    "sahabat@supporter.com": "💖 Terima kasih sahabat! Kami sangat menghargainya.",
+# =====================
+# SESSION (FOR WORKER / CRON)
+# =====================
+BOT_SESSION = {
+    "name": "vip-bot-cron",
+    "api_id": API_ID,
+    "api_hash": API_HASH,
+    "bot_token": BOT_TOKEN,
 }
 
-UPLOAD_DELAY = 1.5  # delay antar file dalam detik
+# =====================
+# SPECIAL DONORS (OPTIONAL)
+# =====================
+SPECIAL_DONORS = set()
 
-# config.py
-DEFAULT_THUMBNAIL_FILE_ID = "AgACAgUAAyEFAASX5fXZAAICSWhv9v-vJUb-mdE6UpJxet09EHBkAALDwjEblA6BVyP8WR-uIemcAAgBAAMCAAN5AAceBA"
+DEFAULT_THUMBNAIL_FILE_ID = optional_env("DEFAULT_THUMBNAIL_FILE_ID")
+VIP_UPGRADE_URL = optional_env("VIP_UPGRADE_URL")
+
+# =====================
+# DEBUG SUMMARY (LOG SAFE)
+# =====================
+log.info("Running in %s mode", MODE.upper())
+log.info("Bot: %s", BOT_USERNAME)
+log.info("DB: %s@%s:%s/%s", PGUSER, PGHOST, PGPORT, PGDATABASE)
+log.info("Admins: %s", ADMIN_IDS)

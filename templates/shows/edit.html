@@ -1,115 +1,243 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="container mt-4">
-    <h2 class="mb-4">Edit Show</h2>
 
-    <!-- ================= EDIT SHOW FORM ================= -->
-    <form action="/shows/edit/{{ show.id }}" method="post">
-        {# CSRF token (aktifkan jika backend mendukung) #}
-        {# <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> #}
+<style>
+    .page-wrapper {
+        background: #f4f6f9;
+        padding: 30px;
+    }
 
-        <div class="mb-3">
-            <label class="form-label">Judul</label>
-            <input type="text" name="title" class="form-control" value="{{ show.title }}" required>
+    .lux-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        margin-bottom: 40px;
+    }
+
+    .lux-header {
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #1f2937, #374151);
+        color: white;
+    }
+
+    .lux-body {
+        padding: 30px;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 12px;
+        padding: 12px 15px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        border-color: #3b82f6;
+    }
+
+    .thumbnail-preview {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    .ratio-box {
+        position: relative;
+        width: 100%;
+        padding-top: 150%;
+        overflow: hidden;
+        border-radius: 16px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        background: #f3f4f6;
+    }
+
+    .preview-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .btn-save,
+    .btn-import {
+        border: none;
+        padding: 10px 26px;
+        border-radius: 12px;
+        font-weight: 500;
+        color: white;
+        transition: all 0.25s ease;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-import {
+        background: linear-gradient(135deg, #0ea5e9, #0284c7);
+        box-shadow: 0 6px 16px rgba(14, 165, 233, 0.25);
+    }
+
+    .btn-save:hover,
+    .btn-import:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+        background: #f3f4f6;
+        color: #374151;
+        padding: 10px 22px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        text-decoration: none;
+    }
+
+    @media (max-width:768px) {
+
+        .btn-save,
+        .btn-cancel,
+        .btn-import {
+            width: 100%;
+        }
+
+        .action-group {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="page-wrapper">
+
+    <!-- ================= EDIT SECTION ================= -->
+    <div class="lux-card">
+
+        <div class="lux-header">
+            <div class="fw-semibold">Edit Show</div>
+            <small class="opacity-75">Detail Informasi Show</small>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Sinopsis</label>
-            <textarea name="sinopsis" class="form-control" rows="4">{{ show.sinopsis }}</textarea>
+        <div class="lux-body">
+
+            <form method="post" action="/shows/edit/{{ show.id }}">
+
+                <div class="row g-4">
+
+                    <div class="col-md-8">
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Judul</label>
+                            <input type="text" name="title" class="form-control" value="{{ show.title }}" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Sinopsis</label>
+                            <textarea name="sinopsis" class="form-control" rows="5">{{ show.sinopsis }}</textarea>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Genre</label>
+                                <select name="genre" class="form-select" required>
+                                    {% set genre_options = [
+                                    "🇨🇳 Drama China",
+                                    "🇺🇸 Drama Barat",
+                                    "🇰🇷 Drama Korea",
+                                    "🇯🇵 Drama Jepang",
+                                    "🇹🇭 Drama Thailand"
+                                    ] %}
+                                    {% for g in genre_options %}
+                                    <option value="{{ g }}" {{ "selected" if show.genre==g else "" }}>
+                                        {{ g }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Source</label>
+                                <select name="source_id" class="form-select" required>
+                                    {% for src in sources %}
+                                    <option value="{{ src.id }}" {% if show.source_id==src.id %}selected{% endif %}>
+                                        {{ src.label }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="form-label fw-semibold">Hashtags</label>
+                            <input type="text" name="hashtags" class="form-control" value="{{ show.hashtags }}">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">Thumbnail Preview</label>
+
+                        <div class="thumbnail-preview mb-3">
+                            <div class="ratio-box">
+                                {% if show.resolved_thumbnail %}
+                                <img src="{{ show.resolved_thumbnail }}" class="preview-img">
+                                {% else %}
+                                <img src="/static/img/placeholder.png" class="preview-img opacity-50">
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small">Thumbnail URL</label>
+                            <input type="url" name="thumbnail_url" class="form-control"
+                                value="{{ show.thumbnail_url or '' }}">
+                        </div>
+
+                        <div>
+                            <label class="form-label fw-semibold">Konten Dewasa</label>
+                            <select name="is_adult" class="form-select">
+                                <option value="0" {{ "selected" if not show.is_adult else "" }}>
+                                    Tidak
+                                </option>
+                                <option value="1" {{ "selected" if show.is_adult else "" }}>
+                                    Ya
+                                </option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="pt-4 mt-4 border-top d-flex gap-3 action-group">
+
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-check-lg me-1"></i> Simpan Perubahan
+                    </button>
+                    <a href="/shows" class="btn-cancel">
+                        Batal
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= IMPORT SECTION ================= -->
+
+    <div class="lux-card">
+
+        <div class="lux-header">
+            <div class="fw-semibold">Import Files</div>
+            <small class="opacity-75">
+                Menyalin file dari show lain
+            </small>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Genre</label>
-                <select name="genre" class="form-select" required>
-                    {% set genre_options = [
-                    "🇨🇳 Drama China",
-                    "🇺🇸 Drama Barat",
-                    "🇰🇷 Drama Korea",
-                    "🇯🇵 Drama Jepang",
-                    "🇹🇭 Drama Thailand"
-                    ] %}
-                    {% for g in genre_options %}
-                    <option value="{{ g }}" {{ "selected" if show.genre==g else "" }}>
-                        {{ g }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
+        <div class="lux-body">
 
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Source</label>
-                <select name="source" class="form-select" required>
-                    {% set source_options = [
-                    "Dramabox","FlickReels","NetShort","Dramawave","Melolo",
-                    "Stardust","Iqiyi","GoodShort","BiliTV","ReelShort",
-                    "Moboreels","RapidTV","Shortmax","Dotdrama"
-                    ] %}
-                    {% for src in source_options %}
-                    <option value="{{ src }}" {{ "selected" if show.source==src else "" }}>
-                        {{ src }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Hashtags</label>
-            <input type="text" name="hashtags" class="form-control" value="{{ show.hashtags }}"
-                placeholder="#romance #drama">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Thumbnail URL</label>
-            <input type="url" name="thumbnail_url" class="form-control" value="{{ show.thumbnail_url or '' }}"
-                placeholder="Kosongkan untuk menghapus thumbnail">
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Preview Thumbnail</label><br>
-            {% if show.resolved_thumbnail %}
-            <img src="{{ show.resolved_thumbnail }}" alt="Thumbnail Preview" class="img-thumbnail"
-                style="max-width:200px;">
-            {% else %}
-            <img src="/static/img/placeholder.png" class="img-thumbnail opacity-50" style="max-width:200px;"
-                alt="Tidak ada thumbnail">
-            <div class="text-muted small mt-1">Tidak ada thumbnail</div>
-            {% endif %}
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Konten Dewasa?</label>
-            <select name="is_adult" class="form-select">
-                <option value="0" {{ "selected" if not show.is_adult else "" }}>Tidak</option>
-                <option value="1" {{ "selected" if show.is_adult else "" }}>Ya</option>
-            </select>
-        </div>
-
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">
-                Simpan
-            </button>
-            <a href="/shows" class="btn btn-secondary">
-                Batal
-            </a>
-        </div>
-    </form>
-
-    <!-- ================= IMPORT FILES SECTION ================= -->
-    <hr class="my-5">
-
-    <div class="card shadow-sm border-start border-info border-3">
-        <div class="card-body">
-            <h5 class="card-title text-info mb-2">
-                🔁 Import Files dari Show Lain
-            </h5>
-            <p class="text-muted">
-                Menyalin semua file dari show lain ke show ini.
-            </p>
-
-            {% if shows|length <= 1 %} <div class="alert alert-warning mb-0">
+            {% if shows|length <= 1 %} <div class="alert alert-warning">
                 Tidak ada show lain yang bisa diimport.
         </div>
         {% else %}
@@ -120,10 +248,10 @@
         </div>
         {% endif %}
 
-        <form method="post" action="/shows/{{ show.id }}/import-files"
-            onsubmit="return confirm('Yakin ingin mengimport semua file dari show ini?')">
-            <div class="mb-3">
-                <label class="form-label">Source Show</label>
+        <form method="post" action="/shows/{{ show.id }}/import-files">
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Source Show</label>
                 <select name="source_show_id" class="form-select select-show" required>
                     {% for s in shows %}
                     {% if s.id != show.id %}
@@ -135,93 +263,130 @@
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Message ID</label>
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Message ID</label>
                 <input type="text" id="message_id_input" name="message_id" class="form-control"
                     placeholder="4669 atau https://t.me/channel/4669" required>
             </div>
 
-            <button type="submit" class="btn btn-info">
-                <i class="fas fa-copy"></i> Import Files
+            <button type="submit" class="btn-import">
+                <i class="fas fa-copy me-1"></i> Import Files
             </button>
-        </form>
 
-        {% if request.query_params.get("imported") %}
-        <div class="alert alert-success mt-3">
-            ✅ {{ request.query_params.get("imported") }} file berhasil diimport
-        </div>
-        {% endif %}
+        </form>
 
         {% endif %}
     </div>
 </div>
-</div>
+
 {% endblock %}
 
 {% block scripts %}
 
-{% if request.query_params.get("imported") %}
 <script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Import Berhasil',
-        text: '{{ request.query_params.get("imported") }} file berhasil diimport',
-        timer: 1800,
-        showConfirmButton: false,
-        allowOutsideClick: false
-    }).then(() => {
-        window.location.replace('/shows');
-    });
-</script>
-{% endif %}
+    document.addEventListener("DOMContentLoaded", function () {
 
-<script>
-    (function () {
-        const input = document.getElementById('message_id_input');
-        if (!input) return;
+        // Disable double submit edit
+        const editForm = document.querySelector('form[action^="/shows/edit"]');
+        if (editForm) {
+            editForm.addEventListener("submit", function () {
+                const btn = this.querySelector(".btn-save");
+                btn.innerHTML =
+                    '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
+                btn.disabled = true;
+            });
+        }
 
-        input.addEventListener('input', function () {
-            const val = this.value.trim();
-            const match = val.match(/\/(\d+)(?:\D|$)/);
+        // SweetAlert confirm import
+        const importForm =
+            document.querySelector('form[action*="import-files"]');
+        if (importForm) {
+            importForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Import Files?',
+                    text: 'Semua file akan disalin ke show ini.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Import',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#0284c7'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const btn =
+                            importForm.querySelector("button[type='submit']");
+                        btn.innerHTML =
+                            '<span class="spinner-border spinner-border-sm me-2"></span>Mengimport...';
+                        btn.disabled = true;
+                        importForm.submit();
+                    }
+                });
+            });
+        }
 
-            if (match) {
-                this.value = match[1];
-                return;
-            }
+        // SweetAlert success import
+        const params = new URLSearchParams(window.location.search);
+        const importedCount = params.get("imported");
 
-            const nums = val.match(/\d+/g);
-            if (nums) {
-                this.value = nums[nums.length - 1];
-            }
-        });
-    })();
-</script>
+        if (importedCount !== null) {
+            const icon = importedCount > 0 ? 'success' : 'warning';
+            const text = importedCount > 0
+                ? `${importedCount} file berhasil disalin.`
+                : 'Tidak ada file yang diimport.';
 
-<script>
-    function formatShowDropdown(option) {
-        if (!option.id) return option.text;
+            Swal.fire({
+                icon: icon,
+                title: 'Import Selesai',
+                text: text,
+                confirmButtonColor: '#0284c7'
+            }).then(() => {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            });
+        }
 
-        const thumb = $(option.element).data('thumbnail');
+        // Auto extract message id
+        const input =
+            document.getElementById('message_id_input');
+        if (input) {
+            input.addEventListener('input', function () {
+                const val = this.value.trim();
+                const match = val.match(/\/(\d+)(?:\D|$)/);
+                if (match) {
+                    this.value = match[1];
+                    return;
+                }
+                const nums = val.match(/\d+/g);
+                if (nums) {
+                    this.value = nums[nums.length - 1];
+                }
+            });
+        }
 
-        return $(`
-        <div class="d-flex align-items-center gap-3">
-            <img
-                src="${thumb}"
-                style="width:96px;height:54px;object-fit:cover;border-radius:6px;border:1px solid #ddd;"
-                onerror="this.src='/static/img/placeholder.png'"
-            >
-            <div class="fw-semibold">${option.text}</div>
-        </div>
-    `);
-    }
+        // Select2 dropdown with thumbnail
+        function formatShowDropdown(option) {
+            if (!option.id) return option.text;
+            const thumb = $(option.element).data('thumbnail');
+            return $(`
+                <div class="d-flex align-items-center gap-3">
+                <img src="${thumb}"
+                style="width:96px;height:54px;
+                object-fit:cover;border-radius:6px;
+                border:1px solid #ddd;"
+                onerror="this.src='/static/img/placeholder.png'">
+                <div class="fw-semibold">${option.text}</div>
+                </div>
+                `);
+        }
 
-    $(document).ready(function () {
         $('.select-show').select2({
             width: '100%',
-            placeholder: 'Cari show berdasarkan ID atau judul...',
+            placeholder: 'Cari show...',
             templateResult: formatShowDropdown,
-            templateSelection: option => option.text
+            templateSelection: option => option.text,
+            escapeMarkup: markup => markup
         });
+
     });
 </script>
+
 {% endblock %}

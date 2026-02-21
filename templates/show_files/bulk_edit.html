@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h3 mb-3 text-gray-800">
+    Edit {{ ids.split(',')|length }} Relasi Terpilih
+</h1>
+
+<form method="post" action="/show_files/bulk-edit">
+    <input type="hidden" name="ids" value="{{ ids }}">
+
+    <!-- SHOW ID -->
+    <div class="form-group">
+        <label>
+            <input type="checkbox" id="chkShowId" name="apply_show_id">
+            Show ID
+        </label>
+        <input type="number" id="showIdInput" name="show_id" class="form-control" disabled>
+    </div>
+
+    <!-- ALIAS NAME -->
+    <div class="form-group">
+        <label>
+            <input type="checkbox" id="chkAlias" name="apply_alias_name">
+            Alias Name
+        </label>
+        <input type="text" id="aliasInput" name="alias_name" class="form-control" disabled>
+    </div>
+
+    <!-- MESSAGE ID -->
+    <div class="form-group">
+        <label>
+            <input type="checkbox" id="chkMessageId" name="apply_message_id">
+            Message ID
+        </label>
+        <input type="text" id="messageIdInput" name="message_id" class="form-control" disabled
+            placeholder="4669 atau https://t.me/channel/4669">
+    </div>
+
+
+
+    <!-- ACTION -->
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">
+            Simpan Perubahan
+        </button>
+        <a href="/show_files" class="btn btn-danger ml-2">
+            Batal
+        </a>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    $(document).ready(function () {
+
+        $('#chkShowId').on('change', function () {
+            $('#showIdInput')
+                .prop('disabled', !this.checked)
+                .val('');
+        });
+
+        $('#chkMessageId').on('change', function () {
+            $('#messageIdInput')
+                .prop('disabled', !this.checked)
+                .val('');
+        });
+
+        $('#chkAlias').on('change', function () {
+            $('#aliasInput')
+                .prop('disabled', !this.checked)
+                .val('');
+        });
+
+        // Auto extract message id
+        const input =
+            document.getElementById('messageIdInput');
+        if (input) {
+            input.addEventListener('input', function () {
+                const val = this.value.trim();
+                const match = val.match(/\/(\d+)(?:\D|$)/);
+                if (match) {
+                    this.value = match[1];
+                    return;
+                }
+                const nums = val.match(/\d+/g);
+                if (nums) {
+                    this.value = nums[nums.length - 1];
+                }
+            });
+        }
+
+    });
+</script>
+{% endblock %}

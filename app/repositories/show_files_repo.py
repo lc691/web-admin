@@ -1,54 +1,190 @@
+from typing import Dict, List, Optional
+
 from db.connect import get_dict_cursor
 
+# =========================
+# CONSTANTS
+# =========================
 
-def list_show_files():
+ALLOWED_UPDATE_FIELDS = {
+    "alias_name",
+    "message_id",
+    "show_id",
+}
+
+
+# =========================
+# READ OPERATIONS
+# =========================
+
+
+def list_show_files() -> List[Dict]:
+    """
+    Return all show_files with joined show & file info.
+    """
+    query = """
+        SELECT
+            sf.id AS show_file_id,
+            s.title AS show_title,
+            f.file_name,
+            sf.show_id,
+            sf.message_id
+        FROM show_files sf
+        JOIN files f ON f.id = sf.file_id
+        JOIN shows s ON s.id = sf.show_id
+        ORDER BY sf.id DESC
+    """
+
     with get_dict_cursor() as (cur, _):
-        cur.execute(
-            """
-            SELECT
-                sf.id AS show_file_id,
-                s.title AS show_title,
-                f.file_name,
-                sf.show_id,
-                sf.message_id
-            FROM show_files sf
-            JOIN files f ON f.id = sf.file_id
-            JOIN shows s ON s.id = sf.show_id
-            ORDER BY sf.id DESC
-            """
-        )
+        cur.execute(query)
         return cur.fetchall()
 
 
-def get_show_file(show_file_id: int):
+def get_show_file(show_file_id: int) -> Optional[Dict]:
+    """
+    Return single show_file by id.
+    """
+    if not isinstance(show_file_id, int) or show_file_id <= 0:
+        return None
+
+    query = """
+        SELECT
+            sf.id,
+            sf.show_id,
+            sf.message_id,
+            s.title AS show_title,
+            f.file_name,
+            sf.alias_name
+        FROM show_files sf
+        JOIN files f ON f.id = sf.file_id
+        JOIN shows s ON s.id = sf.show_id
+        WHERE sf.id = %s
+    """
+
     with get_dict_cursor() as (cur, _):
-        cur.execute(
-            """
-            SELECT
-                sf.id,
-                sf.show_id,
-                sf.message_id,
-                s.title AS show_title,
-                f.file_name
-            FROM show_files sf
-            JOIN files f ON f.id = sf.file_id
-            JOIN shows s ON s.id = sf.show_id
-            WHERE sf.id = %s
-            """,
-            (show_file_id,),
-        )
+        cur.execute(query, (show_file_id,))
         return cur.fetchone()
 
 
-def update_show_file(show_file_id: int, alias_name: str, message_id: int | None):
+# =========================
+# UPDATE OPERATION
+# =========================
+def update_show_file(show_file_id: int, data: Dict) -> int:
+    """
+    Update show_file by id.
+    Returns affected row count.
+    """
+
+    if not isinstance(show_file_id, int) or show_file_id <= 0:
+        return 0
+
+    if not data:
+        return 0
+
+    fields = []
+    values = []
+
+    # Sanitasi alias_name
+    if "alias_name" in data:
+        alias = data.get("alias_name")
+        cleaned = alias.strip() if alias else None
+        data["alias_name"] = cleaned if cleaned else None
+
+    # Build safe update fields
+    for key, value in data.items():
+        if key not in ALLOWED_UPDATE_FIELDS:
+            continue
+
+        fields.append(f"{key} = %s")
+        values.append(value)
+
+    if not fields:
+        return 0
+
+    values.append(show_file_id)
+
+    query = f"""
+        UPDATE show_files
+        SET {", ".join(fields)}
+        WHERE id = %s
+    """
+
     with get_dict_cursor() as (cur, conn):
-        cur.execute(
-            """
-            UPDATE show_files SET
-                alias_name = %s,
-                message_id = %s
-            WHERE id = %s
-            """,
-            (alias_name, message_id, show_file_id),
-        )
+        cur.execute(query, tuple(values))
         conn.commit()
+        return cur.rowcount
+
+
+def update_show_files_bulk(ids: List[int], data: Dict) -> int:
+    """
+    Update multiple show_files by id list.
+    Returns affected row count.
+    """
+
+    if not ids:
+        return 0
+
+    valid_ids = [i for i in ids if isinstance(i, int) and i > 0]
+    if not valid_ids:
+        return 0
+
+    fields = []
+    values = []
+
+    # Sanitasi alias_name
+    if "alias_name" in data:
+        alias = data.get("alias_name")
+        cleaned = alias.strip() if alias else None
+        data["alias_name"] = cleaned if cleaned else None
+
+    for key, value in data.items():
+        if key not in ALLOWED_UPDATE_FIELDS:
+            continue
+        fields.append(f"{key} = %s")
+        values.append(value)
+
+    if not fields:
+        return 0
+
+    placeholders = ",".join(["%s"] * len(valid_ids))
+    values.extend(valid_ids)
+
+    query = f"""
+        UPDATE show_files
+        SET {", ".join(fields)}
+        WHERE id IN ({placeholders})
+    """
+
+    with get_dict_cursor() as (cur, conn):
+        cur.execute(query, tuple(values))
+        conn.commit()
+        return cur.rowcount
+
+
+# =========================
+# DELETE OPERATION
+# =========================
+def delete_show_files_bulk(ids: List[int]) -> int:
+    """
+    Delete multiple show_files by id list.
+    Returns affected row count.
+    """
+
+    if not ids:
+        return 0
+
+    valid_ids = [i for i in ids if isinstance(i, int) and i > 0]
+    if not valid_ids:
+        return 0
+
+    placeholders = ",".join(["%s"] * len(valid_ids))
+
+    query = f"""
+        DELETE FROM show_files
+        WHERE id IN ({placeholders})
+    """
+
+    with get_dict_cursor() as (cur, conn):
+        cur.execute(query, tuple(valid_ids))
+        conn.commit()
+        return cur.rowcount

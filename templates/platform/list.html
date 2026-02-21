@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-2 text-gray-800">Request Platform</h1>
+
+{% if flash %}
+<div class="alert alert-{{ flash.category }} alert-dismissible fade show shadow-sm" role="alert">
+  <i class="fas 
+    {% if flash.category == 'success' %}fa-check-circle
+    {% elif flash.category == 'danger' %}fa-times-circle
+    {% elif flash.category == 'warning' %}fa-exclamation-triangle
+    {% else %}fa-info-circle{% endif %}
+    mr-2"></i>
+  {{ flash.message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span>&times;</span>
+  </button>
+</div>
+{% endif %}
+
+<a href="/platform/create" class="btn btn-primary mb-3">
+  <i class="fas fa-plus-circle mr-1"></i> Tambah Platform
+</a>
+
+<div class="card shadow mb-4">
+  <div class="card-body table-responsive">
+
+    <table class="table table-bordered" id="sourcesTable" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th width="5%">ID</th>
+          <th width="25%">Code</th>
+          <th width="40%">Label</th>
+          <th width="15%">Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for src in sources %}
+        <tr>
+          <td class="text-center">{{ src.id }}</td>
+          <td>
+            <span>{{ src.code }}</span>
+          </td>
+          <td>{{ src.label }}</td>
+          <td class="text-center">
+
+            <a href="/platform/{{ src.id }}/edit" class="btn btn-sm btn-warning btn-circle" title="Edit">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+
+            <form action="/platform/{{ src.id }}/delete" method="post" style="display:inline;"
+              onsubmit="return confirm('Yakin ingin menghapus source ini?');">
+              <button type="submit" class="btn btn-sm btn-danger btn-circle" title="Hapus">
+                <i class="fas fa-trash"></i>
+              </button>
+            </form>
+
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+
+    $('#sourcesTable').DataTable({
+      "order": [[0, "desc"]],
+      "language": {
+        "search": "Cari:",
+        "lengthMenu": "Tampilkan _MENU_ entri",
+        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+        "paginate": {
+          "first": "Awal",
+          "last": "Akhir",
+          "next": "Berikutnya",
+          "previous": "Sebelumnya"
+        },
+        "zeroRecords": "Tidak ada data ditemukan",
+      }
+    });
+
+    // Auto dismiss flash
+    setTimeout(function () {
+      $(".alert").fadeOut("slow");
+    }, 3000);
+
+  });
+</script>
+
+{% endblock %}

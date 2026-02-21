@@ -1,66 +1,189 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="h3 mb-3 text-gray-800">Edit File</h1>
 
-<form method="post" action="/files/edit/{{ file.id }}?q={{ request.query_params.get('q', '') }}">
-    <input type="hidden" name="q" value="{{ request.query_params.get('q', '') }}">
+<style>
+    .page-wrapper {
+        background: #f4f6f9;
+        padding: 30px;
+    }
 
-    <div class="form-group">
-        <label>File Name</label>
-        <input type="text" name="file_name" value="{{ file.file_name }}" class="form-control" required>
-        <small class="text-muted">
-            Perubahan nama file akan berlaku ke semua show yang menggunakan file ini
-        </small>
-    </div>
+    .lux-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+    }
 
-    <div class="form-group">
-        <label>Main Title</label>
-        <input type="text" name="main_title" value="{{ file.main_title }}" class="form-control">
-    </div>
+    .lux-header {
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #1f2937, #374151);
+        color: white;
+    }
 
-    <div class="form-group">
-        <label>Akses File</label>
-        <div class="mt-1">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="is_paid" id="is_paid_0" value="0" {% if not
-                    file.is_paid %}checked{% endif %}>
-                <label class="form-check-label" for="is_paid_0">
-                    Free
-                </label>
-            </div>
+    .lux-body {
+        padding: 30px;
+    }
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="is_paid" id="is_paid_1" value="1" {% if file.is_paid
-                    %}checked{% endif %}>
-                <label class="form-check-label" for="is_paid_1">
-                    Paid
-                </label>
-            </div>
+    .form-control {
+        border-radius: 12px;
+        padding: 12px 15px;
+        border: 1px solid #e5e7eb;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        border-color: #3b82f6;
+    }
+
+    .segmented {
+        display: inline-flex;
+        background: #f3f4f6;
+        border-radius: 12px;
+        padding: 4px;
+    }
+
+    .segmented input {
+        display: none;
+    }
+
+    .segmented label {
+        padding: 6px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 500;
+        margin: 0;
+        transition: 0.2s ease;
+    }
+
+    .segmented input:checked+label {
+        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .hash-input {
+        background: #f8fafc;
+        font-family: monospace;
+        font-size: 13px;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        color: white;
+        border: none;
+        padding: 10px 26px;
+        border-radius: 12px;
+        font-weight: 500;
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+        transition: 0.25s ease;
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+        background: #f3f4f6;
+        color: #374151;
+        padding: 10px 22px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        text-decoration: none;
+    }
+</style>
+
+<div class="page-wrapper">
+
+    <div class="lux-card">
+
+        <div class="lux-header">
+            <div class="fw-semibold">Edit File</div>
+            <small class="opacity-75">
+                Perubahan akan berlaku global ke semua show
+            </small>
+        </div>
+
+        <div class="lux-body">
+
+            <form method="post" action="/files/edit/{{ file.id }}?q={{ request.query_params.get('q','') }}">
+
+                <input type="hidden" name="q" value="{{ request.query_params.get('q','') }}">
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">File Name</label>
+                    <input type="text" name="file_name" value="{{ file.file_name }}" class="form-control" required>
+                    <small class="text-muted">
+                        Perubahan nama file berlaku ke semua show yang memakai file ini.
+                    </small>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Main Title</label>
+                    <input type="text" name="main_title" value="{{ file.main_title }}" class="form-control">
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Akses File</label>
+                    <div class="segmented mt-2">
+
+                        <input type="radio" name="is_paid" id="free" value="0" {% if not file.is_paid %}checked{% endif
+                            %}>
+                        <label for="free">Free</label>
+
+                        <input type="radio" name="is_paid" id="paid" value="1" {% if file.is_paid %}checked{% endif %}>
+                        <label for="paid">Paid</label>
+
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Free Hash</label>
+                    <input type="text" value="{{ file.free_hash }}" class="form-control hash-input" readonly>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Paid Hash</label>
+                    <input type="text" value="{{ file.paid_hash }}" class="form-control hash-input" readonly>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Show ID</label>
+                    <input type="number" name="show_id" value="{{ file.show_id }}" class="form-control">
+                </div>
+
+                <div class="mt-4 pt-3 border-top d-flex gap-3">
+
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-check-lg me-1"></i> Simpan Perubahan
+                    </button>
+
+                    <a href="/files?q={{ request.query_params.get('q','') }}" class="btn-cancel">
+                        Batal
+                    </a>
+
+                </div>
+
+            </form>
+
         </div>
     </div>
+</div>
 
-    <div class="form-group">
-        <label>Free Hash</label>
-        <input type="text" value="{{ file.free_hash }}" class="form-control" readonly>
-    </div>
+{% endblock %}
 
-    <div class="form-group">
-        <label>Paid Hash</label>
-        <input type="text" value="{{ file.paid_hash }}" class="form-control" readonly>
-    </div>
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
 
-    <div class="form-group">
-        <label>Show ID</label>
-        <input type="number" name="show_id" value="{{ file.show_id }}" class="form-control">
-    </div>
+        const form = document.querySelector("form");
+        if (form) {
+            form.addEventListener("submit", function () {
+                const btn = this.querySelector(".btn-save");
+                btn.innerHTML =
+                    '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
+                btn.disabled = true;
+            });
+        }
 
-    <div class="mt-4">
-        <button type="submit" class="btn btn-primary">
-            Simpan Perubahan
-        </button>
-        <a href="/files?q={{ request.query_params.get('q', '') }}" class="btn btn-danger ml-2">
-            Batal
-        </a>
-    </div>
-</form>
+    });
+</script>
 {% endblock %}

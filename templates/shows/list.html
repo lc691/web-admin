@@ -1,96 +1,265 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h1 class="h3 mb-2 text-gray-800">Daftar Show</h1>
 
-<!-- Tombol Tambah -->
-<a href="/shows/add" class="btn btn-primary mb-3">
-    <i class="fas fa-plus"></i> Tambah Show Baru
-</a>
+<style>
+    .page-wrapper {
+        padding: 25px;
+    }
 
-<!-- Tabel Shows -->
-<div class="card shadow mb-4">
-    <div class="card-body">
-        <div class="table-responsive">
-            <table id="showsTable" class="table table-bordered" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Thumbnail</th>
-                        <th>Judul</th>
-                        <th>Genre</th>
-                        <th>Source</th>
-                        <th>Dewasa</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for show in shows %}
-                    <tr>
-                        <td>{{ show.id }}</td>
-                        <td>
-                            <img src="{{ show.thumbnail_url or url_for('static', path='images/default-thumb.png') }}"
-                                onerror="this.onerror=null;this.src='{{ url_for('static', path='images/default-thumb.png') }}';"
-                                loading="lazy" width="160" height="90" style="object-fit: cover;">
+    .lux-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
 
-                        </td>
+    .table thead th {
+        background: #f8fafc;
+        font-weight: 600;
+        font-size: 14px;
+        border-bottom: 1px solid #e5e7eb;
+    }
 
-                        <td>{{ show.title }}</td>
+    .table td {
+        vertical-align: middle;
+    }
 
-                        <td>{{ show.genre or '-' }}</td>
-                        <td>{{ show.source or '-' }}</td> <!-- ✅ tambah ini -->
+    .thumb-box {
+        width: 120px;
+        aspect-ratio: 16/9;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #f1f5f9;
+    }
 
-                        <td>
-                            {% if show.is_adult %}
-                            <span class="badge badge-danger">18+</span>
-                            {% else %}
-                            <span class="badge badge-success">Umum</span>
-                            {% endif %}
-                        </td>
+    .thumb-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
-                        <td>
-                            <a href="/shows/edit/{{ show.id }}" class="btn btn-warning btn-circle btn-sm"
-                                data-toggle="tooltip" title="Edit Show">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                            <a href="/shows/delete/{{ show.id }}" class="btn btn-danger btn-circle btn-sm"
-                                data-toggle="tooltip" title="Hapus Show"
-                                onclick="return confirm('Yakin ingin menghapus show ini?')">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    .badge-adult {
+        background: #fee2e2;
+        color: #b91c1c;
+        font-weight: 500;
+        padding: 6px 10px;
+        border-radius: 999px;
+    }
+
+    .badge-general {
+        background: #dcfce7;
+        color: #166534;
+        font-weight: 500;
+        padding: 6px 10px;
+        border-radius: 999px;
+    }
+
+    .btn-add {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        color: white;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 12px;
+        font-weight: 500;
+        box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+        transition: 0.25s ease;
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-icon {
+        border: none;
+        padding: 6px 10px;
+        border-radius: 10px;
+        transition: 0.2s ease;
+    }
+
+    .btn-edit {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .btn-delete {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .btn-icon:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-bulk {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 12px;
+        font-weight: 500;
+        box-shadow: 0 6px 14px rgba(245, 158, 11, 0.25);
+        transition: 0.25s ease;
+    }
+
+    .btn-bulk:hover:not(:disabled) {
+        transform: translateY(-2px);
+    }
+
+    .btn-bulk:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+</style>
+
+<div class="page-wrapper">
+
+    <h4 class="fw-semibold mb-3">Daftar Show</h4>
+
+    <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
+
+        <a href="/shows/add" class="btn-add">
+            <i class="fas fa-plus me-1"></i> Tambah Show
+        </a>
+
+        <form id="bulkEditForm"
+            method="get"
+            action="/shows/bulk-edit"
+            class="m-0 d-inline">
+
+            <input type="hidden" name="ids" id="bulkEditIds">
+
+            <button id="bulkEditBtn"
+                    type="button"
+                    class="btn-bulk"
+                    disabled>
+                ✏ Edit Terpilih
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <div class="lux-card">
+        <div class="card-body p-4">
+
+            <div class="table-responsive">
+                <table id="showsTable" class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width:40px;">
+                                <input type="checkbox" id="checkAll">
+                            </th>
+                            <th>ID</th>
+                            <th>Thumbnail</th>
+                            <th>Judul</th>
+                            <th>Genre</th>
+                            <th>Source</th>
+                            <th>Dewasa</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for show in shows %}
+                        <tr>
+                            <td class="text-center">
+                                <input type="checkbox" class="row-check" value="{{ show.id }}"
+                                    data-show-count="{{ show.show_count }}">
+                            </td>
+                            <td class="fw-semibold">{{ show.id }}</td>
+
+                            <td>
+                                <div class="thumb-box">
+                                    <img src="{{ show.thumbnail_url or url_for('static', path='images/default-thumb.png') }}"
+                                        onerror="this.onerror=null;this.src='{{ url_for('static', path='images/default-thumb.png') }}';"
+                                        loading="lazy">
+                                </div>
+                            </td>
+
+                            <td>{{ show.title }}</td>
+
+                            <td>{{ show.genre or '-' }}</td>
+
+                            <td>{{ show.source_label or '-' }}</td>
+
+                            <td>
+                                {% if show.is_adult %}
+                                <span class="badge-adult">18+</span>
+                                {% else %}
+                                <span class="badge-general">Umum</span>
+                                {% endif %}
+                            </td>
+
+                            <td class="text-center">
+                                <a href="/shows/edit/{{ show.id }}" class="btn-icon btn-edit me-1" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+
+                                <a href="/shows/delete/{{ show.id }}" class="btn-icon btn-delete" title="Hapus"
+                                    onclick="return confirm('Yakin ingin menghapus show ini?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
+
 </div>
+
 {% endblock %}
 
 {% block scripts %}
-
 <script>
     $(document).ready(function () {
-        $('#showsTable').DataTable({
-            "language": {
-                "search": "Cari:",
-                "lengthMenu": "Tampilkan _MENU_ entri per halaman",
-                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-                "paginate": {
-                    "first": "Awal",
-                    "last": "Akhir",
-                    "next": "Berikutnya",
-                    "previous": "Sebelumnya"
-                },
-                "zeroRecords": "Tidak ada data ditemukan"
-            },
-            "pageLength": 10,
-            "lengthMenu": [5, 10, 25, 50, 100],
-            "order": [[0, "desc"]]
+
+        const table = $('#showsTable').DataTable({
+            stateSave: true,
+            order: [[1, 'desc']]
         });
 
-        $('[data-toggle="tooltip"]').tooltip()
+        // ================= BULK BUTTON TOGGLE =================
+        function toggleBulk() {
+            const count = $('.row-check:checked').length;
+            $('#bulkDeleteBtn').prop('disabled', count === 0);
+            $('#bulkEditBtn').prop('disabled', count === 0);
+        }
+
+        $('#checkAll').on('change', function () {
+            $('.row-check').prop('checked', this.checked);
+            toggleBulk();
+        });
+
+        $(document).on('change', '.row-check', function () {
+            $('#checkAll').prop(
+                'checked',
+                $('.row-check').length === $('.row-check:checked').length
+            );
+            toggleBulk();
+        });
+
+        // ================= BULK EDIT =================
+        $('#bulkEditBtn').on('click', function () {
+            const ids = $('.row-check:checked')
+                .map(function () { return this.value; })
+                .get();
+
+            if (!ids.length) return;
+
+            $('#bulkEditIds').val(ids.join(','));
+            $('#bulkEditForm').submit();
+        });
+
     });
 </script>
 {% endblock %}
