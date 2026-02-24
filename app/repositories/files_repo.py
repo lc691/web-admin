@@ -3,20 +3,23 @@ from db.connect import get_dict_cursor
 
 def list_files():
     with get_dict_cursor() as (cur, _):
-        cur.execute("""
+        cur.execute(
+            """
             SELECT
                 f.id,
                 f.file_name,
                 f.file_type,
                 f.is_paid,
                 f.main_title,
+                f.channel_username,
                 f.show_id,
                 COUNT(sf.id) AS show_count
             FROM files f
             LEFT JOIN show_files sf ON sf.file_id = f.id
             GROUP BY f.id
             ORDER BY f.id DESC
-            """)
+            """
+        )
         return cur.fetchall()
 
 

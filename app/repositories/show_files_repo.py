@@ -25,11 +25,16 @@ def list_show_files() -> list[dict]:
             sf.id AS show_file_id,
             s.title AS show_title,
             f.file_name,
+            r.label AS source_label,
             sf.show_id,
             sf.message_id
         FROM show_files sf
-        JOIN files f ON f.id = sf.file_id
-        JOIN shows s ON s.id = sf.show_id
+        JOIN shows s
+            ON s.id = sf.show_id
+        LEFT JOIN request_sources r
+            ON s.source_id = r.id
+        JOIN files f
+            ON f.id = sf.file_id
         ORDER BY sf.id DESC
     """
 

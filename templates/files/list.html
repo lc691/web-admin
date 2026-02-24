@@ -110,6 +110,7 @@
                             <th>File Name</th>
                             <th>Akses</th>
                             <th>Main Title</th>
+                            <th>channel_username</th>
                             <th>Dipakai</th>
                             <th>Show ID</th>
                             <th>Aksi</th>
@@ -142,6 +143,7 @@
 
                             <td>{{ f.main_title or "-" }}</td>
 
+                            <td>{{ f.channel_username or "-" }}</td>
                             <td>
                                 {% if f.show_count > 1 %}
                                 <span class="badge-used">

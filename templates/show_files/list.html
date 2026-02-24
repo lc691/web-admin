@@ -43,6 +43,7 @@
                         <th>Show</th>
                         <th>File Name</th>
                         <th>Show_id</th>
+                        <th>Source</th>
                         <th>Message ID</th>
                         <th>Aksi</th>
                     </tr>
@@ -58,6 +59,7 @@
                         <td>{{ r.show_title }}</td>
                         <td class="text-break">{{ r.file_name }}</td>
                         <td>{{ r.show_id or "-" }}</td>
+                        <td>{{ r.source_label or '-' }}</td>
                         <td>{{ r.message_id or "-" }}</td>
                         <td class="text-nowrap">
                             <a href="/show_files/edit/{{ r.show_file_id }}" class="btn btn-warning btn-circle btn-sm"
@@ -68,7 +70,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="7" class="text-center text-muted">
+                        <td colspan="8" class="text-center text-muted">
                             Tidak ada data
                         </td>
                     </tr>
@@ -83,86 +85,130 @@
 {% block scripts %}
 {{ super() }}
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        const table = $('#showfilesTable').DataTable({
-            stateSave: true,
-            order: [[1, 'desc']]
+    const table = $('#showfilesTable').DataTable({
+        stateSave: true,
+        order: [[1, 'desc']],
+        columnDefs: [
+            { orderable: false, targets: [0, 6] } // checkbox + aksi
+        ]
+    });
+
+    // id => showCount
+    const selectedIds = new Map();
+
+    // =====================
+    // UPDATE BULK BUTTON
+    // =====================
+    function updateBulkButtons() {
+        const hasSelection = selectedIds.size > 0;
+        $('#bulkDeleteBtn').prop('disabled', !hasSelection);
+        $('#bulkEditBtn').prop('disabled', !hasSelection);
+    }
+
+    // =====================
+    // CHECK ALL (PAGE AKTIF)
+    // =====================
+    $('#checkAll').on('change', function () {
+
+        const isChecked = this.checked;
+        const rows = table.rows({ page: 'current' }).nodes();
+
+        $('input.row-check', rows).each(function () {
+
+            this.checked = isChecked;
+
+            const id = this.value;
+            const showCount = parseInt($(this).data('show-count') || 0, 10);
+
+            if (isChecked) {
+                selectedIds.set(id, showCount);
+            } else {
+                selectedIds.delete(id);
+            }
         });
 
-        // =====================
-        // CHECKBOX HANDLING
-        // =====================
-        function toggleBulkButtons() {
-            const checked = $('.row-check:checked').length;
-            $('#bulkDeleteBtn').prop('disabled', checked === 0);
-            $('#bulkEditBtn').prop('disabled', checked === 0);
+        updateBulkButtons();
+    });
+
+    // =====================
+    // PER ROW CHECK
+    // =====================
+    $('#showfilesTable tbody').on('change', '.row-check', function () {
+
+        const id = this.value;
+        const showCount = parseInt($(this).data('show-count') || 0, 10);
+
+        if (this.checked) {
+            selectedIds.set(id, showCount);
+        } else {
+            selectedIds.delete(id);
         }
 
-        $('#checkAll').on('change', function () {
-            $('.row-check').prop('checked', this.checked);
-            toggleBulkButtons();
-        });
-
-        $(document).on('change', '.row-check', function () {
-            $('#checkAll').prop(
-                'checked',
-                $('.row-check').length === $('.row-check:checked').length
-            );
-            toggleBulkButtons();
-        });
-
-        // =====================
-        // BULK EDIT
-        // =====================
-        $('#bulkEditBtn').on('click', function () {
-            const ids = $('.row-check:checked')
-                .map(function () {
-                    return parseInt(this.value, 10);
-                })
-                .get()
-                .filter(Number.isInteger);
-
-            $('#bulkEditIds').val(ids.join(','));
-            $('#bulkEditForm').submit();
-        });
-
-        // =====================
-        // BULK DELETE
-        // =====================
-        $('#bulkDeleteBtn').on('click', function () {
-            const checked = $('.row-check:checked');
-
-            if (!checked.length) return;
-
-            let totalShows = 0;
-            let ids = [];
-
-            checked.each(function () {
-                ids.push(this.value);
-                totalShows += parseInt($(this).data('show-count'), 10);
-            });
-
-            let msg = 'Yakin ingin menghapus file yang dipilih?';
-
-            if (totalShows > 0) {
-                msg =
-                    `⚠️ ${checked.length} file dipakai oleh ${totalShows} show.\n\n` +
-                    `Menghapus file ini akan menghapusnya dari SEMUA show.\n\n` +
-                    `Yakin ingin melanjutkan?`;
-            }
-
-            if (!confirm(msg)) return;
-
-            $('#bulkDeleteIds').val(ids.join(','));
-            $('#bulkDeleteForm').submit();
-        });
-
-        // =====================
-        // TOOLTIP
-        // =====================
-        $('[data-toggle="tooltip"]').tooltip();
-
+        updateBulkButtons();
     });
+
+    // =====================
+    // RESTORE CHECKBOX SAAT PAGINATION
+    // =====================
+    table.on('draw', function () {
+
+        const rows = table.rows({ page: 'current' }).nodes();
+
+        $('input.row-check', rows).each(function () {
+            this.checked = selectedIds.has(this.value);
+        });
+
+        // sync checkAll state
+        const totalVisible = $('input.row-check', rows).length;
+        const totalChecked = $('input.row-check:checked', rows).length;
+        $('#checkAll').prop('checked', totalVisible > 0 && totalVisible === totalChecked);
+
+        updateBulkButtons();
+    });
+
+    // =====================
+    // BULK EDIT
+    // =====================
+    $('#bulkEditBtn').on('click', function () {
+
+        if (!selectedIds.size) return;
+
+        $('#bulkEditIds').val(Array.from(selectedIds.keys()).join(','));
+        $('#bulkEditForm').submit();
+    });
+
+    // =====================
+    // BULK DELETE
+    // =====================
+    $('#bulkDeleteBtn').on('click', function () {
+
+        if (!selectedIds.size) return;
+
+        let totalShows = 0;
+        const ids = [];
+
+        selectedIds.forEach((showCount, id) => {
+            ids.push(id);
+            totalShows += showCount;
+        });
+
+        let msg = 'Yakin ingin menghapus file yang dipilih?';
+
+        if (totalShows > 0) {
+            msg =
+                `⚠️ ${ids.length} file dipakai oleh ${totalShows} show.\n\n` +
+                `Menghapus file ini akan menghapusnya dari SEMUA show.\n\n` +
+                `Yakin ingin melanjutkan?`;
+        }
+
+        if (!confirm(msg)) return;
+
+        $('#bulkDeleteIds').val(ids.join(','));
+        $('#bulkDeleteForm').submit();
+    });
+
+});
 </script>
 {% endblock %}

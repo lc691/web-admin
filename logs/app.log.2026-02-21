@@ -1,0 +1,93 @@
+[2026-02-21 09:26:58] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 39, in get_db_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/shows/repository.py", line 215, in delete
+    cur.execute(query, (show_id,))
+psycopg2.errors.ForeignKeyViolation: update or delete on table "shows" violates foreign key constraint "files_show_id_fkey" on table "files"
+DETAIL:  Key (id)=(2773) is still referenced from table "files".
+
+[2026-02-21 14:58:54] [INFO] [webhook] [Dashboard Stats] Statistik berhasil diperoleh.
+[2026-02-21 14:59:19] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 39, in get_db_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/shows/repository.py", line 215, in delete
+    cur.execute(query, (show_id,))
+psycopg2.errors.ForeignKeyViolation: update or delete on table "shows" violates foreign key constraint "files_show_id_fkey" on table "files"
+DETAIL:  Key (id)=(2773) is still referenced from table "files".
+
+[2026-02-21 15:14:31] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:14:31] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:14:31] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:14:31] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:14:31] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:14:31] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:14:31] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:14:31] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:21:20] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:21:20] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:21:20] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:21:20] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:21:20] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:21:20] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:21:20] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:21:20] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:25:36] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:25:36] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:25:36] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:25:36] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:25:36] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:25:36] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:25:36] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:25:36] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:32:57] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 39, in get_db_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/shows/repository.py", line 215, in delete
+    cur.execute(query, (show_id,))
+psycopg2.errors.ForeignKeyViolation: update or delete on table "shows" violates foreign key constraint "files_show_id_fkey" on table "files"
+DETAIL:  Key (id)=(2773) is still referenced from table "files".
+
+[2026-02-21 15:51:35] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:51:35] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:51:35] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:51:35] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:51:35] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:51:35] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:51:35] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:51:35] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:55:55] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:55:55] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 15:55:55] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:55:55] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 15:55:55] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:55:55] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 15:55:55] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:55:55] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 15:56:14] [INFO] [webhook] [Dashboard Stats] Statistik berhasil diperoleh.
+[2026-02-21 16:17:28] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 16:17:31] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 16:17:35] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 16:17:38] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 16:24:50] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 16:24:50] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 16:24:50] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 16:24:50] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 16:24:50] [INFO] [webhook] Running in PRODUCTION mode
+[2026-02-21 16:24:50] [INFO] [webhook] Bot: drac1n_bot
+[2026-02-21 16:24:50] [INFO] [webhook] DB: botuser@127.0.0.1:5432/botdb
+[2026-02-21 16:24:50] [INFO] [webhook] Admins: [7294710696]
+[2026-02-21 16:25:10] [INFO] [webhook] [Dashboard Stats] Statistik berhasil diperoleh.
+[2026-02-21 20:04:07] [INFO] [webhook] [Dashboard Stats] Statistik berhasil diperoleh.
+[2026-02-21 22:15:01] [INFO] [webhook] [Dashboard Stats] Statistik berhasil diperoleh.
+[2026-02-21 22:28:16] [INFO] [webhook] [Dashboard Stats] Statistik berhasil diperoleh.
+[2026-02-21 23:07:29] [INFO] [webhook] [Dashboard Stats] Statistik berhasil diperoleh.
+[2026-02-22 04:52:56] [INFO] [webhook] [Dashboard Stats] Statistik berhasil diperoleh.

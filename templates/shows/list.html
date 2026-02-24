@@ -54,19 +54,38 @@
         border-radius: 999px;
     }
 
-    .btn-add {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        color: white;
+    .btn-add,
+    .btn-bulk {
         border: none;
         padding: 8px 18px;
         border-radius: 12px;
         font-weight: 500;
-        box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
         transition: 0.25s ease;
+        cursor: pointer;
     }
 
-    .btn-add:hover {
+    .btn-add {
+        background: linear-gradient(135deg, #2563eb, #1e40af);
+        color: white;
+        box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-bulk {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+        box-shadow: 0 6px 14px rgba(245, 158, 11, 0.25);
+    }
+
+    .btn-add:hover,
+    .btn-bulk:hover:not(:disabled),
+    .btn-icon:hover {
         transform: translateY(-2px);
+    }
+
+    .btn-bulk:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        box-shadow: none;
     }
 
     .btn-icon {
@@ -85,31 +104,6 @@
         background: #fee2e2;
         color: #b91c1c;
     }
-
-    .btn-icon:hover {
-        transform: translateY(-2px);
-    }
-
-    .btn-bulk {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-        color: white;
-        border: none;
-        padding: 8px 18px;
-        border-radius: 12px;
-        font-weight: 500;
-        box-shadow: 0 6px 14px rgba(245, 158, 11, 0.25);
-        transition: 0.25s ease;
-    }
-
-    .btn-bulk:hover:not(:disabled) {
-        transform: translateY(-2px);
-    }
-
-    .btn-bulk:disabled {
-        opacity: 0.45;
-        cursor: not-allowed;
-        box-shadow: none;
-    }
 </style>
 
 <div class="page-wrapper">
@@ -122,18 +116,16 @@
             <i class="fas fa-plus me-1"></i> Tambah Show
         </a>
 
-        <form id="bulkEditForm" method="get" action="/shows/bulk-edit" class="m-0 d-inline">
+        <form id="bulkEditShowForm" method="get" action="/shows/bulk-edit" class="m-0 d-inline">
+            <input type="hidden" name="ids" id="bulkEditShowIds">
 
-            <input type="hidden" name="ids" id="bulkEditIds">
-
-            <button id="bulkEditBtn" type="button" class="btn-bulk" disabled>
+            <button id="bulkEditShowBtn" type="submit" class="btn-bulk" disabled>
                 ✏ Edit Terpilih
             </button>
-
         </form>
 
     </div>
-    
+
     <div class="lux-card">
         <div class="card-body p-4">
 
@@ -153,53 +145,66 @@
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
 
+                    <tbody>
                         {% for show in shows %}
                         <tr>
                             <td class="text-center">
-                                <input type="checkbox" class="row-check" value="{{ show.id }}"
-                                    data-show-count="{{ show.show_count }}">
+                                <input type="checkbox"
+                                       class="row-check"
+                                       value="{{ show.id }}">
                             </td>
+
                             <td class="fw-semibold">{{ show.id }}</td>
 
                             <td>
                                 <div class="thumb-box">
-                                    <img src="{{ show.thumbnail_url or url_for('static', path='images/default-thumb.png') }}"
-                                        onerror="this.onerror=null;this.src='{{ url_for('static', path='images/default-thumb.png') }}';"
-                                        loading="lazy">
+                                    <img
+                                        src="{{ show.thumbnail_url or url_for('static', path='images/default-thumb.png') }}"
+                                        alt="Thumbnail {{ show.title | e }}"
+                                        loading="lazy"
+                                        onerror="this.onerror=null;this.src='{{ url_for('static', path='images/default-thumb.png') }}';">
                                 </div>
                             </td>
 
-                            <td>{{ show.title }}</td>
-
+                            <td>{{ show.title | e }}</td>
                             <td>{{ show.genre or '-' }}</td>
-
                             <td>{{ show.source_label or '-' }}</td>
 
                             <td>
                                 {% if show.is_adult %}
-                                <span class="badge-adult">18+</span>
+                                    <span class="badge-adult">18+</span>
                                 {% else %}
-                                <span class="badge-general">Umum</span>
+                                    <span class="badge-general">Umum</span>
                                 {% endif %}
                             </td>
 
                             <td class="text-center">
-                                <a href="/shows/edit/{{ show.id }}" class="btn-icon btn-edit me-1" title="Edit">
+
+                                <a href="/shows/edit/{{ show.id }}"
+                                   class="btn-icon btn-edit me-1"
+                                   title="Edit">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                                <form action="/shows/delete/{{ show.id }}" method="post" class="d-inline delete-form"
-                                    data-show-count="{{ show.show_count }}">
 
-                                    <button type="submit" class="btn btn-danger btn-sm">
+                                <form action="/shows/delete/{{ show.id }}"
+                                      method="post"
+                                      class="d-inline delete-form"
+                                      onsubmit="return confirm('Yakin ingin menghapus show ini?');">
+
+                                    {# Tambahkan CSRF token jika framework mendukung #}
+                                    {# <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> #}
+
+                                    <button type="submit"
+                                            class="btn-icon btn-delete"
+                                            title="Hapus">
                                         <i class="fas fa-trash"></i>
                                     </button>
-
                                 </form>
-                            </td>
 
+                            </td>
                         </tr>
+
                         {% else %}
                         <tr>
                             <td colspan="8" class="text-center text-muted">
@@ -207,8 +212,8 @@
                             </td>
                         </tr>
                         {% endfor %}
-
                     </tbody>
+
                 </table>
             </div>
 
@@ -216,80 +221,72 @@
     </div>
 
 </div>
-
 {% endblock %}
+
 {% block scripts %}
 {{ super() }}
 
 <script>
-    $(document).ready(function () {
+    const table = $('#showsTable').DataTable({
+        stateSave: true,
+        order: [[1, 'desc']],
+        columnDefs: [
+            { orderable: false, targets: [0, 2, 7] }
+        ]
+    });
 
-        const table = $('#showsTable').DataTable({
-            stateSave: true,
-            order: [[1, 'desc']]
-        });
+    const selectedIds = new Set();
 
-        // ================= BULK BUTTON TOGGLE =================
-        function toggleBulk() {
-            const count = $('.row-check:checked').length;
-            $('#bulkEditBtn').prop('disabled', count === 0);
+    function updateBulkButton() {
+        const idsArray = Array.from(selectedIds);
+        $('#bulkEditShowIds').val(idsArray.join(','));
+        $('#bulkEditShowBtn').prop('disabled', idsArray.length === 0);
+    }
+
+    // ROW CHECK
+    $('#showsTable tbody').on('change', '.row-check', function () {
+
+        const id = $(this).val();
+
+        if (this.checked) {
+            selectedIds.add(id);
+        } else {
+            selectedIds.delete(id);
         }
 
-        $('#checkAll').on('change', function () {
-            $('.row-check').prop('checked', this.checked);
-            toggleBulk();
-        });
-
-        $(document).on('change', '.row-check', function () {
-            $('#checkAll').prop(
-                'checked',
-                $('.row-check').length === $('.row-check:checked').length
-            );
-            toggleBulk();
-        });
-
-        // ================= BULK EDIT =================
-        $('#bulkEditBtn').on('click', function () {
-            const ids = $('.row-check:checked')
-                .map(function () { return this.value; })
-                .get();
-
-            if (!ids.length) return;
-
-            $('#bulkEditIds').val(ids.join(','));
-            $('#bulkEditForm').submit();
-        });
-
-        // ================= SINGLE DELETE =================
-        $('.delete-form').on('submit', function (e) {
-            e.preventDefault();
-
-            const showCount =
-                parseInt($(this).data('show-count'), 10);
-
-            let text = "File akan dihapus.";
-
-            if (showCount > 0) {
-                text =
-                    `File ini dipakai oleh ${showCount} show.\n` +
-                    `Menghapus akan berdampak global.\n\n` +
-                    `Yakin?`;
-            }
-
-            Swal.fire({
-                title: 'Hapus File?',
-                text: text,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#dc2626'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.submit();
-                }
-            });
-
-        });
-
+        updateBulkButton();
     });
-</script>
+
+    // CHECK ALL (PAGE AKTIF)
+    $('#checkAll').on('change', function () {
+
+        const rows = table.rows({ page: 'current' }).nodes();
+
+        $('input.row-check', rows).each(function () {
+            this.checked = $('#checkAll').prop('checked');
+
+            const id = $(this).val();
+            if (this.checked) {
+                selectedIds.add(id);
+            } else {
+                selectedIds.delete(id);
+            }
+        });
+
+        updateBulkButton();
+    });
+
+    // SAAT TABLE REDRAW (PENTING!)
+    table.on('draw', function () {
+
+        const rows = table.rows({ page: 'current' }).nodes();
+
+        $('input.row-check', rows).each(function () {
+            const id = $(this).val();
+            this.checked = selectedIds.has(id);
+        });
+
+        updateBulkButton();
+    });
+    </script>
 {% endblock %}
