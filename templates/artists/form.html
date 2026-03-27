@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 text-gray-800 mb-0">Tambah Artist</h1>
+
+  <a href="/artists" class="btn btn-secondary btn-sm">
+    <i class="fas fa-arrow-left mr-1"></i> Kembali
+  </a>
+</div>
+
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+
+    <form method="post" action="/artists/new" id="artistForm" novalidate>
+
+      <!-- Channel -->
+      <div class="form-group">
+        <label class="font-weight-bold">
+          Channel <span class="text-danger">*</span>
+        </label>
+
+        <select name="channel_id" class="form-control" required>
+          <option value="">-- Pilih Channel --</option>
+
+          {% for channel in channels %}
+          <option value="{{ channel.id }}">
+            {{ channel.name }}
+          </option>
+          {% endfor %}
+        </select>
+
+        <small class="form-text text-muted">
+          Artist akan masuk ke channel ini.
+        </small>
+      </div>
+
+
+      <!-- Nama Artist -->
+      <div class="form-group">
+        <label class="font-weight-bold">
+          Nama Artist <span class="text-danger">*</span>
+        </label>
+
+        <input type="text"
+               name="name"
+               class="form-control"
+               placeholder="Contoh: Andra"
+               required>
+
+        <small class="form-text text-muted">
+          Gunakan nama unik dalam satu channel.
+        </small>
+      </div>
+
+
+      <hr>
+
+      <div class="d-flex justify-content-between">
+
+        <a href="/artists" class="btn btn-light">
+          Batal
+        </a>
+
+        <button type="submit" class="btn btn-primary shadow-sm" id="submitBtn">
+          <i class="fas fa-save mr-1"></i> Simpan Artist
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  const form = document.getElementById("artistForm");
+  const nameInput = document.querySelector("input[name='name']");
+  const channelSelect = document.querySelector("select[name='channel_id']");
+  const btn = document.getElementById("submitBtn");
+
+  // Autofocus → cepat input banyak
+  nameInput.focus();
+
+  form.addEventListener("submit", function(e){
+
+    const name = nameInput.value.trim();
+    const channel = channelSelect.value;
+
+    if (!channel) {
+      e.preventDefault();
+      alert("Channel wajib dipilih");
+      return;
+    }
+
+    if (!name) {
+      e.preventDefault();
+      alert("Nama artist wajib diisi");
+      return;
+    }
+
+    // Loading state
+    btn.innerHTML = "Menyimpan...";
+    btn.disabled = true;
+
+  });
+
+});
+</script>
+{% endblock %}

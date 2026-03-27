@@ -1,0 +1,45 @@
+[2026-03-24 22:51:51] [INFO] [webhook] [Dashboard Stats] Statistik berhasil diperoleh.
+[2026-03-24 22:53:06] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 38, in get_db_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/shows/repository.py", line 151, in insert
+    cur.execute(query, values)
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "unique_show_identity_idx"
+DETAIL:  Key (lower(title), series_no, source_id)=(pertempuran demi kebahagiaan, 1, 53) already exists.
+
+[2026-03-24 23:07:10] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 38, in get_db_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/shows/repository.py", line 151, in insert
+    cur.execute(query, values)
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "unique_show_identity_idx"
+DETAIL:  Key (lower(title), series_no, source_id)=(tiga isyarat kematian, 1, 53) already exists.
+
+[2026-03-24 23:08:43] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 38, in get_db_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/shows/repository.py", line 178, in update_one
+    cur.execute(query, tuple(values))
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "unique_show_identity_idx"
+DETAIL:  Key (lower(title), series_no, source_id)=(tiga isyarat kematian, 1, 64) already exists.
+
+[2026-03-24 23:12:13] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 38, in get_db_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/shows/repository.py", line 151, in insert
+    cur.execute(query, values)
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "unique_show_identity_idx"
+DETAIL:  Key (lower(title), series_no, source_id)=(warisan mata sakti, 1, 53) already exists.
+

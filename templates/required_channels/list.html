@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="h3 mb-2 text-gray-800">Required Channels</h1>
+
+<!-- =========================
+     CREATE FORM
+========================= -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Tambah Required Channel</h6>
+  </div>
+  <div class="card-body">
+    <form method="post" action="/required-channels/create">
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label>Username Channel</label>
+          <input type="text" name="username" class="form-control" placeholder="contoh: dramaglow" required>
+          <small class="form-text text-muted">
+            Tanpa @, minimal 5 karakter (huruf/angka/underscore)
+          </small>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label>Bot Username</label>
+          <input type="text" name="bot_username" class="form-control" placeholder="contoh: dramaglow_bot" required>
+        </div>
+
+        <div class="form-group col-md-3">
+          <label>Added By</label>
+          <input type="text" name="added_by" class="form-control" placeholder="admin">
+        </div>
+
+        <div class="form-group col-md-1 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary btn-block">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- =========================
+     TABLE LIST
+========================= -->
+<div class="card shadow mb-4">
+  <div class="card-body table-responsive">
+    <table class="table table-bordered" id="requiredChannelsTable" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Channel</th>
+          <th>Bot</th>
+          <th>Status</th>
+          <th>Added By</th>
+          <th>Added At</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for channel in channels %}
+        <tr>
+          <td>{{ channel.id }}</td>
+
+          <td>
+            <a href="https://t.me/{{ channel.username }}" target="_blank">
+              @{{ channel.username }}
+            </a>
+          </td>
+
+          <td>@{{ channel.bot_username }}</td>
+
+          <td>
+            {% if channel.is_active %}
+              <span class="badge badge-success">Active</span>
+            {% else %}
+              <span class="badge badge-secondary">Inactive</span>
+            {% endif %}
+          </td>
+
+          <td>{{ channel.added_by or '-' }}</td>
+
+          <td>
+            {{ channel.added_at.strftime("%Y-%m-%d %H:%M:%S") if channel.added_at else '-' }}
+          </td>
+
+          <td>
+            <!-- Toggle -->
+            <form method="post"
+                  action="/required-channels/{{ channel.id }}/toggle"
+                  style="display:inline;">
+              <button type="submit"
+                      class="btn btn-info btn-circle btn-sm"
+                      title="Toggle Status">
+                <i class="fas fa-sync"></i>
+              </button>
+            </form>
+
+            <!-- Delete -->
+            <form method="post"
+                  action="/required-channels/{{ channel.id }}/delete"
+                  style="display:inline;"
+                  onsubmit="return confirm('Yakin ingin menghapus channel ini?');">
+              <button type="submit"
+                      class="btn btn-danger btn-circle btn-sm"
+                      title="Hapus">
+                <i class="fas fa-trash"></i>
+              </button>
+            </form>
+
+            <a href="/required-channels/{{ channel.id }}/edit"
+                class="btn btn-warning btn-circle btn-sm"
+                title="Edit">
+                    <i class="fas fa-pencil-alt"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+$(document).ready(function () {
+    $('#requiredChannelsTable').DataTable({
+        "language": {
+            "search": "Cari:",
+            "lengthMenu": "Tampilkan _MENU_ entri per halaman",
+            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "paginate": {
+                "first": "Awal",
+                "last": "Akhir",
+                "next": "Berikutnya",
+                "previous": "Sebelumnya"
+            },
+            "zeroRecords": "Tidak ada data ditemukan"
+        },
+        "pageLength": 10,
+        "lengthMenu": [5, 10, 25, 50, 100],
+        "order": [[0, "desc"]]
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+{% endblock %}

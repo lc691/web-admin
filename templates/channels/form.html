@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 text-gray-800 mb-0">Tambah Channel</h1>
+    <a href="/channels" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left mr-1"></i> Kembali
+    </a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+
+        <form method="post" action="/channels/new" novalidate>
+
+            <!-- Nama Channel -->
+            <div class="form-group">
+                <label class="font-weight-bold">
+                    Nama Channel <span class="text-danger">*</span>
+                </label>
+
+                <input type="text"
+                       name="name"
+                       class="form-control"
+                       placeholder="Contoh: IRX Music"
+                       required>
+
+                <small class="form-text text-muted">
+                    Gunakan nama unik agar tidak duplikat.
+                </small>
+            </div>
+
+            <!-- YouTube URL -->
+            <div class="form-group">
+                <label class="font-weight-bold">YouTube URL</label>
+
+                <input type="url"
+                       name="youtube_url"
+                       class="form-control"
+                       placeholder="https://youtube.com/@channelname">
+
+                <small class="form-text text-muted">
+                    Opsional. Bisa diisi nanti.
+                </small>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between">
+
+                <a href="/channels" class="btn btn-light">
+                    Batal
+                </a>
+
+                <button type="submit" class="btn btn-primary shadow-sm">
+                    <i class="fas fa-save mr-1"></i> Simpan Channel
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+document.querySelector("form").addEventListener("submit", function(e) {
+
+    const name = document.querySelector("input[name='name']").value.trim();
+
+    if (!name) {
+        e.preventDefault();
+        alert("Nama channel wajib diisi!");
+        return;
+    }
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+
+  <h1 class="h3 text-gray-800 mb-2">Artists</h1>
+
+  <a href="/artists/new" class="btn btn-primary shadow-sm">
+    <i class="fas fa-plus mr-1"></i> Tambah Artis
+  </a>
+
+</div>
+
+<div class="card shadow mb-4">
+  <div class="card-body table-responsive">
+
+    <table class="table table-bordered table-hover align-middle" id="artistsTable" width="100%">
+
+      <thead class="thead-light text-center">
+        <tr>
+          <th style="width: 60px;">ID</th>
+          <th>Channel</th>
+          <th>Nama Artis</th>
+          <th style="width: 150px;">Dibuat</th>
+          <th style="width: 120px;">Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for artist in artists %}
+        <tr>
+
+          <td class="text-center">{{ artist.id }}</td>
+
+          <td>
+            <span class="text-primary font-weight-bold">
+              {{ artist.channel_name }}
+            </span>
+          </td>
+
+          <td>
+            <strong>{{ artist.name }}</strong>
+          </td>
+
+          <td class="text-center">
+            {% if artist.created_at %}
+              <div>{{ artist.created_at.strftime("%d %b %Y") }}</div>
+              <small class="text-muted">
+                {{ artist.created_at.strftime("%H:%M") }}
+              </small>
+            {% else %}
+              <span class="text-muted">-</span>
+            {% endif %}
+          </td>
+
+          <td class="text-center text-nowrap">
+
+            <div class="btn-group" role="group">
+
+              <a href="/artists/{{ artist.id }}/edit"
+                 class="btn btn-warning btn-sm"
+                 data-toggle="tooltip"
+                 title="Edit">
+                <i class="fas fa-pencil-alt"></i>
+              </a>
+
+              <form method="post"
+                    action="/artists/{{ artist.id }}/delete"
+                    onsubmit="return confirm('Yakin ingin menghapus artis ini?');">
+
+                <button type="submit"
+                        class="btn btn-danger btn-sm"
+                        data-toggle="tooltip"
+                        title="Hapus">
+                  <i class="fas fa-trash"></i>
+                </button>
+
+              </form>
+
+            </div>
+
+          </td>
+
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="text-center text-muted">
+            Belum ada data artist
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function () {
+
+    $('#artistsTable').DataTable({
+
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ entri",
+            info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+            zeroRecords: "Tidak ada data ditemukan",
+            paginate: {
+                first: "Awal",
+                last: "Akhir",
+                next: "›",
+                previous: "‹"
+            }
+        },
+
+        pageLength: 10,
+        lengthMenu: [5, 10, 25, 50, 100],
+
+        order: [[0, "desc"]],
+
+        columnDefs: [
+            { orderable: false, targets: 4 }
+        ]
+
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+});
+</script>
+{% endblock %}

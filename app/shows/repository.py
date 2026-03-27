@@ -64,7 +64,23 @@ class ShowRepository:
                 s.hashtags,
                 s.source_id,
                 r.label AS source_label,
-                s.is_adult
+                s.is_adult,
+
+                CASE
+                    WHEN NOT EXISTS (
+                        SELECT 1 FROM show_files sf
+                        WHERE sf.show_id = s.id
+                    ) THEN 'draft'
+
+                    WHEN EXISTS (
+                        SELECT 1 FROM show_files sf
+                        WHERE sf.show_id = s.id
+                        AND sf.message_id IS NOT NULL
+                    ) THEN 'released'
+
+                    ELSE 'scheduled'
+                END AS release_status
+
             FROM {self.TABLE_NAME} s
             LEFT JOIN request_sources r
                 ON s.source_id = r.id

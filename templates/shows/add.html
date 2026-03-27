@@ -128,7 +128,20 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Genre</label>
-                                <input type="text" name="genre" class="form-control">
+                                <select name="genre" class="form-select" required>
+                                    {% set genre_options = [
+                                    "🇨🇳 Drama China",
+                                    "🇺🇸 Drama Barat",
+                                    "🇰🇷 Drama Korea",
+                                    "🇯🇵 Drama Jepang",
+                                    "🇹🇭 Drama Thailand"
+                                    ] %}
+                                    {% for g in genre_options %}
+                                    <option value="{{ g }}" {{ "selected" if show.genre==g else "" }}>
+                                        {{ g }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
                             </div>
 
                             <div class="col-md-6">

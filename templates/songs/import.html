@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 text-gray-800 mb-0">Import Songs</h1>
+
+  <a href="/songs" class="btn btn-secondary btn-sm">
+    <i class="fas fa-arrow-left mr-1"></i> Kembali
+  </a>
+</div>
+
+
+<div class="card shadow mb-4">
+<div class="card-body">
+
+<form method="post" action="/songs/import" id="importForm">
+
+<!-- CHANNEL -->
+<div class="form-group">
+<label class="font-weight-bold">
+  Channel <span class="text-danger">*</span>
+</label>
+
+<input
+type="text"
+name="channel_name"
+class="form-control"
+placeholder="Contoh: Zahira Mein"
+required
+>
+
+<small class="form-text text-muted">
+Channel akan dibuat otomatis jika belum ada.
+</small>
+</div>
+
+
+<!-- DATA -->
+<div class="form-group">
+
+<label class="font-weight-bold">
+  Data Songs <span class="text-danger">*</span>
+</label>
+
+<textarea
+name="data"
+id="dataInput"
+class="form-control"
+rows="12"
+placeholder="Paste data di sini..."
+required
+></textarea>
+
+<div class="d-flex justify-content-between mt-2">
+  <small class="text-muted">
+    Gunakan TAB antar kolom
+  </small>
+
+  <small id="lineCount" class="text-info">
+    0 baris
+  </small>
+</div>
+
+</div>
+
+
+<!-- INFO BOX -->
+<div class="mt-3 p-3 bg-light border rounded">
+
+<b>Format Import</b>
+
+<br><br>
+
+<b>1.</b> title[TAB]artist  
+→ status otomatis <b>Review</b>
+
+<br><br>
+
+<b>2.</b> title[TAB]artist[TAB]status
+
+<br><br>
+
+<b>Status valid:</b>
+
+<br><br>
+
+<span class="badge badge-secondary">Review</span>
+<span class="badge badge-warning">Approved</span>
+<span class="badge badge-success">Live</span>
+
+<br><br>
+
+Contoh:
+
+<pre class="mb-0">
+Dream of Almira	Almira Veen	Review
+Rise Again	Selina Marv	Approved
+Tied to the Echo	Elvina Noen	Live
+Spark in the Air	Tahlia Reen
+</pre>
+
+</div>
+
+
+<hr>
+
+<div class="d-flex justify-content-between">
+
+<a href="/songs" class="btn btn-light">
+Batal
+</a>
+
+<button type="submit" class="btn btn-success shadow-sm" id="submitBtn">
+<i class="fas fa-upload mr-1"></i> Import Songs
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  const textarea = document.getElementById("dataInput");
+  const lineCount = document.getElementById("lineCount");
+  const form = document.getElementById("importForm");
+  const btn = document.getElementById("submitBtn");
+
+  // =====================
+  // HITUNG BARIS REALTIME
+  // =====================
+  textarea.addEventListener("input", function(){
+    const lines = textarea.value
+      .split("\n")
+      .filter(l => l.trim() !== "");
+
+    lineCount.innerText = lines.length + " baris";
+  });
+
+
+  // =====================
+  // VALIDASI SEBELUM SUBMIT
+  // =====================
+  form.addEventListener("submit", function(e){
+
+    const raw = textarea.value.trim();
+
+    if(!raw){
+      e.preventDefault();
+      alert("Data songs tidak boleh kosong!");
+      return;
+    }
+
+    const lines = raw.split("\n");
+    let valid = 0;
+
+    for(let line of lines){
+      if(!line.trim()) continue;
+
+      const parts = line.split("\t");
+
+      if(parts.length < 2){
+        e.preventDefault();
+        alert("Format salah! Minimal: title + artist");
+        return;
+      }
+
+      valid++;
+    }
+
+    if(valid === 0){
+      e.preventDefault();
+      alert("Tidak ada data valid!");
+      return;
+    }
+
+    // Loading state
+    btn.innerHTML = "Mengimport...";
+    btn.disabled = true;
+
+  });
+
+});
+</script>
+{% endblock %}

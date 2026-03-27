@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 text-gray-800 mb-0">Channels</h1>
+
+  <a href="/channels/new" class="btn btn-primary shadow-sm">
+    <i class="fas fa-plus mr-1"></i> Tambah Channel
+  </a>
+</div>
+
+
+<div class="card shadow mb-4">
+  <div class="card-body table-responsive">
+
+    <table class="table table-bordered table-hover align-middle" id="channelsTable" width="100%">
+      
+      <thead class="thead-light">
+        <tr>
+          <th width="70">ID</th>
+          <th>Nama Channel</th>
+          <th width="180">Dibuat</th>
+          <th width="150" class="text-center">Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for channel in channels %}
+        <tr>
+
+          <td class="text-center">{{ channel.id }}</td>
+
+          <td>
+            <strong>{{ channel.name }}</strong>
+          </td>
+
+          <td>
+            {% if channel.created_at %}
+              <span title="{{ channel.created_at }}">
+                {{ channel.created_at.strftime("%d %b %Y") }}
+              </span>
+              <br>
+              <small class="text-muted">
+                {{ channel.created_at.strftime("%H:%M") }}
+              </small>
+            {% else %}
+              <span class="text-muted">-</span>
+            {% endif %}
+          </td>
+
+          <td class="text-center">
+
+            <a href="/channels/{{ channel.id }}"
+               class="btn btn-info btn-sm"
+               data-toggle="tooltip"
+               title="Detail">
+              <i class="fas fa-eye"></i>
+            </a>
+
+            <a href="/channels/{{ channel.id }}/edit"
+               class="btn btn-warning btn-sm"
+               data-toggle="tooltip"
+               title="Edit">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+
+            <form method="post"
+                  action="/channels/{{ channel.id }}/delete"
+                  style="display:inline;"
+                  onsubmit="return confirm('Yakin ingin menghapus channel ini?');">
+
+              <button type="submit"
+                      class="btn btn-danger btn-sm"
+                      data-toggle="tooltip"
+                      title="Hapus">
+                <i class="fas fa-trash"></i>
+              </button>
+
+            </form>
+
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+$(document).ready(function () {
+
+    $('#channelsTable').DataTable({
+
+        "language": {
+            "search": "Cari:",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "info": "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+            "paginate": {
+                "first": "Awal",
+                "last": "Akhir",
+                "next": "›",
+                "previous": "‹"
+            },
+            "zeroRecords": "Tidak ada data ditemukan"
+        },
+
+        "pageLength": 10,
+        "lengthMenu": [5, 10, 25, 50, 100],
+
+        "order": [[0, "asc"]], // FIX: biasanya ID terbaru di atas
+
+        "columnDefs": [
+            { "orderable": false, "targets": 3 } // kolom aksi tidak sortable
+        ]
+
+    });
+
+    // Tooltip Bootstrap
+    $('[data-toggle="tooltip"]').tooltip();
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- ================= HEADER ================= -->
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+
+    <h1 class="h4 font-weight-bold mb-2">
+        Channel: <span class="text-primary">{{ channel.name }}</span>
+    </h1>
+
+    <div class="d-flex flex-wrap">
+        <span class="badge badge-primary px-3 py-2 mr-2">
+            <i class="fas fa-user mr-1"></i>{{ artists|length }} Artists
+        </span>
+        <span class="badge badge-info px-3 py-2">
+            <i class="fas fa-music mr-1"></i>{{ songs|length }} Songs
+        </span>
+    </div>
+
+</div>
+
+<div class="row g-3">
+
+    <!-- ================= ARTISTS ================= -->
+    <div class="col-lg-4">
+
+        <div class="card mb-4">
+
+            <div class="card-header bg-white d-flex justify-content-between">
+                <strong><i class="fas fa-user mr-2"></i>Artists</strong>
+                <span class="badge badge-primary">{{ artists|length }}</span>
+            </div>
+
+            <div class="card-body p-0" style="max-height:420px; overflow-y:auto;">
+
+                <ul class="list-group list-group-flush">
+
+                    {% for artist in artists %}
+                    <li class="list-group-item artist-item">
+                        {{ artist.name }}
+                    </li>
+                    {% else %}
+                    <li class="list-group-item text-center text-muted py-4">
+                        Belum ada artist
+                    </li>
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= SONGS ================= -->
+    <div class="col-lg-8">
+
+        <div class="card mb-4">
+
+            <!-- HEADER -->
+            <div class="card-header bg-white">
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+
+                    <!-- LEFT -->
+                    <div class="d-flex flex-wrap align-items-center mb-2">
+
+                        <input type="text" id="searchBox"
+                            class="form-control form-control-sm mr-2 mb-2"
+                            placeholder="🔍 Cari..."
+                            style="min-width:220px;">
+
+                        <div class="btn-group btn-group-sm mb-2">
+                            <button class="btn btn-dark filter-btn active" data-status="">All</button>
+                            <button class="btn btn-outline-secondary filter-btn" data-status="Review">Review</button>
+                            <button class="btn btn-outline-warning filter-btn" data-status="Approved">Approved</button>
+                            <button class="btn btn-outline-success filter-btn" data-status="Live">Live</button>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="d-flex flex-wrap align-items-center mb-2">
+
+                        <span class="btn btn-outline-danger btn-sm mr-2" id="selectedCount">0 selected</span>
+
+                        <button class="btn btn-outline-warning btn-sm mr-2" onclick="bulkAction('Approved')">
+                            ✔ Approve
+                        </button>
+
+                        <button class="btn btn-outline-success btn-sm mr-2" onclick="bulkAction('Live')">
+                            🚀 Live
+                        </button>
+
+                        <a href="/songs/import" class="btn btn-success btn-sm mr-2">
+                            <i class="fas fa-file-import"></i> Import
+                        </a>
+
+                        <button form="exportForm" type="submit" class="btn btn-primary btn-sm">
+                            <i class="fas fa-file-export"></i> Export
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TABLE -->
+            <div class="container-fluid px-4">
+                <div class="table-responsive">
+                    <form id="exportForm" method="post" action="/songs/export-txt">
+
+                        <table id="songsTable" class="table table-hover align-middle mb-0">
+
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                    <th width="40"><input type="checkbox" id="checkAll"></th>
+                                    <th>ID</th>
+                                    <th>Artist</th>
+                                    <th>Title</th>
+                                    <th>Status</th>
+                                    <th>Release</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for song in songs %}
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="row-check" value="{{ song.id }}">
+                                    </td>
+                                    <td>{{ song.id }}</td>
+                                    <td>{{ song.artist_name }}</td>
+                                    <td>{{ song.title }}</td>
+                                    <td>
+                                        {% if song.status == "Live" %}
+                                        <span class="badge badge-success px-2 py-1">Live</span>
+                                        {% elif song.status == "Approved" %}
+                                        <span class="badge badge-warning px-2 py-1">Approved</span>
+                                        {% else %}
+                                        <span class="badge badge-secondary px-2 py-1">Review</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ song.release_date.strftime("%Y-%m-%d") if song.release_date else '-' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function () {
+
+    const table = $('#songsTable').DataTable({
+        pageLength: 10,
+        order: [[1, "desc"]],
+        columnDefs: [
+            { orderable: false, targets: 0 }
+        ],
+        language: {
+            lengthMenu: "Tampilkan _MENU_",
+            info: "_START_ - _END_ dari _TOTAL_",
+            paginate: { next: "›", previous: "‹" },
+            zeroRecords: "Tidak ada data"
+        }
+    });
+
+    // SEARCH
+    $('#searchBox').on('keyup', function () {
+        table.search(this.value).draw();
+    });
+
+    // FILTER STATUS
+    $('.filter-btn').on('click', function () {
+        $('.filter-btn').removeClass('active');
+        $(this).addClass('active');
+        table.column(4).search($(this).data('status')).draw();
+    });
+
+    // CHECK ALL
+    $('#checkAll').on('click', function () {
+        $('.row-check').prop('checked', this.checked);
+        updateSelected();
+    });
+
+    $(document).on('change', '.row-check', function () {
+        if (!this.checked) $('#checkAll').prop('checked', false);
+        updateSelected();
+    });
+
+    function updateSelected() {
+        $('#selectedCount').text($('.row-check:checked').length + ' selected');
+    }
+
+    // BULK ACTION
+    window.bulkAction = function (status) {
+
+        const selected = $('.row-check:checked');
+
+        if (!selected.length) {
+            alert("Pilih minimal 1 data");
+            return;
+        }
+
+        if (!confirm("Ubah ke " + status + "?")) return;
+
+        selected.each(function () {
+            const row = $(this).closest('tr');
+            table.cell(row, 4).data(status);
+        });
+
+        table.draw(false);
+    };
+
+});
+</script>
+{% endblock %}

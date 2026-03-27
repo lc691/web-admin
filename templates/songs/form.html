@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 text-gray-800 mb-0">Tambah Song</h1>
+
+  <a href="/songs" class="btn btn-secondary btn-sm">
+    <i class="fas fa-arrow-left mr-1"></i> Kembali
+  </a>
+</div>
+
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+
+    <form method="post" action="/songs/new" id="songForm" novalidate>
+
+      <!-- Artist -->
+      <div class="form-group">
+        <label class="font-weight-bold">
+          Artist <span class="text-danger">*</span>
+        </label>
+
+        <select name="artist_id" class="form-control" required>
+          <option value="">-- Pilih Artist --</option>
+
+          {% for artist in artists %}
+          <option value="{{ artist.id }}">
+            {{ artist.name }}
+          </option>
+          {% endfor %}
+        </select>
+
+        <small class="form-text text-muted">
+          Pilih artist yang sudah ada.
+        </small>
+      </div>
+
+
+      <!-- Judul Lagu -->
+      <div class="form-group">
+        <label class="font-weight-bold">
+          Judul Lagu <span class="text-danger">*</span>
+        </label>
+
+        <input
+          type="text"
+          name="title"
+          class="form-control"
+          placeholder="Contoh: Hati Yang Luka"
+          required
+        >
+
+        <small class="form-text text-muted">
+          Hindari judul duplikat pada artist yang sama.
+        </small>
+      </div>
+
+
+      <!-- Status -->
+      <div class="form-group">
+        <label class="font-weight-bold">Status</label>
+
+        <select name="status" class="form-control">
+          <option value="Review" selected>Review</option>
+          <option value="Approved">Approved</option>
+          <option value="Live">Live</option>
+        </select>
+      </div>
+
+
+      <!-- Release Date -->
+      <div class="form-group">
+        <label class="font-weight-bold">Tanggal Rilis</label>
+
+        <input
+          type="date"
+          name="release_date"
+          class="form-control"
+        >
+
+        <small class="form-text text-muted">
+          Opsional. Bisa diisi nanti.
+        </small>
+      </div>
+
+
+      <hr>
+
+      <div class="d-flex justify-content-between">
+
+        <a href="/songs" class="btn btn-light">
+          Batal
+        </a>
+
+        <button type="submit" class="btn btn-primary shadow-sm" id="submitBtn">
+          <i class="fas fa-save mr-1"></i> Simpan Song
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  const form = document.getElementById("songForm");
+  const titleInput = document.querySelector("input[name='title']");
+  const artistSelect = document.querySelector("select[name='artist_id']");
+  const btn = document.getElementById("submitBtn");
+
+  // Autofocus ke judul (cepat input banyak data)
+  titleInput.focus();
+
+  form.addEventListener("submit", function(e){
+
+    const title = titleInput.value.trim();
+    const artist = artistSelect.value;
+
+    if (!artist) {
+      e.preventDefault();
+      alert("Artist wajib dipilih");
+      return;
+    }
+
+    if (!title) {
+      e.preventDefault();
+      alert("Judul lagu wajib diisi");
+      return;
+    }
+
+    // Loading state
+    btn.innerHTML = "Menyimpan...";
+    btn.disabled = true;
+
+  });
+
+});
+</script>
+{% endblock %}

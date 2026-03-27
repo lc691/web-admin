@@ -9,7 +9,8 @@ from app.admins.routes import router as admins_router
 from app.affiliate.router_payout import router as affiliate_router_payout
 from app.affiliate.routes import router as affiliate_router
 from app.base.routes import get_dashboard_stats
-from app.channel.routes import router as channel_router
+from app.channel.channel_posting.routes import router as channel_router
+from app.channel.channel_required.routes import router as required_channel_routes
 from app.core.middleware import auth_middleware_factory
 from app.donation_logs.routes import router as donation_logs_router
 from app.platform.routes import router as platform_router
@@ -19,6 +20,9 @@ from app.referrals.routes import router as referral_router
 from app.routers.auth import router as auth_router
 from app.routers.files import router as files_router
 from app.routers.show_files import router as shows_files_router
+
+# SoundON
+from app.routes import artists, channels, songs
 from app.shows.routes import router as shows_router
 
 # Template Engine
@@ -59,8 +63,13 @@ app.include_router(referral_router)
 app.include_router(affiliate_router)
 app.include_router(affiliate_router_payout)
 app.include_router(channel_router)
+app.include_router(required_channel_routes)
 app.include_router(trust_ip_router)
 app.include_router(platform_router)
+
+app.include_router(channels.router)
+app.include_router(artists.router)
+app.include_router(songs.router)
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # project_root
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")

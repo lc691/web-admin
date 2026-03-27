@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+
+  <h1 class="h3 text-gray-800 mb-2">Songs</h1>
+
+  <div>
+    <a href="/songs/new" class="btn btn-primary shadow-sm mr-2">
+      <i class="fas fa-plus mr-1"></i> Tambah Lagu
+    </a>
+
+    <a href="/songs/import" class="btn btn-success shadow-sm">
+      <i class="fas fa-file-import mr-1"></i> Import Songs
+    </a>
+  </div>
+
+</div>
+
+
+<div class="card shadow mb-4">
+  <div class="card-body table-responsive">
+
+    <table class="table table-bordered table-hover align-middle" id="songsTable" width="100%">
+
+      <thead class="thead-light">
+        <tr>
+          <th width="70">ID</th>
+          <th>Channel</th>
+          <th>Artis</th>
+          <th>Judul Lagu</th>
+          <th width="120">Status</th>
+          <th width="180">Dibuat</th>
+          <th width="130" class="text-center">Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for song in songs %}
+        <tr>
+
+          <td class="text-center">{{ song.id }}</td>
+
+          <td>
+            <span class="text-primary font-weight-bold">
+              {{ song.channel_name }}
+            </span>
+          </td>
+
+          <td>{{ song.artist_name }}</td>
+
+          <td>
+            <strong>{{ song.title }}</strong>
+          </td>
+
+          <td>
+            {% if song.status == "Live" %}
+              <span class="badge badge-success px-2 py-1">Live</span>
+            {% elif song.status == "Approved" %}
+              <span class="badge badge-warning px-2 py-1">Approved</span>
+            {% else %}
+              <span class="badge badge-secondary px-2 py-1">Review</span>
+            {% endif %}
+          </td>
+
+          <td>
+            {% if song.created_at %}
+              {{ song.created_at.strftime("%d %b %Y") }}
+              <br>
+              <small class="text-muted">
+                {{ song.created_at.strftime("%H:%M") }}
+              </small>
+            {% else %}
+              <span class="text-muted">-</span>
+            {% endif %}
+          </td>
+
+          <td class="text-center">
+
+            <a href="/songs/{{ song.id }}/edit"
+               class="btn btn-warning btn-sm"
+               data-toggle="tooltip"
+               title="Edit">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+
+            <form method="post"
+                  action="/songs/{{ song.id }}/delete"
+                  style="display:inline;"
+                  onsubmit="return confirm('Yakin ingin menghapus lagu ini?');">
+
+              <button type="submit"
+                      class="btn btn-danger btn-sm"
+                      data-toggle="tooltip"
+                      title="Hapus">
+                <i class="fas fa-trash"></i>
+              </button>
+
+            </form>
+
+          </td>
+
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="text-center text-muted">
+            Belum ada data lagu
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+$(document).ready(function () {
+
+    $('#songsTable').DataTable({
+
+        "language": {
+            "search": "Cari:",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "info": "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+            "paginate": {
+                "first": "Awal",
+                "last": "Akhir",
+                "next": "›",
+                "previous": "‹"
+            },
+            "zeroRecords": "Tidak ada data ditemukan"
+        },
+
+        "pageLength": 10,
+        "lengthMenu": [5,10,25,50,100],
+
+        "order": [[0,"desc"]],
+
+        "columnDefs": [
+            { "orderable": false, "targets": 6 }
+        ]
+
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+});
+</script>
+{% endblock %}

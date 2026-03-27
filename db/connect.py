@@ -76,3 +76,16 @@ def get_dict_cursor_dep():
     finally:
         cursor.close()
         conn.close()
+
+
+@contextmanager
+def get_clean_dict_cursor(commit: bool = False):
+    with get_db_connection() as conn:
+        with conn.cursor(cursor_factory=DictCursor) as cursor:
+            try:
+                yield cursor
+                if commit:
+                    conn.commit()
+            except:
+                conn.rollback()
+                raise
