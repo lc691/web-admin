@@ -1,0 +1,102 @@
+<div
+    class="modal modal-blur fade"
+    id="modal-release"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <!-- ================================================== -->
+            <!-- Header -->
+            <!-- ================================================== -->
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Update Release Date
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Body -->
+            <!-- ================================================== -->
+
+            <div class="modal-body">
+
+                <input
+                    id="release-song-id"
+                    type="hidden"
+                >
+
+                <div class="mb-3">
+
+                    <label
+                        class="form-label"
+                        for="release-date-input"
+                    >
+                        Release Date
+                    </label>
+
+                    <input
+                        id="release-date-input"
+                        class="form-control"
+                        type="date"
+                    >
+
+                    <div class="form-hint">
+                        Leave empty to remove the release date.
+                    </div>
+
+                </div>
+
+                <div
+                    id="release-preview"
+                    class="alert alert-info mb-0 d-none"
+                >
+                    Selected release date will be applied to the selected song(s).
+                </div>
+
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Footer -->
+            <!-- ================================================== -->
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-link"
+                    data-bs-dismiss="modal"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    id="btn-release-save"
+                    type="button"
+                    class="btn btn-primary"
+                >
+                    <i class="ti ti-calendar-event me-1"></i>
+
+                    Save Release Date
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,40 +1,214 @@
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+<!-- ================================================================ -->
+<!-- NAVBAR - Top Navigation Bar Modern Tabler Style                   -->
+<!-- ================================================================ -->
 
-  <!-- Sidebar Toggle (Topbar) untuk mobile -->
-  <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-    <i class="fa fa-bars"></i>
-  </button>
+<nav class="navbar navbar-expand-lg sticky-top bg-white border-bottom shadow-sm">
+    <div class="container-fluid">
 
-  <!-- Topbar Navbar -->
-  <ul class="navbar-nav ml-auto">
+        <!-- ========================================================== -->
+        <!-- LEFT SIDE - Brand & Toggle                                  -->
+        <!-- ========================================================== -->
+        <div class="d-flex align-items-center">
 
-    <!-- Tombol Mode Gelap -->
-    <li class="nav-item d-flex align-items-center mr-2">
-      <button id="darkToggle" class="btn btn-sm btn-secondary">
-        🌙 / ☀️
-      </button>
-    </li>
+            <!-- Sidebar Toggle (Desktop) -->
+            <button class="btn btn-ghost-primary btn-icon d-none d-lg-flex me-2" 
+                    id="sidebarToggle" 
+                    type="button" 
+                    aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
 
-    <!-- Nav Item - User Information -->
-    <li class="nav-item dropdown no-arrow">
-      <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
-        <img class="img-profile rounded-circle" src="/static/img/undraw_profile.svg" alt="Profile" height="32">
-      </a>
-      <!-- Dropdown - User Info -->
-      <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-        <a class="dropdown-item" href="/profile">
-          <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-          Profil Saya
-        </a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/logout">
-          <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-          Logout
-        </a>
-      </div>
-    </li>
+            <!-- Brand / Logo -->
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-film text-primary me-2"></i>
+                <span class="d-none d-sm-inline">DramaStream</span>
+                <span class="d-sm-none">DS</span>
+            </a>
 
-  </ul>
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler border-0 ms-2" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#navbarMain" 
+                    aria-controls="navbarMain" 
+                    aria-expanded="false" 
+                    aria-label="Toggle navigation">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- CENTER - Search Bar                                        -->
+        <!-- ========================================================== -->
+        <div class="d-none d-lg-flex flex-fill mx-3" style="max-width: 500px;">
+            <form class="w-100" role="search" action="/search">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light border-0">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input class="form-control form-control-sm bg-light border-0" 
+                           type="search" 
+                           placeholder="Cari di DramaStream..." 
+                           aria-label="Search"
+                           name="q">
+                    <button class="btn btn-primary btn-sm" type="submit">
+                        Cari
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- RIGHT SIDE - Actions                                        -->
+        <!-- ========================================================== -->
+        <div class="d-flex align-items-center gap-1">
+
+            <!-- ====================================================== -->
+            <!-- DARK MODE TOGGLE                                       -->
+            <!-- ====================================================== -->
+            <div class="nav-item d-flex align-items-center me-1">
+                <button class="btn btn-ghost-secondary btn-icon" 
+                        id="darkModeToggle" 
+                        type="button" 
+                        aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- NOTIFICATIONS                                          -->
+            <!-- ====================================================== -->
+            <div class="nav-item dropdown">
+                <button class="btn btn-ghost-secondary btn-icon position-relative" 
+                        id="notificationDropdown" 
+                        type="button" 
+                        data-bs-toggle="dropdown" 
+                        aria-expanded="false">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge badge-dot bg-danger position-absolute top-0 end-0 translate-middle p-1"></span>
+                </button>
+                
+                <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-0" 
+                     aria-labelledby="notificationDropdown" 
+                     style="width: 380px; max-height: 400px; overflow-y: auto;">
+                    
+                    <!-- Header -->
+                    <div class="dropdown-header bg-light py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 fw-bold">Notifikasi</h6>
+                        <a href="#" class="text-primary text-decoration-none small">Tandai semua</a>
+                    </div>
+                    
+                    <!-- List Notifikasi -->
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 border-0 py-3">
+                            <div class="avatar avatar-sm bg-success-lt text-success">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="small fw-semibold">Export selesai</div>
+                                <div class="text-muted small">Batch #123 berhasil diexport</div>
+                                <div class="text-muted small">2 menit lalu</div>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">Baru</span>
+                        </a>
+                        
+                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3 border-0 py-3">
+                            <div class="avatar avatar-sm bg-warning-lt text-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="flex-fill">
+                                <div class="small fw-semibold">Channel offline</div>
+                                <div class="text-muted small">Channel 5 tidak merespon</div>
+                                <div class="text-muted small">1 jam lalu</div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="dropdown-footer bg-light py-2 text-center">
+                        <a href="#" class="text-primary text-decoration-none small">Lihat semua notifikasi</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- USER PROFILE (STATIC / TANPA SESSION)                  -->
+            <!-- ====================================================== -->
+            <div class="nav-item dropdown ms-1">
+                <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" 
+                   href="#" 
+                   id="userDropdown" 
+                   role="button" 
+                   data-bs-toggle="dropdown" 
+                   aria-expanded="false">
+                    
+                    <!-- Avatar -->
+                    <span class="avatar avatar-sm">
+                        <span class="avatar-text bg-primary text-white">A</span>
+                    </span>
+                    
+                    <!-- Username -->
+                    <span class="d-none d-lg-inline fw-semibold small">
+                        Admin
+                    </span>
+                    
+                    <i class="fas fa-chevron-down d-none d-lg-inline text-muted small"></i>
+                </a>
+
+                <!-- Dropdown Menu -->
+                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2" 
+                    aria-labelledby="userDropdown"
+                    style="min-width: 200px;">
+                    
+                    <!-- User Info -->
+                    <li class="dropdown-item-text px-4 py-2">
+                        <div class="fw-semibold">Admin</div>
+                        <div class="text-muted small">admin@dramastream.com</div>
+                    </li>
+                    
+                    <li><hr class="dropdown-divider my-1"></li>
+                    
+                    <!-- Profile -->
+                    <li>
+                        <a class="dropdown-item" href="/profile">
+                            <i class="fas fa-user me-2 text-muted" style="width: 20px;"></i>
+                            Profil Saya
+                        </a>
+                    </li>
+                    
+                    <!-- Settings -->
+                    <li>
+                        <a class="dropdown-item" href="/settings">
+                            <i class="fas fa-cog me-2 text-muted" style="width: 20px;"></i>
+                            Pengaturan
+                        </a>
+                    </li>
+                    
+                    <!-- Activity Log -->
+                    <li>
+                        <a class="dropdown-item" href="/activity">
+                            <i class="fas fa-clock me-2 text-muted" style="width: 20px;"></i>
+                            Aktivitas
+                        </a>
+                    </li>
+                    
+                    <li><hr class="dropdown-divider my-1"></li>
+                    
+                    <!-- Logout -->
+                    <li>
+                        <a class="dropdown-item text-danger" href="/logout">
+                            <i class="fas fa-sign-out-alt me-2" style="width: 20px;"></i>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- End Right Side -->
+
+    </div>
+    <!-- End Container Fluid -->
 </nav>
+<!-- End Navbar -->

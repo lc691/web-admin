@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4" style="max-width: 1100px;">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                {% if mode == "add" %}
+                    <i class="fas fa-layer-group me-2 text-success"></i>
+                    Tambah Kloter
+                {% else %}
+                    <i class="fas fa-edit me-2 text-warning"></i>
+                    Edit Kloter
+                {% endif %}
+            </h1>
+            <small class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Master Kloter digunakan pada saat input Catatan Harian.
+            </small>
+        </div>
+        <a href="/kloter" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i>
+            Kembali
+        </a>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- ALERT MESSAGES                                             -->
+    <!-- ========================================================== -->
+    {% if message %}
+    <div class="alert alert-{{ message_type }} alert-dismissible fade show" role="alert">
+        <i class="fas fa-{% if message_type == 'success' %}check-circle{% elif message_type == 'error' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+
+    <!-- ========================================================== -->
+    <!-- FORM                                                       -->
+    <!-- ========================================================== -->
+    <form method="post" action="{% if mode == 'add' %}/kloter/add{% else %}/kloter/edit/{{ item.id }}{% endif %}" id="kloterForm" novalidate>
+        <div class="row g-4">
+
+            <!-- ====================================================== -->
+            <!-- FORM UTAMA                                             -->
+            <!-- ====================================================== -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0 fw-bold text-primary">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Informasi Kloter
+                        </h6>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- Kode & Nama -->
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="kode" class="form-label fw-bold">
+                                        Kode <span class="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="kode"
+                                        id="kode"
+                                        class="form-control form-control-lg"
+                                        placeholder="KL001"
+                                        value="{{ item.kode if item else '' }}"
+                                        maxlength="10"
+                                        pattern="[A-Za-z0-9\-_]+"
+                                        required
+                                        autofocus
+                                    >
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Kode unik (huruf, angka, -, _)
+                                    </small>
+                                    <div class="invalid-feedback">Kode harus diisi (huruf/angka/tanda hubung)</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label fw-bold">
+                                        Nama Kloter <span class="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="nama"
+                                        id="nama"
+                                        class="form-control form-control-lg"
+                                        placeholder="Kloter 1"
+                                        value="{{ item.nama if item else '' }}"
+                                        maxlength="100"
+                                        required
+                                    >
+                                    <div class="invalid-feedback">Nama kloter harus diisi</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Keterangan -->
+                        <div class="mb-3">
+                            <label for="keterangan" class="form-label fw-bold">
+                                Keterangan
+                            </label>
+                            <textarea
+                                name="keterangan"
+                                id="keterangan"
+                                rows="4"
+                                class="form-control"
+                                placeholder="Keterangan tambahan (opsional)..."
+                                maxlength="255"
+                            >{{ item.keterangan if item else '' }}</textarea>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Maksimal 255 karakter
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- SIDEBAR                                                -->
+            <!-- ====================================================== -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0 fw-bold text-primary">
+                            <i class="fas fa-cogs me-2"></i>
+                            Pengaturan
+                        </h6>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- Urutan -->
+                        <div class="mb-3">
+                            <label for="urutan" class="form-label fw-bold">
+                                Urutan
+                            </label>
+                            <input
+                                type="number"
+                                name="urutan"
+                                id="urutan"
+                                class="form-control form-control-lg"
+                                min="0"
+                                value="{{ item.urutan if item else 0 }}"
+                            >
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Digunakan saat pengurutan data (angka terkecil di atas)
+                            </small>
+                            <div class="invalid-feedback">Urutan harus berupa angka</div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                Status <span class="text-danger">*</span>
+                            </label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="aktif"
+                                        id="aktif1"
+                                        value="true"
+                                        {% if not item or item.aktif %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="aktif1">
+                                        <span class="badge bg-success text-white">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            Aktif
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="aktif"
+                                        id="aktif2"
+                                        value="false"
+                                        {% if item and not item.aktif %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="aktif2">
+                                        <span class="badge bg-secondary text-white">
+                                            <i class="fas fa-times-circle me-1"></i>
+                                            Nonaktif
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Informasi Tambahan (jika edit) -->
+                        {% if item %}
+                        <hr>
+                        <div class="mt-3">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-muted fw-bold">Mode</td>
+                                        <td>
+                                            <span class="badge bg-warning text-white">Edit Data</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted fw-bold">ID</td>
+                                        <td>
+                                            <span class="badge bg-secondary text-white">#{{ item.id }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted fw-bold">Dibuat</td>
+                                        <td>
+                                            <i class="fas fa-calendar-alt text-muted me-1"></i>
+                                            {{ item.created_at.strftime('%d-%m-%Y %H:%M') if item.created_at else '-' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted fw-bold">Update</td>
+                                        <td>
+                                            <i class="fas fa-clock text-muted me-1"></i>
+                                            {{ item.updated_at.strftime('%d-%m-%Y %H:%M') if item.updated_at else '-' }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-lg w-100" id="btnSubmit">
+                            <i class="fas fa-save me-2"></i>
+                            Simpan Data
+                        </button>
+                        <a href="/kloter" class="btn btn-secondary btn-lg w-100 mt-2">
+                            <i class="fas fa-times me-2"></i>
+                            Batal
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // ============================================================
+    // VALIDASI FORM
+    // ============================================================
+    const form = document.getElementById("kloterForm");
+    const btnSubmit = document.getElementById("btnSubmit");
+
+    form.addEventListener("submit", function (e) {
+        const kode = document.getElementById("kode").value.trim();
+        const nama = document.getElementById("nama").value.trim();
+
+        let isValid = true;
+
+        // Reset validasi
+        document.querySelectorAll(".is-invalid").forEach(function(el) {
+            el.classList.remove("is-invalid");
+        });
+
+        // Validasi Kode
+        if (!kode) {
+            document.getElementById("kode").classList.add("is-invalid");
+            isValid = false;
+        }
+
+        // Validasi Nama
+        if (!nama) {
+            document.getElementById("nama").classList.add("is-invalid");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            const firstError = form.querySelector(".is-invalid");
+            if (firstError) {
+                firstError.focus();
+                firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+            return;
+        }
+
+        // Loading state
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Menyimpan...';
+    });
+
+    // Hapus class invalid saat user mulai mengetik
+    document.querySelectorAll(".form-control").forEach(function (el) {
+        el.addEventListener("input", function () {
+            this.classList.remove("is-invalid");
+        });
+    });
+
+    // ============================================================
+    // AUTO UPPERCASE UNTUK KODE
+    // ============================================================
+    const kodeInput = document.getElementById("kode");
+    if (kodeInput) {
+        kodeInput.addEventListener("input", function () {
+            this.value = this.value.toUpperCase().replace(/\s/g, "");
+        });
+    }
+
+    // ============================================================
+    // AUTO-HIDE ALERT
+    // ============================================================
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.classList.remove('show');
+        }, 5000);
+    });
+
+    // ============================================================
+    // TOOLTIP INISIALISASI
+    // ============================================================
+    if (typeof $ !== "undefined" && $.fn.tooltip) {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+
+});
+</script>
+
+<style>
+    .form-control:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    .form-control.is-invalid:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    }
+    .btn-primary:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+</style>
+
+{% endblock %}

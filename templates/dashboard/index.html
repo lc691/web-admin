@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <!-- Data Injection -->
+    <script>
+        window.__REVENUE_DATA__ = {{ revenue_distribution|tojson|safe }};
+        window.__CHART_LABELS__ = {{ chart_labels|tojson|safe }};
+        window.__CHART_DATA__ = {{ chart_data|tojson|safe }};
+        
+        console.log('=== Dashboard Data Loaded ===');
+        console.log('Revenue Data:', window.__REVENUE_DATA__);
+        console.log('Chart Labels:', window.__CHART_LABELS__);
+        console.log('Chart Data:', window.__CHART_DATA__);
+    </script>
+
+    <!-- Welcome Section -->
+    {% include "dashboard/partials/welcome.html" %}
+
+    <!-- Statistics Cards -->
+    {% include "dashboard/partials/stats.html" %}
+
+    <!-- Charts -->
+    {% include "dashboard/partials/charts.html" %}
+
+    <!-- Recent Activity & Top Shows -->
+    {% include "dashboard/partials/activity.html" %}
+{% endblock %}

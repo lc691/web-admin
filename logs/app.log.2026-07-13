@@ -1,0 +1,146 @@
+[2026-07-14 07:49:37] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-14 07:49:38] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 09:08:12] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-14 09:33:48] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 09:37:57] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 09:38:00] [INFO] [webhook] [REQ] path=/favicon.ico public=True
+[2026-07-14 09:38:06] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 09:38:07] [INFO] [webhook] [Dashboard] Loaded Users=6776 Shows=4470
+[2026-07-14 09:38:07] [INFO] [webhook] [REQ DONE] path=/ ms=130.54
+[2026-07-14 09:38:07] [INFO] [webhook] [REQ] path=/static/css/components.css public=True
+[2026-07-14 09:38:07] [INFO] [webhook] [REQ] path=/static/css/sidebar.css public=True
+[2026-07-14 09:38:07] [INFO] [webhook] [REQ] path=/static/css/dashboard.css public=True
+[2026-07-14 09:38:07] [INFO] [webhook] [REQ] path=/static/fontawesome/css/all.min.css public=True
+[2026-07-14 09:38:07] [INFO] [webhook] [REQ] path=/static/css/base.css public=True
+[2026-07-14 09:38:07] [INFO] [webhook] [REQ] path=/static/css/layout.css public=True
+[2026-07-14 09:38:07] [INFO] [webhook] [REQ] path=/static/img/logo.png public=True
+[2026-07-14 09:38:07] [INFO] [webhook] [REQ] path=/static/img/default-thumb.png public=True
+[2026-07-14 09:38:14] [INFO] [webhook] [REQ] path=/static/js/songs/api.js public=True
+[2026-07-14 09:38:14] [INFO] [webhook] [REQ] path=/static/js/songs/filters.js public=True
+[2026-07-14 09:38:14] [INFO] [webhook] [REQ] path=/static/js/songs/bulk.js public=True
+[2026-07-14 09:38:14] [INFO] [webhook] [REQ] path=/static/js/songs/statistics.js public=True
+[2026-07-14 09:38:14] [INFO] [webhook] [REQ] path=/static/js/songs/table.js public=True
+[2026-07-14 09:38:14] [INFO] [webhook] [REQ] path=/static/js/songs/songs.js public=True
+[2026-07-14 09:38:18] [INFO] [webhook] [REQ] path=/api/songs/export/status public=False
+[2026-07-14 09:38:18] [INFO] [webhook] [REQ DONE] path=/api/songs/export/status ms=26.24
+[2026-07-14 09:39:03] [INFO] [webhook] [REQ] path=/api/songs/export/status public=False
+[2026-07-14 09:39:03] [INFO] [webhook] [REQ] path=/api/songs/export/day/14 public=False
+[2026-07-14 09:39:03] [INFO] [webhook] [REQ DONE] path=/api/songs/export/status ms=29.23
+[2026-07-14 09:39:03] [INFO] [webhook] [REQ DONE] path=/api/songs/export/day/14 ms=272.54
+[2026-07-14 11:32:00] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-14 11:37:01] [INFO] [webhook] [REQ] path=/sitemap.xml public=False
+[2026-07-14 11:58:33] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 11:58:41] [INFO] [webhook] [REQ] path=/wp-includes/css/buttons.css public=False
+[2026-07-14 11:58:46] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 12:10:17] [INFO] [webhook] [REQ] path=/sitemap.xml public=False
+[2026-07-14 12:13:04] [INFO] [webhook] [REQ] path=/wp-login.php public=False
+[2026-07-14 12:13:04] [INFO] [webhook] [REQ] path=/wp-admin/ public=False
+[2026-07-14 12:57:32] [INFO] [webhook] [REQ] path=/xmlrpc.php public=False
+[2026-07-14 12:57:32] [INFO] [webhook] [REQ] path=/blog/wp-includes/wlwmanifest.xml public=False
+[2026-07-14 12:57:33] [INFO] [webhook] [REQ] path=/2018/wp-includes/wlwmanifest.xml public=False
+[2026-07-14 12:57:34] [INFO] [webhook] [REQ] path=/2019/wp-includes/wlwmanifest.xml public=False
+[2026-07-14 12:57:34] [INFO] [webhook] [REQ] path=/shop/wp-includes/wlwmanifest.xml public=False
+[2026-07-14 12:57:34] [INFO] [webhook] [REQ] path=/wp1/wp-includes/wlwmanifest.xml public=False
+[2026-07-14 12:57:34] [INFO] [webhook] [REQ] path=/test/wp-includes/wlwmanifest.xml public=False
+[2026-07-14 12:57:35] [INFO] [webhook] [REQ] path=/site/wp-includes/wlwmanifest.xml public=False
+[2026-07-14 12:57:35] [INFO] [webhook] [REQ] path=/cms/wp-includes/wlwmanifest.xml public=False
+[2026-07-14 12:57:35] [INFO] [webhook] [REQ] path=/sito/wp-includes/wlwmanifest.xml public=False
+[2026-07-14 13:23:39] [INFO] [webhook] [REQ] path=/songs/youtube-generator public=True
+[2026-07-14 13:23:54] [INFO] [webhook] [REQ] path=/wp-admin/ public=False
+[2026-07-14 13:40:26] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-14 14:03:40] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 14:03:40] [INFO] [webhook] Login attempt: admin | IP: 172.68.164.65
+[2026-07-14 14:03:40] [INFO] [webhook] Login success: admin (remember=False)
+[2026-07-14 14:03:40] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 14:03:40] [INFO] [webhook] [Dashboard] Loaded Users=6787 Shows=4470
+[2026-07-14 14:03:40] [INFO] [webhook] [REQ DONE] path=/ ms=159.47
+[2026-07-14 14:03:41] [INFO] [webhook] [REQ] path=/static/css/base.css public=True
+[2026-07-14 14:03:41] [INFO] [webhook] [REQ] path=/static/tabler/icons/tabler-icons.min.css public=True
+[2026-07-14 14:03:41] [INFO] [webhook] [REQ] path=/static/js/dashboard.js public=True
+[2026-07-14 14:03:41] [INFO] [webhook] [REQ] path=/static/css/components.css public=True
+[2026-07-14 14:03:41] [INFO] [webhook] [REQ] path=/static/js/charts.js public=True
+[2026-07-14 14:03:41] [INFO] [webhook] [REQ] path=/static/img/logo.png public=True
+[2026-07-14 14:03:41] [INFO] [webhook] [REQ] path=/static/img/default-thumb.png public=True
+[2026-07-14 14:03:43] [INFO] [webhook] [REQ] path=/channels public=False
+[2026-07-14 14:03:43] [INFO] [webhook] [REQ DONE] path=/channels ms=62.48
+[2026-07-14 14:03:57] [INFO] [webhook] [REQ] path=/channels/1 public=False
+[2026-07-14 14:03:57] [INFO] [webhook] [REQ DONE] path=/channels/1 ms=73.22
+[2026-07-14 14:03:57] [INFO] [webhook] [REQ] path=/songs/data public=False
+[2026-07-14 14:03:57] [INFO] [webhook] [REQ DONE] path=/songs/data ms=3.37
+[2026-07-14 14:04:09] [INFO] [webhook] [REQ] path=/static/js/songs/filters.js public=True
+[2026-07-14 14:04:09] [INFO] [webhook] [REQ] path=/static/js/songs/api.js public=True
+[2026-07-14 14:04:09] [INFO] [webhook] [REQ] path=/static/js/songs/bulk.js public=True
+[2026-07-14 14:04:09] [INFO] [webhook] [REQ] path=/static/js/songs/usage.js public=True
+[2026-07-14 14:04:09] [INFO] [webhook] [REQ] path=/static/js/songs/release.js public=True
+[2026-07-14 14:04:09] [INFO] [webhook] [REQ] path=/static/js/songs/delete.js public=True
+[2026-07-14 14:04:19] [INFO] [webhook] [REQ] path=/api/songs public=False
+[2026-07-14 14:04:19] [INFO] [webhook] [REQ DONE] path=/api/songs ms=82.8
+[2026-07-14 14:20:36] [INFO] [webhook] [REQ] path=/sitemap.xml public=False
+[2026-07-14 15:28:39] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-14 16:02:31] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 16:58:35] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 16:59:26] [INFO] [webhook] [REQ] path=/favicon.ico public=True
+[2026-07-14 17:20:50] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 17:20:51] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 17:42:28] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-14 18:10:08] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 19:20:53] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 20:10:29] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 21:04:15] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 21:13:28] [INFO] [webhook] [REQ] path=/favicon.ico public=True
+[2026-07-14 21:13:37] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 21:13:37] [INFO] [webhook] [Dashboard] Loaded Users=6797 Shows=4471
+[2026-07-14 21:13:37] [INFO] [webhook] [REQ DONE] path=/ ms=116.21
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/tabler/css/tabler.min.css public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/img/logo.png public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/css/navbar.css public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/css/dashboard.css public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/vendor/datatables/css/dataTables.dataTables.min.css public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/js/sidebar.js public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/vendor/htmx/htmx.min.js public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/fontawesome/js/all.min.js public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/js/navbar.js public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/vendor/datatables/js/dataTables.min.js public=True
+[2026-07-14 21:13:38] [INFO] [webhook] [REQ] path=/static/img/default-thumb.png public=True
+[2026-07-14 21:13:50] [INFO] [webhook] [REQ] path=/static/js/songs/filters.js public=True
+[2026-07-14 21:13:50] [INFO] [webhook] [REQ] path=/static/js/songs/update.js public=True
+[2026-07-14 21:13:50] [INFO] [webhook] [REQ] path=/static/js/songs/release.js public=True
+[2026-07-14 21:13:50] [INFO] [webhook] [REQ] path=/static/js/songs/delete.js public=True
+[2026-07-14 21:13:50] [INFO] [webhook] [REQ] path=/static/js/songs/bulk.js public=True
+[2026-07-14 21:13:50] [INFO] [webhook] [REQ] path=/static/js/songs/export.js public=True
+[2026-07-14 21:13:50] [INFO] [webhook] [REQ] path=/static/js/songs/statistics.js public=True
+[2026-07-14 21:13:50] [INFO] [webhook] [REQ] path=/static/js/songs/import.js public=True
+[2026-07-14 21:13:53] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 21:13:53] [INFO] [webhook] [Dashboard] Loaded Users=6797 Shows=4471
+[2026-07-14 21:13:53] [INFO] [webhook] [REQ DONE] path=/ ms=113.74
+[2026-07-14 21:14:09] [INFO] [webhook] [REQ] path=/shows/edit/4669 public=False
+[2026-07-14 21:14:09] [INFO] [webhook] [REQ DONE] path=/shows/edit/4669 ms=161.17
+[2026-07-14 21:15:42] [INFO] [webhook] [REQ] path=/shows public=False
+[2026-07-14 21:15:42] [INFO] [webhook] [REQ DONE] path=/shows ms=107.1
+[2026-07-14 21:42:38] [INFO] [webhook] [REQ] path=/.env public=False
+[2026-07-14 21:44:55] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-14 21:47:55] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 21:47:55] [INFO] [webhook] Login attempt: admin | IP: 104.22.66.7
+[2026-07-14 21:47:55] [INFO] [webhook] Login success: admin (remember=False)
+[2026-07-14 21:47:55] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 21:47:55] [INFO] [webhook] [Dashboard] Loaded Users=6799 Shows=4472
+[2026-07-14 21:47:55] [INFO] [webhook] [REQ DONE] path=/ ms=124.36
+[2026-07-14 21:47:59] [INFO] [webhook] [REQ] path=/shows public=False
+[2026-07-14 21:47:59] [INFO] [webhook] [REQ DONE] path=/shows ms=100.39
+[2026-07-14 21:48:01] [INFO] [webhook] [REQ] path=/shows/edit/4670 public=False
+[2026-07-14 21:48:02] [INFO] [webhook] [REQ DONE] path=/shows/edit/4670 ms=177.97
+[2026-07-14 21:48:46] [INFO] [webhook] [REQ] path=/shows/edit/4670 public=False
+[2026-07-14 21:48:46] [INFO] [webhook] [REQ DONE] path=/shows/edit/4670 ms=32.76
+[2026-07-14 22:13:57] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 22:13:57] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-14 22:55:43] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-14 22:55:44] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 00:23:49] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 02:43:05] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 03:54:44] [INFO] [webhook] [REQ] path=/sitemap.xml public=False
+[2026-07-15 03:54:44] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 05:47:40] [INFO] [webhook] [REQ] path=/xmlrpc.php public=False
+[2026-07-15 05:47:41] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 06:20:59] [INFO] [webhook] [REQ] path=/wp-login.php public=False
+[2026-07-15 06:21:00] [INFO] [webhook] [REQ] path=/wp-admin/ public=False
+[2026-07-15 06:31:06] [INFO] [webhook] [REQ] path=/login public=True

@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="YouTube Link Generator - Buat link pencarian YouTube dengan cepat">
+    <title>YouTube Link Generator | Dashboard Admin</title>
+    
+    <!-- Font Awesome 6 (Free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f6f9fc 0%, #eef2f7 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .super-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .card-modern {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(0px);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            overflow: hidden;
+        }
+
+        .card-modern:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 28px 40px -18px rgba(0, 0, 0, 0.15);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        .stat-bubble {
+            background: white;
+            border-radius: 80px;
+            padding: 0.5rem 1.2rem;
+            text-align: center;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
+            border: 1px solid #eef2ff;
+            transition: 0.2s;
+        }
+        .stat-number-lg {
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #1e293b, #4f46e5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .stat-label-sm {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: #5b6e8c;
+        }
+
+        .textarea-premium {
+            font-family: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 1rem 1.2rem;
+            background-color: #ffffff;
+            transition: all 0.2s;
+            resize: vertical;
+        }
+        .textarea-premium:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+        }
+        .textarea-premium-dark {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            border-color: #334155;
+        }
+        .textarea-premium-dark:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.2);
+        }
+
+        .btn-gradient-primary {
+            background: linear-gradient(105deg, #4f46e5 0%, #7c3aed 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.7rem 1.2rem;
+            border-radius: 40px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+        }
+        .btn-gradient-primary:hover {
+            transform: scale(1.02);
+            background: linear-gradient(105deg, #6366f1, #8b5cf6);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+            color: white;
+        }
+        .btn-gradient-primary:disabled {
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        .action-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .form-switch-custom .form-check-input {
+            width: 2.7rem;
+            height: 1.4rem;
+            background-color: #cbd5e1;
+            border: none;
+            cursor: pointer;
+        }
+        .form-switch-custom .form-check-input:checked {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+        }
+
+        kbd {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.7rem;
+        }
+        
+        .footer-note {
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 2.5rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .stat-number-lg { font-size: 1.3rem; }
+            .btn-gradient-primary { padding: 0.5rem 1rem; font-size: 0.85rem; }
+        }
+
+        .toast {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            min-width: 260px;
+            max-width: 380px;
+            padding: 14px 18px;
+            border-radius: 16px;
+
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            border: 1px solid rgba(79, 70, 229, .15);
+            box-shadow:
+                0 10px 30px rgba(15, 23, 42, .15),
+                0 1px 0 rgba(255,255,255,.5) inset;
+
+            color: #1e293b;
+            font-weight: 600;
+            font-size: .92rem;
+
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all .35s ease;
+
+            pointer-events: none;
+            z-index: 99999;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            border-left: 5px solid #22c55e;
+        }
+
+        .toast.error {
+            border-left: 5px solid #ef4444;
+        }
+
+        .toast.warning {
+            border-left: 5px solid #f59e0b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="super-container">
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <h1 class="display-5 fw-bold" style="background: linear-gradient(125deg, #1e1b4b, #4f46e5); -webkit-background-clip: text; background-clip: text; color: transparent;">
+                <i class="fab fa-youtube me-2" style="color: #ff0000;"></i> YouTube Link Generator
+            </h1>
+            <p class="text-secondary-emphasis mt-1">Convert song list/title to YouTube search link <i class="fas fa-magic ms-1"></i></p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            <div class="stat-bubble"><span class="stat-number-lg" id="charCount">0</span><div class="stat-label-sm">Character</div></div>
+            <div class="stat-bubble"><span class="stat-number-lg" id="lineCount">0</span><div class="stat-label-sm">Line</div></div>
+            <div class="stat-bubble"><span class="stat-number-lg" id="linkCount">0</span><div class="stat-label-sm">Link</div></div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">✅ Tersalin!</div>
+
+    <!-- Dua kolom utama -->
+    <div class="row g-4">
+        <!-- Kolom KIRI : Input -->
+        <div class="col-lg-6">
+            <div class="card-modern h-100 d-flex flex-column">
+                <div class="p-4 pb-2 d-flex justify-content-between align-items-center flex-wrap border-bottom border-light">
+                    <div class="fw-semibold fs-5"><i class="fas fa-edit me-2 text-primary"></i> Input Data</div>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="loadSample()"><i class="fas fa-file-alt"></i> Example</button>
+                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="clearInput()"><i class="fas fa-trash-alt"></i> Clear</button>
+                    </div>
+                </div>
+                <div class="p-4 flex-grow-1">
+                    <textarea id="input" class="textarea-premium w-100" rows="16" 
+                        placeholder="Enter track list / title...&#10;&#10;1. 🇺🇲 Judul: binary signal vrelex colix&#10;&#10;2. 🇺🇲 Judul: digital pulse urelex dexil&#10;&#10;3. 🇺🇲 Judul: void control nexar vellon"></textarea>
+                    <div class="d-flex gap-3 mt-3 small text-secondary">
+                        <span><i class="far fa-file-alt"></i> <span id="inputLines">0</span> Line</span>
+                        <span><i class="far fa-keyboard"></i> <span id="inputChars">0</span> Character</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolom KANAN : Output -->
+        <div class="col-lg-6">
+            <div class="card-modern h-100 d-flex flex-column">
+                <div class="p-4 pb-2 d-flex justify-content-between align-items-center flex-wrap border-bottom border-light">
+                    <div class="fw-semibold fs-5"><i class="fas fa-link me-2 text-success"></i> Generated Links</div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="clearOutput()"><i class="fas fa-eraser"></i> Clear</button>
+                    </div>
+                </div>
+                <div class="p-4 flex-grow-1">
+                    <textarea id="output" class="textarea-premium textarea-premium-dark w-100" rows="16" readonly placeholder="YouTube link will appear here..."></textarea>
+                    
+                    <div class="action-toolbar">
+                        <button id="generateBtn" onclick="generate()" class="btn-gradient-primary px-4" disabled>
+                            <i class="fas fa-bolt me-2"></i> Generate Links
+                        </button>
+                        <button onclick="copyResult()" class="btn btn-outline-primary rounded-pill">
+                            <i class="far fa-copy"></i> Copy All
+                        </button>
+                        <button onclick="exportTxt()" class="btn btn-outline-success rounded-pill">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button onclick="openAllLinks()" id="openLinksBtn" class="btn btn-outline-warning rounded-pill" disabled>
+                            <i class="fas fa-external-link-alt"></i> Open (<span id="openBtnCount">0</span>)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  <!-- penutup row -->
+
+    <!-- Panel Opsi Lanjutan -->
+    <div class="card-modern mt-4">
+        <div class="p-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div class="d-flex flex-wrap gap-4">
+                <div class="form-check form-switch form-switch-custom">
+                    <input class="form-check-input" type="checkbox" id="autoGenerate" checked>
+                    <label class="form-check-label fw-medium" for="autoGenerate">⚡ Auto-generate</label>
+                </div>
+                <div class="form-check form-switch form-switch-custom">
+                    <input class="form-check-input" type="checkbox" id="keepNumbers">
+                    <label class="form-check-label fw-medium" for="keepNumbers">🔢 Keep numbering</label>
+                </div>
+                <div class="form-check form-switch form-switch-custom">
+                    <input class="form-check-input" type="checkbox" id="compactMode">
+                    <label class="form-check-label fw-medium" for="compactMode">📄 Compact mode (Only URL)</label>
+                </div>
+            </div>
+            <div class="text-muted small bg-light px-3 py-1 rounded-pill">
+                <i class="fas fa-keyboard"></i> Shortcut <kbd>Ctrl</kbd> + <kbd>Enter</kbd> → Generate
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-note">
+        <i class="fas fa-mouse-pointer"></i> Quick tools for content creators • YouTube search results based on formatted queries
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    (function() {
+        // ============================================================
+        // 🔧 BAGIAN YANG BISA ANDA TAMBAH SENDIRI
+        // ============================================================
+                    
+        function parseLine(line) {
+            line = line.trim();
+            if (line === "") return null;
+
+            // ==========================================
+            // FORMAT KHUSUS: nomor.🇺🇸JUDUL : judul ( artis )
+            // Contoh: 41.🇺🇸 JUDUL : It Doesn't Feel Like Freedom ( Elizabeth Dickson )
+            //         43.🇺🇸JUDUL:Bola mania di kandang(Kirty Amoni)
+            // ==========================================
+            let usJudulParenMatch = line.match(/^(\d+)\.\s*🇺🇸\s*JUDUL\s*:\s*(.*)$/i);
+            if (usJudulParenMatch) {
+                let fullText = usJudulParenMatch[2].trim();
+                
+                // Cari pola ( artis ) di akhir
+                let parenMatch = fullText.match(/^(.*?)\s*\(\s*(.*?)\s*\)\s*$/);
+                if (parenMatch) {
+                    let title = parenMatch[1].trim();
+                    let artist = parenMatch[2].trim();
+                    return {
+                        number: usJudulParenMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false,
+                        displayTemplate: `${usJudulParenMatch[1]}. ${title} ${artist}`
+                    };
+                }
+                
+                // Kalau tidak ada tanda kurung, cari '-' sebagai pemisah
+                let lastDashIndex = fullText.lastIndexOf(' - ');
+                if (lastDashIndex !== -1) {
+                    let title = fullText.substring(0, lastDashIndex).trim();
+                    let artist = fullText.substring(lastDashIndex + 3).trim();
+                    return {
+                        number: usJudulParenMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false,
+                        displayTemplate: `${usJudulParenMatch[1]}. ${title} ${artist}`
+                    };
+                }
+                
+                // Kalau tidak ada tanda kurung dan tidak ada '-', ambil kata terakhir sebagai artis
+                let words = fullText.split(' ');
+                if (words.length > 1) {
+                    let artist = words[words.length - 1];
+                    let title = words.slice(0, -1).join(' ');
+                    return {
+                        number: usJudulParenMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false,
+                        displayTemplate: `${usJudulParenMatch[1]}. ${title} ${artist}`
+                    };
+                }
+                
+                return {
+                    number: usJudulParenMatch[1],
+                    title: fullText,
+                    artist: null,
+                    queryOnlyTitle: false,
+                    displayTemplate: `${usJudulParenMatch[1]}. ${fullText}`
+                };
+            }
+
+            // ==========================================
+            // FORMAT 1: nomor.Judul : judul - artis (PRIORITAS TERTINGGI)
+            // ==========================================
+            let judulSpasiMatch = line.match(/^(\d+)\.\s*Judul\s*:\s*(.*)$/i);
+            if (judulSpasiMatch) {
+                let fullText = judulSpasiMatch[2].trim();
+                
+                let lastDashIndex = fullText.lastIndexOf(' - ');
+                if (lastDashIndex !== -1) {
+                    let title = fullText.substring(0, lastDashIndex).trim();
+                    let artist = fullText.substring(lastDashIndex + 3).trim();
+                    return {
+                        number: judulSpasiMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false
+                    };
+                }
+                
+                let words = fullText.split(' ');
+                if (words.length > 1) {
+                    let artist = words[words.length - 1];
+                    let title = words.slice(0, -1).join(' ');
+                    return {
+                        number: judulSpasiMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false
+                    };
+                }
+                
+                return {
+                    number: judulSpasiMatch[1],
+                    title: fullText,
+                    artist: null,
+                    queryOnlyTitle: false
+                };
+            }
+
+            // ==========================================
+            // FORMAT 2: nomor.JUDUL: judul - artis (HURUF BESAR)
+            // ==========================================
+            let judulMatch = line.match(/^(\d+)\.\s*JUDUL:\s*(.*)$/i);
+            if (judulMatch) {
+                let fullText = judulMatch[2].trim();
+                
+                let lastDashIndex = fullText.lastIndexOf(' - ');
+                if (lastDashIndex !== -1) {
+                    let title = fullText.substring(0, lastDashIndex).trim();
+                    let artist = fullText.substring(lastDashIndex + 3).trim();
+                    return {
+                        number: judulMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false
+                    };
+                }
+                
+                return {
+                    number: judulMatch[1],
+                    title: fullText,
+                    artist: null,
+                    queryOnlyTitle: false
+                };
+            }
+
+            // ==========================================
+            // FORMAT 3: nomor. 🇺🇲 Judul: binary signal vrelex colix
+            // ==========================================
+            let usMatch = line.match(/^(\d+)\.\s*🇺🇲\s*Judul:\s*(.*)$/i);
+            if (usMatch) {
+                let fullText = usMatch[2].trim();
+                let words = fullText.split(' ');
+                let judul = words.slice(0, -1).join(' ');
+                let artis = words[words.length - 1];
+                
+                return { 
+                    number: usMatch[1], 
+                    title: judul,
+                    fullTitle: fullText,
+                    artist: artis,
+                    queryOnlyTitle: true,
+                    displayTemplate: `${usMatch[1]}. 🇺🇲 Judul: ${fullText}`
+                };
+            }
+
+            // ==========================================
+            // FORMAT 4: nomor .judul artis
+            // ==========================================
+            let spasiTitikMatch = line.match(/^(\d+)\s*\.\s*(.+)$/);
+            if (spasiTitikMatch) {
+                let fullText = spasiTitikMatch[2].trim();
+                
+                let lastDashIndex = fullText.lastIndexOf(' - ');
+                if (lastDashIndex !== -1) {
+                    let title = fullText.substring(0, lastDashIndex).trim();
+                    let artist = fullText.substring(lastDashIndex + 3).trim();
+                    return {
+                        number: spasiTitikMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false
+                    };
+                }
+                
+                let words = fullText.split(' ');
+                if (words.length > 1) {
+                    let artist = words[words.length - 1];
+                    let title = words.slice(0, -1).join(' ');
+                    return {
+                        number: spasiTitikMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false
+                    };
+                }
+                
+                return {
+                    number: spasiTitikMatch[1],
+                    title: fullText,
+                    artist: null,
+                    queryOnlyTitle: false
+                };
+            }
+
+            // ==========================================
+            // FORMAT 5: nomor💥 judul - artis atau nomor🍄 judul - artis
+            // ==========================================
+            let emojiMatch = line.match(/^(\d+)\s*[💥🍄]\s*(.*)$/);
+            if (emojiMatch) {
+                let judulArtis = emojiMatch[2].trim();
+                let artistMatch = judulArtis.match(/^(.*?)\s*-\s*(.*)$/);
+                if (artistMatch) {
+                    return { number: emojiMatch[1], title: artistMatch[1].trim(), artist: artistMatch[2].trim() };
+                }
+                return { number: emojiMatch[1], title: judulArtis, artist: null };
+            }
+
+            // ==========================================
+            // FORMAT 6: nomor~judul artis
+            // ==========================================
+            if (line.includes('~')) {
+                let parts = line.split('~');
+                let titlePart = parts[1].trim();
+                let artistMatch = titlePart.match(/^(.*?)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)$/);
+                if (artistMatch) {
+                    return { number: parts[0].trim(), title: artistMatch[1].trim(), artist: artistMatch[2].trim() };
+                }
+                return { number: parts[0].trim(), title: titlePart, artist: null };
+            }
+
+            // ==========================================
+            // FORMAT 7: nomor. judul
+            // ==========================================
+            let dotMatch = line.match(/^(\d+)\.\s+(.*)$/);
+            if (dotMatch) {
+                let fullText = dotMatch[2].trim();
+                let lastDashIndex = fullText.lastIndexOf(' - ');
+                if (lastDashIndex !== -1) {
+                    let title = fullText.substring(0, lastDashIndex).trim();
+                    let artist = fullText.substring(lastDashIndex + 3).trim();
+                    return {
+                        number: dotMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false
+                    };
+                }
+                return { number: dotMatch[1], title: fullText, artist: null };
+            }
+
+            // ==========================================
+            // FORMAT 8: nomor langsung diikuti teks
+            // ==========================================
+            let noSpaceMatch = line.match(/^(\d+)\.(.+)$/);
+            if (noSpaceMatch) {
+                let fullText = noSpaceMatch[2].trim();
+                let lastDashIndex = fullText.lastIndexOf(' - ');
+                if (lastDashIndex !== -1) {
+                    let title = fullText.substring(0, lastDashIndex).trim();
+                    let artist = fullText.substring(lastDashIndex + 3).trim();
+                    return {
+                        number: noSpaceMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false
+                    };
+                }
+                return { 
+                    number: noSpaceMatch[1], 
+                    title: fullText,
+                    artist: null 
+                };
+            }
+
+            // ==========================================
+            // FORMAT 9: JUDUL ⭐ teks
+            // ==========================================
+            if (line.startsWith('JUDUL')) {
+                let title = line.replace(/JUDUL\s*[⭐*]?\s*/, '').trim();
+                return { number: null, title: title, artist: null };
+            }
+
+            // ==========================================
+            // FORMAT 10: nomor Judul : teks
+            // ==========================================
+            let judulSingleMatch = line.match(/^(\d+)\s+Judul\s*:\s*(.*)$/i);
+            if (judulSingleMatch) {
+                let fullText = judulSingleMatch[2].trim();
+                let lastDashIndex = fullText.lastIndexOf(' - ');
+                if (lastDashIndex !== -1) {
+                    let title = fullText.substring(0, lastDashIndex).trim();
+                    let artist = fullText.substring(lastDashIndex + 3).trim();
+                    return {
+                        number: judulSingleMatch[1],
+                        title: title,
+                        artist: artist,
+                        queryOnlyTitle: false
+                    };
+                }
+                return {
+                    number: judulSingleMatch[1],
+                    title: fullText,
+                    artist: null,
+                    queryOnlyTitle: true
+                };
+            }
+
+            // ==========================================
+            // DEFAULT
+            // ==========================================
+            return { number: null, title: line, artist: null };
+        }
+
+
+
+        function parseMultiLine(lines, startIndex) {
+        let baris1 = lines[startIndex] || "";
+        let baris2 = lines[startIndex + 1] || "";
+        let baris3 = lines[startIndex + 2] || "";
+
+        // ==========================================
+        // BERSIHKAN KARAKTER TERSEMBUNYI
+        // ==========================================
+        baris1 = baris1.replace(/[\u200B-\u200D\uFEFF]/g, '');
+        baris1 = baris1.replace(/‎/g, '');
+        baris1 = baris1.replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '');
+        baris1 = baris1.trim();
+        
+        baris2 = baris2.replace(/[\u200B-\u200D\uFEFF]/g, '');
+        baris2 = baris2.replace(/‎/g, '');
+        baris2 = baris2.replace(/[🇺🇸🇺🇲🇬🇧🇮🇩🦈🔥⭐🎵👑💥🍄🎶🌈🌟✨🎯💫🔮🪐]/g, '');
+        baris2 = baris2.trim();
+        
+        baris3 = baris3.replace(/[\u200B-\u200D\uFEFF]/g, '');
+        baris3 = baris3.replace(/‎/g, '');
+        baris3 = baris3.replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '');
+        baris3 = baris3.trim();
+        
+        if (baris1 === "") return null;
+
+        // ================================================================
+        // CEK FORMAT MULTILINE
+        // ================================================================
+
+        // ==========================================
+        // FORMAT KHUSUS: nomor. 🇺🇸CHANNEL : artis (baris1)
+        //                JUDUL ⭐judul (baris2)
+        //                artis (baris3)
+        // Contoh: 61. 🇺🇸CHANNEL : Release-Topic
+        //         JUDUL ⭐KAMU KEKASIH SETIAKU
+        //         ROHYAN ANJANA
+        // ==========================================
+        let channelStarJudulMatch = baris1.match(/^(\d+)\.\s*[🇺🇸🇺🇲]*\s*CHANNEL\s*:\s*(.*)$/i);
+        if (channelStarJudulMatch && baris2.toLowerCase().includes('judul') && baris3 && baris3.trim() !== "") {
+            let judulBaris = baris2.replace(/^JUDUL\s*[⭐*]?\s*/i, '').trim();
+            let artist = baris3.trim();
+            
+            return {
+                number: channelStarJudulMatch[1],
+                title: judulBaris,
+                artist: artist,
+                lineCount: 3
+            };
+        }
+
+        // ==========================================
+        // FORMAT KHUSUS: nomor. *CHANNEL* : artis (baris1)
+        //                *JUDUL* : judul (baris2)
+        // ==========================================
+        let channelJudulMatch = baris1.match(/^(\d+)\.\s*\*CHANNEL\*\s*:\s*(.*)$/i);
+        if (channelJudulMatch && baris2.toLowerCase().includes('judul')) {
+            let artistFromChannel = channelJudulMatch[2].trim().toLowerCase();
+            let judulBaris = baris2.replace(/\*JUDUL\*\s*:\s*/i, '').trim();
+            
+            let words = judulBaris.split(' ');
+            let artistFromJudul = words.length > 1 ? words[words.length - 1] : '';
+            
+            let artist;
+            let title;
+            
+            if (artistFromChannel === 'release topic' || artistFromChannel === 'release - topic' || artistFromChannel === 'release-topic') {
+                if (artistFromJudul) {
+                    artist = artistFromJudul;
+                    title = words.slice(0, -1).join(' ');
+                } else {
+                    artist = artistFromChannel;
+                    title = judulBaris;
+                }
+            } else {
+                if (judulBaris.toLowerCase().includes(artistFromChannel)) {
+                    let artistLower = artistFromChannel;
+                    let titleLower = judulBaris.toLowerCase();
+                    let index = titleLower.lastIndexOf(artistLower);
+                    if (index !== -1) {
+                        title = judulBaris.substring(0, index).trim();
+                        artist = artistFromChannel;
+                    } else {
+                        title = judulBaris;
+                        artist = artistFromChannel;
+                    }
+                } else {
+                    title = judulBaris;
+                    artist = artistFromChannel;
+                }
+            }
+            
+            if (!title || title.trim() === '') {
+                title = judulBaris;
+            }
+            
+            return {
+                number: channelJudulMatch[1],
+                title: title,
+                artist: artist,
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT KHUSUS: nomor. 🇺🇸Ch : artis (baris1)
+        //                [emoji]Judul : judul (baris2)
+        //                artis (baris3)
+        // ==========================================
+        let chJudulMatch = baris1.match(/^(\d+)\.\s*[🇺🇸🇺🇲]*\s*Ch\s*:\s*(.*)$/i);
+        if (chJudulMatch && baris2.toLowerCase().includes('judul') && baris3 && baris3.trim() !== "") {
+            let judulBaris = baris2.replace(/^[^\w\s]*\s*Judul\s*:\s*/i, '').trim();
+            let artist = baris3.trim();
+            
+            return {
+                number: chJudulMatch[1],
+                title: judulBaris,
+                artist: artist,
+                lineCount: 3
+            };
+        }
+
+        // ==========================================
+        // FORMAT KHUSUS: nomor *Judul* : judul artis (baris1)
+        //                *Channel* : artis (baris2)
+        // ==========================================
+        let judulChannelStarMatch = baris1.match(/^(\d+)\s*\*Judul\*\s*:\s*(.*)$/i);
+        if (judulChannelStarMatch && baris2.toLowerCase().includes('*channel*')) {
+            let fullText = judulChannelStarMatch[2].trim();
+            let artistFromChannel = baris2.replace(/\*Channel\*\s*:\s*/i, '').trim();
+            
+            let title = fullText;
+            let artist = artistFromChannel;
+            
+            if (artist && title.toLowerCase().endsWith(artist.toLowerCase())) {
+                title = title.substring(0, title.length - artist.length).trim();
+            } else if (artist && title.toLowerCase().endsWith(' ' + artist.toLowerCase())) {
+                title = title.substring(0, title.length - artist.length - 1).trim();
+            }
+            
+            if (artist && title.toLowerCase().includes(artist.toLowerCase())) {
+                let artistLower = artist.toLowerCase();
+                let titleLower = title.toLowerCase();
+                let index = titleLower.lastIndexOf(artistLower);
+                if (index !== -1) {
+                    title = title.substring(0, index).trim();
+                }
+            }
+            
+            if (!title.trim()) {
+                title = fullText;
+            }
+            
+            return {
+                number: judulChannelStarMatch[1],
+                title: title,
+                artist: artist,
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT KHUSUS: nomor🇺🇸Ch : artis (baris1)
+        //                Judul : judul (baris2)
+        //                artis (baris3)
+        // ==========================================
+        let chJudulArtisMatch = baris1.match(/^(\d+)\s*[🇺🇸🇺🇲]*\s*Ch\s*:\s*(.*)$/i);
+        if (chJudulArtisMatch && baris2.toLowerCase().includes('judul') && baris3 && baris3.trim() !== "") {
+            let judulBaris = baris2.replace(/Judul\s*:\s*/i, '').trim();
+            let artist = baris3.trim();
+            
+            return {
+                number: chJudulArtisMatch[1],
+                title: judulBaris,
+                artist: artist,
+                lineCount: 3
+            };
+        }
+
+        // ==========================================
+        // FORMAT KHUSUS: nomor Judul: judul (baris1) + artis (baris2)
+        // ==========================================
+        let judulTanpaTitik = baris1.match(/^(\d+)\s+Judul\s*:\s*(.*)$/i);
+        if (judulTanpaTitik && baris2 && !baris2.match(/^\d+\./) && !baris2.toLowerCase().includes('channel') && !baris2.toLowerCase().includes('ch:')) {
+            return {
+                number: judulTanpaTitik[1],
+                title: judulTanpaTitik[2].trim(),
+                artist: baris2.trim(),
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 1: nomor. JUDUL : judul (baris1) + artis (baris2)
+        // ==========================================
+        let judulArtisBaru = baris1.match(/^(\d+)\.\s*JUDUL\s*:\s*(.*)$/i);
+        if (judulArtisBaru && baris2 && !baris2.match(/^\d+\./) && !baris2.toLowerCase().includes('channel') && !baris2.toLowerCase().includes('ch:')) {
+            let title = judulArtisBaru[2].trim();
+            let artist = baris2.trim();
+            
+            let lastDashIndex = title.lastIndexOf(' - ');
+            if (lastDashIndex !== -1) {
+                let judul = title.substring(0, lastDashIndex).trim();
+                let artis = title.substring(lastDashIndex + 3).trim();
+                return {
+                    number: judulArtisBaru[1],
+                    title: judul,
+                    artist: artis,
+                    lineCount: 1
+                };
+            }
+            
+            return {
+                number: judulArtisBaru[1],
+                title: title,
+                artist: artist,
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 2: nomor. Judul : judul (baris1) + CH: artis (baris2)
+        // ==========================================
+        let usJudulChannel = baris1.match(/^(\d+)\.\s*Judul\s*:\s*(.*)$/i);
+        if (usJudulChannel && baris2.toLowerCase().includes('ch:')) {
+            let title = usJudulChannel[2].trim();
+            let artist = baris2.replace(/^CH\s*:\s*/i, '').trim();
+            
+            return {
+                number: usJudulChannel[1],
+                title: title,
+                artist: artist,
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 3: nomor.Judul: judul artis + Channel
+        // ==========================================
+        let judulChannelBaru = baris1.match(/^(\d+)\.\s*Judul\s*:\s*(.*)$/i);
+        if (judulChannelBaru && baris2.toLowerCase().includes('channel')) {
+            let fullText = judulChannelBaru[2].trim();
+            
+            let words = fullText.split(' ');
+            let title, artist;
+            
+            if (words.length > 1) {
+                artist = words[words.length - 1];
+                title = words.slice(0, -1).join(' ');
+            } else {
+                title = fullText;
+                artist = null;
+            }
+            
+            return {
+                number: judulChannelBaru[1],
+                title: title,
+                artist: artist,
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 4: nomor. JUDUL: judul - artis + CHANNEL
+        // ==========================================
+        let judulChannelNewMatch = baris1.match(/^(\d+)\.\s*JUDUL:\s*(.*)$/i);
+        if (judulChannelNewMatch && baris2.toLowerCase().includes('channel')) {
+            let judulArtis = judulChannelNewMatch[2].trim();
+            let artistMatch = judulArtis.match(/^(.*?)\s*-\s*(.*)$/);
+            let title, artist;
+            
+            if (artistMatch) {
+                title = artistMatch[1].trim();
+                artist = artistMatch[2].trim();
+            } else {
+                title = judulArtis;
+                artist = null;
+            }
+            
+            return {
+                number: judulChannelNewMatch[1],
+                title: title,
+                artist: artist,
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 5: nomor. Judul : teks + baris2 artis (tanpa CH:)
+        // ==========================================
+        let matchUsJudul = baris1.match(/^(\d+)\.\s*Judul\s*:\s*(.*)$/i);
+        if (matchUsJudul && baris2 && !baris2.match(/^\d+\./) && !baris2.toLowerCase().includes('channel') && !baris2.toLowerCase().includes('ch:')) {
+            return {
+                number: matchUsJudul[1],
+                title: matchUsJudul[2].trim(),
+                artist: baris2.trim(),
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 6: nomor. JUDUL: teks - artis + CHANNEL
+        // ==========================================
+        let matchJudul = baris1.match(/^(\d+)\.\s*JUDUL:\s*(.*)$/i);
+        if (matchJudul && baris2.toLowerCase().includes('channel')) {
+            let judulArtis = matchJudul[2].trim();
+            let artistMatch = judulArtis.match(/^(.*?)\s*-\s*(.*)$/);
+            let title, artist;
+            
+            if (artistMatch) {
+                title = artistMatch[1].trim();
+                artist = artistMatch[2].trim();
+            } else {
+                title = judulArtis;
+                artist = null;
+            }
+            
+            return {
+                number: matchJudul[1],
+                title: title,
+                artist: artist,
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 7: nomor Judul : teks + Channel
+        // ==========================================
+        let judulChannelMatch = baris1.match(/^(\d+)\s+Judul\s*:\s*(.*)$/i);
+        if (judulChannelMatch && baris2.toLowerCase().includes('channel')) {
+            return {
+                number: judulChannelMatch[1],
+                title: judulChannelMatch[2].trim(),
+                artist: null,
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 8: nomor diikuti emoji + judul, artis di baris 2
+        // ==========================================
+        let matchAngkaEmoji = baris1.match(/^(\d+)\s*[^\w\s]+\s+(.*)$/);
+        if (matchAngkaEmoji && baris2 && !baris2.match(/^\d+\./) && !baris2.toLowerCase().includes('channel') && !baris2.toLowerCase().includes('ch:')) {
+            return {
+                number: matchAngkaEmoji[1],
+                title: matchAngkaEmoji[2].trim(),
+                artist: baris2.trim(),
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 9: nomor. Ch : ... + Judul : ...
+        // ==========================================
+        let matchBaris1 = baris1.match(/^(\d+)\./);
+        if (matchBaris1 && baris2.includes('Judul')) {
+            let judulArtis = baris2.replace(/🔥?Judul\s*:\s*/i, '').trim();
+            let artis = null;
+            let judul = judulArtis;
+            
+            let words = judulArtis.split(' ');
+            if (words.length > 1) {
+                let lastWord = words[words.length - 1];
+                let secondLast = words[words.length - 2] || '';
+                if (lastWord.match(/^[A-Z][a-z]+/) && !secondLast.match(/^(the|and|of|in|to|for|with|on|at|by|is|are)$/i)) {
+                    artis = lastWord;
+                    judul = words.slice(0, -1).join(' ');
+                }
+            }
+            
+            return {
+                number: matchBaris1[1],
+                title: judul,
+                artist: artis,
+                lineCount: 2
+            };
+        }
+
+        // ==========================================
+        // FORMAT 10: nomor.judul + artis (baris terpisah)
+        // ==========================================
+        let matchBaris1Lama = baris1.match(/^(\d+)\.(.*)/);
+        if (matchBaris1Lama && baris2 && !baris2.includes('CHANNEL') && !baris2.includes('JUDUL') && !baris2.includes('Judul') && !baris2.toLowerCase().includes('ch:')) {
+            if (!baris2.match(/^\d+\./)) {
+                return {
+                    number: matchBaris1Lama[1],
+                    title: matchBaris1Lama[2].trim(),
+                    artist: baris2.trim(),
+                    lineCount: 2
+                };
+            }
+        }
+
+        // ==========================================
+        // FORMAT 11: CHANNEL + JUDUL + artis (3 baris)
+        // ==========================================
+        if (baris1.includes('CHANNEL') && baris2.includes('JUDUL')) {
+            let nomor = baris1.match(/^(\d+)\./);
+            let judul = baris2.replace(/JUDUL\s*[⭐*]?\s*/, '').trim();
+            let artis = baris3.trim();
+            
+            return {
+                number: nomor ? nomor[1] : null,
+                title: judul,
+                artist: artis,
+                lineCount: 3
+            };
+        }
+        
+        return null;
+    }
+        // ============================================================
+        // ⚠️ DI BAWAH INI JANGAN DIUBAH
+        // ============================================================
+        
+        const inputEl = document.getElementById('input');
+        const outputEl = document.getElementById('output');
+        const autoGenToggle = document.getElementById('autoGenerate');
+        const compactToggle = document.getElementById('compactMode');
+        const charCountSpan = document.getElementById('charCount');
+        const lineCountSpan = document.getElementById('lineCount');
+        const linkCountSpan = document.getElementById('linkCount');
+        const openLinksBtn = document.getElementById('openLinksBtn');
+        const openBtnCountSpan = document.getElementById('openBtnCount');
+        const generateBtn = document.getElementById('generateBtn');
+
+
+        // ==========================================
+        // UPDATE STATUS
+        // ==========================================
+        function updateStats() {
+            const text = inputEl.value;
+            const linesRaw = text.split('\n');
+            const nonEmptyLines = linesRaw.filter(l => l.trim().length > 0).length;
+            const totalChars = text.length;
+            
+            // Update stat bubbles
+            charCountSpan.innerText = totalChars;
+            lineCountSpan.innerText = nonEmptyLines;
+            
+            // Update stat di bawah textarea (inputLines & inputChars)
+            const inputLinesSpan = document.getElementById('inputLines');
+            const inputCharsSpan = document.getElementById('inputChars');
+            if (inputLinesSpan) inputLinesSpan.innerText = nonEmptyLines;
+            if (inputCharsSpan) inputCharsSpan.innerText = totalChars;
+            
+            // Tombol generate mati jika input kosong
+            if (generateBtn) generateBtn.disabled = text.length === 0;
+            
+            if (autoGenToggle.checked && text.length > 0) {
+                generate();
+            } else if (text.length === 0) {
+                outputEl.value = '';
+                linkCountSpan.innerText = '0';
+                if (openBtnCountSpan) openBtnCountSpan.innerText = '0';
+                if (openLinksBtn) openLinksBtn.disabled = true;
+            }
+        }
+
+        function clearInput() { 
+            inputEl.value = ''; 
+            outputEl.value = '';  // ← output ikut clear
+            linkCountSpan.innerText = '0';
+            if (openBtnCountSpan) openBtnCountSpan.innerText = '0';
+            if (openLinksBtn) openLinksBtn.disabled = true;
+            updateStats(); 
+        }
+
+        // ==========================================
+        // GENERATE
+        // ==========================================
+        function generate() {
+            const lines = inputEl.value.split(/\r?\n/);
+            const results = [];
+            let i = 0;
+            
+            while (i < lines.length) {
+                let line = lines[i];
+                
+                let cleanedLine = line.replace(/[\u200B-\u200D\uFEFF]/g, '').replace(/‎/g, '').trim();
+                if (cleanedLine === "") {
+                    i++;
+                    continue;
+                }
+                
+                let multi = parseMultiLine(lines, i);
+                if (multi) {
+                    let searchQuery = multi.artist ? `${multi.title} ${multi.artist}` : multi.title;
+                    // BERSIHKAN EMOJI DARI SEARCH QUERY
+                    searchQuery = searchQuery.replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '').trim();
+                    let query = encodeURIComponent(searchQuery.toLowerCase()).replace(/%20/g, "+");
+                    let url = `https://www.youtube.com/results?search_query=${query}`;
+                    
+                    // Judul dan artis dibersihkan dari emoji
+                    let cleanTitle = multi.title.replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '').trim();
+                    let cleanArtist = (multi.artist || '').replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '').trim();
+                    let titleLine = multi.number ? `${multi.number}. ${cleanTitle} ${cleanArtist}`.trim() : `${cleanTitle} ${cleanArtist}`.trim();
+                    
+                    results.push(`${titleLine}\n${url}`);
+                    i += multi.lineCount;
+                    continue;
+                }
+                
+                let parsed = parseLine(line);
+                if (parsed && parsed.title) {
+                    let searchQuery = parsed.queryOnlyTitle ? parsed.title : (parsed.artist ? `${parsed.title} ${parsed.artist}` : parsed.title);
+                    // BERSIHKAN EMOJI DARI SEARCH QUERY
+                    searchQuery = searchQuery.replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '').trim();
+                    let query = encodeURIComponent(searchQuery.toLowerCase()).replace(/%20/g, "+");
+                    let url = `https://www.youtube.com/results?search_query=${query}`;
+                    
+                    let titleLine;
+                    if (parsed.displayTemplate) {
+                        // Bersihkan displayTemplate dari emoji
+                        titleLine = parsed.displayTemplate.replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '').trim();
+                    } else if (parsed.number) {
+                        let cleanTitle = parsed.title.replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '').trim();
+                        let cleanArtist = (parsed.artist || '').replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '').trim();
+                        titleLine = parsed.artist ? `${parsed.number}. ${cleanTitle}\n${cleanArtist}` : `${parsed.number}. ${cleanTitle}`;
+                    } else {
+                        let cleanTitle = parsed.title.replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '').trim();
+                        let cleanArtist = (parsed.artist || '').replace(/[🇺🇸🇺🇲🇬🇧🇮🇩]/g, '').trim();
+                        titleLine = parsed.artist ? `${cleanTitle}\n${cleanArtist}` : cleanTitle;
+                    }
+                    
+                    if (compactToggle.checked) {
+                        results.push(url);
+                    } else {
+                        results.push(`${titleLine}\n${url}`);
+                    }
+                }
+                i++;
+            }
+            
+            // Semua output jadi lowercase
+            let finalOutput = results.join("\n\n").toLowerCase();
+            outputEl.value = finalOutput;
+            linkCountSpan.innerText = results.length;
+            
+            const totalLinks = results.length;
+            linkCountSpan.innerText = totalLinks;
+            if (openBtnCountSpan) openBtnCountSpan.innerText = totalLinks;
+            if (openLinksBtn) {
+                openLinksBtn.disabled = totalLinks === 0;
+                openLinksBtn.innerHTML = `<i class="fas fa-external-link-alt"></i> Buka (${totalLinks})`;
+            }
+        }
+
+        // ============================
+        function showToast(message, type = "success") {
+            const toast = document.getElementById("toast");
+
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+
+            clearTimeout(toast.timer);
+            toast.timer = setTimeout(() => {
+                toast.classList.remove("show");
+            }, 2200);
+        }
+
+        async function copyResult() {
+            if (!outputEl.value) {
+                showToast("⚠️ Tidak ada data", "warning");
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(outputEl.value);
+                showToast("✅ Berhasil disalin ke clipboard", "success");
+            } catch {
+                showToast("❌ Gagal menyalin", "error");
+            }
+        }
+
+        function exportTxt() {
+            if (!outputEl.value) return alert('Tidak ada data');
+            let blob = new Blob([outputEl.value], {type: 'text/plain'});
+            let a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `youtube_links_${Date.now()}.txt`;
+            a.click();
+        }
+
+        function clearInput() { 
+            inputEl.value = ''; 
+            updateStats(); 
+        }
+        
+        function clearOutput() {
+            outputEl.value = '';
+            linkCountSpan.innerText = '0';
+            if (openBtnCountSpan) openBtnCountSpan.innerText = '0';
+            if (openLinksBtn) openLinksBtn.disabled = true;
+        }
+        
+        function openAllLinks() {
+            const outputText = outputEl.value;
+            const linkRegex = /https:\/\/www\.youtube\.com\/results\?search_query=[^\s]+/g;
+            const matches = outputText.match(linkRegex);
+            if (matches && matches.length) {
+                const toOpen = matches.slice(0, 12);
+                alert(`Membuka ${toOpen.length} link... (browser mungkin memblokir popup)`);
+                toOpen.forEach(link => window.open(link, '_blank'));
+            } else {
+                alert('Tidak ada link YouTube yang valid');
+            }
+        }
+        
+        function loadSample() {
+            inputEl.value = `1. 🇺🇲 Judul: binary signal vrelex colix
+
+2. 🇺🇲 Judul: digital pulse urelex dexil
+
+3. 🇺🇲 Judul: void control nexar vellon`;
+            updateStats();
+        }
+        
+        inputEl.addEventListener('input', updateStats);
+        autoGenToggle.addEventListener('change', () => generate());
+        compactToggle.addEventListener('change', () => generate());
+
+        // ==========================================
+        // SHORTCUT Ctrl + Enter
+        // ==========================================
+        inputEl.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                generate();
+            }
+        });    
+        
+        window.generate = generate;
+        window.copyResult = copyResult;
+        window.exportTxt = exportTxt;
+        window.clearInput = clearInput;
+        window.clearOutput = clearOutput;
+        window.openAllLinks = openAllLinks;
+        window.loadSample = loadSample;
+        
+        updateStats();
+    })
+
+    ();
+</script>
+</body>
+</html>

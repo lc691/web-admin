@@ -1,0 +1,148 @@
+<!-- ============================================================ -->
+<!-- BASE LAYOUT - DramaStream Admin Dashboard                     -->
+<!-- ============================================================ -->
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <!-- ========================================================== -->
+    <!-- META & TITLE                                               -->
+    <!-- ========================================================== -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Admin Dashboard - DramaStream">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>{% block title %}Dashboard{% endblock %} - DramaStream Admin</title>
+
+    <!-- ========================================================== -->
+    <!-- FAVICON                                                    -->
+    <!-- ========================================================== -->
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+
+    <!-- ========================================================== -->
+    <!-- FONTS & ICONS                                              -->
+    <!-- ========================================================== -->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- ========================================================== -->
+    <!-- CORE STYLES                                                -->
+    <!-- ========================================================== -->
+    <!-- SB Admin 2 -->
+    <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+    
+    <!-- Custom Global Styles -->
+    <link href="/static/css/base.css" rel="stylesheet">
+    <link href="/static/css/components.css" rel="stylesheet">
+    <link href="/static/css/layout.css" rel="stylesheet">
+    <link href="/static/css/sidebar.css" rel="stylesheet">
+    <link href="/static/css/footer.css" rel="stylesheet">
+    
+    <!-- Theme & Dashboard -->
+    <link href="/static/css/dark-mode.css" rel="stylesheet">
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+
+    <!-- ========================================================== -->
+    <!-- THIRD-PARTY LIBRARIES                                      -->
+    <!-- ========================================================== -->
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- DataTables -->
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- ========================================================== -->
+    <!-- EXTRA STYLES (PER PAGE)                                    -->
+    <!-- ========================================================== -->
+    {% block extra_styles %}{% endblock %}
+</head>
+
+<!-- ============================================================ -->
+<!-- BODY                                                          -->
+<!-- ============================================================ -->
+<body id="page-top">
+
+    <!-- ========================================================== -->
+    <!-- WRAPPER                                                    -->
+    <!-- ========================================================== -->
+    <div id="wrapper">
+
+        <!-- ====================================================== -->
+        <!-- SIDEBAR                                                -->
+        <!-- ====================================================== -->
+        {% include "partials/sidebar.html" %}
+
+        <!-- ====================================================== -->
+        <!-- CONTENT WRAPPER                                        -->
+        <!-- ====================================================== -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- ================================================== -->
+            <!-- MAIN CONTENT                                        -->
+            <!-- ================================================== -->
+            <div id="content">
+
+                <!-- Navbar -->
+                {% include "partials/navbar.html" %}
+
+                <!-- Page Content -->
+                <div class="container-fluid">
+                    {% block content %}{% endblock %}
+                </div>
+                <!-- END Page Content -->
+
+            </div>
+            <!-- END Main Content -->
+
+            <!-- ================================================== -->
+            <!-- FOOTER                                              -->
+            <!-- ================================================== -->
+            {% include "partials/footer.html" %}
+
+        </div>
+        <!-- END Content Wrapper -->
+
+    </div>
+    <!-- END Wrapper -->
+
+    <!-- ========================================================== -->
+    <!-- SCROLL TO TOP                                              -->
+    <!-- ========================================================== -->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- ========================================================== -->
+    <!-- CORE SCRIPTS                                               -->
+    <!-- ========================================================== -->
+    <!-- jQuery & Bootstrap -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/static/js/sb-admin-2.min.js"></script>
+
+    <!-- DataTables -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- ========================================================== -->
+    <!-- CUSTOM SCRIPTS                                             -->
+    <!-- ========================================================== -->
+    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/charts.js"></script>
+
+    <!-- ========================================================== -->
+    <!-- EXTRA SCRIPTS (PER PAGE)                                   -->
+    <!-- ========================================================== -->
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

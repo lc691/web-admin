@@ -1,0 +1,36 @@
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">
+                Portal Joki
+            </div>
+
+            <h2 class="page-title">
+                Laporan
+            </h2>
+        </div>
+
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary btn-sm"
+                    onclick="window.print()"
+                >
+                    <i class="ti ti-printer me-1"></i>
+                    Print
+                </button>
+
+                <a
+                    href="{{ url_for('portal_joki_admin_laporan_export') }}?start_date={{ start_date_default }}&end_date={{ end_date_default }}"
+                    class="btn btn-primary btn-sm"
+                >
+                    <i class="ti ti-download me-1"></i>
+                    Export
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>

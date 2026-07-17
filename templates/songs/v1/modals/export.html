@@ -1,0 +1,196 @@
+<!-- ==========================================================
+     EXPORT SONGS MODAL
+=========================================================== -->
+
+<div
+    class="modal modal-blur fade"
+    id="export-modal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <form
+                id="export-form"
+                method="post"
+                action="/songs/export-txt"
+            >
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Export Songs
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <input
+                        type="hidden"
+                        id="export-song-ids"
+                        name="ids"
+                    >
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Target Songs
+                            </label>
+
+                            <input
+                                type="number"
+                                id="target-count"
+                                name="target_count"
+                                class="form-control"
+                                min="1"
+                                value="70"
+                            >
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Duplicate Count
+                            </label>
+
+                            <input
+                                type="number"
+                                id="duplicate-count"
+                                name="duplicate_count"
+                                class="form-control"
+                                min="1"
+                                value="2"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Max Songs / Channel
+                            </label>
+
+                            <input
+                                type="number"
+                                id="max-song-channel"
+                                name="max_song_per_channel"
+                                class="form-control"
+                                min="1"
+                                value="5"
+                            >
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Exclude Mode
+                            </label>
+
+                            <select
+                                id="exclude-mode"
+                                name="exclude_mode"
+                                class="form-select"
+                            >
+                                <option value="none">
+                                    None
+                                </option>
+
+                                <option value="blacklist">
+                                    Blacklist
+                                </option>
+
+                                <option value="custom">
+                                    Custom
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Excluded Channels
+                        </label>
+
+                        <select
+                            id="excluded-channels"
+                            name="excluded_channels"
+                            class="form-select"
+                            multiple
+                        >
+
+                            {% for channel in channels %}
+
+                            <option value="{{ channel.id }}">
+                                {{ channel.name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <hr>
+
+                    <div id="export-preview">
+
+                        <div class="text-secondary">
+
+                            Click
+                            <strong>Preview</strong>
+                            to estimate export result.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        id="btn-preview"
+                        class="btn btn-outline-primary"
+                    >
+                        Preview
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-success"
+                    >
+                        Export TXT
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,322 +1,519 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-<style>
-    .page-wrapper {
-        padding: 25px;
-    }
+<div class="container-fluid px-4">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-tv me-2 text-primary"></i>
+                Shows Management
+            </h1>
+            <small class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Kelola daftar shows / series
+            </small>
+        </div>
 
-    .lux-card {
-        background: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        overflow: hidden;
-    }
-
-    .table thead th {
-        background: #f8fafc;
-        font-weight: 600;
-        font-size: 14px;
-        border-bottom: 1px solid #e5e7eb;
-    }
-
-    .table td {
-        vertical-align: middle;
-    }
-
-    .thumb-box {
-        width: 120px;
-        aspect-ratio: 16/9;
-        border-radius: 10px;
-        overflow: hidden;
-        background: #f1f5f9;
-    }
-
-    .thumb-box img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .badge-adult {
-        background: #fee2e2;
-        color: #b91c1c;
-        font-weight: 500;
-        padding: 6px 10px;
-        border-radius: 999px;
-    }
-
-    .badge-general {
-        background: #dcfce7;
-        color: #166534;
-        font-weight: 500;
-        padding: 6px 10px;
-        border-radius: 999px;
-    }
-
-    .btn-add,
-    .btn-bulk {
-        border: none;
-        padding: 8px 18px;
-        border-radius: 12px;
-        font-weight: 500;
-        transition: 0.25s ease;
-        cursor: pointer;
-    }
-
-    .btn-add {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        color: white;
-        box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
-    }
-
-    .btn-bulk {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
-        color: white;
-        box-shadow: 0 6px 14px rgba(245, 158, 11, 0.25);
-    }
-
-    .btn-add:hover,
-    .btn-bulk:hover:not(:disabled),
-    .btn-icon:hover {
-        transform: translateY(-2px);
-    }
-
-    .btn-bulk:disabled {
-        opacity: 0.45;
-        cursor: not-allowed;
-        box-shadow: none;
-    }
-
-    .btn-icon {
-        border: none;
-        padding: 6px 10px;
-        border-radius: 10px;
-        transition: 0.2s ease;
-    }
-
-    .btn-edit {
-        background: #fef3c7;
-        color: #92400e;
-    }
-
-    .btn-delete {
-        background: #fee2e2;
-        color: #b91c1c;
-    }
-    .badge-draft {
-    background: #e5e7eb;
-    color: #6b7280;
-    font-weight: 500;
-    }
-
-    .badge-scheduled {
-        background: #fde68a;
-        color: #92400e;
-        font-weight: 500;
-    }
-
-    .badge-released {
-        background: #10b981;
-        color: white;
-        font-weight: 500;
-    }
-</style>
-
-<div class="page-wrapper">
-
-    <h4 class="fw-semibold mb-3">Daftar Show</h4>
-
-    <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
-
-        <a href="/shows/add" class="btn-add">
-            <i class="fas fa-plus me-1"></i> Tambah Show
-        </a>
-
-        <form id="bulkEditShowForm" method="get" action="/shows/bulk-edit" class="m-0 d-inline">
-            <input type="hidden" name="ids" id="bulkEditShowIds">
-
-            <button id="bulkEditShowBtn" type="submit" class="btn-bulk" disabled>
-                ✏ Edit Terpilih
+        <div class="d-flex gap-2">
+            <a href="/shows/add" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i>
+                Tambah Show
+            </a>
+            <button class="btn btn-info" id="btnImport">
+                <i class="fas fa-file-import me-1"></i>
+                Import
             </button>
-        </form>
-
-    </div>
-
-    <div class="lux-card">
-        <div class="card-body p-4">
-
-            <div class="table-responsive">
-                <table id="showsTable" class="table align-middle table-hover">
-                    <thead>
-                        <tr>
-                            <th style="width:40px;">
-                                <input type="checkbox" id="checkAll">
-                            </th>
-                            <th>ID</th>
-                            <th>Thumbnail</th>
-                            <th>Judul</th>
-                            <th>Genre</th>
-                            <th>Source</th>
-                            <th>Status</th>
-                            <th>Dewasa</th>
-                            <th class="text-center">Aksi</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {% for show in shows %}
-                        <tr>
-                            <td class="text-center">
-                                <input type="checkbox"
-                                       class="row-check"
-                                       value="{{ show.id }}">
-                            </td>
-
-                            <td class="fw-semibold">{{ show.id }}</td>
-
-                            <td>
-                                <div class="thumb-box">
-                                    <img
-                                        src="{{ show.thumbnail_url or url_for('static', path='images/default-thumb.png') }}"
-                                        alt="Thumbnail {{ show.title | e }}"
-                                        loading="lazy"
-                                        onerror="this.onerror=null;this.src='{{ url_for('static', path='images/default-thumb.png') }}';">
-                                </div>
-                            </td>
-
-                            <td>{{ show.title | e }}</td>
-                            <td>{{ show.genre or '-' }}</td>
-                            <td>{{ show.source_label or '-' }}</td>
-
-                            <td class="text-center">
-                                {% if show.release_status == 'released' %}
-                                    <span class="badge badge-released rounded-pill px-3">Rilis</span>
-
-                                {% elif show.release_status == 'scheduled' %}
-                                    <span class="badge badge-scheduled rounded-pill px-3">Scheduled</span>
-
-                                {% else %}
-                                    <span class="badge badge-draft rounded-pill px-3">Draft</span>
-                                {% endif %}
-                            </td>
-                                                        
-                            <td>
-                                {% if show.is_adult %}
-                                    <span class="badge-adult">18+</span>
-                                {% else %}
-                                    <span class="badge-general">Umum</span>
-                                {% endif %}
-                            </td>
-
-                            <td class="text-center">
-
-                                <a href="/shows/edit/{{ show.id }}"
-                                   class="btn-icon btn-edit me-1"
-                                   title="Edit">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
-
-                                <form action="/shows/delete/{{ show.id }}"
-                                      method="post"
-                                      class="d-inline delete-form"
-                                      onsubmit="return confirm('Yakin ingin menghapus show ini?');">
-
-                                    {# Tambahkan CSRF token jika framework mendukung #}
-                                    {# <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> #}
-
-                                    <button type="submit"
-                                            class="btn-icon btn-delete"
-                                            title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-
-                            </td>
-                        </tr>
-
-                        {% else %}
-                        <tr>
-                            <td colspan="9" class="text-center text-muted">
-                                Tidak ada data
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-
-                </table>
-            </div>
-
         </div>
     </div>
 
+    <!-- ========================================================== -->
+    <!-- STATISTICS CARDS                                            -->
+    <!-- ========================================================== -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-primary text-uppercase">Total Shows</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ shows|length }}</div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-tv fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-success text-uppercase">Released</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ shows|selectattr('release_status', 'equalto', 'released')|list|length }}
+                            </div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-warning shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-warning text-uppercase">Adult</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ shows|selectattr('is_adult', 'equalto', true)|list|length }}
+                            </div>
+                        </div>
+                        <div class="text-warning">
+                            <i class="fas fa-exclamation-triangle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-info shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-info text-uppercase">Draft</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ shows|selectattr('release_status', 'equalto', 'draft')|list|length }}
+                            </div>
+                        </div>
+                        <div class="text-info">
+                            <i class="fas fa-pencil-alt fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- SEARCH BAR                                                 -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body py-3">
+            <form method="get" action="/shows" class="d-flex gap-2">
+                <div class="flex-grow-1">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" 
+                               name="search" 
+                               class="form-control border-start-0" 
+                               placeholder="Cari show berdasarkan judul atau genre..."
+                               value="{{ search or '' }}">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search me-1"></i>
+                            Cari
+                        </button>
+                        {% if search %}
+                        <a href="/shows" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- TABLE                                                      -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-list me-2"></i>
+                    Daftar Shows
+                    {% if search %}
+                    <span class="badge bg-primary text-white ms-2">Hasil: "{{ search }}"</span>
+                    {% endif %}
+                </h6>
+                <span class="text-muted small">
+                    Total: <strong>{{ total|default(shows|length) }}</strong> shows
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body table-responsive">
+            {% if shows %}
+            <table class="table table-hover table-striped" id="showsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th><input type="checkbox" id="checkAll" class="form-check-input"></th>
+                        <th>ID</th>
+                        <th>Thumb</th>
+                        <th>Title</th>
+                        <th>Genre</th>
+                        <th>Source</th>
+                        <th class="text-center">Adult</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center" style="width:100px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for show in shows %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="form-check-input row-checkbox" value="{{ show.id }}">
+                        </td>
+                        <td class="fw-bold">{{ show.id }}</td>
+                        <td>
+                            {% if show.thumbnail_url %}
+                            <img src="{{ show.thumbnail_url }}" alt="{{ show.title }}" 
+                                 class="rounded" style="width: 50px; height: 35px; object-fit: cover;"
+                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'bg-light rounded d-flex align-items-center justify-content-center\' style=\'width:50px;height:35px;\'><i class=\'fas fa-image text-muted\'></i></div>'">
+                            {% else %}
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 35px;">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="fw-bold">{{ show.title }}</div>
+                            {% if show.sinopsis %}
+                            <small class="text-muted d-block">{{ show.sinopsis|truncate(60) }}</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if show.genre %}
+                            <span class="badge bg-info text-white">{{ show.genre }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if show.source_label %}
+                            <span class="badge bg-secondary text-white">{{ show.source_label }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if show.is_adult %}
+                            <span class="badge bg-danger text-white">
+                                <i class="fas fa-exclamation-triangle me-1"></i>18+
+                            </span>
+                            {% else %}
+                            <span class="badge bg-success text-white">
+                                <i class="fas fa-check me-1"></i>All
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if show.release_status == 'released' %}
+                            <span class="badge bg-success text-white">
+                                <i class="fas fa-check-circle me-1"></i>Released
+                            </span>
+                            {% elif show.release_status == 'scheduled' %}
+                            <span class="badge bg-warning text-dark">
+                                <i class="fas fa-clock me-1"></i>Scheduled
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">
+                                <i class="fas fa-pencil-alt me-1"></i>Draft
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                <a href="/shows/edit/{{ show.id }}" 
+                                   class="btn btn-outline-primary btn-sm" 
+                                   title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button class="btn btn-outline-danger btn-sm delete-show" 
+                                        data-id="{{ show.id }}" 
+                                        data-title="{{ show.title }}"
+                                        title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <!-- EMPTY STATE -->
+            <div class="text-center py-5">
+                <i class="fas fa-tv fa-4x text-muted d-block mb-3"></i>
+                <h5 class="text-muted">Belum ada show</h5>
+                <p class="text-muted mb-3">Mulai dengan menambahkan show pertama Anda</p>
+                <a href="/shows/add" class="btn btn-success">
+                    <i class="fas fa-plus me-1"></i>
+                    Tambah Show Pertama
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- FOOTER -->
+        {% if shows %}
+        <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <span class="text-muted small">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Menampilkan <strong>{{ shows|length }}</strong> dari <strong>{{ total|default(shows|length) }}</strong> show
+                    {% if search %}
+                    <span class="text-muted small ms-2">
+                        <a href="/shows" class="text-decoration-none">← Reset filter</a>
+                    </span>
+                    {% endif %}
+                </span>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-danger btn-sm" id="btnDeleteSelected" disabled>
+                        <i class="fas fa-trash me-1"></i>
+                        Hapus Terpilih
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" id="btnBulkEdit" disabled>
+                        <i class="fas fa-edit me-1"></i>
+                        Bulk Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- PAGINATION                                                 -->
+    <!-- ========================================================== -->
+    {% if shows and total_pages and total_pages > 1 %}
+    <div class="d-flex justify-content-between align-items-center flex-wrap mt-3">
+        <span class="text-muted small">
+            <i class="fas fa-book me-1"></i>
+            Halaman {{ page }} dari {{ total_pages }}
+        </span>
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ page - 1 }}&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                
+                {% if page > 3 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}">1</a>
+                </li>
+                {% if page > 4 %}
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+                {% endif %}
+                {% endif %}
+                
+                {% set start = [1, page - 2]|max %}
+                {% set end = [total_pages, page + 2]|min %}
+                
+                {% for p in range(start, end + 1) %}
+                    {% if p == page %}
+                    <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ p }}&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}">{{ p }}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page < total_pages - 2 %}
+                    {% if page < total_pages - 3 %}
+                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ total_pages }}&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}">{{ total_pages }}</a>
+                    </li>
+                {% endif %}
+                
+                <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ page + 1 }}&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div>
+            <select class="form-select form-select-sm" id="perPageSelect" style="width:80px;">
+                <option value="10" {% if per_page|default(20) == 10 %}selected{% endif %}>10</option>
+                <option value="20" {% if per_page|default(20) == 20 %}selected{% endif %}>20</option>
+                <option value="50" {% if per_page|default(20) == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if per_page|default(20) == 100 %}selected{% endif %}>100</option>
+            </select>
+        </div>
+    </div>
+    {% endif %}
+
 </div>
+
+<!-- ========================================================== -->
+<!-- STYLES                                                     -->
+<!-- ========================================================== -->
+<style>
+    .border-left-primary { border-left: 4px solid #6366f1; }
+    .border-left-success { border-left: 4px solid #22c55e; }
+    .border-left-warning { border-left: 4px solid #f59e0b; }
+    .border-left-info { border-left: 4px solid #3b82f6; }
+    .opacity-50 { opacity: 0.5; }
+    .table td { vertical-align: middle; }
+    .table tr:hover { cursor: default; }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 1rem; }
+    
+    .input-group .form-control:focus {
+        border-color: #ced4da;
+        box-shadow: none;
+    }
+    .input-group .form-control.border-start-0:focus {
+        border-left-color: #ced4da;
+    }
+</style>
+
 {% endblock %}
 
 {% block scripts %}
-{{ super() }}
-
 <script>
-    const table = $('#showsTable').DataTable({
-        stateSave: true,
-        order: [[1, 'desc']],
-        columnDefs: [
-            { orderable: false, targets: [0, 2, 7] }
-        ]
+$(document).ready(function() {
+    
+    // ==========================================================
+    // CHECK ALL
+    // ==========================================================
+    $('#checkAll').on('change', function() {
+        $('.row-checkbox').prop('checked', $(this).prop('checked'));
+        updateButtons();
     });
-
-    const selectedIds = new Set();
-
-    function updateBulkButton() {
-        const idsArray = Array.from(selectedIds);
-        $('#bulkEditShowIds').val(idsArray.join(','));
-        $('#bulkEditShowBtn').prop('disabled', idsArray.length === 0);
+    
+    $('.row-checkbox').on('change', updateButtons);
+    
+    function updateButtons() {
+        const checked = $('.row-checkbox:checked').length;
+        $('#btnDeleteSelected').prop('disabled', checked === 0);
+        $('#btnBulkEdit').prop('disabled', checked === 0);
     }
-
-    // ROW CHECK
-    $('#showsTable tbody').on('change', '.row-check', function () {
-
-        const id = $(this).val();
-
-        if (this.checked) {
-            selectedIds.add(id);
-        } else {
-            selectedIds.delete(id);
-        }
-
-        updateBulkButton();
-    });
-
-    // CHECK ALL (PAGE AKTIF)
-    $('#checkAll').on('change', function () {
-
-        const rows = table.rows({ page: 'current' }).nodes();
-
-        $('input.row-check', rows).each(function () {
-            this.checked = $('#checkAll').prop('checked');
-
-            const id = $(this).val();
-            if (this.checked) {
-                selectedIds.add(id);
-            } else {
-                selectedIds.delete(id);
+    
+    // ==========================================================
+    // DELETE SELECTED
+    // ==========================================================
+    $('#btnDeleteSelected').on('click', function() {
+        const ids = $('.row-checkbox:checked').map(function() { return $(this).val(); }).get();
+        if (ids.length === 0) return;
+        
+        Swal.fire({
+            title: 'Hapus Show Terpilih?',
+            text: `${ids.length} show akan dihapus secara permanen.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/shows/bulk-delete';
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ids';
+                input.value = ids.join(',');
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
             }
         });
-
-        updateBulkButton();
     });
-
-    // SAAT TABLE REDRAW (PENTING!)
-    table.on('draw', function () {
-
-        const rows = table.rows({ page: 'current' }).nodes();
-
-        $('input.row-check', rows).each(function () {
-            const id = $(this).val();
-            this.checked = selectedIds.has(id);
+    
+    // ==========================================================
+    // BULK EDIT
+    // ==========================================================
+    $('#btnBulkEdit').on('click', function() {
+        const ids = $('.row-checkbox:checked').map(function() { return $(this).val(); }).get();
+        if (ids.length === 0) return;
+        window.location.href = `/shows/bulk-edit?ids=${ids.join(',')}`;
+    });
+    
+    // ==========================================================
+    // DELETE SINGLE
+    // ==========================================================
+    $('.delete-show').on('click', function() {
+        const id = $(this).data('id');
+        const title = $(this).data('title');
+        
+        Swal.fire({
+            title: 'Hapus Show?',
+            text: `Apakah Anda yakin ingin menghapus "${title}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `/shows/delete/${id}`,
+                    method: 'POST',
+                    success: function() { location.reload(); },
+                    error: function(xhr) {
+                        alert(xhr.responseJSON?.detail || 'Gagal menghapus show');
+                    }
+                });
+            }
         });
-
-        updateBulkButton();
     });
-    </script>
+    
+    // ==========================================================
+    // IMPORT
+    // ==========================================================
+    $('#btnImport').on('click', function() {
+        window.location.href = '/shows/import';
+    });
+    
+    // ==========================================================
+    // SEARCH - Enter key
+    // ==========================================================
+    $('input[name="search"]').on('keypress', function(e) {
+        if (e.which === 13) $(this).closest('form').submit();
+    });
+
+    // ==========================================================
+    // PER PAGE SELECTOR
+    // ==========================================================
+    $('#perPageSelect').on('change', function() {
+        const perPage = $(this).val();
+        const search = '{{ search or "" }}';
+        let url = `?page=1&per_page=${perPage}`;
+        if (search) url += `&search=${encodeURIComponent(search)}`;
+        window.location.href = url;
+    });
+    
+    // ==========================================================
+    // INIT
+    // ==========================================================
+    updateButtons();
+    
+});
+</script>
 {% endblock %}

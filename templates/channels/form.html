@@ -2,7 +2,10 @@
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 text-gray-800 mb-0">Tambah Channel</h1>
+    <h1 class="h3 text-gray-800 mb-0">
+        <i class="fas {{ 'fa-edit' if channel else 'fa-plus-circle' }} mr-2"></i>
+        {{ 'Edit Channel' if channel else 'Tambah Channel' }}
+    </h1>
     <a href="/channels" class="btn btn-secondary btn-sm">
         <i class="fas fa-arrow-left mr-1"></i> Kembali
     </a>
@@ -11,7 +14,10 @@
 <div class="card shadow mb-4">
     <div class="card-body">
 
-        <form method="post" action="/channels/new" novalidate>
+        <form method="post" 
+              action="{{ '/channels/' + channel.id|string + '/edit' if channel else '/channels/new' }}" 
+              id="channelForm"
+              novalidate>
 
             <!-- Nama Channel -->
             <div class="form-group">
@@ -21,41 +27,81 @@
 
                 <input type="text"
                        name="name"
+                       id="name"
                        class="form-control"
-                       placeholder="Contoh: IRX Music"
-                       required>
+                       placeholder="Contoh: IRX Music, Zahira Mein, etc."
+                       value="{{ channel.name if channel else '' }}"
+                       required
+                       maxlength="255">
 
+                <div class="invalid-feedback" id="nameError"></div>
                 <small class="form-text text-muted">
-                    Gunakan nama unik agar tidak duplikat.
+                    Gunakan nama unik agar tidak duplikat. Maksimal 255 karakter.
                 </small>
             </div>
 
             <!-- YouTube URL -->
             <div class="form-group">
-                <label class="font-weight-bold">YouTube URL</label>
+                <label class="font-weight-bold">
+                    <i class="fab fa-youtube text-danger mr-1"></i>
+                    YouTube URL
+                </label>
 
                 <input type="url"
                        name="youtube_url"
+                       id="youtube_url"
                        class="form-control"
-                       placeholder="https://youtube.com/@channelname">
+                       placeholder="https://youtube.com/@channelname atau https://www.youtube.com/channel/..."
+                       value="{{ channel.youtube_url if channel else '' }}">
 
+                <div class="invalid-feedback" id="urlError"></div>
                 <small class="form-text text-muted">
-                    Opsional. Bisa diisi nanti.
+                    Opsional. Bisa diisi nanti. Format: YouTube channel URL
                 </small>
             </div>
 
+            <!-- Preview YouTube Channel (if URL exists) -->
+            <div id="youtubePreview" class="mb-3" style="display: none;">
+                <div class="alert alert-info">
+                    <i class="fab fa-youtube mr-2"></i>
+                    <strong>Preview Channel:</strong>
+                    <a href="#" id="youtubePreviewLink" target="_blank" class="alert-link">
+                        Buka di YouTube
+                    </a>
+                </div>
+            </div>
+
+            <!-- Info Channel (for edit mode) -->
+            {% if channel %}
+            <div class="alert alert-secondary mt-3">
+                <i class="fas fa-info-circle mr-2"></i>
+                <strong>Info Channel:</strong>
+                <ul class="mb-0 mt-2">
+                    <li>ID: {{ channel.id }}</li>
+                    <li>Dibuat: {{ channel.created_at.strftime("%d %b %Y %H:%M") if channel.created_at else '-' }}</li>
+                </ul>
+            </div>
+            {% endif %}
+
             <hr>
 
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="/channels" class="btn btn-light">
+                        <i class="fas fa-times mr-1"></i> Batal
+                    </a>
+                    
+                    {% if channel %}
+                    <button type="button" class="btn btn-outline-danger ml-2" id="testChannelBtn">
+                        <i class="fas fa-vial mr-1"></i> Test Channel
+                    </button>
+                    {% endif %}
+                </div>
 
-                <a href="/channels" class="btn btn-light">
-                    Batal
-                </a>
-
-                <button type="submit" class="btn btn-primary shadow-sm">
-                    <i class="fas fa-save mr-1"></i> Simpan Channel
+                <button type="submit" class="btn btn-primary shadow-sm" id="submitBtn">
+                    <i class="fas fa-save mr-1"></i> 
+                    {{ 'Simpan Perubahan' if channel else 'Simpan Channel' }}
                 </button>
-
             </div>
 
         </form>
@@ -63,21 +109,336 @@
     </div>
 </div>
 
-{% endblock %}
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    Berhasil!
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="successMessage">
+                <!-- Message will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <a href="/channels" class="btn btn-primary">Lihat Daftar Channel</a>
+            </div>
+        </div>
+    </div>
+</div>
 
+{% endblock %}
 
 {% block scripts %}
 <script>
-document.querySelector("form").addEventListener("submit", function(e) {
-
-    const name = document.querySelector("input[name='name']").value.trim();
-
-    if (!name) {
-        e.preventDefault();
-        alert("Nama channel wajib diisi!");
-        return;
+$(function() {
+    const form = $('#channelForm');
+    const submitBtn = $('#submitBtn');
+    const nameInput = $('#name');
+    const urlInput = $('#youtube_url');
+    const nameError = $('#nameError');
+    const urlError = $('#urlError');
+    
+    // YouTube URL preview
+    function updateYoutubePreview() {
+        const url = urlInput.val().trim();
+        if (url && (url.includes('youtube.com') || url.includes('youtu.be'))) {
+            $('#youtubePreviewLink').attr('href', url);
+            $('#youtubePreview').slideDown();
+        } else {
+            $('#youtubePreview').slideUp();
+        }
     }
-
+    
+    // Validate YouTube URL
+    function validateYoutubeUrl(url) {
+        if (!url) return true;
+        
+        const youtubePatterns = [
+            /^(https?:\/\/)?(www\.)?(youtube\.com)\/@[\w-]+/,
+            /^(https?:\/\/)?(www\.)?(youtube\.com)\/channel\/[\w-]+/,
+            /^(https?:\/\/)?(www\.)?(youtube\.com)\/c\/[\w-]+/,
+            /^(https?:\/\/)?(www\.)?(youtu\.be)\/[\w-]+/,
+            /^(https?:\/\/)?(www\.)?(m\.youtube\.com)\/@[\w-]+/
+        ];
+        
+        for (let pattern of youtubePatterns) {
+            if (pattern.test(url)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    // Validate name (real-time)
+    function validateName() {
+        const name = nameInput.val().trim();
+        
+        if (!name) {
+            nameInput.addClass('is-invalid');
+            nameError.text('Nama channel wajib diisi!');
+            return false;
+        }
+        
+        if (name.length < 2) {
+            nameInput.addClass('is-invalid');
+            nameError.text('Nama channel minimal 2 karakter!');
+            return false;
+        }
+        
+        if (name.length > 255) {
+            nameInput.addClass('is-invalid');
+            nameError.text('Nama channel maksimal 255 karakter!');
+            return false;
+        }
+        
+        nameInput.removeClass('is-invalid');
+        nameInput.addClass('is-valid');
+        nameError.text('');
+        return true;
+    }
+    
+    // Validate URL (real-time)
+    function validateUrl() {
+        const url = urlInput.val().trim();
+        
+        if (!url) {
+            urlInput.removeClass('is-invalid');
+            urlInput.removeClass('is-valid');
+            urlError.text('');
+            return true;
+        }
+        
+        if (!validateYoutubeUrl(url)) {
+            urlInput.addClass('is-invalid');
+            urlError.text('Format URL YouTube tidak valid!');
+            return false;
+        }
+        
+        urlInput.removeClass('is-invalid');
+        urlInput.addClass('is-valid');
+        urlError.text('');
+        return true;
+    }
+    
+    // Real-time validation
+    nameInput.on('input', validateName);
+    urlInput.on('input', function() {
+        validateUrl();
+        updateYoutubePreview();
+    });
+    
+    // Form submission
+    form.on('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate all fields
+        const isNameValid = validateName();
+        const isUrlValid = validateUrl();
+        
+        if (!isNameValid || !isUrlValid) {
+            // Scroll to first error
+            if (!isNameValid) {
+                nameInput.focus();
+                $('html, body').animate({ scrollTop: nameInput.offset().top - 100 }, 500);
+            } else if (!isUrlValid) {
+                urlInput.focus();
+                $('html, body').animate({ scrollTop: urlInput.offset().top - 100 }, 500);
+            }
+            return false;
+        }
+        
+        // Show loading state
+        submitBtn.prop('disabled', true);
+        submitBtn.html('<i class="fas fa-spinner fa-spin mr-1"></i> Menyimpan...');
+        
+        // Submit via AJAX
+        $.ajax({
+            url: form.attr('action'),
+            method: form.attr('method'),
+            data: form.serialize(),
+            success: function(response) {
+                // Check if response is a redirect
+                if (response.redirect) {
+                    window.location.href = response.redirect;
+                } else {
+                    // Show success message
+                    const message = '{{ "Channel berhasil diupdate!" if channel else "Channel berhasil ditambahkan!" }}';
+                    $('#successMessage').html(`
+                        <div class="text-center">
+                            <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                            <p>${message}</p>
+                        </div>
+                    `);
+                    $('#successModal').modal('show');
+                    
+                    // Reset form after 2 seconds and redirect
+                    setTimeout(() => {
+                        window.location.href = '/channels';
+                    }, 2000);
+                }
+            },
+            error: function(xhr) {
+                let errorMessage = 'Gagal menyimpan channel!';
+                
+                if (xhr.responseJSON) {
+                    if (xhr.responseJSON.detail) {
+                        errorMessage = xhr.responseJSON.detail;
+                    } else if (xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                } else if (xhr.status === 400) {
+                    errorMessage = xhr.responseText || 'Data tidak valid!';
+                } else if (xhr.status === 409) {
+                    errorMessage = 'Channel dengan nama ini sudah ada!';
+                }
+                
+                // Show error in respective field
+                if (errorMessage.toLowerCase().includes('nama') || errorMessage.toLowerCase().includes('name')) {
+                    nameInput.addClass('is-invalid');
+                    nameError.text(errorMessage);
+                    nameInput.focus();
+                } else {
+                    alert(errorMessage);
+                }
+                
+                // Re-enable submit button
+                submitBtn.prop('disabled', false);
+                submitBtn.html('<i class="fas fa-save mr-1"></i> {{ "Simpan Perubahan" if channel else "Simpan Channel" }}');
+            }
+        });
+    });
+    
+    // Test channel button (for edit mode)
+    $('#testChannelBtn').on('click', function() {
+        const name = nameInput.val().trim();
+        const url = urlInput.val().trim();
+        
+        if (!name) {
+            alert('Isi nama channel terlebih dahulu!');
+            nameInput.focus();
+            return;
+        }
+        
+        let message = `Testing channel: ${name}\n\n`;
+        
+        if (url) {
+            message += `YouTube URL: ${url}\n`;
+            if (validateYoutubeUrl(url)) {
+                message += '✓ URL valid\n';
+                message += `\nKlik OK untuk membuka YouTube channel.`;
+                if (confirm(message)) {
+                    window.open(url, '_blank');
+                }
+            } else {
+                message += '✗ URL tidak valid!';
+                alert(message);
+            }
+        } else {
+            message += 'YouTube URL belum diisi.\n\nApakah ingin menambahkannya?';
+            if (confirm(message)) {
+                urlInput.focus();
+            }
+        }
+    });
+    
+    // Initial validation and preview
+    validateName();
+    validateUrl();
+    updateYoutubePreview();
+    
+    // Auto-focus on name field
+    nameInput.focus();
+    
+    // Prevent double submit on enter key
+    form.on('keypress', function(e) {
+        if (e.which === 13 && !submitBtn.prop('disabled')) {
+            e.preventDefault();
+            form.submit();
+        }
+    });
+    
+    // Character counter for name field
+    const nameCounter = $('<small class="form-text text-muted float-right"></small>');
+    nameInput.after(nameCounter);
+    
+    function updateCharCount() {
+        const length = nameInput.val().length;
+        const remaining = 255 - length;
+        nameCounter.html(`${length}/255 karakter`);
+        
+        if (remaining < 0) {
+            nameCounter.addClass('text-danger');
+        } else if (remaining < 20) {
+            nameCounter.removeClass('text-danger').addClass('text-warning');
+        } else {
+            nameCounter.removeClass('text-danger text-warning');
+        }
+    }
+    
+    nameInput.on('input', updateCharCount);
+    updateCharCount();
 });
 </script>
+
+<style>
+.is-valid {
+    border-color: #28a745;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23dc3545' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.invalid-feedback {
+    display: block;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.btn {
+    border-radius: 5px;
+    padding: 8px 20px;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+@media (max-width: 768px) {
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+</style>
 {% endblock %}

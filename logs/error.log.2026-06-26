@@ -1,0 +1,14 @@
+[2026-06-26 23:12:32] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 86, in get_clean_dict_cursor
+    yield cursor
+  File "/opt/web-admin/app/joki/repositories/master/joki_repo.py", line 50, in get_all
+    cur.execute(sql, params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.SyntaxError: syntax error at or near "ORDER"
+LINE 15:             ORDER BY nama ASC
+                     ^
+

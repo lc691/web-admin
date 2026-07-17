@@ -2,45 +2,137 @@
 {% block content %}
 
 <style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+        --success-gradient: linear-gradient(135deg, #10b981, #059669);
+        --info-gradient: linear-gradient(135deg, #0ea5e9, #0284c7);
+        --gray-bg: #f8fafc;
+        --card-border: rgba(0, 0, 0, 0.05);
+    }
+
     .page-wrapper {
-        background: #f4f6f9;
-        padding: 30px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding: clamp(1rem, 5vw, 2.5rem) clamp(0.75rem, 4vw, 1.875rem);
+        min-height: 100vh;
     }
 
     .lux-card {
-        background: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(0px);
+        border-radius: clamp(1rem, 4vw, 2rem);
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
         overflow: hidden;
-        margin-bottom: 40px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid var(--card-border);
+        margin-bottom: clamp(1rem, 4vw, 2rem);
+    }
+
+    .lux-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.15);
     }
 
     .lux-header {
-        padding: 20px 25px;
-        background: linear-gradient(135deg, #1f2937, #374151);
+        padding: clamp(1.25rem, 4vw, 1.75rem) clamp(1rem, 4vw, 2rem);
+        background: var(--primary-gradient);
         color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .lux-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .lux-header::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .lux-header .title {
+        font-size: clamp(1.25rem, 5vw, 1.75rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.25rem;
+        word-wrap: break-word;
+    }
+
+    .lux-header .subtitle {
+        font-size: clamp(0.75rem, 3vw, 0.875rem);
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
     }
 
     .lux-body {
-        padding: 30px;
+        padding: clamp(1rem, 5vw, 2rem);
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: clamp(0.75rem, 3vw, 0.875rem);
+        flex-wrap: wrap;
+    }
+
+    .form-label i {
+        color: #8b5cf6;
+        font-size: 1rem;
     }
 
     .form-control,
     .form-select {
-        border-radius: 12px;
-        padding: 12px 15px;
-        border: 1px solid #e5e7eb;
+        border-radius: clamp(0.75rem, 3vw, 1rem);
+        padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1rem);
+        border: 1.5px solid #e2e8f0;
+        transition: all 0.2s ease;
+        font-size: clamp(0.875rem, 3vw, 0.9375rem);
+        background: #ffffff;
+        width: 100%;
+    }
+
+    .form-control:hover,
+    .form-select:hover {
+        border-color: #cbd5e1;
     }
 
     .form-control:focus,
     .form-select:focus {
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-        border-color: #3b82f6;
+        outline: none;
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
     }
 
     .thumbnail-preview {
         width: 100%;
-        max-width: 260px;
+        max-width: 280px;
+        margin: 0 auto;
     }
 
     .ratio-box {
@@ -48,9 +140,15 @@
         width: 100%;
         padding-top: 150%;
         overflow: hidden;
-        border-radius: 16px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        background: #f3f4f6;
+        border-radius: clamp(0.75rem, 4vw, 1.25rem);
+        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+        box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    .ratio-box:hover {
+        transform: scale(1.02);
+        box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.2);
     }
 
     .preview-img {
@@ -59,334 +157,1093 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.3s ease;
     }
 
-    .btn-save,
-    .btn-import {
+    .ratio-box:hover .preview-img {
+        transform: scale(1.05);
+    }
+
+    .btn-save, .btn-import, .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.75rem);
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: clamp(0.875rem, 3vw, 0.9375rem);
+        transition: all 0.2s ease;
+        cursor: pointer;
         border: none;
-        padding: 10px 26px;
-        border-radius: 12px;
-        font-weight: 500;
-        color: white;
-        transition: all 0.25s ease;
+        text-decoration: none;
+        white-space: nowrap;
     }
 
     .btn-save {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+        background: var(--success-gradient);
+        color: white;
+        box-shadow: 0 6px 14px rgba(16, 185, 129, 0.3);
     }
 
     .btn-import {
-        background: linear-gradient(135deg, #0ea5e9, #0284c7);
-        box-shadow: 0 6px 16px rgba(14, 165, 233, 0.25);
-    }
-
-    .btn-save:hover,
-    .btn-import:hover {
-        transform: translateY(-2px);
+        background: var(--info-gradient);
+        color: white;
+        box-shadow: 0 6px 14px rgba(14, 165, 233, 0.3);
     }
 
     .btn-cancel {
-        background: #f3f4f6;
-        color: #374151;
-        padding: 10px 22px;
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-        text-decoration: none;
+        background: #f1f5f9;
+        color: #64748b;
+        border: 1.5px solid #e2e8f0;
     }
 
-    @media (max-width:768px) {
+    .btn-save:hover:not(:disabled),
+    .btn-import:hover:not(:disabled) {
+        transform: translateY(-2px);
+        filter: brightness(1.05);
+    }
 
-        .btn-save,
-        .btn-cancel,
-        .btn-import {
-            width: 100%;
+    .btn-save:hover:not(:disabled) {
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-import:hover:not(:disabled) {
+        box-shadow: 0 10px 20px rgba(14, 165, 233, 0.4);
+    }
+
+    .btn-cancel:hover {
+        background: #e2e8f0;
+        color: #475569;
+        transform: translateY(-1px);
+    }
+
+    .btn-save:disabled,
+    .btn-import:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .info-badge {
+        background: #f1f5f9;
+        border-radius: clamp(0.5rem, 3vw, 0.75rem);
+        padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1rem);
+        margin-top: 12px;
+        font-size: clamp(0.75rem, 2.5vw, 0.8125rem);
+        color: #64748b;
+        border-left: 3px solid #8b5cf6;
+        word-wrap: break-word;
+    }
+
+    .alert-custom {
+        border-radius: clamp(0.75rem, 3vw, 1rem);
+        padding: clamp(0.75rem, 3vw, 1rem);
+        margin-bottom: 1.5rem;
+        border: none;
+    }
+
+    /* Source Select Styles */
+    .source-select-container {
+        position: relative;
+        width: 100%;
+    }
+    
+    .source-option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 12px;
+        flex-wrap: wrap;
+    }
+    
+    .source-option-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+    
+    .source-option-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .source-option-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #1f2937;
+        word-break: break-word;
+    }
+    
+    .source-option-desc {
+        font-size: 12px;
+        color: #6b7280;
+        word-break: break-word;
+    }
+    
+    .source-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600;
+        background: #e5e7eb;
+        color: #374151;
+        white-space: nowrap;
+    }
+    
+    .source-badge-telegram {
+        background: #0088cc;
+        color: white;
+    }
+    
+    .source-badge-api {
+        background: #3b82f6;
+        color: white;
+    }
+    
+    .source-badge-general {
+        background: #6b7280;
+        color: white;
+    }
+    
+    .source-info-card {
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        border-radius: clamp(0.75rem, 3vw, 1rem);
+        padding: clamp(0.75rem, 3vw, 1rem);
+        margin-top: 12px;
+        border-left: 4px solid #0ea5e9;
+    }
+    
+    .source-info-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: clamp(0.75rem, 2.5vw, 0.8125rem);
+        color: #0c4a6e;
+        margin-bottom: 6px;
+        flex-wrap: wrap;
+        word-break: break-word;
+    }
+    
+    .source-info-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* Select2 custom styling */
+    .select2-container--default .select2-selection--single {
+        border-radius: clamp(0.75rem, 3vw, 1rem) !important;
+        padding: 0.5rem;
+        border: 1.5px solid #e2e8f0 !important;
+        height: auto !important;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 1.5 !important;
+        padding: 0.25rem 2rem 0.25rem 0.5rem !important;
+        font-size: clamp(0.875rem, 3vw, 0.9375rem);
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        top: 50% !important;
+        transform: translateY(-50%);
+    }
+    
+    .select2-dropdown {
+        border-radius: clamp(0.75rem, 3vw, 1rem) !important;
+        border-color: #e2e8f0 !important;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .select2-search__field {
+        border-radius: 12px !important;
+        padding: 0.5rem !important;
+        border: 1.5px solid #e2e8f0 !important;
+        font-size: clamp(0.875rem, 3vw, 0.9375rem);
+    }
+    
+    .select2-search__field:focus {
+        border-color: #8b5cf6 !important;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+    }
+    
+    .thumbnail-helper {
+        font-size: clamp(0.625rem, 2.5vw, 0.75rem);
+        color: #94a3b8;
+        margin-top: 0.5rem;
+        text-align: center;
+        word-break: break-word;
+    }
+
+    /* Responsive Grid Improvements */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+    
+    .col-md-8, .col-md-4, .col-md-6 {
+        position: relative;
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    
+    /* Responsive Breakpoints */
+    @media (min-width: 768px) {
+        .col-md-8 {
+            flex: 0 0 66.666667%;
+            max-width: 66.666667%;
         }
-
+        
+        .col-md-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
+        
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+    }
+    
+    @media (max-width: 991px) {
+        .btn-save, .btn-cancel, .btn-import {
+            white-space: normal;
+            min-width: 120px;
+        }
+        
         .action-group {
             flex-direction: column;
+            gap: 12px !important;
         }
+        
+        .action-group .btn-save,
+        .action-group .btn-cancel,
+        .action-group .btn-import {
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .col-md-8, .col-md-4, .col-md-6 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .col-md-8:last-child, .col-md-4:last-child, .col-md-6:last-child {
+            margin-bottom: 0;
+        }
+        
+        .sticky-top {
+            position: relative !important;
+            top: 0 !important;
+        }
+        
+        .thumbnail-preview {
+            max-width: 200px;
+        }
+        
+        .source-option {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .source-option-icon {
+            margin: 0 auto;
+        }
+        
+        .source-option-info {
+            text-align: center;
+        }
+        
+        .source-badge {
+            margin-top: 5px;
+        }
+        
+        .d-flex.align-items-center.gap-3 {
+            flex-direction: column !important;
+            text-align: center;
+        }
+        
+        .d-flex.align-items-center.gap-3 > div:first-child {
+            margin: 0 auto;
+        }
+        
+        .gap-3 {
+            gap: 0.75rem !important;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .page-wrapper {
+            padding: 12px 8px;
+        }
+        
+        .lux-header .title {
+            font-size: 1.25rem;
+        }
+        
+        .lux-header .subtitle {
+            font-size: 0.75rem;
+        }
+        
+        .form-label {
+            font-size: 0.8125rem;
+        }
+        
+        .btn-save, .btn-cancel, .btn-import {
+            font-size: 0.8125rem;
+            padding: 10px 16px;
+        }
+        
+        .info-badge {
+            font-size: 0.6875rem;
+        }
+        
+        .thumbnail-preview {
+            max-width: 150px;
+        }
+        
+        .source-option-title {
+            font-size: 12px;
+        }
+        
+        .source-option-desc {
+            font-size: 10px;
+        }
+        
+        .source-info-item {
+            font-size: 0.6875rem;
+        }
+    }
+    
+    /* Touch-friendly improvements for mobile */
+    @media (hover: none) and (pointer: coarse) {
+        .btn-save, .btn-import, .btn-cancel,
+        .form-control, .form-select {
+            min-height: 44px;
+        }
+        
+        .btn-save, .btn-import, .btn-cancel {
+            padding: 12px 20px;
+        }
+        
+        .select2-container--default .select2-selection--single {
+            min-height: 44px;
+        }
+    }
+    
+    /* Print styles */
+    @media print {
+        .page-wrapper {
+            background: white;
+            padding: 0;
+        }
+        
+        .btn-save, .btn-import, .btn-cancel,
+        .info-badge,
+        .sticky-top {
+            display: none;
+        }
+        
+        .lux-card {
+            box-shadow: none;
+            break-inside: avoid;
+        }
+    }
+    
+    /* Grid gap improvements */
+    .g-4 {
+        --bs-gutter-y: 1.5rem;
+        --bs-gutter-x: 1.5rem;
+        margin-top: calc(-1 * var(--bs-gutter-y));
+        margin-right: calc(-0.5 * var(--bs-gutter-x));
+        margin-left: calc(-0.5 * var(--bs-gutter-x));
+    }
+    
+    .g-4 > [class*="col-"] {
+        padding-top: var(--bs-gutter-y);
+        padding-right: calc(0.5 * var(--bs-gutter-x));
+        padding-left: calc(0.5 * var(--bs-gutter-x));
+    }
+    
+    .gap-3 {
+        gap: 1rem !important;
+    }
+    
+    /* Loading states */
+    .spinner-border-sm {
+        width: 1rem;
+        height: 1rem;
+        border-width: 0.2em;
+    }
+    
+    /* Image responsive */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Form group spacing */
+    .mb-4 {
+        margin-bottom: clamp(1rem, 4vw, 1.5rem);
+    }
+    
+    .mt-4 {
+        margin-top: clamp(1rem, 4vw, 1.5rem);
+    }
+    
+    .pt-4 {
+        padding-top: clamp(1rem, 4vw, 1.5rem);
+    }
+    
+    /* Better touch targets */
+    button, 
+    [role="button"],
+    .btn-save,
+    .btn-import,
+    .btn-cancel {
+        cursor: pointer;
+        touch-action: manipulation;
     }
 </style>
 
 <div class="page-wrapper">
 
-    <!-- ================= EDIT SECTION ================= -->
+    <!-- ================= SECTION EDIT ================= -->
     <div class="lux-card">
-
         <div class="lux-header">
-            <div class="fw-semibold">Edit Show</div>
-            <small class="opacity-75">Detail Informasi Show</small>
+            <div class="title">
+                ✏️ Edit Show
+            </div>
+            <div class="subtitle">
+                <i class="bi bi-pencil-square"></i> Perbarui detail informasi show
+            </div>
         </div>
-
         <div class="lux-body">
-
-            <form method="post" action="/shows/edit/{{ show.id }}">
-
+            <form method="post" action="/shows/edit/{{ show.id }}" id="editForm">
                 <div class="row g-4">
-
                     <div class="col-md-8">
-
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">Judul</label>
-                            <input type="text" name="title" class="form-control" value="{{ show.title }}" required>
+                            <label class="form-label">
+                                <i class="bi bi-type"></i> Judul Show <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" name="title" class="form-control" value="{{ show.title|e }}" required placeholder="Contoh: Stranger Things, Vincenzo, dll">
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">Sinopsis</label>
-                            <textarea name="sinopsis" class="form-control" rows="5">{{ show.sinopsis }}</textarea>
+                            <label class="form-label">
+                                <i class="bi bi-file-text"></i> Sinopsis
+                            </label>
+                            <textarea name="sinopsis" class="form-control" rows="5" placeholder="Ceritakan secara singkat tentang show ini...">{{ show.sinopsis|e }}</textarea>
+                            <div class="info-badge">
+                                <i class="bi bi-info-circle-fill me-1"></i>
+                                Sinopsis yang baik membantu pengguna memahami cerita show (maksimal 500 karakter)
+                            </div>
                         </div>
 
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Genre</label>
+                                <label class="form-label">
+                                    <i class="bi bi-tag"></i> Genre
+                                </label>
                                 <select name="genre" class="form-select" required>
                                     {% set genre_options = [
-                                    "🇨🇳 Drama China",
-                                    "🇺🇸 Drama Barat",
-                                    "🇰🇷 Drama Korea",
-                                    "🇯🇵 Drama Jepang",
-                                    "🇹🇭 Drama Thailand"
+                                        "🇨🇳 Drama China",
+                                        "🇺🇸 Drama Barat", 
+                                        "🇰🇷 Drama Korea",
+                                        "🇯🇵 Drama Jepang",
+                                        "🇹🇭 Drama Thailand"
                                     ] %}
                                     {% for g in genre_options %}
-                                    <option value="{{ g }}" {{ "selected" if show.genre==g else "" }}>
-                                        {{ g }}
-                                    </option>
+                                        <option value="{{ g|e }}" {{ "selected" if show.genre == g else "" }}>
+                                            {{ g|e }}
+                                        </option>
                                     {% endfor %}
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Source</label>
-                                <select name="source_id" class="form-select" required>
-                                    {% for src in sources %}
-                                    <option value="{{ src.id }}" {% if show.source_id==src.id %}selected{% endif %}>
-                                        {{ src.label }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
+                                <label class="form-label">
+                                    <i class="bi bi-database"></i> Source / Platform
+                                </label>
+                                <div class="source-select-container">
+                                    <select name="source_id" id="sourceSelect" class="form-select" required>
+                                        {% for src in sources %}
+                                            <option value="{{ src.id }}" 
+                                                    data-label="{{ src.label|e }}"
+                                                    data-desc="{{ src.description|e if src.description else 'Klik untuk melihat detail source ini' }}"
+                                                    data-type="{{ src.type|e if src.type else 'general' }}"
+                                                    {{ "selected" if show.source_id == src.id else "" }}>
+                                                {{ src.label|e }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mt-2" id="sourceSearchHint">
+                                    <small class="text-muted">
+                                        <i class="bi bi-search"></i> <span id="searchHintText">Ketik minimal 1 huruf untuk mencari source...</span>
+                                        <span id="selectedSourceHint"></span>
+                                    </small>
+                                </div>
+                                <!-- Source Info Card -->
+                                <div id="sourceInfoCard" style="display: none;">
+                                    <div class="source-info-card">
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <i class="bi bi-info-circle-fill text-primary"></i>
+                                            <strong class="text-primary">Informasi Source</strong>
+                                        </div>
+                                        <div id="sourceInfoContent"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="mt-4">
-                            <label class="form-label fw-semibold">Hashtags</label>
-                            <input type="text" name="hashtags" class="form-control" value="{{ show.hashtags }}">
-                        </div>
+                            <input 
+                                type="text" 
+                                name="hashtags" 
+                                class="form-control"
+                                placeholder="#romance #drama #thriller #favorit"
+                                id="hashtagsInput"
+                            >
 
+                            <script>
+                            const input = document.getElementById("hashtagsInput");
+
+                            input.addEventListener("blur", function () {
+                                let value = input.value;
+
+                                // Pisahkan berdasarkan koma
+                                let hashtags = value.split(",")
+
+                                    // Bersihkan spasi
+                                    .map(item => item.trim())
+
+                                    // Hapus kosong
+                                    .filter(item => item.length > 0)
+
+                                    // Jadikan hashtag
+                                    .map(item => {
+                                        // Hapus spasi antar kata
+                                        let text = item.replace(/\s+/g, "").toLowerCase();
+
+                                        // Tambahkan #
+                                        return "#" + text;
+                                    });
+
+                                // Gabungkan dengan spasi
+                                input.value = hashtags.join(" ");
+                            });
+                            </script>
+                            <input type="text" name="hashtags" class="form-control" value="{{ show.hashtags|e }}" placeholder="#drama #keren #viral #favorit">
+                            <div class="info-badge">
+                                <i class="bi bi-lightbulb"></i>
+                                Pisahkan dengan spasi, gunakan hashtag untuk memudahkan pencarian
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-md-4">
-
-                        <label class="form-label fw-semibold">Thumbnail Preview</label>
-
-                        <div class="thumbnail-preview mb-3">
-                            <div class="ratio-box">
-                                {% if show.resolved_thumbnail %}
-                                <img src="{{ show.resolved_thumbnail }}" class="preview-img">
-                                {% else %}
-                                <img src="/static/img/placeholder.png" class="preview-img opacity-50">
-                                {% endif %}
+                        <div class="sticky-top" style="top: 20px;">
+                            <label class="form-label">
+                                <i class="bi bi-image"></i> Thumbnail Preview
+                            </label>
+                            <div class="thumbnail-preview mb-3">
+                                <div class="ratio-box">
+                                    <img id="thumbnailPreviewImg" 
+                                         src="{{ show.resolved_thumbnail if show.resolved_thumbnail else '/static/img/placeholder.png' }}" 
+                                         class="preview-img" 
+                                         alt="Thumbnail preview"
+                                         loading="lazy">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small">
+                                    <i class="bi bi-link-45deg"></i> Thumbnail URL
+                                </label>
+                                <input type="url" name="thumbnail_url" id="thumbnailUrlInput" class="form-control" 
+                                       value="{{ show.thumbnail_url|e }}" 
+                                       placeholder="https://example.com/image.jpg">
+                                <div class="thumbnail-helper">
+                                    <i class="bi bi-info-circle"></i> Kosongkan untuk menggunakan gambar default
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label">
+                                    <i class="bi bi-eye-slash"></i> Konten Dewasa
+                                </label>
+                                <select name="is_adult" class="form-select">
+                                    <option value="0" {{ "selected" if not show.is_adult else "" }}>❌ Tidak</option>
+                                    <option value="1" {{ "selected" if show.is_adult else "" }}>⚠️ Ya (18+)</option>
+                                </select>
                             </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label small">Thumbnail URL</label>
-                            <input type="url" name="thumbnail_url" class="form-control"
-                                value="{{ show.thumbnail_url or '' }}">
-                        </div>
-
-                        <div>
-                            <label class="form-label fw-semibold">Konten Dewasa</label>
-                            <select name="is_adult" class="form-select">
-                                <option value="0" {{ "selected" if not show.is_adult else "" }}>
-                                    Tidak
-                                </option>
-                                <option value="1" {{ "selected" if show.is_adult else "" }}>
-                                    Ya
-                                </option>
-                            </select>
-                        </div>
-
                     </div>
                 </div>
 
-                <div class="pt-4 mt-4 border-top d-flex gap-3 action-group">
-
-                    <button type="submit" class="btn-save">
-                        <i class="bi bi-check-lg me-1"></i> Simpan Perubahan
-                    </button>
+                <div class="pt-4 mt-4 border-top d-flex gap-3 action-group justify-content-end">
                     <a href="/shows" class="btn-cancel">
-                        Batal
+                        <i class="bi bi-x-lg"></i> Batal
                     </a>
+                    <button type="submit" class="btn-save" id="btnSave">
+                        <i class="bi bi-check-lg"></i> Simpan Perubahan
+                    </button>
                 </div>
-
             </form>
         </div>
     </div>
 
-    <!-- ================= IMPORT SECTION ================= -->
-
+    <!-- ================= SECTION IMPORT ================= -->
     <div class="lux-card">
-
         <div class="lux-header">
-            <div class="fw-semibold">Import Files</div>
-            <small class="opacity-75">
-                Menyalin file dari show lain
-            </small>
+            <div class="title">
+                📥 Import Files
+            </div>
+            <div class="subtitle">
+                <i class="bi bi-cloud-download"></i> Salin file dari show lain ke show ini
+            </div>
         </div>
-
         <div class="lux-body">
+            {% if shows|length <= 1 %}
+                <div class="alert alert-warning alert-custom" style="background: #fef3c7; color: #92400e; border-left: 4px solid #f59e0b;">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Tidak ada show lain yang tersedia untuk diimport.
+                </div>
+            {% else %}
+                {% if request.query_params.get("error") %}
+                    <div class="alert alert-danger alert-custom" style="background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444;">
+                        <i class="bi bi-x-circle-fill me-2"></i>
+                        {{ request.query_params.get("error")|e }}
+                    </div>
+                {% endif %}
 
-            {% if shows|length <= 1 %} <div class="alert alert-warning">
-                Tidak ada show lain yang bisa diimport.
+                <form method="post" action="/shows/{{ show.id }}/import-files" id="importForm">
+                    <div class="row g-4">
+                        <!-- LEFT COLUMN - Show Selection -->
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                <i class="bi bi-folder-symlink"></i> Source Show
+                            </label>
+                            <select name="source_show_id" class="form-select select-show" required style="width: 100%;">
+                                {% for s in shows %}
+                                    {% if s.id != show.id %}
+                                        <option value="{{ s.id }}" 
+                                                data-thumbnail="{{ s.thumbnail_url if s.thumbnail_url else '/static/img/placeholder.png' }}"
+                                                data-title="{{ s.title|e }}"
+                                                data-id="{{ s.id }}">
+                                            {{ s.id|e }} — {{ s.title|e }}
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            
+                            <!-- Preview Show Selected -->
+                            <div id="selectedShowPreview" class="mt-3" style="display: none;">
+                                <div class="source-info-card" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-left-color: #10b981;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div style="width: 80px; height: 80px; border-radius: 12px; overflow: hidden; background: #f3f4f6; flex-shrink: 0;">
+                                            <img id="selectedShowThumbnail" src="/static/img/placeholder.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Preview">
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="fw-bold text-dark" id="selectedShowTitle">-</div>
+                                            <div class="small text-muted" id="selectedShowId">ID: -</div>
+                                            <div class="mt-1">
+                                                <span class="source-badge source-badge-general">
+                                                    <i class="bi bi-cloud-arrow-down"></i> Akan diimport
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-badge mt-2">
+                                <i class="bi bi-info-circle"></i>
+                                Pilih show yang ingin diambil file-nya
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN - Message ID -->
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                <i class="bi bi-envelope-paper"></i> Message ID
+                            </label>
+                            <input type="text" id="message_id_input" name="message_id" class="form-control"
+                                   placeholder="Masukkan ID angka (4669) atau link Telegram" required>
+                            
+                            <!-- Preview Message ID Info -->
+                            <div id="messageIdPreview" class="mt-3" style="display: none;">
+                                <div class="source-info-card" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left-color: #3b82f6;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-check-circle-fill text-primary" style="font-size: 1.25rem;"></i>
+                                        <div>
+                                            <div class="fw-semibold text-primary">Message ID Terdeteksi</div>
+                                            <div class="small" id="detectedMessageId">-</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-badge mt-2">
+                                <i class="bi bi-lightbulb"></i>
+                                Contoh: 4669 atau https://t.me/channel/4669
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top d-flex gap-3 action-group justify-content-end">
+                        <button type="submit" class="btn-import" id="btnImport">
+                            <i class="bi bi-cloud-arrow-down"></i> Import Files
+                        </button>
+                    </div>
+                </form>
+            {% endif %}
         </div>
-        {% else %}
-
-        {% if request.query_params.get("error") %}
-        <div class="alert alert-danger">
-            {{ request.query_params.get("error") }}
-        </div>
-        {% endif %}
-
-        <form method="post" action="/shows/{{ show.id }}/import-files">
-
-            <div class="mb-4">
-                <label class="form-label fw-semibold">Source Show</label>
-                <select name="source_show_id" class="form-select select-show" required>
-                    {% for s in shows %}
-                    {% if s.id != show.id %}
-                    <option value="{{ s.id }}" data-thumbnail="{{ s.thumbnail_url or '/static/img/placeholder.png' }}">
-                        {{ s.id }} — {{ s.title }}
-                    </option>
-                    {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="mb-4">
-                <label class="form-label fw-semibold">Message ID</label>
-                <input type="text" id="message_id_input" name="message_id" class="form-control"
-                    placeholder="4669 atau https://t.me/channel/4669" required>
-            </div>
-
-            <button type="submit" class="btn-import">
-                <i class="fas fa-copy me-1"></i> Import Files
-            </button>
-
-        </form>
-
-        {% endif %}
     </div>
-</div>
 
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-        // Disable double submit edit
-        const editForm = document.querySelector('form[action^="/shows/edit"]');
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        // ========== 1. SOURCE SELECT DENGAN SEARCH ==========
+        const sourceSelect = document.getElementById('sourceSelect');
+        const sourceInfoCard = document.getElementById('sourceInfoCard');
+        const sourceInfoContent = document.getElementById('sourceInfoContent');
+        
+        if (sourceSelect && typeof $ !== 'undefined' && $.fn.select2) {
+            function escapeHtml(text) {
+                if (!text) return '';
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+            
+            function formatSourceOption(option) {
+                if (!option.id) return option.text;
+                const label = $(option.element).data('label') || option.text;
+                const desc = $(option.element).data('desc') || '';
+                const type = $(option.element).data('type') || 'general';
+                let typeIcon = '🗄️';
+                let badgeClass = 'source-badge-general';
+                
+                if (type === 'telegram') {
+                    typeIcon = '📱';
+                    badgeClass = 'source-badge-telegram';
+                } else if (type === 'api') {
+                    typeIcon = '☁️';
+                    badgeClass = 'source-badge-api';
+                }
+                
+                let badgeText = type === 'telegram' ? 'Telegram' : (type === 'api' ? 'API' : 'General');
+                
+                return $(`
+                    <div class="source-option">
+                        <div class="source-option-icon">${typeIcon}</div>
+                        <div class="source-option-info">
+                            <div class="source-option-title">${escapeHtml(label)}</div>
+                            <div class="source-option-desc">${escapeHtml(desc.substring(0, 60))}${desc.length > 60 ? '...' : ''}</div>
+                        </div>
+                        <div><span class="source-badge ${badgeClass}">${badgeText}</span></div>
+                    </div>
+                `);
+            }
+            
+            $(sourceSelect).select2({
+                width: '100%',
+                placeholder: '🔍 Cari source... (ketik minimal 1 huruf)',
+                templateResult: formatSourceOption,
+                templateSelection: (option) => option.text,
+                minimumInputLength: 1,
+                language: {
+                    searching: () => '🔍 Mencari source...',
+                    noResults: () => '❌ Tidak ada source yang ditemukan',
+                    inputTooShort: (args) => `✏️ Ketik ${args.minimum - args.input.length} huruf lagi untuk mencari`
+                }
+            });
+            
+            $(sourceSelect).on('change', function() {
+                const selectedOption = $(this).find('option:selected');
+                const label = selectedOption.data('label') || selectedOption.text();
+                const desc = selectedOption.data('desc') || '';
+                const sourceId = selectedOption.val();
+                
+                if (sourceId && sourceInfoCard && sourceInfoContent) {
+                    sourceInfoContent.innerHTML = `
+                        <div class="source-info-item"><strong>${escapeHtml(label)}</strong></div>
+                        <div class="source-info-item">📄 ${escapeHtml(desc)}</div>
+                        <div class="source-info-item">🆔 ID Source: ${sourceId}</div>
+                    `;
+                    sourceInfoCard.style.display = 'block';
+                }
+            });
+            
+            $(sourceSelect).trigger('change');
+        }
+        
+        // ========== 2. LIVE PREVIEW THUMBNAIL ==========
+        const thumbnailInput = document.getElementById('thumbnailUrlInput');
+        const previewImg = document.getElementById('thumbnailPreviewImg');
+        
+        if (thumbnailInput && previewImg) {
+            thumbnailInput.addEventListener('input', function() {
+                const url = this.value.trim();
+                if (url) {
+                    previewImg.src = url;
+                    previewImg.onerror = function() {
+                        this.src = '/static/img/placeholder.png';
+                    };
+                } else {
+                    previewImg.src = '/static/img/placeholder.png';
+                }
+            });
+        }
+        
+        // ========== 3. DETECT FORM CHANGES ==========
+        let formChanged = false;
+        const editForm = document.getElementById('editForm');
+        
         if (editForm) {
-            editForm.addEventListener("submit", function () {
-                const btn = this.querySelector(".btn-save");
-                btn.innerHTML =
-                    '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
+            const initialFormData = new FormData(editForm);
+            const initialValues = {};
+            for (let [key, value] of initialFormData.entries()) {
+                initialValues[key] = value;
+            }
+            
+            function checkFormChanges() {
+                const currentData = new FormData(editForm);
+                for (let [key, value] of currentData.entries()) {
+                    if (initialValues[key] !== value) {
+                        formChanged = true;
+                        return;
+                    }
+                }
+                formChanged = false;
+            }
+            
+            const editInputs = editForm.querySelectorAll('input, select, textarea');
+            editInputs.forEach(input => {
+                input.addEventListener('change', checkFormChanges);
+                input.addEventListener('input', checkFormChanges);
+            });
+            
+            window.addEventListener('beforeunload', function(e) {
+                if (formChanged) {
+                    e.preventDefault();
+                    e.returnValue = 'Anda belum menyimpan perubahan. Yakin ingin keluar?';
+                    return e.returnValue;
+                }
+            });
+            
+            editForm.addEventListener('submit', function() {
+                formChanged = false;
+                const btn = document.getElementById('btnSave');
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Menyimpan...';
                 btn.disabled = true;
             });
         }
-
-        // SweetAlert confirm import
-        const importForm =
-            document.querySelector('form[action*="import-files"]');
+        
+        // ========== 4. AUTO EXTRACT MESSAGE ID ==========
+        const msgInput = document.getElementById('message_id_input');
+        if (msgInput) {
+            msgInput.addEventListener('input', function() {
+                let val = this.value.trim();
+                const telegramMatch = val.match(/https?:\/\/t\.me\/[^\/]+\/(\d+)/);
+                if (telegramMatch) {
+                    this.value = telegramMatch[1];
+                    return;
+                }
+                const numbers = val.match(/\d+/g);
+                if (numbers && numbers.length > 0) {
+                    this.value = numbers[numbers.length - 1];
+                }
+            });
+        }
+        
+        // ========== 5. IMPORT CONFIRMATION ==========
+        const importForm = document.getElementById('importForm');
         if (importForm) {
-            importForm.addEventListener("submit", function (e) {
+            importForm.addEventListener("submit", function(e) {
                 e.preventDefault();
+                const selectElement = document.querySelector('.select-show');
+                let sourceShowText = 'Show lain';
+                if (selectElement && selectElement.options[selectElement.selectedIndex]) {
+                    sourceShowText = selectElement.options[selectElement.selectedIndex].text;
+                }
+                
                 Swal.fire({
-                    title: 'Import Files?',
-                    text: 'Semua file akan disalin ke show ini.',
-                    icon: 'warning',
+                    title: 'Konfirmasi Import',
+                    text: `Semua file dari "${sourceShowText}" akan disalin ke show ini. Lanjutkan?`,
+                    icon: 'question',
                     showCancelButton: true,
-                    confirmButtonText: 'Ya, Import',
+                    confirmButtonText: 'Ya, Import!',
                     cancelButtonText: 'Batal',
-                    confirmButtonColor: '#0284c7'
+                    confirmButtonColor: '#0ea5e9'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        const btn =
-                            importForm.querySelector("button[type='submit']");
-                        btn.innerHTML =
-                            '<span class="spinner-border spinner-border-sm me-2"></span>Mengimport...';
+                        const btn = document.getElementById('btnImport');
+                        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Mengimport...';
                         btn.disabled = true;
                         importForm.submit();
                     }
                 });
             });
         }
-
-        // SweetAlert success import
-        const params = new URLSearchParams(window.location.search);
-        const importedCount = params.get("imported");
-
+        
+        // ========== 6. SWEETALERT RESULTS ==========
+        const urlParams = new URLSearchParams(window.location.search);
+        const importedCount = urlParams.get("imported");
+        const errorMsg = urlParams.get("error");
+        
         if (importedCount !== null) {
-            const icon = importedCount > 0 ? 'success' : 'warning';
-            const text = importedCount > 0
-                ? `${importedCount} file berhasil disalin.`
-                : 'Tidak ada file yang diimport.';
-
+            const count = parseInt(importedCount, 10);
             Swal.fire({
-                icon: icon,
-                title: 'Import Selesai',
-                text: text,
-                confirmButtonColor: '#0284c7'
+                icon: count > 0 ? 'success' : 'info',
+                title: count > 0 ? '✅ Import Berhasil' : 'ℹ️ Tidak Ada File',
+                text: count > 0 ? `${count} file berhasil disalin.` : 'Tidak ada file yang diimport.',
+                confirmButtonColor: '#0ea5e9',
+                timer: 3000
+            }).then(() => {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            });
+        } else if (errorMsg) {
+            Swal.fire({
+                icon: 'error',
+                title: '❌ Import Gagal',
+                text: decodeURIComponent(errorMsg),
+                confirmButtonColor: '#d33'
             }).then(() => {
                 window.history.replaceState({}, document.title, window.location.pathname);
             });
         }
-
-        // Auto extract message id
-        const input =
-            document.getElementById('message_id_input');
-        if (input) {
-            input.addEventListener('input', function () {
-                const val = this.value.trim();
-                const match = val.match(/\/(\d+)(?:\D|$)/);
-                if (match) {
-                    this.value = match[1];
+        
+        // ========== 7. SELECT2 FOR IMPORT SHOW ==========
+        if (typeof $ !== 'undefined' && $.fn.select2 && document.querySelector('.select-show')) {
+            function formatShowDropdown(option) {
+                if (!option.id) return option.text;
+                const thumb = $(option.element).data('thumbnail') || '/static/img/placeholder.png';
+                return $(`
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 4px 0; flex-wrap: wrap;">
+                        <img src="${thumb}" style="width: 64px; height: 36px; object-fit: cover; border-radius: 8px; border: 1.5px solid #e2e8f0;">
+                        <div style="font-weight: 600; color: #1e293b;">${option.text}</div>
+                    </div>
+                `);
+            }
+            
+            $('.select-show').select2({
+                width: '100%',
+                placeholder: '🔍 Cari show source...',
+                templateResult: formatShowDropdown,
+                templateSelection: (option) => option.text
+            });
+        }
+        
+        // ========== 8. PREVIEW SELECTED SHOW FOR IMPORT ==========
+        const showSelect = document.querySelector('.select-show');
+        const selectedShowPreview = document.getElementById('selectedShowPreview');
+        const selectedShowThumbnail = document.getElementById('selectedShowThumbnail');
+        const selectedShowTitle = document.getElementById('selectedShowTitle');
+        const selectedShowId = document.getElementById('selectedShowId');
+        
+        if (showSelect && typeof $ !== 'undefined' && $.fn.select2) {
+            // Update preview when selection changes
+            $(showSelect).on('change', function() {
+                const selectedOption = $(this).find('option:selected');
+                const thumb = selectedOption.data('thumbnail') || '/static/img/placeholder.png';
+                const title = selectedOption.data('title') || selectedOption.text();
+                const id = selectedOption.data('id') || '';
+                
+                if (selectedOption.val()) {
+                    selectedShowThumbnail.src = thumb;
+                    selectedShowTitle.textContent = title;
+                    selectedShowId.textContent = `ID: ${id}`;
+                    selectedShowPreview.style.display = 'block';
+                } else {
+                    selectedShowPreview.style.display = 'none';
+                }
+            });
+            
+            // Trigger change to show initial selection if any
+            $(showSelect).trigger('change');
+        }
+        
+        // ========== 9. PREVIEW MESSAGE ID ==========
+        const messageIdInput = document.getElementById('message_id_input');
+        const messageIdPreview = document.getElementById('messageIdPreview');
+        const detectedMessageIdSpan = document.getElementById('detectedMessageId');
+        
+        if (messageIdInput) {
+            function updateMessageIdPreview() {
+                let val = messageIdInput.value.trim();
+                let extractedId = val;
+                
+                // Extract from Telegram link
+                const telegramMatch = val.match(/https?:\/\/t\.me\/[^\/]+\/(\d+)/);
+                if (telegramMatch) {
+                    extractedId = telegramMatch[1];
+                } else {
+                    const numbers = val.match(/\d+/g);
+                    if (numbers && numbers.length > 0) {
+                        extractedId = numbers[numbers.length - 1];
+                    }
+                }
+                
+                if (extractedId && extractedId.match(/^\d+$/)) {
+                    detectedMessageIdSpan.textContent = extractedId;
+                    messageIdPreview.style.display = 'block';
+                } else {
+                    messageIdPreview.style.display = 'none';
+                }
+            }
+            
+            messageIdInput.addEventListener('input', function() {
+                updateMessageIdPreview();
+                // Also update the original auto-extract logic
+                let val = this.value.trim();
+                const telegramMatch = val.match(/https?:\/\/t\.me\/[^\/]+\/(\d+)/);
+                if (telegramMatch) {
+                    this.value = telegramMatch[1];
+                    updateMessageIdPreview();
                     return;
                 }
-                const nums = val.match(/\d+/g);
-                if (nums) {
-                    this.value = nums[nums.length - 1];
+                const numbers = val.match(/\d+/g);
+                if (numbers && numbers.length > 0) {
+                    this.value = numbers[numbers.length - 1];
+                    updateMessageIdPreview();
                 }
             });
         }
-
-        // Select2 dropdown with thumbnail
-        function formatShowDropdown(option) {
-            if (!option.id) return option.text;
-            const thumb = $(option.element).data('thumbnail');
-            return $(`
-                <div class="d-flex align-items-center gap-3">
-                <img src="${thumb}"
-                style="width:96px;height:54px;
-                object-fit:cover;border-radius:6px;
-                border:1px solid #ddd;"
-                onerror="this.src='/static/img/placeholder.png'">
-                <div class="fw-semibold">${option.text}</div>
-                </div>
-                `);
-        }
-
-        $('.select-show').select2({
-            width: '100%',
-            placeholder: 'Cari show...',
-            templateResult: formatShowDropdown,
-            templateSelection: option => option.text,
-            escapeMarkup: markup => markup
+        
+        // ========== 10. HANDLE ORIENTATION CHANGE ==========
+        window.addEventListener('orientationchange', function() {
+            // Reflow for better responsive behavior
+            setTimeout(function() {
+                window.dispatchEvent(new Event('resize'));
+            }, 100);
         });
-
+        
+        // ========== 11. IMPROVE TOUCH SCROLLING ==========
+        if ('ontouchstart' in window) {
+            document.querySelectorAll('.select2-container--default').forEach(function(el) {
+                el.style.touchAction = 'pan-y pinch-zoom';
+            });
+        }
     });
 </script>
-
 {% endblock %}

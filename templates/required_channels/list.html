@@ -1,140 +1,363 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-<h1 class="h3 mb-2 text-gray-800">Required Channels</h1>
+<div class="container-fluid px-4">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-check-circle me-2 text-success"></i>
+                Required Channels
+            </h1>
+            <small class="text-muted">
+                Kelola channel yang wajib diikuti oleh bot
+            </small>
+        </div>
+        <div>
+            <button class="btn btn-outline-secondary btn-sm" id="btnRefresh">
+                <i class="fas fa-sync-alt me-1"></i>
+                Refresh
+            </button>
+        </div>
+    </div>
 
-<!-- =========================
-     CREATE FORM
-========================= -->
-<div class="card shadow mb-4">
-  <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary">Tambah Required Channel</h6>
-  </div>
-  <div class="card-body">
-    <form method="post" action="/required-channels/create">
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label>Username Channel</label>
-          <input type="text" name="username" class="form-control" placeholder="contoh: dramaglow" required>
-          <small class="form-text text-muted">
-            Tanpa @, minimal 5 karakter (huruf/angka/underscore)
-          </small>
+    <!-- ========================================================== -->
+    <!-- STATISTICS CARDS                                            -->
+    <!-- ========================================================== -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-primary text-uppercase">Total</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ channels|length }}</div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-list fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group col-md-4">
-          <label>Bot Username</label>
-          <input type="text" name="bot_username" class="form-control" placeholder="contoh: dramaglow_bot" required>
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-success text-uppercase">Aktif</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ channels|selectattr('is_active', 'equalto', true)|list|length }}
+                            </div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group col-md-3">
-          <label>Added By</label>
-          <input type="text" name="added_by" class="form-control" placeholder="admin">
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-secondary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-secondary text-uppercase">Nonaktif</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ channels|rejectattr('is_active', 'equalto', true)|list|length }}
+                            </div>
+                        </div>
+                        <div class="text-secondary">
+                            <i class="fas fa-times-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group col-md-1 d-flex align-items-end">
-          <button type="submit" class="btn btn-primary btn-block">
-            <i class="fas fa-plus"></i>
-          </button>
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-info shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-info text-uppercase">Bot Unik</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ channels|map(attribute='bot_username')|unique|list|length }}
+                            </div>
+                        </div>
+                        <div class="text-info">
+                            <i class="fas fa-robot fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </form>
-  </div>
-</div>
+    </div>
 
+    <!-- ========================================================== -->
+    <!-- CREATE FORM                                                -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <h6 class="mb-0 fw-bold text-primary">
+                <i class="fas fa-plus-circle me-2"></i>
+                Tambah Required Channel
+            </h6>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/required-channels/create">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-hashtag me-1"></i>
+                            Username Channel <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">@</span>
+                            <input type="text" 
+                                   name="username" 
+                                   class="form-control" 
+                                   placeholder="dramaglow" 
+                                   required
+                                   pattern="[a-zA-Z0-9_]{5,}"
+                                   title="Minimal 5 karakter (huruf/angka/underscore)">
+                        </div>
+                        <small class="text-muted">
+                            Tanpa @, minimal 5 karakter (huruf/angka/underscore)
+                        </small>
+                    </div>
 
-<!-- =========================
-     TABLE LIST
-========================= -->
-<div class="card shadow mb-4">
-  <div class="card-body table-responsive">
-    <table class="table table-bordered" id="requiredChannelsTable" width="100%" cellspacing="0">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Channel</th>
-          <th>Bot</th>
-          <th>Status</th>
-          <th>Added By</th>
-          <th>Added At</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-robot me-1"></i>
+                            Bot Username <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">@</span>
+                            <input type="text" 
+                                   name="bot_username" 
+                                   class="form-control" 
+                                   placeholder="dramaglow_bot" 
+                                   required>
+                        </div>
+                    </div>
 
-      <tbody>
-        {% for channel in channels %}
-        <tr>
-          <td>{{ channel.id }}</td>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">
+                            <i class="fas fa-user me-1"></i>
+                            Added By
+                        </label>
+                        <input type="text" 
+                               name="added_by" 
+                               class="form-control" 
+                               placeholder="admin">
+                    </div>
 
-          <td>
-            <a href="https://t.me/{{ channel.username }}" target="_blank">
-              @{{ channel.username }}
-            </a>
-          </td>
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success w-100" title="Tambah Channel">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-          <td>@{{ channel.bot_username }}</td>
+    <!-- ========================================================== -->
+    <!-- TABLE                                                      -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-list me-2"></i>
+                    Daftar Required Channels
+                </h6>
+                <span class="text-muted small">
+                    Total: <strong>{{ channels|length }}</strong> channel
+                </span>
+            </div>
+        </div>
 
-          <td>
-            {% if channel.is_active %}
-              <span class="badge badge-success">Active</span>
+        <div class="card-body table-responsive">
+            {% if channels %}
+            <table class="table table-hover table-striped align-middle" id="requiredChannelsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th width="60">ID</th>
+                        <th>Channel</th>
+                        <th>Bot</th>
+                        <th width="100">Status</th>
+                        <th>Added By</th>
+                        <th width="160">Added At</th>
+                        <th width="140" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for channel in channels %}
+                    <tr>
+                        <td class="fw-bold">{{ channel.id }}</td>
+
+                        <td>
+                            <a href="https://t.me/{{ channel.username }}" 
+                               target="_blank" 
+                               class="text-decoration-none">
+                                <i class="fab fa-telegram me-1 text-primary"></i>
+                                @{{ channel.username }}
+                            </a>
+                        </td>
+
+                        <td>
+                            <span class="badge bg-secondary text-white">
+                                <i class="fas fa-robot me-1"></i>
+                                @{{ channel.bot_username }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {% if channel.is_active %}
+                            <span class="badge bg-success text-white">
+                                <i class="fas fa-check-circle me-1"></i>Aktif
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">
+                                <i class="fas fa-times-circle me-1"></i>Nonaktif
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if channel.added_by %}
+                            {{ channel.added_by }}
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <small>
+                                {{ channel.added_at.strftime("%Y-%m-%d %H:%M") if channel.added_at else '-' }}
+                            </small>
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                <!-- Toggle -->
+                                <form method="post"
+                                      action="/required-channels/{{ channel.id }}/toggle"
+                                      class="d-inline">
+                                    <button type="submit"
+                                            class="btn btn-outline-info btn-sm"
+                                            title="Toggle Status">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </form>
+
+                                <!-- Edit -->
+                                <a href="/required-channels/{{ channel.id }}/edit"
+                                   class="btn btn-outline-warning btn-sm"
+                                   title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+
+                                <!-- Delete -->
+                                <form method="post"
+                                      action="/required-channels/{{ channel.id }}/delete"
+                                      class="d-inline delete-form">
+                                    <button type="submit"
+                                            class="btn btn-outline-danger btn-sm"
+                                            title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% else %}
-              <span class="badge badge-secondary">Inactive</span>
+            <!-- EMPTY STATE -->
+            <div class="text-center py-5">
+                <i class="fas fa-inbox fa-4x text-muted d-block mb-3"></i>
+                <h5 class="text-muted">Belum ada required channel</h5>
+                <p class="text-muted mb-3">Tambahkan channel pertama Anda menggunakan form di atas</p>
+            </div>
             {% endif %}
-          </td>
+        </div>
 
-          <td>{{ channel.added_by or '-' }}</td>
+        <!-- FOOTER -->
+        {% if channels %}
+        <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <span class="text-muted small">
+                    Menampilkan <strong>{{ channels|length }}</strong> required channel
+                </span>
+                <div>
+                    <button class="btn btn-outline-secondary btn-sm" id="btnExport">
+                        <i class="fas fa-download me-1"></i>
+                        Export
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 
-          <td>
-            {{ channel.added_at.strftime("%Y-%m-%d %H:%M:%S") if channel.added_at else '-' }}
-          </td>
-
-          <td>
-            <!-- Toggle -->
-            <form method="post"
-                  action="/required-channels/{{ channel.id }}/toggle"
-                  style="display:inline;">
-              <button type="submit"
-                      class="btn btn-info btn-circle btn-sm"
-                      title="Toggle Status">
-                <i class="fas fa-sync"></i>
-              </button>
-            </form>
-
-            <!-- Delete -->
-            <form method="post"
-                  action="/required-channels/{{ channel.id }}/delete"
-                  style="display:inline;"
-                  onsubmit="return confirm('Yakin ingin menghapus channel ini?');">
-              <button type="submit"
-                      class="btn btn-danger btn-circle btn-sm"
-                      title="Hapus">
-                <i class="fas fa-trash"></i>
-              </button>
-            </form>
-
-            <a href="/required-channels/{{ channel.id }}/edit"
-                class="btn btn-warning btn-circle btn-sm"
-                title="Edit">
-                    <i class="fas fa-pencil-alt"></i>
-            </a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
 </div>
+
+<!-- ========================================================== -->
+<!-- STYLES                                                     -->
+<!-- ========================================================== -->
+<style>
+    .border-left-primary {
+        border-left: 4px solid #6366f1;
+    }
+    .border-left-success {
+        border-left: 4px solid #22c55e;
+    }
+    .border-left-secondary {
+        border-left: 4px solid #64748b;
+    }
+    .border-left-info {
+        border-left: 4px solid #3b82f6;
+    }
+    .opacity-50 {
+        opacity: 0.5;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .table tr:hover {
+        cursor: default;
+    }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 1rem; }
+</style>
 
 {% endblock %}
-
 
 {% block scripts %}
 <script>
 $(document).ready(function () {
-    $('#requiredChannelsTable').DataTable({
+    
+    // ==========================================================
+    // DATATABLE
+    // ==========================================================
+    var table = $('#requiredChannelsTable').DataTable({
         "language": {
             "search": "Cari:",
             "lengthMenu": "Tampilkan _MENU_ entri per halaman",
             "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "infoEmpty": "Tidak ada data",
+            "infoFiltered": "(difilter dari _MAX_ total entri)",
             "paginate": {
                 "first": "Awal",
                 "last": "Akhir",
@@ -144,11 +367,95 @@ $(document).ready(function () {
             "zeroRecords": "Tidak ada data ditemukan"
         },
         "pageLength": 10,
-        "lengthMenu": [5, 10, 25, 50, 100],
-        "order": [[0, "desc"]]
+        "lengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Semua"]],
+        "order": [[0, "desc"]],
+        "columnDefs": [
+            { "orderable": false, "targets": [6] }  // Aksi column
+        ]
     });
-
-    $('[data-toggle="tooltip"]').tooltip();
+    
+    // ==========================================================
+    // REFRESH
+    // ==========================================================
+    $('#btnRefresh').on('click', function() {
+        table.ajax.reload();
+        $(this).html('<i class="fas fa-spinner fa-spin me-1"></i>');
+        setTimeout(() => {
+            $(this).html('<i class="fas fa-sync-alt me-1"></i> Refresh');
+        }, 800);
+    });
+    
+    // ==========================================================
+    // DELETE CONFIRMATION WITH SWEETALERT
+    // ==========================================================
+    $('.delete-form').on('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+        
+        Swal.fire({
+            title: 'Hapus Required Channel?',
+            text: 'Channel ini akan dihapus secara permanen.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+    
+    // ==========================================================
+    // TOGGLE CONFIRMATION
+    // ==========================================================
+    $('form[action*="/toggle"]').on('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+        const status = $(this).closest('tr').find('.badge').text().trim();
+        const action = status === 'Aktif' ? 'menonaktifkan' : 'mengaktifkan';
+        
+        Swal.fire({
+            title: 'Toggle Status?',
+            text: `Anda akan ${action} channel ini. Lanjutkan?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6366f1',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Toggle!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+    
+    // ==========================================================
+    // EXPORT
+    // ==========================================================
+    $('#btnExport').on('click', function() {
+        // Get all data from table
+        const data = table.rows().data();
+        let csv = 'ID,Channel,Bot,Status,Added By,Added At\n';
+        
+        data.each(function(row) {
+            const status = row[3].includes('Aktif') ? 'Active' : 'Inactive';
+            csv += `${row[0]},${row[1]},${row[2]},${status},${row[4]},${row[5]}\n`;
+        });
+        
+        // Download CSV
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `required_channels_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+    
 });
 </script>
 {% endblock %}

@@ -1,0 +1,673 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="content px-0">
+    <!-- HEADER SECTION -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h3 class="mb-0">
+
+                <i class="fas fa-chart-bar text-primary mr-2"></i>
+
+                Rekap Hari {{ day }}
+
+                {% if mode == "normal" %}
+
+                    <span class="badge badge-primary ml-2">
+                        📁 Normal
+                    </span>
+
+                {% elif mode == "clean" %}
+
+                    <span class="badge badge-success ml-2">
+                        🧹 Clean
+                    </span>
+
+                {% else %}
+
+                    <span class="badge badge-danger ml-2">
+                        🚫 Blacklist
+                    </span>
+
+                {% endif %}
+
+            </h3>
+            <small class="text-muted">
+                <i class="fas fa-info-circle mr-1"></i>
+                Total {{ stats.total_usage }} lagu yang sudah diexport
+            </small>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a href="/songs?mode={{ mode }}{% if channel_id %}&channel_id={{ channel_id }}{% endif %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-1"></i> Kembali
+            </a>
+            <button type="button" class="btn btn-danger" id="bulkDeleteBtn" data-toggle="modal" data-target="#bulkDeleteModal">
+                <i class="fas fa-trash mr-1"></i> Hapus Terpilih
+            </button>
+            <button type="button" class="btn btn-success" id="exportSelectedBtn">
+                <i class="fas fa-download mr-1"></i> Export Terpilih
+            </button>
+        </div>
+    </div>
+
+    <!-- NAVIGASI HARI - RAPIH & MODERN -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body py-3">
+            <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+                <!-- Label -->
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mr-3" style="width: 40px; height: 40px;">
+                        <i class="fas fa-calendar-week text-white"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 font-weight-bold">Navigasi Hari</h6>
+                        <small class="text-muted">Geser slider atau input angka</small>
+                    </div>
+                </div>
+                
+                <!-- Control Navigasi -->
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <a href="/songs/usage/{{ day-1 if day > 1 else 1 }}?mode={{ mode }}{% if channel_id %}&channel_id={{ channel_id }}{% endif %}"
+                    class="btn btn-sm btn-outline-secondary {% if day <= 1 %}disabled{% endif %}">
+                        <i class="fas fa-chevron-left"></i> <span class="d-none d-sm-inline">Prev</span>
+                    </a>
+                    
+                    <input type="range" 
+                        id="daySlider" 
+                        class="custom-range mx-2" 
+                        min="1" 
+                        max="30" 
+                        value="{{ day }}"
+                        style="width: 180px;">
+                    
+                    <a href="/songs/usage/{{ day+1 if day < 30 else 30 }}?mode={{ mode }}"
+                    class="btn btn-sm btn-outline-secondary {% if day >= 30 %}disabled{% endif %}">
+                        <span class="d-none d-sm-inline">Next</span> <i class="fas fa-chevron-right"></i>
+                    </a>
+                    
+                    <div class="input-group input-group-sm" style="width: 110px;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-primary text-white">Hari</span>
+                        </div>
+                        <input type="number" 
+                            id="dayInput" 
+                            class="form-control text-center font-weight-bold" 
+                            value="{{ day }}" 
+                            min="1" 
+                            max="30">
+                    </div>
+                    
+                    <!-- TOMBOL GO DIUBAH MENJADI EXPORT DAY -->
+                    <button id="exportDayBtn" class="btn btn-sm btn-success">
+                        <i class="fas fa-file-export mr-1"></i> Export Day {{ day }}
+                    </button>
+                </div>
+                
+                <!-- Info Hari Aktif -->
+                <div class="text-center">
+                    <span class="badge badge-primary px-3 py-2">
+                        <i class="fas fa-calendar-day mr-1"></i> Hari {{ day }} • {{ mode|title }}
+                        <i class="fas fa-music ml-2 mr-1"></i> {{ stats.total_usage }} Lagu
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATISTICS CARDS -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3 mb-md-0">
+            <div class="card border-left-primary shadow h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                <i class="fas fa-music mr-1"></i> Total Lagu
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                Total {{ stats.total_usage }} lagu
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-headphones fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3 mb-md-0">
+            <div class="card border-left-success shadow h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                <i class="fas fa-waveform mr-1"></i> Total Channel
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ stats.total_channels }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-tower-broadcast fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3 mb-md-0">
+            <div class="card border-left-info shadow h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                <i class="fas fa-calendar mr-1"></i> Tanggal Export
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ stats.first_used.strftime("%d %b %Y") if stats.first_used else "-" }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-warning shadow h-100">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                <i class="fas fa-check-square mr-1"></i> Status
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="selectedCount">
+                                0 Terpilih
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-double fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN TABLE -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-list mr-2"></i>Daftar Lagu yang Diexport
+                </h6>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-secondary" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-outline-info" id="printBtn">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-hover align-middle" id="usageTable" width="100%">
+                <thead class="thead-light">
+                    <tr>
+                        <th width="40" class="text-center">
+                            <input type="checkbox" id="checkAll">
+                        </th>
+                        <th width="70">ID Lagu</th>
+                        <th>Channel</th>
+                        <th>Artis</th>
+                        <th>Judul</th>
+                        <th width="120" class="text-center">Status</th>
+                        <th width="150">Dipakai</th>
+                        <th width="120" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for row in rows %}
+                    <tr data-usage-id="{{ row.usage_id }}" data-song-id="{{ row.song_id }}">
+                        <td class="text-center">
+                            <input type="checkbox" 
+                                  class="usage-checkbox" 
+                                  name="usage_ids" 
+                                  value="{{ row.usage_id }}"
+                                  data-song-title="{{ row.title }}"
+                                  data-artist="{{ row.artist }}">
+                        </td>
+                        <td class="text-center">{{ row.song_id }}</td>
+                        <td>
+                            <strong>{{ row.channel }}</strong>
+                            {% if row.channel_id %}
+                            <br>
+                            <small class="text-muted">ID: {{ row.channel_id }}</small>
+                            {% endif %}
+                        </td>
+                        <td>{{ row.artist }}</td>
+                        <td>
+                            <span class="font-weight-bold">{{ row.title }}</span>
+                        </td>
+                        <!-- STATUS COLUMN -->
+                        <td class="text-center">
+                            {% if row.status == 'Live' %}
+                            <span class="badge badge-success px-3 py-2">
+                                <i class="fas fa-play-circle mr-1"></i>Live
+                            </span>
+                            {% elif row.status == 'Approved' %}
+                            <span class="badge badge-warning px-3 py-2">
+                                <i class="fas fa-check-circle mr-1"></i>Approved
+                            </span>
+                            {% elif row.status == 'Take Down' %}
+                            <span class="badge badge-danger px-3 py-2">
+                                <i class="fas fa-ban mr-1"></i>Take Down
+                            </span>
+                            {% elif row.status == 'Topic' %}
+                            <span class="badge badge-info px-3 py-2">
+                                <i class="fas fa-tag mr-1"></i>Topic
+                            </span>
+                            {% else %}
+                            <span class="badge badge-secondary px-3 py-2">
+                                <i class="fas fa-clock mr-1"></i>{{ row.status or 'Review' }}
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="small">
+                                <i class="far fa-calendar-alt mr-1"></i>
+                                {{ row.used_at.strftime("%d %b %Y") if row.used_at else '-' }}
+                                <br>
+                                <i class="far fa-clock mr-1"></i>
+                                {{ row.used_at.strftime("%H:%M:%S") if row.used_at else '-' }}
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <button type="button" 
+                                    class="btn btn-danger btn-sm delete-single" 
+                                    data-usage-id="{{ row.usage_id }}"
+                                    data-day="{{ day }}"
+                                    data-toggle="tooltip" 
+                                    title="Hapus dari rekap">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <a href="/songs/{{ row.song_id }}/edit" 
+                              class="btn btn-info btn-sm"
+                              data-toggle="tooltip" 
+                              title="Edit lagu">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Bulk Delete Modal -->
+<div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    Konfirmasi Hapus Massal
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Yakin ingin menghapus <strong id="bulkCount">0</strong> data rekap yang dipilih?</p>
+                <div id="bulkList" class="alert alert-warning" style="max-height: 200px; overflow-y: auto;">
+                    <!-- List akan diisi JavaScript -->
+                </div>
+                <p class="text-danger small mb-0">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Data yang dihapus tidak dapat dikembalikan!
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times mr-1"></i> Batal
+                </button>
+                <form method="post" action="/songs/usage/bulk-delete" id="bulkForm">
+                    <input type="hidden" name="day" value="{{ day }}">
+                    <div id="bulkIdsContainer"></div>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash mr-1"></i> Ya, Hapus!
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-download mr-2"></i>
+                    Export Data({{ mode|title }})
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Export <strong id="exportCount">0</strong> data rekap yang dipilih?</p>
+                <div class="form-group">
+                    <label>Format Export:</label>
+                    <select class="form-control" id="exportFormat">
+                        <option value="txt">TXT Format (YouTube Search)</option>
+                        <option value="csv">CSV Format</option>
+                        <option value="json">JSON Format</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times mr-1"></i> Batal
+                </button>
+                <button type="button" class="btn btn-success" id="confirmExportBtn">
+                    <i class="fas fa-download mr-1"></i> Export
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function() {
+    let selectedIds = new Set();
+    let selectedData = [];
+    
+    // ==================== INITIALIZE DATATABLE ====================
+    const table = $('#usageTable').DataTable({
+        "language": {
+            "search": "Cari:",
+            "searchPlaceholder": "Judul, artis, channel...",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "info": "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+            "infoEmpty": "Tidak ada data",
+            "paginate": {
+                "first": "« Awal",
+                "last": "Akhir »",
+                "next": "›",
+                "previous": "‹"
+            },
+            "zeroRecords": "Tidak ada data ditemukan"
+        },
+        "pageLength": 25,
+        "lengthMenu": [10, 25, 50, 100, 200],
+        "order": [[6, "desc"]],
+        "columnDefs": [
+            { "orderable": false, "targets": [0, 5, 7] },
+            { "className": "text-center", "targets": [0, 1, 5, 7] }
+        ],
+        "drawCallback": function() {
+            $('.usage-checkbox').each(function() {
+                const id = $(this).val();
+                if (selectedIds.has(id)) {
+                    $(this).prop('checked', true);
+                    $(this).closest('tr').addClass('table-danger');
+                }
+            });
+            
+            const totalChecked = $('.usage-checkbox:checked').length;
+            const totalCheckbox = $('.usage-checkbox').length;
+            $('#checkAll').prop('checked', totalChecked > 0 && totalChecked === totalCheckbox);
+            $('#checkAll').prop('indeterminate', totalChecked > 0 && totalChecked < totalCheckbox);
+            
+            updateSelectedCount();
+        }
+    });
+    
+    // ==================== HELPER FUNCTIONS ====================
+    function updateSelectedCount() {
+        const count = selectedIds.size;
+        $('#selectedCount').text(`${count} Terpilih`);
+        $('#bulkCount').text(count);
+        $('#exportCount').text(count);
+        
+        if (count > 0) {
+            $('#bulkDeleteBtn, #exportSelectedBtn').prop('disabled', false);
+        } else {
+            $('#bulkDeleteBtn, #exportSelectedBtn').prop('disabled', true);
+        }
+    }
+    
+    // ==================== NAVIGASI & EXPORT DAY ====================
+    const daySlider = $('#daySlider');
+    const dayInput = $('#dayInput');
+    
+    dayInput.on('input', function() {
+        let val = parseInt($(this).val());
+        if (isNaN(val)) val = 1;
+        if (val < 1) val = 1;
+        if (val > 30) val = 30;
+        daySlider.val(val);
+        $('#exportDayBtn').html(`<i class="fas fa-file-export mr-1"></i> Export Day ${val}`);
+    });
+    
+    daySlider.on('input', function() {
+        const val = $(this).val();
+        dayInput.val(val);
+        $('#exportDayBtn').html(`<i class="fas fa-file-export mr-1"></i> Export Day ${val}`);
+    });
+    
+    dayInput.on('keypress', function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            const val = parseInt($(this).val());
+            if (val >= 1 && val <= 30) {
+                const mode =
+                    "{{ mode }}";
+
+                let url =
+                    `/songs/usage/${val}?mode=${mode}`;
+
+                const channelId =
+                    "{{ channel_id if channel_id else '' }}";
+
+                if (channelId) {
+                    url += `&channel_id=${channelId}`;
+                }
+
+                window.location.href = url;
+            }
+        }
+    });
+    
+    // ==================== EXPORT DAY ====================
+    $('#exportDayBtn').on('click', function() {
+        let targetDay = parseInt(dayInput.val());
+        if (isNaN(targetDay)) targetDay = {{ day }};
+        if (targetDay < 1) targetDay = 1;
+        if (targetDay > 30) targetDay = 30;
+        
+        // Redirect ke endpoint export
+        const channelId = '{{ channel_id if channel_id else '' }}';
+        const mode =
+            "{{ mode }}";
+
+        let url =
+            `/songs/usage/export-day/${targetDay}?mode=${mode}`;
+
+        if (channelId) {
+            url += `&channel_id=${channelId}`;
+        }
+
+        window.location.href = url;
+    });
+    
+    // ==================== CHECKBOX HANDLERS ====================
+    $(document).on('change', '.usage-checkbox', function() {
+        const id = $(this).val();
+        const title = $(this).data('song-title');
+        const artist = $(this).data('artist');
+        
+        if (this.checked) {
+            selectedIds.add(id);
+            if (!selectedData.find(item => item.id == id)) {
+                selectedData.push({ id, title, artist });
+            }
+            $(this).closest('tr').addClass('table-danger');
+        } else {
+            selectedIds.delete(id);
+            selectedData = selectedData.filter(item => item.id != id);
+            $(this).closest('tr').removeClass('table-danger');
+        }
+        
+        const totalChecked = $('.usage-checkbox:checked').length;
+        const totalCheckbox = $('.usage-checkbox').length;
+        $('#checkAll').prop('checked', totalChecked > 0 && totalChecked === totalCheckbox);
+        $('#checkAll').prop('indeterminate', totalChecked > 0 && totalChecked < totalCheckbox);
+        
+        updateSelectedCount();
+    });
+    
+    $('#checkAll').on('click', function() {
+        const isChecked = this.checked;
+        
+        $('.usage-checkbox').each(function() {
+            const id = $(this).val();
+            const title = $(this).data('song-title');
+            const artist = $(this).data('artist');
+            
+            $(this).prop('checked', isChecked);
+            
+            if (isChecked) {
+                selectedIds.add(id);
+                if (!selectedData.find(item => item.id == id)) {
+                    selectedData.push({ id, title, artist });
+                }
+                $(this).closest('tr').addClass('table-danger');
+            } else {
+                selectedIds.delete(id);
+                selectedData = selectedData.filter(item => item.id != id);
+                $(this).closest('tr').removeClass('table-danger');
+            }
+        });
+        
+        $('#checkAll').prop('indeterminate', false);
+        updateSelectedCount();
+    });
+    
+    // ==================== BULK DELETE ====================
+    $('#bulkDeleteBtn').on('click', function() {
+        if (selectedIds.size === 0) {
+            alert('Pilih minimal 1 data untuk dihapus!');
+            return;
+        }
+        
+        const listHtml = '<ul>' + selectedData.slice(0, 10).map(item => 
+            `<li>${item.title} - ${item.artist}</li>`
+        ).join('') + (selectedData.length > 10 ? `<li>... dan ${selectedData.length - 10} lainnya</li>` : '') + '</ul>';
+        
+        $('#bulkList').html(listHtml);
+        $('#bulkCount').text(selectedIds.size);
+        
+        const container = $('#bulkIdsContainer');
+        container.empty();
+        selectedIds.forEach(id => {
+            container.append(`<input type="hidden" name="usage_ids" value="${id}">`);
+        });
+        
+        $('#bulkDeleteModal').modal('show');
+    });
+    
+    // ==================== SINGLE DELETE ====================
+    $(document).on('click', '.delete-single', function() {
+        const usageId = $(this).data('usage-id');
+        const day = $(this).data('day');
+        
+        if (confirm('Yakin ingin menghapus data rekap ini?')) {
+            const form = $('<form method="post" action="/songs/usage/' + usageId + '/delete"></form>');
+            form.append(`<input type="hidden" name="day" value="${day}">`);
+            $('body').append(form);
+            form.submit();
+        }
+    });
+    
+    // ==================== EXPORT SELECTED ====================
+    $('#exportSelectedBtn').on('click', function() {
+        if (selectedIds.size === 0) {
+            alert('Pilih minimal 1 data untuk diexport!');
+            return;
+        }
+        $('#exportModal').modal('show');
+    });
+    
+    $('#confirmExportBtn').on('click', function() {
+        const format = $('#exportFormat').val();
+        const ids = Array.from(selectedIds);
+        
+        if (format === 'txt') {
+            const form = $('<form method="post" action="/songs/usage/export-txt"></form>');
+            ids.forEach(id => {
+                form.append(`<input type="hidden" name="usage_ids" value="${id}">`);
+            });
+            $('body').append(form);
+            form.submit();
+            form.remove();
+        } else if (format === 'csv') {
+            window.location.href = `/songs/usage/export-csv?usage_ids=${ids.join(',')}`;
+        } else if (format === 'json') {
+            window.location.href = `/songs/usage/export-json?usage_ids=${ids.join(',')}`;
+        }
+        
+        $('#exportModal').modal('hide');
+    });
+    
+    // ==================== REFRESH & PRINT ====================
+    $('#refreshBtn').on('click', function() {
+        window.location.href =
+        `/songs/usage/{{ day }}?mode={{ mode }}`;
+        });
+    
+    $('#printBtn').on('click', function() {
+        const printContent = $('#usageTable').clone();
+        
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Rekap Hari {{ day }}({{ mode|title }})</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+                    <style>
+                        body { padding: 20px; }
+                        .no-print { display: none; }
+                        table { width: 100%; }
+                        th, td { padding: 8px; text-align: left; }
+                    </style>
+                </head>
+                <body>
+                    <h3>Rekap Hari {{ day }}({{ mode|title }})</h3>
+                    ${printContent.prop('outerHTML')}
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+    });
+    
+    // ==================== TOOLTIP ====================
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    // ==================== INITIAL UPDATE ====================
+    updateSelectedCount();
+});
+</script>
+{% endblock %}

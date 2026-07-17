@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Form, HTTPException, Request, status
+import logging
+from fastapi import APIRouter, Form, HTTPException, Request, status, Query
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.templates import templates
-from db.connect import get_dict_cursor
+from app.core.database import get_dict_cursor
 
 from .file_import import import_show_files
 from .service import (
@@ -11,47 +12,103 @@ from .service import (
     delete_show,
     get_show,
     list_shows,
+    search_shows,
     update_show,
 )
 from .validators import is_valid_url
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+# ==========================================================
+# HELPERS
+# ==========================================================
+
+def validate_show_data(data: dict) -> bool:
+    """Centralized validation for show data."""
+    title = data.get("title", "").strip()
+    if not title:
+        raise HTTPException(400, "Judul wajib diisi")
+    
+    if len(title) < 3:
+        raise HTTPException(400, "Judul minimal 3 karakter")
+    
+    if len(title) > 255:
+        raise HTTPException(400, "Judul maksimal 255 karakter")
+    
+    if data.get("source_id") and not isinstance(data["source_id"], int):
+        raise HTTPException(400, "Source ID tidak valid")
+    
+    return True
+
+
 async def resolve_thumbnail_for_web(thumbnail_url: str | None):
-    # web TIDAK download, hanya pass-through
+    """Pass-through thumbnail URL for web."""
     return thumbnail_url
 
 
+def get_sources() -> list[dict]:
+    """Get all request sources for dropdown."""
+    with get_dict_cursor() as (cur, _):
+        cur.execute("SELECT id, label FROM request_sources ORDER BY label ASC")
+        return cur.fetchall()
+
+
 # ==========================================================
-# LIST SHOWS
+# LIST SHOWS (DENGAN PAGINATION)
 # ==========================================================
 @router.get("/shows", response_class=HTMLResponse)
-async def show_list(request: Request):
-    shows = list_shows()
+async def show_list(
+    request: Request,
+    page: int = Query(1, ge=1, description="Halaman"),
+    per_page: int = Query(20, ge=5, le=100, description="Jumlah per halaman"),
+    search: str | None = Query(None, description="Cari berdasarkan judul/genre"),
+):
+    result = list_shows(
+        page=page,
+        per_page=per_page,
+        search=search,
+        include_stats=True,  # Set False untuk lebih cepat
+    )
+    
     return templates.TemplateResponse(
         "shows/list.html",
-        {"request": request, "shows": shows},
+        {
+            "request": request,
+            "shows": result["data"],
+            "total": result["total"],
+            "page": result["page"],
+            "per_page": result["per_page"],
+            "total_pages": result["total_pages"],
+            "search": search,
+        },
     )
 
+
+# ==========================================================
+# SHOWS API (JSON)
+# ==========================================================
+@router.get("/shows/api")
+async def shows_api(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=5, le=100),
+    search: str | None = None,
+):
+    result = list_shows(page=page, per_page=per_page, search=search)
+    return result
 
 # ==========================================================
 # ADD SHOW FORM
 # ==========================================================
 @router.get("/shows/add", response_class=HTMLResponse)
 async def add_show_form(request: Request):
-
-    # ambil semua source untuk dropdown
-    with get_dict_cursor() as (cur, _):
-        cur.execute("SELECT id, label FROM request_sources ORDER BY label ASC")
-        sources = cur.fetchall()
-
     return templates.TemplateResponse(
         "shows/add.html",
         {
             "request": request,
             "show": None,
-            "sources": sources,
+            "sources": get_sources(),
         },
     )
 
@@ -89,7 +146,12 @@ async def create_show_post(
     else:
         data["thumbnail_url"] = None
 
+    # Validate
+    validate_show_data(data)
+
+    logger.info(f"Creating show: {title}")
     create_show(data)
+    logger.info(f"Show created successfully: {title}")
 
     return RedirectResponse("/shows", status_code=303)
 
@@ -99,17 +161,12 @@ async def create_show_post(
 # ==========================================================
 @router.get("/shows/edit/{show_id}", response_class=HTMLResponse)
 async def edit_show_form(request: Request, show_id: int):
-
     show = get_show(show_id)
     if not show:
-        raise HTTPException(status_code=404)
+        raise HTTPException(status_code=404, detail="Show tidak ditemukan")
 
-    # 🔥 Tambahkan ini kembali
     shows = list_shows()
-
-    with get_dict_cursor() as (cur, _):
-        cur.execute("SELECT id, label FROM request_sources ORDER BY label ASC")
-        sources = cur.fetchall()
+    sources = get_sources()
 
     s = dict(show)
     s["resolved_thumbnail"] = await resolve_thumbnail_for_web(s.get("thumbnail_url"))
@@ -119,7 +176,7 @@ async def edit_show_form(request: Request, show_id: int):
         {
             "request": request,
             "show": s,
-            "shows": shows,  # 🔥 WAJIB ADA
+            "shows": shows,
             "sources": sources,
         },
     )
@@ -158,7 +215,13 @@ async def update_show_post(
 
     data["is_adult"] = bool(int(is_adult))
 
+    # Validate
+    if "title" in data:
+        validate_show_data(data)
+
+    logger.info(f"Updating show {show_id}")
     update_show(show_id, data)
+    logger.info(f"Show {show_id} updated successfully")
 
     return RedirectResponse("/shows", status_code=303)
 
@@ -171,16 +234,12 @@ def bulk_edit_form(request: Request, ids: str):
     if not ids:
         raise HTTPException(status_code=400, detail="IDs kosong")
 
-    with get_dict_cursor() as (cur, _):
-        cur.execute("SELECT id, label FROM request_sources ORDER BY label ASC")
-        sources = cur.fetchall()
-
     return templates.TemplateResponse(
         "shows/bulk_edit.html",
         {
             "request": request,
             "ids": ids,
-            "sources": sources,
+            "sources": get_sources(),
         },
     )
 
@@ -267,12 +326,57 @@ async def bulk_edit_shows(
     # Call service
     # -----------------------------
     try:
+        logger.info(f"Bulk updating {len(id_list)} shows")
         bulk_update_shows(id_list, data)
+        logger.info(f"Bulk update completed")
     except ValueError as e:
         raise HTTPException(400, str(e))
 
     return RedirectResponse("/shows", status_code=303)
 
+
+# ==========================================================
+# BULK DELETE SHOWS
+# ==========================================================
+@router.post("/shows/bulk-delete")
+async def bulk_delete_shows(
+    ids: str = Form(...),
+):
+    """
+    Bulk delete multiple shows.
+    """
+    if not ids:
+        raise HTTPException(status_code=400, detail="IDs tidak boleh kosong")
+
+    # Parse IDs
+    id_list = [int(i.strip()) for i in ids.split(",") if i.strip().isdigit()]
+    if not id_list:
+        raise HTTPException(status_code=400, detail="IDs tidak valid")
+
+    # Hapus satu per satu
+    deleted = 0
+    errors = []
+
+    for show_id in id_list:
+        try:
+            delete_show(show_id)
+            deleted += 1
+        except ValueError as e:
+            errors.append(f"ID {show_id}: {str(e)}")
+        except Exception as e:
+            errors.append(f"ID {show_id}: {str(e)}")
+
+    if errors and not deleted:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Gagal menghapus semua show: {', '.join(errors[:3])}"
+        )
+
+    # Redirect dengan parameter status
+    return RedirectResponse(
+        url=f"/shows?deleted={deleted}&errors={len(errors)}",
+        status_code=303,
+    )
 
 # ==========================================================
 # IMPORT FILES
@@ -296,6 +400,8 @@ async def import_files_post(
         message_id=message_id,
     )
 
+    logger.info(f"Imported {inserted} files to show {show_id}")
+
     return RedirectResponse(
         url=f"/shows/edit/{show_id}?imported={inserted}",
         status_code=303,
@@ -308,15 +414,17 @@ async def import_files_post(
 @router.post("/shows/delete/{show_id}")
 async def delete_show_route(show_id: int):
     try:
+        logger.info(f"Deleting show {show_id}")
         delete_show(show_id)
+        logger.info(f"Show {show_id} deleted successfully")
 
         return RedirectResponse(url="/shows", status_code=status.HTTP_303_SEE_OTHER)
 
     except ValueError as e:
-        # show tidak ditemukan / id tidak valid
         raise HTTPException(status_code=404, detail=str(e))
 
-    except Exception:
+    except Exception as e:
+        logger.error(f"Error deleting show {show_id}: {str(e)}")
         raise HTTPException(
             status_code=500, detail="Terjadi kesalahan saat menghapus show"
         )

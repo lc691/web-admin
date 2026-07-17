@@ -1,0 +1,265 @@
+<div class="modal fade" id="modal-usage" tabindex="-1" aria-labelledby="modal-usage-title" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <!-- ================================================= -->
+            <!-- HEADER -->
+            <!-- ================================================= -->
+            <div class="modal-header modal-usage-header text-white border-0">
+                <div>
+                    <h3 class="modal-title text-white fw-bold" id="modal-usage-title">
+                        <i class="ti ti-chart-bar me-2"></i>
+                        Songs Usage
+                    </h3>
+                    <div class="text-white-50">
+                        <i class="ti ti-info-circle me-1"></i>
+                        Lihat detail penggunaan lagu per batch export
+                    </div>
+                </div>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- ================================================= -->
+            <!-- BODY -->
+            <!-- ================================================= -->
+            <div class="modal-body modal-usage-body">
+
+                <!-- ============================================= -->
+                <!-- ROW PERTAMA: FILTER -->
+                <!-- ============================================= -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <!-- Day -->
+                            <div class="flex-fill">
+                                <label class="form-label fw-semibold small text-uppercase text-muted">
+                                    <i class="ti ti-calendar me-1"></i>
+                                    Day
+                                </label>
+                                <select id="usage-day" class="form-select modal-usage-rounded">
+                                    <option value="">Loading...</option>
+                                </select>
+                            </div>
+
+                            <!-- Mode -->
+                            <div class="flex-fill">
+                                <label class="form-label fw-semibold small text-uppercase text-muted">
+                                    <i class="ti ti-flag me-1"></i>
+                                    Mode
+                                </label>
+                                <select id="usage-mode" class="form-select modal-usage-rounded">
+                                    <option value="normal">📁 Normal</option>
+                                    <option value="clean">🧹 Clean</option>
+                                    <option value="blacklist">🚫 Blacklist</option>
+                                </select>
+                            </div>
+
+                            <!-- Search -->
+                            <div class="flex-fill">
+                                <label class="form-label fw-semibold small text-uppercase text-muted">
+                                    <i class="ti ti-search me-1"></i>
+                                    Search
+                                </label>
+                                <input id="usage-search" class="form-control modal-usage-rounded" type="text" placeholder="Cari lagu, artis, channel...">
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="flex-fill">
+                                <label class="form-label fw-semibold small text-uppercase text-muted">
+                                    <i class="ti ti-tools me-1"></i>
+                                    Actions
+                                </label>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-outline-danger rounded-pill px-3 flex-fill" id="usage-delete">
+                                        <i class="ti ti-trash me-1"></i>
+                                        Delete
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary rounded-pill px-3 flex-fill" id="usage-reset">
+                                        <i class="ti ti-refresh me-1"></i>
+                                        Reset
+                                    </button>
+                                    <button type="button" class="btn btn-outline-success rounded-pill px-3 flex-fill" id="usage-export">
+                                        <i class="ti ti-file-spreadsheet me-1"></i>
+                                        Export CSV
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================= -->
+                <!-- ROW KEDUA: SUMMARY -->
+                <!-- ============================================= -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <!-- Day -->
+                            <div class="bg-white p-2 rounded-3 shadow-sm flex-fill modal-usage-stat-card">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-primary-lt modal-usage-icon-circle">
+                                        <i class="ti ti-calendar text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Day</div>
+                                        <div class="h5 fw-bold mb-0" id="usage-summary-day">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mode -->
+                            <div class="bg-white p-2 rounded-3 shadow-sm flex-fill modal-usage-stat-card">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-info-lt modal-usage-icon-circle">
+                                        <i class="ti ti-flag text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Mode</div>
+                                        <div class="h5 fw-bold mb-0" id="usage-summary-mode">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Target -->
+                            <div class="bg-white p-2 rounded-3 shadow-sm flex-fill modal-usage-stat-card">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-warning-lt modal-usage-icon-circle">
+                                        <i class="ti ti-crosshair text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Target</div>
+                                        <div class="h5 fw-bold mb-0" id="usage-summary-target">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Duplicate -->
+                            <div class="bg-white p-2 rounded-3 shadow-sm flex-fill modal-usage-stat-card">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-purple-lt modal-usage-icon-circle">
+                                        <i class="ti ti-copy text-purple"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Duplicate</div>
+                                        <div class="h5 fw-bold mb-0" id="usage-summary-duplicate">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Unique -->
+                            <div class="bg-white p-2 rounded-3 shadow-sm flex-fill modal-usage-stat-card">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-success-lt modal-usage-icon-circle">
+                                        <i class="ti ti-check text-success"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Unique</div>
+                                        <div class="h5 fw-bold mb-0" id="usage-summary-unique">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Channels -->
+                            <div class="bg-white p-2 rounded-3 shadow-sm flex-fill modal-usage-stat-card">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-cyan-lt modal-usage-icon-circle">
+                                        <i class="ti ti-users text-cyan"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Channels</div>
+                                        <div class="h5 fw-bold mb-0" id="usage-summary-channels">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Artists -->
+                            <div class="bg-white p-2 rounded-3 shadow-sm flex-fill modal-usage-stat-card">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-pink-lt modal-usage-icon-circle">
+                                        <i class="ti ti-user text-pink"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Artists</div>
+                                        <div class="h5 fw-bold mb-0" id="usage-summary-artists">-</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Songs -->
+                            <div class="bg-white p-2 rounded-3 shadow-sm flex-fill modal-usage-stat-card">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="bg-green-lt modal-usage-icon-circle">
+                                        <i class="ti ti-music text-green"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Songs</div>
+                                        <div class="h5 fw-bold mb-0" id="usage-summary-songs">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================= -->
+                <!-- ROW KETIGA: TABLE -->
+                <!-- ============================================= -->
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="card shadow-sm border-0 modal-usage-glass">
+                            <div class="card-header bg-transparent border-0 py-2 d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">
+                                    <i class="ti ti-list me-2 text-primary"></i>
+                                    Daftar Lagu
+                                </h5>
+                                <span class="badge bg-primary text-white px-2 py-1" id="usage-total">0 Songs</span>
+                            </div>
+                            <div class="card-body pt-0 pb-2">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-vcenter" id="usage-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Channel</th>
+                                                <th>Artist</th>
+                                                <th>Title</th>
+                                                <th class="text-center">Order</th>
+                                                <th class="text-center">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6" class="text-center text-muted py-5">
+                                                    <i class="ti ti-info-circle me-1"></i>
+                                                    Pilih batch untuk melihat detail
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ================================================= -->
+            <!-- FOOTER -->
+            <!-- ================================================= -->
+            <div class="modal-footer modal-usage-footer border-0">
+                <div class="me-auto text-muted small">
+                    <i class="ti ti-info-circle me-1 text-info"></i>
+                    <span id="usage-footer">Ready</span>
+                </div>
+
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                    <i class="ti ti-x me-1"></i>
+                    Tutup
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

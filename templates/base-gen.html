@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}YouTube Generator{% endblock %}</title>
+
+    <!-- Bootstrap (optional, kalau kamu pakai SB Admin boleh tetap include) -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+    <!-- Optional global styling -->
+    <link href="/static/css/generator.css" rel="stylesheet">
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-light">
+
+    <!-- MAIN CONTENT -->
+    <div id="app">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- ========================= -->
+    <!-- CORE SCRIPTS (MINIMAL)   -->
+    <!-- ========================= -->
+
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ========================= -->
+    <!-- GENERATOR MODULES        -->
+    <!-- ========================= -->
+
+    <script src="/static/js/generator/parser.js"></script>
+    <script src="/static/js/generator/generator.js"></script>
+    <script src="/static/js/generator/stats.js"></script>
+    <script src="/static/js/generator/ui.js"></script>
+    <script src="/static/js/generator/app.js"></script>
+
+    <!-- ========================= -->
+    <!-- INIT HOOK                -->
+    <!-- ========================= -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.UI && typeof window.UI.init === "function") {
+                UI.init();
+            } else {
+                console.error("Generator UI not loaded");
+            }
+        });
+    </script>
+
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

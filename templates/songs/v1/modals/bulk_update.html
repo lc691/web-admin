@@ -1,0 +1,117 @@
+<!-- ==========================================================
+     BULK UPDATE MODAL
+=========================================================== -->
+
+<div
+    class="modal modal-blur fade"
+    id="bulk-update-modal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <form
+                id="bulk-update-form"
+                method="post"
+                action="/songs/bulk-update"
+            >
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Bulk Update Status
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <input
+                        type="hidden"
+                        name="channel_id"
+                        id="bulk-channel-id"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="song_ids"
+                        id="bulk-song-ids"
+                    >
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Selected Songs
+                        </label>
+
+                        <input
+                            id="bulk-selected-count"
+                            class="form-control"
+                            value="0"
+                            readonly
+                        >
+
+                    </div>
+
+                    <div>
+
+                        <label class="form-label">
+                            Status
+                        </label>
+
+                        <select
+                            name="status"
+                            class="form-select"
+                            required
+                        >
+
+                            {% for status in valid_status %}
+
+                            <option value="{{ status }}">
+                                {{ status }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-link"
+                        data-bs-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Update
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

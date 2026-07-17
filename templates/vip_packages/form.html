@@ -1,58 +1,850 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="h3 mb-3">{{ package and "Edit" or "Tambah" }} Paket VIP</h1>
 
-<form method="post">
-  <div class="form-group">
-    <label>Nama Paket</label>
-    <input type="text" name="paket_name" class="form-control" required
-           value="{{ package.paket_name if package else '' }}" {{ 'readonly' if package }}>
-  </div>
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+        --success-gradient: linear-gradient(135deg, #10b981, #059669);
+        --warning-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+        --danger-gradient: linear-gradient(135deg, #ef4444, #dc2626);
+        --info-gradient: linear-gradient(135deg, #0ea5e9, #0284c7);
+        --border-color: #e2e8f0;
+        --bg-card: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+    }
 
-  <div class="form-group">
-    <label>Alias</label>
-    <input type="text" name="alias" class="form-control"
-           value="{{ package.alias if package else '' }}">
-  </div>
+    /* Page Container */
+    .page-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
 
-  <div class="form-group">
-    <label>Durasi Awal (basic_days)</label>
-    <input type="number" name="basic_days" class="form-control" required
-           value="{{ package.basic_days if package else 0 }}">
-  </div>
+    /* Page Header */
+    .page-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
 
-  <div class="form-group">
-    <label>Total Durasi (total_days)</label>
-    <input type="number" name="total_days" class="form-control" required
-           value="{{ package.total_days if package else 0 }}">
-  </div>
+    .page-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-  <div class="form-group">
-    <label>Label Tampilan (display_label)</label>
-    <input type="text" name="display_label" class="form-control"
-           value="{{ package.display_label if package else '' }}">
-  </div>
+    .page-title i {
+        background: none;
+        -webkit-text-fill-color: #8b5cf6;
+        font-size: 1.75rem;
+    }
 
-  <div class="form-group">
-    <label>Harga</label>
-    <input type="number" name="price" class="form-control"
-           value="{{ package.price if package else '' }}">
-  </div>
+    .page-subtitle {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-  <div class="form-group form-check">
-    <input type="checkbox" name="is_promo_once" class="form-check-input" id="is_promo_once"
-           {% if package and package.is_promo_once %}checked{% endif %}>
-    <label class="form-check-label" for="is_promo_once">Promo Sekali</label>
-  </div>
+    /* Card Styles */
+    .custom-card {
+        background: var(--bg-card);
+        border-radius: 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-  <div class="form-group form-check">
-    <input type="checkbox" name="is_active" class="form-check-input" id="is_active"
-           {% if package is none or package.is_active %}checked{% endif %}>
-    <label class="form-check-label" for="is_active">Aktif</label>
-  </div>
+    .custom-card:hover {
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+    }
 
-  <button type="submit" class="btn btn-primary">Simpan</button>
-  <a href="/vip_packages" class="btn btn-secondary">Batal</a>
-</form>
+    .card-header-custom {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        padding: 20px 28px;
+        border-bottom: none;
+    }
+
+    .card-header-custom h6 {
+        color: white;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1rem;
+    }
+
+    .card-header-custom h6 i {
+        color: #8b5cf6;
+        font-size: 1.25rem;
+    }
+
+    .card-header-custom h6 .badge {
+        background: rgba(139, 92, 246, 0.2);
+        color: #a78bfa;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+
+    /* Form Styles */
+    .form-container {
+        padding: 32px 28px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.875rem;
+    }
+
+    .form-label i {
+        color: #8b5cf6;
+        font-size: 1rem;
+    }
+
+    .form-label .required {
+        color: #ef4444;
+        font-size: 0.75rem;
+    }
+
+    .form-control {
+        border-radius: 16px;
+        padding: 12px 16px;
+        border: 1.5px solid var(--border-color);
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+        background: var(--bg-card);
+        color: var(--text-main);
+    }
+
+    .form-control:hover {
+        border-color: #cbd5e1;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    .form-control[readonly] {
+        background: #f8fafc;
+        color: #475569;
+        cursor: not-allowed;
+        border-color: #e2e8f0;
+    }
+
+    input[type="number"].form-control {
+        -moz-appearance: textfield;
+    }
+
+    input[type="number"].form-control::-webkit-inner-spin-button,
+    input[type="number"].form-control::-webkit-outer-spin-button {
+        opacity: 0.5;
+    }
+
+    /* Help Text */
+    .form-text {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .form-text i {
+        font-size: 0.7rem;
+    }
+
+    /* Checkbox Styles */
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+        background: #f8fafc;
+        border-radius: 16px;
+        padding: 12px 16px;
+        border: 1px solid var(--border-color);
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #8b5cf6;
+    }
+
+    .checkbox-group label {
+        margin: 0;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--text-main);
+    }
+
+    /* Info Card */
+    .info-card {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 28px;
+        border-left: 4px solid #f59e0b;
+    }
+
+    .info-card-title {
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: #92400e;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-card-content {
+        font-size: 0.8rem;
+        color: #78350f;
+        line-height: 1.5;
+    }
+
+    /* Duration Preview */
+    .duration-preview {
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-top: 12px;
+        display: none;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .duration-preview.show {
+        display: flex;
+    }
+
+    .duration-preview-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+    }
+
+    .duration-preview-content {
+        flex: 1;
+    }
+
+    .duration-preview-label {
+        font-size: 0.7rem;
+        color: #065f46;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .duration-preview-value {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #065f46;
+    }
+
+    /* Price Preview */
+    .price-preview {
+        background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-top: 12px;
+        display: none;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .price-preview.show {
+        display: flex;
+    }
+
+    .price-preview-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+    }
+
+    /* Button Styles */
+    .btn-save, .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 28px;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-save {
+        background: var(--primary-gradient);
+        color: white;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-save:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .btn-cancel {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1.5px solid var(--border-color);
+    }
+
+    .btn-cancel:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+        transform: translateX(-2px);
+    }
+
+    /* Action Buttons Container */
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 16px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 24px 20px;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column-reverse;
+            gap: 12px;
+        }
+        
+        .btn-save, .btn-cancel {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .card-header-custom {
+            padding: 16px 20px;
+        }
+        
+        .checkbox-group {
+            flex-wrap: wrap;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .custom-card {
+        animation: fadeInUp 0.4s ease-out;
+    }
+</style>
+
+<div class="page-container">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div>
+            <div class="page-title">
+                <i class="fas fa-gem"></i>
+                {{ package and "Edit" or "Tambah" }} Paket VIP
+            </div>
+            <div class="page-subtitle">
+                <i class="fas fa-crown"></i>
+                {{ package and "Ubah data paket VIP yang sudah ada" or "Buat paket VIP baru untuk pengguna" }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="custom-card">
+        <div class="card-header-custom">
+            <h6>
+                <i class="fas fa-pencil-alt"></i>
+                Form {{ package and "Edit" or "Tambah" }} Paket
+                {% if package %}
+                <span class="badge">ID: {{ package.paket_name }}</span>
+                {% endif %}
+            </h6>
+        </div>
+
+        <div class="form-container">
+            <form method="post" id="vipPackageForm">
+
+                <!-- Info Card -->
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <i class="fas fa-info-circle"></i>
+                        Informasi Penting
+                    </div>
+                    <div class="info-card-content">
+                        <i class="fas fa-lock me-1"></i>
+                        Pastikan data paket VIP dimasukkan dengan benar karena akan mempengaruhi harga dan durasi layanan pengguna.
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- Nama Paket -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-tag"></i>
+                            Nama Paket
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" 
+                               name="paket_name" 
+                               class="form-control" 
+                               required
+                               value="{{ package.paket_name if package else '' }}" 
+                               {{ 'readonly' if package else '' }}
+                               placeholder="Contoh: Premium 30 Hari">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i>
+                            {% if package %}
+                            Nama paket tidak dapat diubah (primary key)
+                            {% else %}
+                            Nama unik untuk paket VIP (akan menjadi ID)
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Alias -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-code"></i>
+                            Alias
+                        </label>
+                        <input type="text" 
+                               name="alias" 
+                               class="form-control"
+                               value="{{ package.alias if package else '' }}"
+                               placeholder="Contoh: prem30">
+                        <div class="form-text">
+                            <i class="fas fa-lightbulb"></i>
+                            Nama alternatif/singkatan paket (opsional)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- Durasi Awal -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-day"></i>
+                            Durasi Awal (basic_days)
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" 
+                               name="basic_days" 
+                               class="form-control" 
+                               required
+                               value="{{ package.basic_days if package else 0 }}"
+                               min="1"
+                               max="365"
+                               id="basicDays"
+                               placeholder="Contoh: 30">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i>
+                            Durasi dasar paket dalam hitungan hari
+                        </div>
+                    </div>
+
+                    <!-- Total Durasi -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-week"></i>
+                            Total Durasi (total_days)
+                            <span class="required">*</span>
+                        </label>
+                        <input type="number" 
+                               name="total_days" 
+                               class="form-control" 
+                               required
+                               value="{{ package.total_days if package else 0 }}"
+                               min="1"
+                               max="730"
+                               id="totalDays"
+                               placeholder="Contoh: 30">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i>
+                            Total durasi termasuk bonus (hari)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Duration Preview -->
+                <div id="durationPreview" class="duration-preview">
+                    <div class="duration-preview-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="duration-preview-content">
+                        <div class="duration-preview-label">Ringkasan Durasi</div>
+                        <div class="duration-preview-value" id="previewDuration">-</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- Label Tampilan -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-flag"></i>
+                            Label Tampilan (display_label)
+                        </label>
+                        <input type="text" 
+                               name="display_label" 
+                               class="form-control"
+                               value="{{ package.display_label if package else '' }}"
+                               placeholder="Contoh: PREMIUM">
+                        <div class="form-text">
+                            <i class="fas fa-tag"></i>
+                            Label yang ditampilkan di depan pengguna
+                        </div>
+                    </div>
+
+                    <!-- Harga -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-coins"></i>
+                            Harga (Rupiah)
+                        </label>
+                        <input type="number" 
+                               name="price" 
+                               class="form-control"
+                               value="{{ package.price if package else '' }}"
+                               min="0"
+                               step="1000"
+                               id="priceInput"
+                               placeholder="Contoh: 50000">
+                        <div class="form-text">
+                            <i class="fas fa-money-bill-wave"></i>
+                            Harga paket dalam Rupiah
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Preview -->
+                <div id="pricePreview" class="price-preview">
+                    <div class="price-preview-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="duration-preview-content">
+                        <div class="duration-preview-label">Harga yang ditetapkan</div>
+                        <div class="duration-preview-value" id="previewPrice">-</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- Checkboxes -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-fire"></i>
+                            Promo
+                        </label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" 
+                                   name="is_promo_once" 
+                                   id="is_promo_once"
+                                   {% if package and package.is_promo_once %}checked{% endif %}>
+                            <label for="is_promo_once">
+                                <i class="fas fa-tags"></i>
+                                Promo Sekali (hanya untuk pembelian pertama)
+                            </label>
+                        </div>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i>
+                            Centang jika paket ini hanya berlaku untuk promo sekali
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-power-off"></i>
+                            Status
+                        </label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" 
+                                   name="is_active" 
+                                   id="is_active"
+                                   {% if package is none or package.is_active %}checked{% endif %}>
+                            <label for="is_active">
+                                <i class="fas fa-check-circle text-success"></i>
+                                Aktif (paket dapat dipilih oleh pengguna)
+                            </label>
+                        </div>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i>
+                            Nonaktifkan jika paket tidak ingin ditampilkan
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="/vip_packages" class="btn-cancel">
+                        <i class="fas fa-arrow-left"></i>
+                        Kembali ke Daftar
+                    </a>
+                    <button type="submit" class="btn-save" id="submitBtn">
+                        <i class="fas fa-save"></i>
+                        {{ "Simpan Perubahan" if package else "Tambah Paket" }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        const basicDays = document.getElementById('basicDays');
+        const totalDays = document.getElementById('totalDays');
+        const priceInput = document.getElementById('priceInput');
+        const durationPreview = document.getElementById('durationPreview');
+        const previewDuration = document.getElementById('previewDuration');
+        const pricePreview = document.getElementById('pricePreview');
+        const previewPrice = document.getElementById('previewPrice');
+        const form = document.getElementById('vipPackageForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Store original values for change detection (for edit mode)
+        {% if package %}
+        const originalValues = {
+            alias: document.querySelector('input[name="alias"]').value,
+            basic_days: basicDays.value,
+            total_days: totalDays.value,
+            display_label: document.querySelector('input[name="display_label"]').value,
+            price: priceInput.value,
+            is_promo_once: document.getElementById('is_promo_once').checked,
+            is_active: document.getElementById('is_active').checked
+        };
+        
+        let formChanged = false;
+        {% endif %}
+        
+        // Duration preview
+        function updateDurationPreview() {
+            const basic = basicDays ? parseInt(basicDays.value) || 0 : 0;
+            const total = totalDays ? parseInt(totalDays.value) || 0 : 0;
+            
+            if (basic > 0 || total > 0) {
+                let displayText = '';
+                if (basic === total) {
+                    displayText = basic + ' hari (tanpa bonus)';
+                } else {
+                    const bonus = total - basic;
+                    displayText = basic + ' hari dasar + ' + bonus + ' hari bonus = ' + total + ' hari';
+                }
+                previewDuration.textContent = displayText;
+                durationPreview.classList.add('show');
+            } else {
+                durationPreview.classList.remove('show');
+            }
+        }
+        
+        if (basicDays && totalDays) {
+            basicDays.addEventListener('input', updateDurationPreview);
+            totalDays.addEventListener('input', updateDurationPreview);
+            updateDurationPreview();
+        }
+        
+        // Price preview
+        function updatePricePreview() {
+            if (priceInput && priceInput.value) {
+                const price = parseInt(priceInput.value) || 0;
+                const formattedPrice = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(price);
+                previewPrice.textContent = formattedPrice;
+                pricePreview.classList.add('show');
+            } else {
+                pricePreview.classList.remove('show');
+            }
+        }
+        
+        if (priceInput) {
+            priceInput.addEventListener('input', updatePricePreview);
+            updatePricePreview();
+        }
+        
+        {% if package %}
+        // Check for form changes
+        function checkFormChanges() {
+            const currentValues = {
+                alias: document.querySelector('input[name="alias"]').value,
+                basic_days: basicDays.value,
+                total_days: totalDays.value,
+                display_label: document.querySelector('input[name="display_label"]').value,
+                price: priceInput.value,
+                is_promo_once: document.getElementById('is_promo_once').checked,
+                is_active: document.getElementById('is_active').checked
+            };
+            
+            formChanged = (
+                currentValues.alias !== originalValues.alias ||
+                currentValues.basic_days !== originalValues.basic_days ||
+                currentValues.total_days !== originalValues.total_days ||
+                currentValues.display_label !== originalValues.display_label ||
+                currentValues.price !== originalValues.price ||
+                currentValues.is_promo_once !== originalValues.is_promo_once ||
+                currentValues.is_active !== originalValues.is_active
+            );
+        }
+        
+        const formInputs = document.querySelectorAll('#vipPackageForm input, #vipPackageForm select, #vipPackageForm textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('input', checkFormChanges);
+            input.addEventListener('change', checkFormChanges);
+        });
+        
+        // Warn before leaving
+        window.addEventListener('beforeunload', function(e) {
+            if (formChanged) {
+                e.preventDefault();
+                e.returnValue = 'Anda belum menyimpan perubahan. Yakin ingin keluar?';
+                return e.returnValue;
+            }
+        });
+        {% endif %}
+        
+        // Form validation and submission
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate duration
+                const basic = parseInt(basicDays.value) || 0;
+                const total = parseInt(totalDays.value) || 0;
+                
+                if (basic <= 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Durasi Tidak Valid',
+                        text: 'Durasi awal harus lebih dari 0 hari',
+                        confirmButtonColor: '#6366f1'
+                    });
+                    return;
+                }
+                
+                if (total < basic) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Total Durasi Tidak Valid',
+                        text: 'Total durasi tidak boleh kurang dari durasi awal',
+                        confirmButtonColor: '#6366f1'
+                    });
+                    return;
+                }
+                
+                const confirmTitle = '{{ "Simpan Perubahan?" if package else "Tambah Paket?" }}';
+                const confirmText = '{{ "Apakah Anda yakin ingin menyimpan perubahan paket VIP ini?" if package else "Apakah Anda yakin ingin menambahkan paket VIP baru?" }}';
+                
+                Swal.fire({
+                    title: confirmTitle,
+                    text: confirmText,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#6366f1',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: '<i class="fas fa-save"></i> Ya, Simpan!',
+                    cancelButtonText: '<i class="fas fa-times"></i> Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+                        submitBtn.disabled = true;
+                        form.submit();
+                    }
+                });
+            });
+        }
+        
+        // Animation
+        $('.custom-card').css('animation', 'fadeInUp 0.4s ease-out');
+    });
+</script>
 {% endblock %}

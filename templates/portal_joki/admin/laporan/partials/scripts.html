@@ -1,0 +1,135 @@
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    // ==========================================================
+    // ELEMENTS
+    // ==========================================================
+
+    const form = document.querySelector(".filter-section form");
+    const view = document.querySelector('select[name="view"]');
+    const tanggal = document.querySelector('input[name="tanggal"]');
+
+    // ==========================================================
+    // AUTO SUBMIT (ENTER)
+    // ==========================================================
+
+    if (form) {
+        form.querySelectorAll("input, select").forEach((element) => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    form.submit();
+                }
+            });
+        });
+    }
+
+    // ==========================================================
+    // VIEW CHANGE
+    // ==========================================================
+
+    if (view) {
+        view.addEventListener("change", () => {
+
+            if (
+                view.value === "harian" &&
+                tanggal &&
+                !tanggal.value
+            ) {
+                tanggal.value = new Date()
+                    .toISOString()
+                    .slice(0, 10);
+            }
+
+            form.submit();
+
+        });
+    }
+
+    // ==========================================================
+    // TABLE ROW CLICK EFFECT
+    // ==========================================================
+
+    document
+        .querySelectorAll("table.table-hover tbody tr")
+        .forEach((row) => {
+
+            row.addEventListener("mouseenter", () => {
+                row.classList.add("table-active");
+            });
+
+            row.addEventListener("mouseleave", () => {
+                row.classList.remove("table-active");
+            });
+
+        });
+
+    // ==========================================================
+    // ERROR MESSAGE
+    // ==========================================================
+
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.has("error")) {
+
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: params.get("error"),
+        });
+
+        params.delete("error");
+
+        const query = params.toString();
+
+        history.replaceState(
+            {},
+            document.title,
+            window.location.pathname +
+                (query ? "?" + query : "")
+        );
+    }
+
+    // ==========================================================
+    // SUCCESS MESSAGE
+    // ==========================================================
+
+    if (params.has("success")) {
+
+        Swal.fire({
+            icon: "success",
+            title: "Berhasil",
+            text: params.get("success"),
+            timer: 2000,
+            showConfirmButton: false,
+        });
+
+        params.delete("success");
+
+        const query = params.toString();
+
+        history.replaceState(
+            {},
+            document.title,
+            window.location.pathname +
+                (query ? "?" + query : "")
+        );
+    }
+
+    // ==========================================================
+    // PRINT
+    // ==========================================================
+
+    document
+        .querySelectorAll("[data-print]")
+        .forEach((button) => {
+
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                window.print();
+            });
+
+        });
+
+});
+</script>

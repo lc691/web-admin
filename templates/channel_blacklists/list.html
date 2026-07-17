@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <div>
+        <h1 class="h3 text-gray-800 mb-2">
+            <i class="fas fa-ban text-danger mr-2"></i>
+            Channel Blacklists
+        </h1>
+        <p class="text-muted small mb-0">
+            Manage excluded channels for auto export playlist
+        </p>
+    </div>
+
+    <div class="d-flex align-items-center flex-wrap gap-2">
+        <div class="badge badge-danger px-3 py-2">
+            <i class="fas fa-slash-circle mr-1"></i>
+            {{ rows|length }} Channels Blocked
+        </div>
+    </div>
+</div>
+
+<!-- Add New Blacklist Card -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-plus-circle mr-2"></i>
+            Add New Blacklist
+        </h6>
+    </div>
+    
+    <div class="card-body">
+        <form method="post" action="/channel-blacklists">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label class="font-weight-bold mb-2">
+                            <i class="fas fa-megaphone mr-1"></i>
+                            Select Channel
+                        </label>
+                        <select name="channel_id" class="form-control" required>
+                            <option value="">-- Choose channel to block --</option>
+                            {% for channel in channels %}
+                            <option value="{{ channel.id }}">
+                                {{ channel.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <small class="form-text text-muted mt-1">
+                            <i class="fas fa-info-circle"></i> 
+                            Songs from blacklisted channels won't be included in auto export
+                        </small>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="font-weight-bold mb-2 invisible">Action</label>
+                        <button type="submit" class="btn btn-danger btn-block shadow-sm">
+                            <i class="fas fa-shield-slash mr-2"></i>
+                            Block Channel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Blacklist Table Card -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-list-ul mr-2"></i>
+            Blocked Channels List
+        </h6>
+    </div>
+    
+    <div class="card-body table-responsive">
+        {% if rows %}
+        <table class="table table-bordered table-hover align-middle" id="blacklistTable" width="100%">
+            <thead class="thead-light">
+                <tr>
+                    <th width="50">#</th>
+                    <th width="40%">
+                        <i class="fas fa-megaphone mr-1"></i> Channel Name
+                    </th>
+                    <th width="30%">
+                        <i class="fas fa-calendar mr-1"></i> Blocked Date
+                    </th>
+                    <th width="25%" class="text-center">
+                        <i class="fas fa-gear mr-1"></i> Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td class="align-middle text-center font-weight-bold text-muted">{{ loop.index }}</td>
+                    <td class="align-middle">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3">
+                                <span class="badge badge-danger p-2">
+                                    <i class="fas fa-ban"></i>
+                                </span>
+                            </div>
+                            <span class="font-weight-semibold">{{ row.channel_name }}</span>
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        <i class="fas fa-clock mr-1 text-muted"></i>
+                        {% if row.created_at %}
+                        {{ row.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+                        {% else %}
+                        Unknown
+                        {% endif %}
+                    </td>
+                    <td class="align-middle text-center">
+                        <form method="post" action="/channel-blacklists/{{ row.id }}/delete" 
+                              onsubmit="return confirm('⚠️ Yakin ingin membuka blokir {{ row.channel_name }}?\n\nChannel ini akan kembali digunakan dalam auto export.')" 
+                              style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash-alt mr-1"></i>
+                                Unblock
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Footer stats -->
+        <div class="mt-3 pt-2 border-top d-flex justify-content-between align-items-center">
+            <small class="text-muted">
+                <i class="fas fa-database mr-1"></i>
+                Total blocked: {{ rows|length }} channels
+            </small>
+            <small class="text-muted">
+                <i class="fas fa-shield-alt mr-1"></i>
+                Auto export akan melewati channel ini
+            </small>
+        </div>
+        
+        {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-5">
+            <i class="fas fa-shield-alt fa-4x text-muted mb-3"></i>
+            <h5 class="text-muted">Belum ada channel yang diblokir</h5>
+            <p class="text-muted mb-0">Semua channel diizinkan untuk auto export.</p>
+            <p class="text-muted small">Gunakan form di atas untuk memblokir channel tertentu.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Info Alert -->
+<div class="alert alert-info border-left-info shadow-sm" role="alert">
+    <div class="d-flex">
+        <div class="mr-3">
+            <i class="fas fa-info-circle fa-2x text-info"></i>
+        </div>
+        <div>
+            <strong class="d-block mb-1">Tentang Channel Blacklist</strong>
+            <p class="mb-0 small">
+                Channel yang ditambahkan ke blacklist akan dikecualikan dari pembuatan playlist auto-export.
+                Ini berguna untuk memblokir channel yang tidak ingin Anda tampilkan dalam export harian.
+                <br>
+                <i class="fas fa-check-circle text-success mr-1"></i> 
+                <span class="text-muted">Channel yang diblokir dapat dipulihkan kapan saja dengan mengklik "Unblock".</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function () {
+    // Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    // Add loading effect on form submissions
+    $('form').on('submit', function() {
+        if ($(this).find('button[type="submit"]').hasClass('btn-danger') || 
+            $(this).find('button[type="submit"]').hasClass('btn-outline-danger')) {
+            $('#loadingOverlay').fadeIn(200);
+        }
+        
+        // Disable submit button to prevent double submission
+        const btn = $(this).find('button[type="submit"]');
+        if (btn.length && !btn.hasClass('no-loader')) {
+            const originalText = btn.html();
+            btn.html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> Processing...');
+            btn.prop('disabled', true);
+            
+            // Store original text to restore if needed
+            btn.data('original-text', originalText);
+            
+            // Reset after 5 seconds (in case of error)
+            setTimeout(() => {
+                if (btn.prop('disabled')) {
+                    btn.html(btn.data('original-text'));
+                    btn.prop('disabled', false);
+                    $('#loadingOverlay').fadeOut(200);
+                }
+            }, 5000);
+        }
+    });
+    
+    // Add hover effect to table rows
+    $('#blacklistTable tbody tr').hover(
+        function() { 
+            $(this).css('cursor', 'pointer'); 
+        },
+        function() { 
+            $(this).css('cursor', 'auto'); 
+        }
+    );
+    
+    // DataTable initialization for better UX (if many rows)
+    {% if rows|length > 10 %}
+    $('#blacklistTable').DataTable({
+        pageLength: 10,
+        lengthMenu: [10, 25, 50, 100],
+        language: {
+            processing: '<i class="fas fa-spinner fa-spin fa-2x"></i><br>Memproses...',
+            search: "Cari:",
+            searchPlaceholder: "Cari channel...",
+            lengthMenu: "Tampilkan _MENU_ entri",
+            info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data",
+            infoFiltered: "(difilter dari _MAX_ total data)",
+            zeroRecords: "Tidak ada data ditemukan",
+            paginate: { first: "« Awal", last: "Akhir »", next: "›", previous: "‹" }
+        },
+        order: [[0, "asc"]]
+    });
+    {% endif %}
+    
+    // Add search styling
+    $('.dataTables_filter input').addClass('form-control form-control-sm').attr('placeholder', '🔍 Cari channel...').css({
+        'border-radius': '20px',
+        'width': '280px'
+    });
+    
+    // Style select dropdowns
+    $('select.form-control').addClass('form-control-sm');
+});
+
+// Hide loading overlay after page loads
+$(window).on('load', function() {
+    setTimeout(() => {
+        $('#loadingOverlay').fadeOut(200);
+    }, 500);
+});
+</script>
+
+<style>
+/* Consistent with Songs page styles */
+.card {
+    border-radius: 0.35rem;
+}
+
+.card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.card-header .font-weight-bold {
+    font-size: 1rem;
+}
+
+/* Table styling */
+.table th {
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #4e73df;
+    border-bottom-width: 1px;
+}
+
+.table td {
+    vertical-align: middle;
+    font-size: 0.875rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(78, 115, 223, 0.05);
+    transition: all 0.2s ease;
+}
+
+/* Badge styling */
+.badge-danger {
+    background-color: #e74a3b;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 10rem;
+    font-weight: 600;
+}
+
+/* Button styling */
+.btn-danger {
+    background-color: #e74a3b;
+    border-color: #e74a3b;
+}
+
+.btn-danger:hover {
+    background-color: #be2617;
+    border-color: #be2617;
+}
+
+.btn-outline-danger {
+    color: #e74a3b;
+    border-color: #e74a3b;
+}
+
+.btn-outline-danger:hover {
+    background-color: #e74a3b;
+    border-color: #e74a3b;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+}
+
+/* Form styling */
+.form-group label {
+    font-size: 0.875rem;
+    color: #4e73df;
+}
+
+.form-control {
+    border-radius: 0.35rem;
+    border: 1px solid #d1d3e2;
+}
+
+.form-control:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+/* Alert styling */
+.alert.border-left-info {
+    border-left: 4px solid #36b9cc;
+}
+
+.alert {
+    border-radius: 0.35rem;
+}
+
+/* Gap utility */
+.gap-2 {
+    gap: 0.5rem;
+}
+
+/* Loading overlay */
+#loadingOverlay {
+    backdrop-filter: blur(3px);
+}
+
+/* Empty state styling */
+.text-center.py-5 i.fa-shield-alt {
+    opacity: 0.5;
+}
+
+/* DataTables styling */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 1rem;
+}
+
+.dataTables_filter input.form-control {
+    border-radius: 20px;
+    padding: 0.375rem 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+    
+    .d-flex .btn,
+    .d-flex form {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+    
+    .gap-2 {
+        margin-top: 0.5rem;
+    }
+    
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .col-md-4, .col-md-8 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .btn-block {
+        margin-top: 0.5rem;
+    }
+    
+    .invisible {
+        display: none;
+    }
+}
+
+/* Animation for buttons */
+.btn {
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Table row transitions */
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+/* Badge animations */
+.badge {
+    transition: all 0.2s ease;
+}
+</style>
+
+{% endblock %}

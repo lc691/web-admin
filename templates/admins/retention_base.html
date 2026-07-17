@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid px-4">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-chart-line me-2 text-primary"></i>
+                Retention Dashboard
+            </h1>
+            <small class="text-muted">
+                Analisis retensi pengguna dan konversi
+            </small>
+        </div>
+        <a href="/admins" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i>
+            Kembali ke Admin
+        </a>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- STATISTICS CARDS                                            -->
+    <!-- ========================================================== -->
+    <div class="row g-3 mb-4">
+        
+        <!-- Total Reminder -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-primary text-uppercase">Total Reminder</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ total }}</div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-bell fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversion Rate (All Time) -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-success text-uppercase">Conversion Rate (All Time)</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ rate_all }}%</div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-percentage fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conversion Rate (14 Days) -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-left-warning shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-warning text-uppercase">Conversion Rate (14 Days)</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ rate_14 }}%</div>
+                        </div>
+                        <div class="text-warning">
+                            <i class="fas fa-clock fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- PROGRESS BAR (Visualisasi Konversi)                         -->
+    <!-- ========================================================== -->
+    <div class="row g-3 mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h6 class="mb-0 fw-bold text-primary">
+                        <i class="fas fa-chart-simple me-2"></i>
+                        Conversion Overview
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold">All Time</span>
+                                    <span class="text-success fw-bold">{{ rate_all }}%</span>
+                                </div>
+                                <div class="progress" style="height: 12px;">
+                                    <div class="progress-bar bg-success" 
+                                         role="progressbar" 
+                                         style="width: {{ rate_all }}%;" 
+                                         aria-valuenow="{{ rate_all }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold">Last 14 Days</span>
+                                    <span class="text-warning fw-bold">{{ rate_14 }}%</span>
+                                </div>
+                                <div class="progress" style="height: 12px;">
+                                    <div class="progress-bar bg-warning" 
+                                         role="progressbar" 
+                                         style="width: {{ rate_14 }}%;" 
+                                         aria-valuenow="{{ rate_14 }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Total Reminder: <strong>{{ total }}</strong> | 
+                                Converted: <strong>{{ converted }}</strong>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- TABLE                                                      -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-table me-2"></i>
+                    Adaptive Offset Distribution
+                </h6>
+                <span class="text-muted small">
+                    Total: <strong>{{ adaptive|length }}</strong> offset
+                </span>
+            </div>
+        </div>
+        <div class="card-body table-responsive">
+            {% if adaptive %}
+            <table class="table table-hover table-striped align-middle" id="retentionTable">
+                <thead class="table-light">
+                    <tr>
+                        <th width="60">#</th>
+                        <th>Offset (Days)</th>
+                        <th>Users</th>
+                        <th width="200">Distribution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in adaptive %}
+                    {% set max_users = adaptive|map(attribute='users')|max %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <span class="badge bg-primary text-warning">
+                                <i class="fas fa-calendar-day me-1"></i>
+                                {{ row.offset_days }} days
+                            </span>
+                        </td>
+                        <td>
+                            <span class="fw-bold">{{ row.users }}</span>
+                            <span class="text-muted small">
+                                ({{ "%.1f"|format(row.users / total * 100) if total else 0 }}%)
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="progress flex-grow-1" style="height: 8px;">
+                                    <div class="progress-bar bg-info" 
+                                         role="progressbar" 
+                                         style="width: {{ (row.users / max_users * 100) if max_users else 0 }}%;" 
+                                         aria-valuenow="{{ row.users }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="{{ max_users }}">
+                                    </div>
+                                </div>
+                                <span class="text-muted small">
+                                    {{ (row.users / max_users * 100) if max_users else 0 }}%
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <!-- EMPTY STATE -->
+            <div class="text-center py-5">
+                <i class="fas fa-chart-line fa-4x text-muted d-block mb-3"></i>
+                <h5 class="text-muted">Belum ada data retention</h5>
+                <p class="text-muted mb-0">Data akan muncul setelah ada aktivitas retention</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- FOOTER -->
+        {% if adaptive %}
+        <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <span class="text-muted small">
+                    Menampilkan <strong>{{ adaptive|length }}</strong> offset distribution
+                </span>
+                <button class="btn btn-outline-secondary btn-sm" id="btnRefresh">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    Refresh
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- ========================================================== -->
+<!-- STYLES                                                     -->
+<!-- ========================================================== -->
+<style>
+    .border-left-primary {
+        border-left: 4px solid #6366f1;
+    }
+    .border-left-success {
+        border-left: 4px solid #22c55e;
+    }
+    .border-left-warning {
+        border-left: 4px solid #f59e0b;
+    }
+    .opacity-50 {
+        opacity: 0.5;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .table tr:hover {
+        cursor: default;
+    }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 1rem; }
+    .progress {
+        background-color: #e9ecef;
+        border-radius: 50px;
+        overflow: hidden;
+    }
+    .progress-bar {
+        transition: width 0.6s ease;
+        border-radius: 50px;
+    }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function () {
+    
+    // ==========================================================
+    // DATATABLE
+    // ==========================================================
+    var table = $('#retentionTable').DataTable({
+        "language": {
+            "search": "Cari:",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "infoEmpty": "Tidak ada data",
+            "infoFiltered": "(difilter dari _MAX_ total entri)",
+            "paginate": {
+                "first": "Awal",
+                "last": "Akhir",
+                "next": "Berikutnya",
+                "previous": "Sebelumnya"
+            },
+            "zeroRecords": "Tidak ada data ditemukan"
+        },
+        "pageLength": 25,
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],
+        "order": [[1, "asc"]],  // Order by offset_days
+        "columnDefs": [
+            { "orderable": false, "targets": [0, 3] }  // # dan Distribution column
+        ]
+    });
+    
+    // ==========================================================
+    // REFRESH
+    // ==========================================================
+    $('#btnRefresh').on('click', function() {
+        table.ajax.reload();
+        $(this).html('<i class="fas fa-spinner fa-spin me-1"></i>');
+        setTimeout(() => {
+            $(this).html('<i class="fas fa-sync-alt me-1"></i> Refresh');
+        }, 800);
+    });
+    
+    // ==========================================================
+    // ANIMATE PROGRESS BARS ON LOAD
+    // ==========================================================
+    $('.progress-bar').each(function() {
+        const width = $(this).css('width');
+        $(this).css('width', '0%');
+        setTimeout(() => {
+            $(this).css('width', width);
+        }, 100);
+    });
+    
+});
+</script>
+{% endblock %}

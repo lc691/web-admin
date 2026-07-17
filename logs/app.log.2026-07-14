@@ -1,0 +1,112 @@
+[2026-07-15 07:39:17] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-15 08:24:04] [INFO] [webhook] [REQ] path=/favicon.ico public=True
+[2026-07-15 08:24:08] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 08:24:08] [INFO] [webhook] Login attempt: admin | IP: 172.70.142.216
+[2026-07-15 08:24:09] [INFO] [webhook] Login success: admin (remember=False)
+[2026-07-15 08:24:09] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-15 08:24:09] [INFO] [webhook] [Dashboard] Loaded Users=6814 Shows=4475
+[2026-07-15 08:24:09] [INFO] [webhook] [REQ DONE] path=/ ms=127.56
+[2026-07-15 08:24:09] [INFO] [webhook] [REQ] path=/static/vendor/datatables/css/dataTables.dataTables.min.css public=True
+[2026-07-15 08:24:09] [INFO] [webhook] [REQ] path=/static/tabler/icons/tabler-icons.min.css public=True
+[2026-07-15 08:24:09] [INFO] [webhook] [REQ] path=/static/css/sidebar.css public=True
+[2026-07-15 08:24:09] [INFO] [webhook] [REQ] path=/static/css/layout.css public=True
+[2026-07-15 08:24:09] [INFO] [webhook] [REQ] path=/static/css/navbar.css public=True
+[2026-07-15 08:24:10] [INFO] [webhook] [REQ] path=/static/bootstrap/js/bootstrap.bundle.min.js public=True
+[2026-07-15 08:24:10] [INFO] [webhook] [REQ] path=/static/img/logo.png public=True
+[2026-07-15 08:24:10] [INFO] [webhook] [REQ] path=/static/vendor/htmx/htmx.min.js public=True
+[2026-07-15 08:24:15] [INFO] [webhook] [REQ] path=/static/js/songs/songs.js public=True
+[2026-07-15 08:24:15] [INFO] [webhook] [REQ] path=/static/js/songs/filters.js public=True
+[2026-07-15 08:24:15] [INFO] [webhook] [REQ] path=/static/js/songs/table.js public=True
+[2026-07-15 08:24:15] [INFO] [webhook] [REQ] path=/static/js/songs/bulk.js public=True
+[2026-07-15 08:24:15] [INFO] [webhook] [REQ] path=/static/js/songs/create.js public=True
+[2026-07-15 08:24:15] [INFO] [webhook] [REQ] path=/static/js/songs/release.js public=True
+[2026-07-15 08:24:15] [INFO] [webhook] [REQ] path=/static/js/songs/update.js public=True
+[2026-07-15 08:24:15] [INFO] [webhook] [REQ] path=/api/songs/statistics public=False
+[2026-07-15 08:24:15] [INFO] [webhook] [REQ DONE] path=/api/songs/statistics ms=25.23
+[2026-07-15 08:24:20] [INFO] [webhook] [REQ] path=/api/songs/export/status public=False
+[2026-07-15 08:24:20] [INFO] [webhook] [REQ DONE] path=/api/songs/export/status ms=29.34
+[2026-07-15 08:33:09] [INFO] [webhook] [REQ] path=/sitemap.xml public=False
+[2026-07-15 08:33:10] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 09:06:02] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 09:24:04] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-15 09:32:46] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-15 11:02:10] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-15 11:02:11] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 12:31:21] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 12:52:46] [INFO] [webhook] [REQ] path=/sitemap.xml public=False
+[2026-07-15 12:52:47] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 14:33:03] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-15 14:51:54] [INFO] [webhook] [REQ] path=/wp-login.php public=False
+[2026-07-15 14:52:29] [INFO] [webhook] [REQ] path=/songs/youtube-generator public=True
+[2026-07-15 15:20:42] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-15 15:20:43] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-15 16:40:55] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-15 17:50:44] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 18:16:45] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 19:56:41] [INFO] [webhook] [REQ] path=/songs/youtube-generator public=True
+[2026-07-15 19:58:25] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-15 20:30:18] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 21:14:21] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 22:08:01] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 22:08:01] [INFO] [webhook] [REQ] path=/favicon.ico public=True
+[2026-07-15 22:09:58] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-15 22:09:58] [INFO] [webhook] Login attempt: admin | IP: 162.158.189.179
+[2026-07-15 22:09:58] [INFO] [webhook] Login success: admin (remember=False)
+[2026-07-15 22:09:58] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-15 22:09:58] [INFO] [webhook] [Dashboard] Loaded Users=6832 Shows=4479
+[2026-07-15 22:09:58] [INFO] [webhook] [REQ DONE] path=/ ms=108.57
+[2026-07-15 22:09:58] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-15 22:09:58] [INFO] [webhook] [Dashboard] Loaded Users=6832 Shows=4479
+[2026-07-15 22:09:58] [INFO] [webhook] [REQ DONE] path=/ ms=113.5
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/css/navbar.css public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/css/layout.css public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/tabler/css/tabler.min.css public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/css/components.css public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/vendor/datatables/css/dataTables.dataTables.min.css public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/bootstrap/js/bootstrap.bundle.min.js public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/css/base.css public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/js/charts.js public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/js/sidebar.js public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/css/sidebar.css public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/vendor/htmx/htmx.min.js public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/js/navbar.js public=True
+[2026-07-15 22:09:59] [INFO] [webhook] [REQ] path=/static/img/default-thumb.png public=True
+[2026-07-15 22:10:13] [INFO] [webhook] [REQ] path=/shows/edit/4671 public=False
+[2026-07-15 22:10:14] [INFO] [webhook] [REQ DONE] path=/shows/edit/4671 ms=135.65
+[2026-07-15 22:10:14] [INFO] [webhook] [REQ] path=/shows/edit/4672 public=False
+[2026-07-15 22:10:14] [INFO] [webhook] [REQ DONE] path=/shows/edit/4672 ms=141.82
+[2026-07-15 22:10:15] [INFO] [webhook] [REQ] path=/shows/edit/4674 public=False
+[2026-07-15 22:10:15] [INFO] [webhook] [REQ DONE] path=/shows/edit/4674 ms=143.18
+[2026-07-15 22:10:16] [INFO] [webhook] [REQ] path=/shows/edit/4676 public=False
+[2026-07-15 22:10:16] [INFO] [webhook] [REQ DONE] path=/shows/edit/4676 ms=141.26
+[2026-07-15 22:11:10] [INFO] [webhook] [REQ] path=/shows/edit/4671 public=False
+[2026-07-15 22:11:10] [INFO] [webhook] [REQ DONE] path=/shows/edit/4671 ms=34.82
+[2026-07-15 22:13:25] [INFO] [webhook] [REQ] path=/shows/edit/4674 public=False
+[2026-07-15 22:13:26] [INFO] [webhook] [REQ DONE] path=/shows/edit/4674 ms=41.36
+[2026-07-15 22:14:04] [INFO] [webhook] [REQ] path=/shows/edit/4675 public=False
+[2026-07-15 22:14:04] [INFO] [webhook] [REQ DONE] path=/shows/edit/4675 ms=32.94
+[2026-07-15 22:14:39] [INFO] [webhook] [REQ] path=/shows/edit/4676 public=False
+[2026-07-15 22:14:39] [INFO] [webhook] [REQ DONE] path=/shows/edit/4676 ms=30.83
+[2026-07-15 22:15:17] [INFO] [webhook] [REQ] path=/shows/edit/4677 public=False
+[2026-07-15 22:15:17] [INFO] [webhook] [REQ DONE] path=/shows/edit/4677 ms=32.51
+[2026-07-15 22:39:40] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-15 22:52:18] [INFO] [webhook] [REQ] path=/shows public=False
+[2026-07-15 22:52:18] [INFO] [webhook] [REQ DONE] path=/shows ms=384.1
+[2026-07-15 22:53:24] [INFO] [webhook] [REQ] path=/shows public=False
+[2026-07-15 22:53:24] [INFO] [webhook] [REQ DONE] path=/shows ms=92.25
+[2026-07-15 22:53:51] [INFO] [webhook] [REQ] path=/catatan public=False
+[2026-07-15 22:53:52] [INFO] [webhook] [REQ DONE] path=/catatan ms=185.36
+[2026-07-15 23:38:34] [INFO] [webhook] [REQ] path=/sitemap.xml public=False
+[2026-07-16 00:27:16] [INFO] [webhook] [REQ] path=/catatan public=False
+[2026-07-16 00:27:16] [INFO] [webhook] [REQ DONE] path=/catatan ms=150.6
+[2026-07-16 00:37:38] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-16 01:24:48] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-16 02:02:27] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-16 02:02:28] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-16 02:02:29] [INFO] [webhook] [REQ] path=/forgot-password public=False
+[2026-07-16 02:02:30] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-16 02:02:31] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-16 02:10:45] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-16 04:38:38] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-16 05:39:41] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-16 05:39:43] [INFO] [webhook] [REQ] path=/login public=True

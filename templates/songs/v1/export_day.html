@@ -1,0 +1,574 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    /* ========== MODERN & CATCHY STYLES ========== */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+    
+    * {
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    
+    body {
+        background: linear-gradient(145deg, #f0f4f8 0%, #e9eef4 100%);
+    }
+    
+    .container-wide {
+        max-width: 1600px;
+        width: 95%;
+        margin: 0 auto;
+    }
+    
+    @media (min-width: 1400px) {
+        .container-wide {
+            max-width: 1400px;
+        }
+    }
+    
+    .card-modern {
+        border-radius: 1.75rem;
+        border: none;
+        background: rgba(255,255,255,0.98);
+        box-shadow: 0 20px 35px -12px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.02);
+        transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        overflow: hidden;
+    }
+    
+    @media (hover: hover) {
+        .card-modern:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 40px -16px rgba(0,0,0,0.15);
+        }
+    }
+    
+    .gradient-header {
+        background: linear-gradient(115deg, #0f2b5e 0%, #1e3a7a 40%, #2d4a9a 100%);
+        padding: 1.25rem 1.75rem;
+    }
+    
+    .gradient-header-danger {
+        background: linear-gradient(115deg, #991b1b 0%, #dc2626 50%, #ef4444 100%);
+    }
+    
+    .btn-modern {
+        border-radius: 3rem;
+        padding: 0.85rem 2.2rem;
+        font-weight: 600;
+        background: linear-gradient(95deg, #0f2b5e 0%, #1f3a7c 100%);
+        border: none;
+        transition: all 0.25s ease;
+        box-shadow: 0 8px 18px -8px rgba(25, 55, 120, 0.35);
+    }
+    
+    .btn-modern:hover {
+        transform: scale(1.02);
+        background: linear-gradient(95deg, #122b66 0%, #234187 100%);
+        box-shadow: 0 12px 24px -10px rgba(25, 55, 120, 0.5);
+    }
+    
+    .form-control-modern,
+    .form-select-modern {
+        border-radius: 1rem;
+        border: 1px solid #e2edf2;
+        padding: 0.7rem 1rem;
+        transition: all 0.2s;
+        font-weight: 450;
+    }
+    
+    .form-control-modern:focus,
+    .form-select-modern:focus {
+        border-color: #2d449d;
+        box-shadow: 0 0 0 4px rgba(45, 68, 157, 0.12);
+        outline: none;
+    }
+    
+    .channel-item {
+        border-radius: 1rem;
+        transition: all 0.2s;
+        cursor: pointer;
+        background: #ffffff;
+        border: 1px solid #edf2f7;
+        margin-bottom: 8px;
+        padding: 0.65rem 0.75rem;
+    }
+    
+    .channel-item:hover {
+        background-color: #f8fafd;
+        border-color: #cbdff2;
+        transform: translateX(4px);
+    }
+    
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 56px;
+        height: 30px;
+    }
+    
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background-color: #cbd5e6;
+        transition: 0.25s;
+        border-radius: 40px;
+    }
+    
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 24px;
+        width: 24px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.25s;
+        border-radius: 50%;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    input:checked + .toggle-slider {
+        background: linear-gradient(95deg, #1e2f6e, #2f458f);
+    }
+    
+    input:checked + .toggle-slider:before {
+        transform: translateX(26px);
+    }
+    
+    .summary-box {
+        border-radius: 1.25rem;
+        background: #fefefe;
+        border: 1px solid #eef3fc;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,0.02), 0 4px 10px rgba(0,0,0,0.02);
+    }
+    
+    /* ========== PERBESAR UKURAN FONT DI SUMMARY ========== */
+    .summary-content {
+        font-size: 1rem;  /* default lebih besar dari sebelumnya */
+        line-height: 1.6;
+    }
+    
+    .summary-content > div {
+        margin-bottom: 0.75rem;
+        padding: 0.5rem;
+        background: #f8fafc;
+        border-radius: 0.75rem;
+        transition: all 0.2s;
+    }
+    
+    .summary-content > div:hover {
+        background: #f1f5f9;
+        transform: translateX(4px);
+    }
+    
+    .summary-content strong {
+        color: #1e2b6e;
+        font-size: 1rem;
+        font-weight: 700;
+        display: inline-block;
+        min-width: 180px;
+    }
+    
+    .summary-content .stat-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2d449d;
+        background: linear-gradient(135deg, #1e2b6e, #2d449d);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    /* preview list juga diperbesar */
+    .preview-list {
+        max-height: 320px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        font-size: 0.95rem;
+    }
+    
+    .preview-list li {
+        border-bottom: 1px solid #ecf3fa;
+        padding: 0.85rem 0;
+    }
+    
+    .preview-list li strong {
+        font-size: 1rem;
+    }
+    
+    .badge-day {
+        background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+        color: #1e2b6e;
+        padding: 0.4rem 1rem;
+        font-weight: 600;
+        border-radius: 40px;
+        font-size: 0.85rem;
+    }
+    
+    .channels-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    /* alert juga diperbesar */
+    .alert-warning-custom, .alert-danger-custom {
+        font-size: 0.95rem;
+        padding: 1rem !important;
+    }
+</style>
+
+<div class="container-wide py-4 py-md-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            
+            <!-- HEADER -->
+            <div class="text-center mb-5">
+                <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+                    <i class="bi bi-vinyl-fill" style="font-size: 2rem; color: #2d449d;"></i>
+                    <h1 class="display-5 fw-bold mb-0"
+                        style="background: linear-gradient(125deg, #172554 0%, #2563eb 70%, #3b82f6 100%);
+                               -webkit-background-clip: text;
+                               -webkit-text-fill-color: transparent;
+                               background-clip: text;">
+                        🎵 Export Studio
+                    </h1>
+                </div>
+                <p class="text-secondary mb-2 fs-5">
+                    Smart playlist builder — mix, duplicate, exclude
+                </p>
+                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <span class="badge-day">
+                        <i class="bi bi-calendar-week"></i> Day {{ day }}
+                    </span>
+                    <span class="badge-day bg-light text-dark border">
+                        <i class="bi bi-magic"></i> Live preview
+                    </span>
+                </div>
+            </div>
+
+            <form method="post">
+
+                <!-- MAIN CONFIG CARD -->
+                <div class="card card-modern mb-4">
+                    <div class="gradient-header text-white">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-sliders2 fs-4"></i>
+                            <h5 class="mb-0 fw-semibold fs-5">Export Configuration</h5>
+                            <span class="ms-auto badge bg-white text-dark opacity-75 rounded-pill">✨ advanced</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4 p-xl-5">
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold d-flex align-items-center gap-1">
+                                    <i class="bi bi-funnel"></i> Exclude Mode
+                                </label>
+                                <select name="exclude_mode" class="form-select form-select-modern" id="excludeMode">
+                                    <option value="none">🚫 No Exclude</option>
+                                    <option value="blacklist" selected>📋 Use Blacklist Channels</option>
+                                    <option value="custom">✏️ Custom Exclude Channels</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold d-flex align-items-center gap-1">
+                                    <i class="bi bi-files"></i> Duplicate Count
+                                </label>
+                                <select name="duplicate_count" class="form-select form-select-modern" id="duplicateCount">
+                                    <option value="1">1x · Single copy</option>
+                                    <option value="2" selected>2x · Double copy ✨</option>
+                                    <option value="3">3x · Triple copy 🔥</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold d-flex gap-1">
+                                    <i class="bi bi-music-note-list"></i> Total Songs
+                                </label>
+                                <input type="number" name="target_count" class="form-control form-control-modern"
+                                       value="30" min="1" max="500" id="targetCount">
+                                <small class="text-muted">Min 1, Max 500</small>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold d-flex gap-1">
+                                    <i class="bi bi-collection"></i> Max Per Channel
+                                </label>
+                                <input type="number" name="max_song_per_channel" class="form-control form-control-modern"
+                                       value="1" min="1" max="50">
+                            </div>
+                        </div>
+
+                        <!-- SUMMARY BOX dengan font lebih besar -->
+                        <div class="summary-box p-4 mt-4">
+                            <div class="fw-semibold fs-5 mb-3 d-flex align-items-center gap-2">
+                                <i class="bi bi-graph-up fs-5"></i> Export Summary
+                                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill ms-2 px-2 py-1">auto-refresh</span>
+                            </div>
+                            <div id="summaryText" class="summary-content"></div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- REGENERATE TOGGLE -->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-3 rounded-4 bg-light bg-opacity-50">
+                            <div class="d-flex align-items-center gap-3">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" name="regenerate" value="1" id="regenerate">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div>
+                                    <label for="regenerate" class="fw-semibold mb-0">Force Regenerate</label>
+                                    <div><small class="text-danger">⚠️ Existing export batch for this day will be replaced.</small></div>
+                                </div>
+                            </div>
+                            <div class="badge bg-white text-secondary border px-3 py-2 rounded-pill">
+                                <i class="bi bi-arrow-repeat me-1"></i> Fresh playlist
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EXCLUDED CHANNELS CARD -->
+                <div class="card card-modern mb-4" id="customExcludeCard" style="display:none">
+                    <div class="gradient-header gradient-header-danger text-white">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-x-circle fs-5"></i>
+                            <h5 class="mb-0 fw-semibold">Excluded Channels</h5>
+                            <span class="ms-auto badge bg-white text-danger rounded-pill">blocklist</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="channels-grid">
+                            {% for channel in channels %}
+                            <label class="channel-item d-flex align-items-center gap-2" for="channel_{{ channel.id }}">
+                                <input type="checkbox" name="excluded_channels" value="{{ channel.id }}"
+                                       id="channel_{{ channel.id }}" class="form-check-input">
+                                <span class="ms-1"><i class="bi bi-disc-fill me-1 text-secondary"></i> {{ channel.name }}</span>
+                            </label>
+                            {% else %}
+                            <div class="col-12 text-center py-5">
+                                <i class="bi bi-inbox display-1 text-muted"></i>
+                                <p class="text-muted mt-3">No channels available</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if channels %}
+                        <div class="mt-4 d-flex gap-3">
+                            <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" id="selectAllBtn">
+                                <i class="bi bi-check-all"></i> Exclude All
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" id="deselectAllBtn">
+                                <i class="bi bi-x-lg"></i> Include All
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <div class="text-center mt-5">
+                    <button type="submit" class="btn btn-modern text-white px-5 py-3" id="submitBtn">
+                        <i class="bi bi-download me-2"></i> Generate Export TXT
+                        <i class="bi bi-arrow-right-short ms-2 fs-5"></i>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<script>
+    // =========================================================
+    // SELECT ALL / DESELECT ALL
+    // =========================================================
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const deselectAllBtn = document.getElementById('deselectAllBtn');
+
+    if (selectAllBtn) {
+        selectAllBtn.addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('input[name="excluded_channels"]');
+            checkboxes.forEach(cb => { cb.checked = true; });
+            loadExportPreview();
+        });
+    }
+
+    if (deselectAllBtn) {
+        deselectAllBtn.addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('input[name="excluded_channels"]');
+            checkboxes.forEach(cb => { cb.checked = false; });
+            loadExportPreview();
+        });
+    }
+
+    // =========================================================
+    // EXCLUDE MODE TOGGLE
+    // =========================================================
+    const excludeMode = document.getElementById('excludeMode');
+    const customExcludeCard = document.getElementById('customExcludeCard');
+
+    function updateExcludeMode() {
+        const mode = excludeMode.value;
+        customExcludeCard.style.display = mode === 'custom' ? 'block' : 'none';
+        loadExportPreview();
+    }
+
+    excludeMode.addEventListener('change', updateExcludeMode);
+    updateExcludeMode();
+
+    // =========================================================
+    // EXPORT SUMMARY (basic)
+    // =========================================================
+    function updateSummary() {
+        const totalSongs = parseInt(document.getElementById('targetCount').value || 0);
+        const duplicate = parseInt(document.getElementById('duplicateCount').value || 0);
+        const totalRows = totalSongs * duplicate;
+        const summaryDiv = document.getElementById('summaryText');
+        if (summaryDiv && !summaryDiv.innerHTML.includes('Available Songs:')) {
+            summaryDiv.innerHTML = `
+                <div><strong>📊 Summary:</strong> ${totalSongs} songs × ${duplicate} duplicate = <span class="stat-value">${totalRows} output rows</span></div>
+            `;
+        }
+    }
+
+    document.getElementById('targetCount').addEventListener('input', updateSummary);
+    document.getElementById('duplicateCount').addEventListener('change', updateSummary);
+    updateSummary();
+
+    // =========================================================
+    // FORM SUBMIT HANDLER
+    // =========================================================
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function() {
+        const btn = document.getElementById('submitBtn');
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Processing...`;
+        btn.disabled = true;
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-download me-2"></i> Generate Export TXT <i class="bi bi-arrow-right-short ms-2"></i>`;
+        }, 3000);
+    });
+
+    window.addEventListener('pageshow', () => {
+        const btn = document.getElementById('submitBtn');
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-download me-2"></i> Generate Export TXT <i class="bi bi-arrow-right-short ms-2"></i>`;
+        }
+    });
+
+    // =========================================================
+    // LIVE EXPORT PREVIEW dengan font lebih besar
+    // =========================================================
+    async function loadExportPreview() {
+        const duplicateCount = parseInt(document.getElementById('duplicateCount')?.value || 0);
+        const targetCount = parseInt(document.getElementById('targetCount')?.value || 0);
+        const maxSongPerChannel = parseInt(document.querySelector('input[name="max_song_per_channel"]')?.value || 0);
+        const excludeModeVal = document.getElementById('excludeMode')?.value || 'none';
+        const excludedChannels = Array.from(document.querySelectorAll('input[name="excluded_channels"]:checked'))
+                                      .map(cb => parseInt(cb.value));
+
+        const summaryContainer = document.getElementById('summaryText');
+        summaryContainer.innerHTML = `<div class="text-center py-3"><i class="bi bi-arrow-repeat spinner-grow-sm me-2"></i> Loading preview...</div>`;
+
+        try {
+            const response = await fetch('/songs/export/preview', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    duplicate_count: duplicateCount,
+                    target_count: targetCount,
+                    max_song_per_channel: maxSongPerChannel,
+                    excluded_channels: excludedChannels,
+                    exclude_mode: excludeModeVal,
+                })
+            });
+            const data = await response.json();
+
+            let warningHtml = '';
+            if (data.selected_songs < targetCount) {
+                warningHtml += `<div class="alert alert-warning-custom p-3 mt-3 d-flex gap-2 align-items-start">
+                                    <i class="bi bi-exclamation-triangle-fill text-warning fs-5"></i>
+                                    <div><strong>⚠️ Limited songs</strong><br>Only ${data.selected_songs} songs available from requested ${targetCount}</div>
+                                </div>`;
+            }
+            if (data.pool_health < 20) {
+                warningHtml += `<div class="alert alert-danger-custom p-3 mt-2 d-flex gap-2">
+                                    <i class="bi bi-database-exclamation text-danger"></i>
+                                    <div><strong>⚠️ Critical pool</strong><br>Song pool is running low (${data.pool_health}%)</div>
+                                </div>`;
+            }
+            if (data.diversity_score < 30 && data.diversity_score !== undefined) {
+                warningHtml += `<div class="alert alert-warning-custom p-3 mt-2 d-flex gap-2">
+                                    <i class="bi bi-bar-chart-steps"></i>
+                                    <div><strong>📉 Low diversity</strong><br>Low channel diversity (${data.diversity_score}%)</div>
+                                </div>`;
+            }
+
+            let previewHtml = '';
+            if (data.preview && data.preview.length) {
+                previewHtml = `<div class="mt-4">
+                                    <strong class="fs-6">🎧 Track Preview (first ${data.preview.length})</strong>
+                                    <ul class="preview-list list-unstyled mt-2">
+                                `;
+                data.preview.forEach(song => {
+                    previewHtml += `<li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                        <div>
+                                            <i class="bi bi-music-note-beamed me-2 text-primary"></i>
+                                            <strong>${escapeHtml(song.title)}</strong>
+                                            <div class="text-muted small mt-1">${escapeHtml(song.artist)}</div>
+                                        </div>
+                                        <span class="badge bg-light text-dark rounded-pill px-3 py-2">
+                                            <i class="bi bi-broadcast"></i> ${escapeHtml(song.channel)}
+                                        </span>
+                                    </li>`;
+                });
+                previewHtml += `</ul></div>`;
+            }
+
+            summaryContainer.innerHTML = `
+                <div><strong>📀 Available Songs:</strong> <span class="stat-value">${data.available_songs ?? 0}</span></div>
+                <div><strong>✅ Selected Songs:</strong> <span class="stat-value">${data.selected_songs ?? 0}</span></div>
+                <div><strong>📄 Estimated Rows:</strong> <span class="stat-value">${data.estimated_rows ?? 0}</span></div>
+                <div><strong>🚫 Excluded Channels:</strong> <span class="stat-value">${data.excluded_channels ?? 0}</span></div>
+                <div><strong>🎭 Unique Channels Used:</strong> <span class="stat-value">${data.unique_channels_used ?? '—'}</span></div>
+                <div><strong>📊 Diversity Score:</strong> <span class="stat-value">${data.diversity_score ?? 0}%</span></div>
+                ${warningHtml}
+                ${previewHtml}
+            `;
+        } catch (err) {
+            console.error(err);
+            summaryContainer.innerHTML = `<div class="text-danger text-center py-3">❌ Failed to load preview</div>`;
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    document.getElementById('duplicateCount')?.addEventListener('change', loadExportPreview);
+    document.getElementById('targetCount')?.addEventListener('input', loadExportPreview);
+    document.querySelector('input[name="max_song_per_channel"]')?.addEventListener('input', loadExportPreview);
+    document.addEventListener('change', function(e) {
+        if (e.target.matches && e.target.matches('input[name="excluded_channels"]')) {
+            loadExportPreview();
+        }
+    });
+
+    loadExportPreview();
+</script>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+<div class="stat-card">
+
+    {% if icon is defined and icon %}
+    <div class="mb-2">
+        <i class="{{ icon }} fs-1 text-muted"></i>
+    </div>
+    {% endif %}
+
+    <div class="stat-number {{ color|default('primary') }}">
+        {{ value or 0 }}
+    </div>
+
+    <div class="stat-label">
+        {{ label }}
+    </div>
+
+    {% if subtitle is defined and subtitle %}
+    <div class="small text-muted mt-1">
+        {{ subtitle }}
+    </div>
+    {% endif %}
+
+</div>

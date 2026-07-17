@@ -2,7 +2,7 @@ from fastapi import APIRouter, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from app.templates import templates
-from db.connect import get_dict_cursor
+from app.core.database import get_dict_cursor
 
 router = APIRouter()
 

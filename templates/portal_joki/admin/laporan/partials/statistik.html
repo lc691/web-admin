@@ -1,0 +1,232 @@
+<!-- ==========================================================
+     STATISTIK VIEW
+     ========================================================== -->
+
+<div class="row g-3 mb-4">
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=statistik.total,
+            label="Total Penugasan",
+            color="primary"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=statistik.selesai,
+            label="Selesai",
+            color="success"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=statistik.pending,
+            label="Pending",
+            color="warning"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=statistik.revisi,
+            label="Revisi",
+            color="danger"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    {% with
+        title="Ringkasan Statistik",
+        subtitle="Statistik keseluruhan Portal Joki"
+    %}
+        {% include "portal_joki/admin/laporan/components/table_header.html" %}
+    {% endwith %}
+
+    <div class="card-body">
+
+        {% set total = statistik.total or 0 %}
+        {% set selesai = statistik.selesai or 0 %}
+        {% set pending = statistik.pending or 0 %}
+        {% set revisi = statistik.revisi or 0 %}
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+
+                <table class="table table-borderless table-sm mb-0">
+
+                    <tbody>
+
+                        <tr>
+                            <td class="text-muted">
+                                Total Target
+                            </td>
+                            <td class="text-end">
+
+                                {% with
+                                    value=statistik.total_target,
+                                    color="primary"
+                                %}
+                                    {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                                {% endwith %}
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-muted">
+                                Total Upload
+                            </td>
+                            <td class="text-end">
+
+                                {% with
+                                    value=statistik.upload,
+                                    color="info"
+                                %}
+                                    {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                                {% endwith %}
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-muted">
+                                Total Pending
+                            </td>
+                            <td class="text-end">
+
+                                {% with
+                                    value=pending,
+                                    color="warning"
+                                %}
+                                    {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                                {% endwith %}
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-muted">
+                                Total Revisi
+                            </td>
+                            <td class="text-end">
+
+                                {% with
+                                    value=revisi,
+                                    color="danger"
+                                %}
+                                    {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                                {% endwith %}
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <table class="table table-borderless table-sm mb-0">
+
+                    <tbody>
+
+                        <tr>
+
+                            <td class="text-muted">
+                                Completion Rate
+                            </td>
+
+                            <td class="text-end">
+
+                                {% with
+                                    value=((selesai / total * 100)|round(2) if total else 0),
+                                    suffix="%",
+                                    color="success"
+                                %}
+                                    {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                                {% endwith %}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-muted">
+                                Pending Rate
+                            </td>
+
+                            <td class="text-end">
+
+                                {% with
+                                    value=((pending / total * 100)|round(2) if total else 0),
+                                    suffix="%",
+                                    color="warning"
+                                %}
+                                    {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                                {% endwith %}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-muted">
+                                Revisi Rate
+                            </td>
+
+                            <td class="text-end">
+
+                                {% with
+                                    value=((revisi / total * 100)|round(2) if total else 0),
+                                    suffix="%",
+                                    color="danger"
+                                %}
+                                    {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                                {% endwith %}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td class="text-muted">
+                                Generated
+                            </td>
+
+                            <td class="text-end">
+                                {{ generated_at.strftime("%d-%m-%Y %H:%M") }}
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

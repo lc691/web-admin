@@ -1,0 +1,54 @@
+{% if request.session.get("flash") %}
+
+{% set flash = request.session.pop("flash") %}
+
+<div class="mb-3">
+
+    <div class="alert alert-{{ flash.type | default('info') }} alert-dismissible" role="alert">
+
+        <div class="d-flex">
+
+            <div>
+
+                {% if flash.type == "success" %}
+                <i class="ti ti-circle-check fs-3"></i>
+
+                {% elif flash.type == "danger" %}
+                <i class="ti ti-alert-circle fs-3"></i>
+
+                {% elif flash.type == "warning" %}
+                <i class="ti ti-alert-triangle fs-3"></i>
+
+                {% else %}
+                <i class="ti ti-info-circle fs-3"></i>
+                {% endif %}
+
+            </div>
+
+            <div class="ms-3">
+
+                {% if flash.title %}
+                <h4 class="alert-title">
+                    {{ flash.title }}
+                </h4>
+                {% endif %}
+
+                <div>
+                    {{ flash.message }}
+                </div>
+
+            </div>
+
+        </div>
+
+        <a
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="close"
+        ></a>
+
+    </div>
+
+</div>
+
+{% endif %}

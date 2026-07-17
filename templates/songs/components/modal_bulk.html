@@ -1,0 +1,225 @@
+<div
+    class="modal modal-blur fade"
+    id="modal-bulk"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <!-- ================================================== -->
+            <!-- Header -->
+            <!-- ================================================== -->
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Bulk Actions
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Body -->
+            <!-- ================================================== -->
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Selected Songs
+                    </label>
+
+                    <div
+                        id="bulk-selected-count"
+                        class="form-control-plaintext fw-bold"
+                    >
+                        0 songs selected
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label
+                        class="form-label"
+                        for="bulk-action"
+                    >
+                        Action
+                    </label>
+
+                    <select
+                        id="bulk-action"
+                        class="form-select"
+                    >
+
+                        <option value="">
+                            Select Action
+                        </option>
+
+                        <option value="status">
+                            Update Status
+                        </option>
+
+                        <option value="artist">
+                            Change Artist
+                        </option>
+
+                        <option value="release_date">
+                            Update Release Date
+                        </option>
+
+                        <option value="delete">
+                            Delete Songs
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- ================================================== -->
+                <!-- Status -->
+                <!-- ================================================== -->
+
+                <div
+                    id="bulk-status-container"
+                    class="mb-3 d-none"
+                >
+
+                    <label
+                        class="form-label"
+                        for="bulk-status"
+                    >
+                        Status
+                    </label>
+
+                    <select
+                        id="bulk-status"
+                        class="form-select"
+                    >
+
+                        {% for status in statuses %}
+
+                        <option value="{{ status.value }}">
+                            {{ status.label }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <!-- ================================================== -->
+                <!-- Artist -->
+                <!-- ================================================== -->
+
+                <div
+                    id="bulk-artist-container"
+                    class="mb-3 d-none"
+                >
+
+                    <label
+                        class="form-label"
+                        for="bulk-artist"
+                    >
+                        Artist
+                    </label>
+
+                    <select
+                        id="bulk-artist"
+                        class="form-select"
+                    >
+
+                        <option value="">
+                            Select Artist
+                        </option>
+
+                        {% for artist in artists %}
+
+                        <option value="{{ artist.id }}">
+                            {{ artist.name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <!-- ================================================== -->
+                <!-- Release Date -->
+                <!-- ================================================== -->
+
+                <div
+                    id="bulk-release-container"
+                    class="mb-3 d-none"
+                >
+
+                    <label
+                        class="form-label"
+                        for="bulk-release-date"
+                    >
+                        Release Date
+                    </label>
+
+                    <input
+                        id="bulk-release-date"
+                        class="form-control"
+                        type="date"
+                    >
+
+                </div>
+
+                <!-- ================================================== -->
+                <!-- Warning -->
+                <!-- ================================================== -->
+
+                <div
+                    id="bulk-delete-warning"
+                    class="alert alert-danger d-none"
+                >
+                    This action will permanently delete all selected songs.
+                </div>
+
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Footer -->
+            <!-- ================================================== -->
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-link"
+                    type="button"
+                    data-bs-dismiss="modal"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    id="btn-bulk-submit"
+                    class="btn btn-primary"
+                    type="button"
+                >
+                    Apply
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

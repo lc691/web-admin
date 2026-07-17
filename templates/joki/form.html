@@ -1,0 +1,439 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4" style="max-width: 1100px;">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                {% if mode == "add" %}
+                    <i class="fas fa-user-plus me-2 text-success"></i>
+                    Tambah Joki
+                {% else %}
+                    <i class="fas fa-user-edit me-2 text-warning"></i>
+                    Edit Joki
+                {% endif %}
+            </h1>
+            <small class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Data master joki yang digunakan pada transaksi Catatan Harian.
+            </small>
+        </div>
+        <a href="/joki" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i>
+            Kembali
+        </a>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- ALERT MESSAGES                                             -->
+    <!-- ========================================================== -->
+    {% if message %}
+    <div class="alert alert-{{ message_type }} alert-dismissible fade show" role="alert">
+        <i class="fas fa-{% if message_type == 'success' %}check-circle{% elif message_type == 'error' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+
+    <!-- ========================================================== -->
+    <!-- FORM                                                       -->
+    <!-- ========================================================== -->
+    <form method="post" action="{% if mode == 'add' %}/joki/add{% else %}/joki/edit/{{ item.id }}{% endif %}" id="jokiForm" novalidate>
+        <div class="row g-4">
+
+            <!-- ====================================================== -->
+            <!-- FORM UTAMA                                             -->
+            <!-- ====================================================== -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0 fw-bold text-primary">
+                            <i class="fas fa-user me-2"></i>
+                            Informasi Joki
+                        </h6>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- Kode & Nama -->
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="kode" class="form-label fw-bold">
+                                        Kode Joki <span class="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="kode"
+                                        id="kode"
+                                        class="form-control form-control-lg"
+                                        placeholder="AMR"
+                                        value="{{ item.kode if item else '' }}"
+                                        maxlength="10"
+                                        pattern="[A-Za-z0-9\-_]+"
+                                        required
+                                        autofocus
+                                    >
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Kode unik (huruf/angka/tanda hubung)
+                                    </small>
+                                    <div class="invalid-feedback">Kode harus diisi (huruf/angka/tanda hubung)</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label fw-bold">
+                                        Nama Joki <span class="text-danger">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="nama"
+                                        id="nama"
+                                        class="form-control form-control-lg"
+                                        placeholder="Masukkan nama joki"
+                                        value="{{ item.nama if item else '' }}"
+                                        maxlength="100"
+                                        required
+                                    >
+                                    <div class="invalid-feedback">Nama joki harus diisi</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Harga & No HP -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="harga_per_judul" class="form-label fw-bold">
+                                        Harga per Judul <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-rupiah-sign"></i>
+                                        </span>
+                                        <input
+                                            type="number"
+                                            name="harga_per_judul"
+                                            id="harga_per_judul"
+                                            class="form-control"
+                                            min="0"
+                                            step="100"
+                                            value="{{ item.harga_per_judul if item else 180 }}"
+                                            required
+                                        >
+                                    </div>
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Tarif default joki (kelipatan 100)
+                                    </small>
+                                    <div class="invalid-feedback">Harga harus lebih dari 0</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="no_hp" class="form-label fw-bold">
+                                        Nomor HP
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        name="no_hp"
+                                        id="no_hp"
+                                        class="form-control form-control-lg"
+                                        placeholder="081234567890"
+                                        autocomplete="tel"
+                                        inputmode="numeric"
+                                        value="{{ item.no_hp if item else '' }}"
+                                        maxlength="15"
+                                    >
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Contoh: 081234567890
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                Status <span class="text-danger">*</span>
+                            </label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="aktif"
+                                        id="aktif1"
+                                        value="true"
+                                        {% if not item or item.aktif %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="aktif1">
+                                        <span class="badge bg-success text-white">
+                                            <i class="fas fa-check-circle me-1"></i>
+                                            Aktif
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input
+                                        class="form-check-input"
+                                        type="radio"
+                                        name="aktif"
+                                        id="aktif2"
+                                        value="false"
+                                        {% if item and not item.aktif %}checked{% endif %}
+                                    >
+                                    <label class="form-check-label" for="aktif2">
+                                        <span class="badge bg-secondary text-white">
+                                            <i class="fas fa-times-circle me-1"></i>
+                                            Nonaktif
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Keterangan -->
+                        <div class="mb-3">
+                            <label for="keterangan" class="form-label fw-bold">
+                                Keterangan
+                            </label>
+                            <textarea
+                                class="form-control"
+                                rows="3"
+                                name="keterangan"
+                                id="keterangan"
+                                placeholder="Catatan tambahan (opsional)..."
+                                maxlength="255"
+                            >{{ item.keterangan if item else '' }}</textarea>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Maksimal 255 karakter
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- SIDEBAR                                                -->
+            <!-- ====================================================== -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0 fw-bold text-primary">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Informasi
+                        </h6>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- Info Card -->
+                        <div class="alert alert-info">
+                            <h6 class="alert-heading fw-bold">
+                                <i class="fas fa-users me-1"></i>
+                                Master Joki
+                            </h6>
+                            <hr>
+                            <ul class="mb-0 ps-3">
+                                <li>Digunakan pada Catatan Harian</li>
+                                <li>Tarif mengikuti data Joki</li>
+                                <li>Tarif dapat diubah kapan saja</li>
+                            </ul>
+                        </div>
+
+                        <!-- Detail Information -->
+                        <table class="table table-sm table-borderless mb-0">
+                            <tbody>
+                                <tr>
+                                    <td class="text-muted fw-bold">Mode</td>
+                                    <td>
+                                        {% if mode == "add" %}
+                                            <span class="badge bg-primary text-white">Tambah Data</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-white">Edit Data</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted fw-bold">Tarif</td>
+                                    <td>
+                                        <strong class="text-success" id="preview_harga">
+                                            Rp {{ "{:,.0f}".format(item.harga_per_judul if item else 180) }}
+                                        </strong>
+                                    </td>
+                                </tr>
+                                {% if item %}
+                                <tr>
+                                    <td class="text-muted fw-bold">Dibuat</td>
+                                    <td>
+                                        <i class="fas fa-calendar-alt text-muted me-1"></i>
+                                        {{ item.created_at.strftime('%d-%m-%Y %H:%M') if item.created_at else '-' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted fw-bold">Update</td>
+                                    <td>
+                                        <i class="fas fa-clock text-muted me-1"></i>
+                                        {{ item.updated_at.strftime('%d-%m-%Y %H:%M') if item.updated_at else '-' }}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-lg w-100" id="btnSubmit">
+                            <i class="fas fa-save me-2"></i>
+                            Simpan Data
+                        </button>
+                        <a href="/joki" class="btn btn-secondary btn-lg w-100 mt-2">
+                            <i class="fas fa-times me-2"></i>
+                            Batal
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // ============================================================
+    // PREVIEW HARGA REAL-TIME
+    // ============================================================
+    const hargaInput = document.getElementById("harga_per_judul");
+    const previewHarga = document.getElementById("preview_harga");
+
+    function formatRupiah(angka) {
+        angka = parseFloat(angka || 0);
+        return "Rp " + angka.toLocaleString("id-ID");
+    }
+
+    function updatePreview() {
+        if (!hargaInput || !previewHarga) return;
+        let harga = parseFloat(hargaInput.value);
+        if (isNaN(harga) || harga < 0) {
+            harga = 0;
+            hargaInput.value = 0;
+        }
+        previewHarga.textContent = formatRupiah(harga);
+    }
+
+    updatePreview();
+    hargaInput.addEventListener("input", updatePreview);
+    hargaInput.addEventListener("change", updatePreview);
+
+    // ============================================================
+    // VALIDASI FORM
+    // ============================================================
+    const form = document.getElementById("jokiForm");
+    const btnSubmit = document.getElementById("btnSubmit");
+
+    form.addEventListener("submit", function (e) {
+        const kode = document.getElementById("kode").value.trim();
+        const nama = document.getElementById("nama").value.trim();
+        const harga = parseFloat(hargaInput.value);
+
+        let isValid = true;
+
+        // Reset validasi
+        document.querySelectorAll(".is-invalid").forEach(function(el) {
+            el.classList.remove("is-invalid");
+        });
+
+        // Validasi Kode
+        if (!kode) {
+            document.getElementById("kode").classList.add("is-invalid");
+            isValid = false;
+        }
+
+        // Validasi Nama
+        if (!nama) {
+            document.getElementById("nama").classList.add("is-invalid");
+            isValid = false;
+        }
+
+        // Validasi Harga
+        if (isNaN(harga) || harga <= 0) {
+            hargaInput.classList.add("is-invalid");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            const firstError = form.querySelector(".is-invalid");
+            if (firstError) {
+                firstError.focus();
+                firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+            return;
+        }
+
+        // Loading state
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Menyimpan...';
+    });
+
+    // Hapus class invalid saat user mulai mengetik
+    document.querySelectorAll(".form-control").forEach(function (el) {
+        el.addEventListener("input", function () {
+            this.classList.remove("is-invalid");
+        });
+    });
+
+    // ============================================================
+    // AUTO UPPERCASE UNTUK KODE
+    // ============================================================
+    const kodeInput = document.getElementById("kode");
+    if (kodeInput) {
+        kodeInput.addEventListener("input", function () {
+            this.value = this.value.toUpperCase().replace(/\s/g, "");
+        });
+    }
+
+    // ============================================================
+    // AUTO-HIDE ALERT
+    // ============================================================
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.classList.remove('show');
+        }, 5000);
+    });
+
+});
+</script>
+
+<style>
+    .form-control:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    .form-control.is-invalid:focus {
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    }
+    .btn-primary:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+</style>
+
+{% endblock %}

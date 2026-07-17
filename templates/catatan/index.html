@@ -1,0 +1,677 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4">
+
+    <!-- ====================================================== -->
+    <!-- HEADER -->
+    <!-- ====================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-clipboard-list me-2 text-primary"></i>
+                Catatan Harian
+            </h1>
+            <small class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Input transaksi pekerjaan joki dan rekap harian.
+            </small>
+        </div>
+        <div>
+            <form method="get" class="d-flex gap-2">
+                <div class="input-group">
+                    <input
+                        type="date"
+                        name="tanggal"
+                        class="form-control"
+                        value="{{ tanggal }}"
+                        style="width: 160px;"
+                    >
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                        Tampilkan
+                    </button>
+                    {% if tanggal %}
+                    <a href="/catatan" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- ALERT MESSAGES -->
+    <!-- ====================================================== -->
+    {% if message %}
+    <div class="alert alert-{{ message_type }} alert-dismissible fade show" role="alert">
+        <i class="fas fa-{% if message_type == 'success' %}check-circle{% elif message_type == 'error' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+
+    <!-- ====================================================== -->
+    <!-- SUMMARY CARDS -->
+    <!-- ====================================================== -->
+    <div class="row g-3 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-primary text-uppercase">Total Transaksi</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ summary.total_transaksi or 0 }}
+                            </div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-receipt fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-success text-uppercase">Total Judul</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ summary.total_judul or 0 }}
+                            </div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-book fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-left-warning shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-warning text-uppercase">Pendapatan</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                Rp {{ "{:,.0f}".format(summary.total_pendapatan or 0) }}
+                            </div>
+                        </div>
+                        <div class="text-warning">
+                            <i class="fas fa-money-bill-wave fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-left-info shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-info text-uppercase">Joki Aktif</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ summary.total_joki or 0 }}
+                            </div>
+                        </div>
+                        <div class="text-info">
+                            <i class="fas fa-users fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- ================================================== -->
+        <!-- FORM INPUT -->
+        <!-- ================================================== -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h6 class="mb-0 fw-bold text-primary">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Input Catatan
+                    </h6>
+                </div>
+                <form method="post" action="/catatan/add" id="catatanForm" novalidate>
+                    <div class="card-body">
+
+                        <!-- Tanggal -->
+                        <div class="mb-3">
+                            <label for="tanggal" class="form-label fw-bold">
+                                Tanggal <span class="text-danger">*</span>
+                            </label>
+                            <input
+                                type="date"
+                                class="form-control form-control-lg"
+                                id="tanggal"
+                                name="tanggal"
+                                value="{{ tanggal }}"
+                                required
+                            >
+                            <div class="invalid-feedback">Tanggal harus diisi</div>
+                        </div>
+
+                        <!-- Joki -->
+                        <div class="mb-3">
+                            <label for="joki_id" class="form-label fw-bold">
+                                Joki <span class="text-danger">*</span>
+                            </label>
+                            <select
+                                class="form-select form-select-lg"
+                                name="joki_id"
+                                id="joki_id"
+                                required
+                            >
+                                <option value="">-- Pilih Joki --</option>
+                                {% for item in joki %}
+                                <option
+                                    value="{{ item.id }}"
+                                    data-harga="{{ item.harga_per_judul }}"
+                                >
+                                    {{ item.nama }} - Rp {{ "{:,.0f}".format(item.harga_per_judul) }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Joki harus dipilih</div>
+                        </div>
+
+                        <!-- Kloter -->
+                        <div class="mb-3">
+                            <label for="kloter_id" class="form-label fw-bold">
+                                Kloter <span class="text-danger">*</span>
+                            </label>
+                            <select
+                                class="form-select form-select-lg"
+                                name="kloter_id"
+                                id="kloter_id"
+                                required
+                            >
+                                <option value="">-- Pilih Kloter --</option>
+                                {% for item in kloter %}
+                                <option value="{{ item.id }}">
+                                    {{ item.nama }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">Kloter harus dipilih</div>
+                        </div>
+
+                        <!-- Jumlah Judul -->
+                        <div class="mb-3">
+                            <label for="jumlah_judul" class="form-label fw-bold">
+                                Jumlah Judul <span class="text-danger">*</span>
+                            </label>
+                            <input
+                                type="number"
+                                class="form-control form-control-lg"
+                                id="jumlah_judul"
+                                name="jumlah_judul"
+                                min="1"
+                                value="1"
+                                required
+                            >
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Minimal 1 judul
+                            </small>
+                            <div class="invalid-feedback">Jumlah judul harus diisi (minimal 1)</div>
+                        </div>
+
+                        <!-- Harga per Judul -->
+                        <div class="mb-3">
+                            <label for="harga_per_judul" class="form-label fw-bold">
+                                Harga / Judul
+                            </label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text">
+                                    <i class="fas fa-rupiah-sign"></i>
+                                </span>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="harga_per_judul"
+                                    name="harga_per_judul"
+                                    readonly
+                                    step="100"
+                                    min="0"
+                                >
+                            </div>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Harga mengikuti master joki (otomatis)
+                            </small>
+                        </div>
+
+                        <!-- Total Pendapatan -->
+                        <div class="mb-3">
+                            <label for="total_pendapatan" class="form-label fw-bold">
+                                Total Pendapatan
+                            </label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text">
+                                    <i class="fas fa-rupiah-sign"></i>
+                                </span>
+                                <input
+                                    type="text"
+                                    class="form-control fw-bold text-success bg-light"
+                                    id="total_pendapatan"
+                                    readonly
+                                    value="Rp 0"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Keterangan -->
+                        <div class="mb-3">
+                            <label for="keterangan" class="form-label fw-bold">
+                                Keterangan
+                            </label>
+                            <textarea
+                                class="form-control"
+                                rows="3"
+                                id="keterangan"
+                                name="keterangan"
+                                placeholder="Catatan tambahan (opsional)..."
+                                maxlength="255"
+                            ></textarea>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Maksimal 255 karakter
+                            </small>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-save me-2"></i>
+                            Simpan Catatan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================================================== -->
+        <!-- TABLE RIWAYAT -->
+        <!-- ================================================== -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 fw-bold text-primary">
+                            <i class="fas fa-history me-2"></i>
+                            Riwayat Catatan
+                        </h6>
+                        <span class="badge bg-primary text-white">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ tanggal }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0 align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="50" class="text-center">No</th>
+                                    <th>Joki</th>
+                                    <th>Kloter</th>
+                                    <th class="text-center" width="60">Judul</th>
+                                    <th class="text-end" width="120">Harga</th>
+                                    <th class="text-end" width="140">Total</th>
+                                    <th width="100">Ket</th>
+                                    <th width="120" class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in data %}
+                                <tr>
+                                    <td class="text-center">
+                                        {{ ((pagination.page - 1) * pagination.per_page) + loop.index }}
+                                    </td>
+                                    <td>
+                                        <strong>{{ item.nama_joki }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info text-white">
+                                            {{ item.nama_kloter }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary text-white">
+                                            {{ item.jumlah_judul }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        Rp {{ "{:,.0f}".format(item.harga_per_judul) }}
+                                    </td>
+                                    <td class="text-end fw-bold text-success">
+                                        Rp {{ "{:,.0f}".format(item.total) }}
+                                    </td>
+                                    <td>
+                                        {% if item.keterangan %}
+                                        <small class="text-muted" title="{{ item.keterangan }}">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            {{ item.keterangan|truncate(15) }}
+                                        </small>
+                                        {% else %}
+                                        <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex gap-1 justify-content-center">
+                                            <a
+                                                href="/catatan/edit/{{ item.id }}"
+                                                class="btn btn-outline-warning btn-sm"
+                                                title="Edit catatan"
+                                            >
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form
+                                                action="/catatan/delete/{{ item.id }}"
+                                                method="post"
+                                                class="d-inline delete-form"
+                                            >
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-outline-danger btn-sm"
+                                                    title="Hapus catatan"
+                                                >
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                {% if not data %}
+                                <tr>
+                                    <td colspan="8" class="text-center py-5">
+                                        <i class="fas fa-folder-open fa-3x text-muted d-block mb-3"></i>
+                                        <p class="text-muted mb-0">Belum ada catatan untuk tanggal ini.</p>
+                                        <small class="text-muted">
+                                            Silakan input catatan baru menggunakan form di samping.
+                                        </small>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+
+                            {% if data %}
+                            <tfoot>
+                                <tr class="table-primary fw-bold">
+                                    <td colspan="3" class="text-end">
+                                        <i class="fas fa-calculator me-1"></i>
+                                        TOTAL
+                                    </td>
+                                    <td class="text-center">
+                                        {{ summary.total_judul or 0 }}
+                                    </td>
+                                    <td></td>
+                                    <td class="text-end text-success">
+                                        Rp {{ "{:,.0f}".format(summary.total_pendapatan or 0) }}
+                                    </td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            </tfoot>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ================================================== -->
+                <!-- PAGINATION -->
+                <!-- ================================================== -->
+                {% if pagination and pagination.total_pages > 1 %}
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Menampilkan 
+                            <strong>
+                                {% if data %}
+                                    {{ ((pagination.page - 1) * pagination.per_page) + 1 }}
+                                    -
+                                    {{ ((pagination.page - 1) * pagination.per_page) + data|length }}
+                                {% else %}
+                                    0
+                                {% endif %}
+                            </strong>
+                            dari <strong>{{ pagination.total }}</strong> data
+                        </small>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm mb-0">
+                                <!-- First Page -->
+                                <li class="page-item {% if pagination.page == 1 %}disabled{% endif %}">
+                                    <a class="page-link" 
+                                       href="?page=1&tanggal={{ tanggal }}&per_page={{ pagination.per_page }}" 
+                                       aria-label="First">
+                                        <span aria-hidden="true">&laquo;&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <!-- Previous Page -->
+                                <li class="page-item {% if pagination.page == 1 %}disabled{% endif %}">
+                                    <a class="page-link" 
+                                       href="?page={{ pagination.page - 1 }}&tanggal={{ tanggal }}&per_page={{ pagination.per_page }}" 
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <!-- Page Numbers -->
+                                {% set start_page = [pagination.page - 2, 1]|max %}
+                                {% set end_page = [pagination.page + 2, pagination.total_pages]|min %}
+                                
+                                {% if start_page > 1 %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1&tanggal={{ tanggal }}&per_page={{ pagination.per_page }}">1</a>
+                                    </li>
+                                    {% if start_page > 2 %}
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% for page_num in range(start_page, end_page + 1) %}
+                                    <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                                        <a class="page-link" 
+                                           href="?page={{ page_num }}&tanggal={{ tanggal }}&per_page={{ pagination.per_page }}">
+                                            {{ page_num }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+
+                                {% if end_page < pagination.total_pages %}
+                                    {% if end_page < pagination.total_pages - 1 %}
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    {% endif %}
+                                    <li class="page-item">
+                                        <a class="page-link" 
+                                           href="?page={{ pagination.total_pages }}&tanggal={{ tanggal }}&per_page={{ pagination.per_page }}">
+                                            {{ pagination.total_pages }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                <!-- Next Page -->
+                                <li class="page-item {% if pagination.page == pagination.total_pages %}disabled{% endif %}">
+                                    <a class="page-link" 
+                                       href="?page={{ pagination.page + 1 }}&tanggal={{ tanggal }}&per_page={{ pagination.per_page }}" 
+                                       aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+
+                                <!-- Last Page -->
+                                <li class="page-item {% if pagination.page == pagination.total_pages %}disabled{% endif %}">
+                                    <a class="page-link" 
+                                       href="?page={{ pagination.total_pages }}&tanggal={{ tanggal }}&per_page={{ pagination.per_page }}" 
+                                       aria-label="Last">
+                                        <span aria-hidden="true">&raquo;&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // ============================================================
+    // AUTO-CALCULATE TOTAL
+    // ============================================================
+    const jokiSelect = document.getElementById("joki_id");
+    const jumlahInput = document.getElementById("jumlah_judul");
+    const hargaInput = document.getElementById("harga_per_judul");
+    const totalInput = document.getElementById("total_pendapatan");
+
+    function formatRupiah(number) {
+        number = parseFloat(number || 0);
+        return "Rp " + number.toLocaleString("id-ID");
+    }
+
+    function calculateTotal() {
+        const jumlah = parseFloat(jumlahInput.value || 0);
+        const harga = parseFloat(hargaInput.value || 0);
+        const total = jumlah * harga;
+        totalInput.value = formatRupiah(total);
+    }
+
+    function updateHarga() {
+        const selected = jokiSelect.options[jokiSelect.selectedIndex];
+        const harga = selected?.dataset?.harga || 0;
+        hargaInput.value = harga;
+        calculateTotal();
+    }
+
+    // Event listeners
+    if (jokiSelect) {
+        jokiSelect.addEventListener("change", updateHarga);
+    }
+
+    if (jumlahInput) {
+        jumlahInput.addEventListener("input", calculateTotal);
+        jumlahInput.addEventListener("change", calculateTotal);
+    }
+
+    // Inisialisasi
+    updateHarga();
+
+    // ============================================================
+    // VALIDASI FORM
+    // ============================================================
+    const form = document.getElementById("catatanForm");
+
+    form.addEventListener("submit", function (e) {
+        const tanggal = document.getElementById("tanggal").value;
+        const joki_id = document.getElementById("joki_id").value;
+        const kloter_id = document.getElementById("kloter_id").value;
+        const jumlah = document.getElementById("jumlah_judul").value;
+
+        let isValid = true;
+
+        // Reset validasi
+        document.querySelectorAll(".is-invalid").forEach(function(el) {
+            el.classList.remove("is-invalid");
+        });
+
+        // Validasi Tanggal
+        if (!tanggal) {
+            document.getElementById("tanggal").classList.add("is-invalid");
+            isValid = false;
+        }
+
+        // Validasi Joki
+        if (!joki_id) {
+            document.getElementById("joki_id").classList.add("is-invalid");
+            isValid = false;
+        }
+
+        // Validasi Kloter
+        if (!kloter_id) {
+            document.getElementById("kloter_id").classList.add("is-invalid");
+            isValid = false;
+        }
+
+        // Validasi Jumlah
+        if (!jumlah || parseInt(jumlah) < 1) {
+            document.getElementById("jumlah_judul").classList.add("is-invalid");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            const firstError = form.querySelector(".is-invalid");
+            if (firstError) {
+                firstError.focus();
+                firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+        }
+    });
+
+    // ============================================================
+    // DELETE CONFIRMATION WITH SWEETALERT
+    // ============================================================
+    document.querySelectorAll('.delete-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const row = this.closest('tr');
+            const jokiName = row?.querySelector('td:nth-child(2)')?.textContent?.trim() || 'catatan ini';
+            
+            Swal.fire({
+                title: 'Hapus Catatan?',
+                text: `Apakah Anda yakin ingin menghapus catatan untuk ${jokiName}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    });
+
+    // ============================================================
+    // AUTO-HIDE ALERT
+    // ============================================================
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.classList.remove('show');
+        }, 5000);
+    });
+});
+</script>
+{% endblock %}

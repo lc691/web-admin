@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block title %}Daftar Penugasan{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .status-badge {
+        font-size: 12px;
+        padding: 3px 10px;
+        border-radius: 20px;
+    }
+    
+    .table-hover tbody tr {
+        cursor: pointer;
+        transition: background 0.15s ease;
+    }
+    
+    .table-hover tbody tr:hover {
+        background: var(--tblr-bg-surface-hover);
+    }
+    
+    .filter-section {
+        background: var(--tblr-bg-surface-hover);
+        border-radius: var(--tblr-border-radius);
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--tblr-border-color);
+    }
+    
+    .filter-section .form-control,
+    .filter-section .form-select {
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 6px 12px;
+        font-size: 14px;
+        background: var(--tblr-bg-surface);
+        color: var(--tblr-body-color);
+    }
+    
+    .filter-section .form-control:focus,
+    .filter-section .form-select:focus {
+        border-color: var(--tblr-primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    
+    .pagination-custom {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .pagination-custom .page-link {
+        padding: 6px 12px;
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        background: var(--tblr-bg-surface);
+        color: var(--tblr-body-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    
+    .pagination-custom .page-link:hover {
+        background: var(--tblr-primary);
+        color: white;
+        border-color: var(--tblr-primary);
+    }
+    
+    .pagination-custom .page-link.active {
+        background: var(--tblr-primary);
+        color: white;
+        border-color: var(--tblr-primary);
+    }
+    
+    .pagination-custom .page-link.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--tblr-muted);
+    }
+    
+    .empty-state i {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 12px;
+        opacity: 0.3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Portal Joki</div>
+            <h2 class="page-title">Daftar Penugasan</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a href="{{ url_for('portal_joki_admin_penugasan_create') }}" class="btn btn-primary btn-sm">
+                    <i class="ti ti-plus me-1"></i> Tambah Penugasan
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     FILTER SECTION
+     ========================================================== -->
+<div class="filter-section">
+    <form method="GET" action="{{ url_for('portal_joki_admin_penugasan') }}" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label small text-muted">Tanggal</label>
+            <input type="date" name="tanggal" class="form-control" value="{{ tanggal or '' }}">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small text-muted">Status</label>
+            <select name="status" class="form-select">
+                <option value="">Semua Status</option>
+                <option value="0" {% if status == 0 %}selected{% endif %}>Pending</option>
+                <option value="1" {% if status == 1 %}selected{% endif %}>Upload</option>
+                <option value="2" {% if status == 2 %}selected{% endif %}>Revisi</option>
+                <option value="3" {% if status == 3 %}selected{% endif %}>Selesai</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small text-muted">Joki</label>
+            <select name="joki_id" class="form-select">
+                <option value="">Semua Joki</option>
+                {% for joki in joki_list %}
+                <option value="{{ joki.id }}" {% if joki_id == joki.id %}selected{% endif %}>
+                    {{ joki.kode }} - {{ joki.nama }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="ti ti-search me-1"></i> Filter
+                </button>
+                <a href="{{ url_for('portal_joki_admin_penugasan') }}" class="btn btn-outline-secondary">
+                    <i class="ti ti-x"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- ==========================================================
+     TABLE
+     ========================================================== -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            Hasil Penugasan
+            <span class="badge bg-primary text-white ms-2">{{ total }}</span>
+        </h3>
+        <div class="card-actions">
+            <span class="text-muted small">Menampilkan {{ penugasan|length }} dari {{ total }}</span>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        {% if penugasan %}
+        <div class="table-responsive">
+            <table class="table table-hover table-vcenter">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Joki</th>
+                        <th>Kloter</th>
+                        <th>Absen</th>
+                        <th>Target</th>
+                        <th>Status</th>
+                        <th style="width: 120px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in penugasan %}
+                    <tr onclick="window.location.href='{{ url_for('portal_joki_admin_penugasan_detail', penugasan_id=item.id) }}'">
+                        <td>{{ item.tanggal }}</td>
+                        <td>
+                            <div>
+                                <div class="fw-bold">{{ item.joki_nama|default('-') }}</div>
+                                <div class="text-muted small">{{ item.joki_kode|default('-') }}</div>
+                            </div>
+                        </td>
+                        <td>{{ item.kloter_nama|default('-') }}</td>
+                        <td>{{ item.absen_awal|default('-') }} - {{ item.absen_akhir|default('-') }}</td>
+                        <td>{{ item.target_judul|default(0) }}</td>
+                        <td>
+                            <span class="badge status-badge bg-{{ get_status_color(item.status|default(0)) }}">
+                                {{ get_status_label(item.status|default(0)) }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a href="{{ url_for('portal_joki_admin_penugasan_detail', penugasan_id=item.id) }}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="ti ti-eye"></i>
+                                </a>
+                                <a href="{{ url_for('portal_joki_admin_penugasan_edit', penugasan_id=item.id) }}" 
+                                   class="btn btn-sm btn-outline-secondary">
+                                    <i class="ti ti-edit"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="ti ti-list-off"></i>
+            <h5>Tidak Ada Data</h5>
+            <p>Belum ada penugasan yang sesuai dengan filter yang dipilih.</p>
+            <a href="{{ url_for('portal_joki_admin_penugasan_create') }}" class="btn btn-primary mt-2">
+                <i class="ti ti-plus me-1"></i> Tambah Penugasan
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+    <div class="card-footer d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div class="text-muted small">
+            Halaman {{ page }} dari {{ total_pages }} ({{ total }} total)
+        </div>
+        <div class="pagination-custom">
+            <a href="?page=1&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if joki_id %}&joki_id={{ joki_id }}{% endif %}{% if tanggal %}&tanggal={{ tanggal }}{% endif %}" 
+               class="page-link {% if page == 1 %}disabled{% endif %}">
+                <i class="ti ti-chevrons-left"></i>
+            </a>
+            <a href="?page={{ page - 1 }}&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if joki_id %}&joki_id={{ joki_id }}{% endif %}{% if tanggal %}&tanggal={{ tanggal }}{% endif %}" 
+               class="page-link {% if page == 1 %}disabled{% endif %}">
+                <i class="ti ti-chevron-left"></i>
+            </a>
+            
+            {% for p in range(1, total_pages + 1) %}
+                {% if p == page %}
+                <span class="page-link active">{{ p }}</span>
+                {% elif p <= 3 or p > total_pages - 3 or p >= page - 2 and p <= page + 2 %}
+                <a href="?page={{ p }}&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if joki_id %}&joki_id={{ joki_id }}{% endif %}{% if tanggal %}&tanggal={{ tanggal }}{% endif %}" 
+                   class="page-link">
+                    {{ p }}
+                </a>
+                {% elif p == 4 and page > 5 %}
+                <span class="page-link disabled">...</span>
+                {% elif p == total_pages - 3 and page < total_pages - 4 %}
+                <span class="page-link disabled">...</span>
+                {% endif %}
+            {% endfor %}
+            
+            <a href="?page={{ page + 1 }}&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if joki_id %}&joki_id={{ joki_id }}{% endif %}{% if tanggal %}&tanggal={{ tanggal }}{% endif %}" 
+               class="page-link {% if page == total_pages %}disabled{% endif %}">
+                <i class="ti ti-chevron-right"></i>
+            </a>
+            <a href="?page={{ total_pages }}&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if joki_id %}&joki_id={{ joki_id }}{% endif %}{% if tanggal %}&tanggal={{ tanggal }}{% endif %}" 
+               class="page-link {% if page == total_pages %}disabled{% endif %}">
+                <i class="ti ti-chevrons-right"></i>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ==========================================================
+        // Auto submit filter on enter
+        // ==========================================================
+        document.querySelectorAll('.filter-section input, .filter-section select').forEach(function(el) {
+            el.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    this.closest('form').submit();
+                }
+            });
+        });
+        
+        // ==========================================================
+        // Show success/error messages from URL params
+        // ==========================================================
+        var urlParams = new URLSearchParams(window.location.search);
+        var success = urlParams.get('success');
+        var error = urlParams.get('error');
+        
+        if (success) {
+            Swal.fire('Sukses', success, 'success');
+            // Clean URL
+            var newUrl = window.location.pathname + window.location.search.replace(/[?&]success=[^&]*/, '');
+            window.history.replaceState({}, document.title, newUrl);
+        }
+        
+        if (error) {
+            Swal.fire('Error', error, 'error');
+            var newUrl = window.location.pathname + window.location.search.replace(/[?&]error=[^&]*/, '');
+            window.history.replaceState({}, document.title, newUrl);
+        }
+    });
+</script>
+{% endblock %}

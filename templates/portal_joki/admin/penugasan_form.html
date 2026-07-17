@@ -1,0 +1,533 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Tambah' if mode == 'create' else 'Edit' }} Penugasan{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .form-container {
+        background: var(--tblr-bg-surface);
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 1.5rem;
+    }
+    
+    .form-container .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    .form-container .form-group label {
+        font-weight: 600;
+        font-size: 14px;
+        display: block;
+        margin-bottom: 4px;
+    }
+    
+    .form-container .form-group .form-control,
+    .form-container .form-group .form-select {
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 8px 12px;
+        width: 100%;
+        background: var(--tblr-bg-surface);
+        color: var(--tblr-body-color);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .form-container .form-group .form-control:focus,
+    .form-container .form-group .form-select:focus {
+        border-color: var(--tblr-primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    
+    .form-container .form-group .form-control.is-invalid,
+    .form-container .form-group .form-select.is-invalid {
+        border-color: #ef4444;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+    
+    .form-container .form-group .form-text {
+        font-size: 12px;
+        color: var(--tblr-muted);
+        margin-top: 4px;
+    }
+    
+    .form-container .form-group .form-text.error {
+        color: #ef4444;
+    }
+    
+    .form-container .form-group .form-text.success {
+        color: #22c55e;
+    }
+    
+    .form-container .form-group .required {
+        color: #ef4444;
+    }
+    
+    .form-container .form-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 1.5rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--tblr-border-color);
+        flex-wrap: wrap;
+    }
+    
+    .form-container .form-actions .btn {
+        padding: 8px 24px;
+        font-weight: 500;
+    }
+    
+    .absen-range {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 1rem;
+        }
+        
+        .absen-range {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-container .form-actions {
+            flex-direction: column;
+        }
+        
+        .form-container .form-actions .btn {
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .form-container .form-group label {
+            font-size: 13px;
+        }
+        
+        .form-container .form-group .form-control,
+        .form-container .form-group .form-select {
+            font-size: 13px;
+            padding: 6px 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Portal Joki</div>
+            <h2 class="page-title">{{ 'Tambah' if mode == 'create' else 'Edit' }} Penugasan</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a href="{{ url_for('portal_joki_admin_penugasan') }}" class="btn btn-outline-secondary btn-sm">
+                    <i class="ti ti-arrow-left me-1"></i> Kembali
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-container">
+    <form method="POST" 
+          action="{% if mode == 'create' %}{{ url_for('portal_joki_admin_penugasan_create_post') }}{% else %}{{ url_for('portal_joki_admin_penugasan_update_post', penugasan_id=penugasan.id) }}{% endif %}"
+          id="penugasanForm"
+          novalidate>
+        
+        <!-- Hidden field untuk edit mode -->
+        {% if mode == 'edit' %}
+        <input type="hidden" name="penugasan_id" value="{{ penugasan.id }}">
+        {% endif %}
+        
+        <div class="row">
+            <!-- Tanggal -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="tanggal">
+                        Tanggal <span class="required">*</span>
+                    </label>
+                    <input type="date" 
+                           class="form-control" 
+                           id="tanggal" 
+                           name="tanggal" 
+                           value="{{ penugasan.tanggal if penugasan else '' }}"
+                           required>
+                    <div class="form-text">Tanggal penugasan</div>
+                </div>
+            </div>
+            
+            <!-- Deadline -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="deadline">Deadline</label>
+                    <input type="date" 
+                           class="form-control" 
+                           id="deadline" 
+                           name="deadline" 
+                           value="{{ penugasan.deadline if penugasan else '' }}">
+                    <div class="form-text">Tanggal deadline (opsional)</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Joki -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="joki_id">
+                        Joki <span class="required">*</span>
+                    </label>
+                    <select class="form-select" id="joki_id" name="joki_id" required>
+                        <option value="">Pilih Joki</option>
+                        {% for joki in joki_list %}
+                        <option value="{{ joki.id }}" 
+                                {% if penugasan and penugasan.joki_id == joki.id %}selected{% endif %}
+                                data-max-absen="{{ joki.max_absen or 4 }}">
+                            {{ joki.kode }} - {{ joki.nama }} (max absen: {{ joki.max_absen or 4 }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-text">Pilih joki yang akan diberi tugas</div>
+                </div>
+            </div>
+            
+            <!-- Kloter -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="kloter_id">
+                        Kloter <span class="required">*</span>
+                    </label>
+                    <select class="form-select" id="kloter_id" name="kloter_id" required>
+                        <option value="">Pilih Kloter</option>
+                        {% for kloter in kloter_list %}
+                        <option value="{{ kloter.id }}" 
+                                {% if penugasan and penugasan.kloter_id == kloter.id %}selected{% endif %}>
+                            {{ kloter.nama }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-text">Pilih kloter untuk penugasan</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Absen Range -->
+        <div class="form-group">
+            <label>
+                Absen <span class="required">*</span>
+            </label>
+            <div class="absen-range">
+                <div>
+                    <label for="absen_awal" class="small text-muted">Absen Awal</label>
+                    <input type="number" 
+                           class="form-control" 
+                           id="absen_awal" 
+                           name="absen_awal" 
+                           min="1" 
+                           value="{{ penugasan.absen_awal if penugasan else 1 }}"
+                           required>
+                </div>
+                <div>
+                    <label for="absen_akhir" class="small text-muted">Absen Akhir</label>
+                    <input type="number" 
+                           class="form-control" 
+                           id="absen_akhir" 
+                           name="absen_akhir" 
+                           min="1" 
+                           value="{{ penugasan.absen_akhir if penugasan else 1 }}"
+                           required>
+                </div>
+            </div>
+            <div class="form-text" id="absenInfo">Maksimal absen: <span id="maxAbsenDisplay">4</span></div>
+        </div>
+        
+        <!-- Target Judul -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="target_judul">
+                        Target Judul <span class="required">*</span>
+                    </label>
+                    <input type="number" 
+                           class="form-control" 
+                           id="target_judul" 
+                           name="target_judul" 
+                           min="1" 
+                           max="200"
+                           value="{{ penugasan.target_judul if penugasan else 1 }}"
+                           required>
+                    <div class="form-text">Jumlah target judul (max 200)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Instruksi -->
+        <div class="form-group">
+            <label for="instruksi">
+                Instruksi <span class="required">*</span>
+            </label>
+            <textarea class="form-control" 
+                      id="instruksi" 
+                      name="instruksi" 
+                      rows="4" 
+                      required>{{ penugasan.instruksi if penugasan else '' }}</textarea>
+            <div class="form-text">Instruksi penugasan (minimal 10 karakter, maksimal 1000 karakter)</div>
+        </div>
+        
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                <i class="ti ti-save me-1"></i> 
+                {{ 'Simpan' if mode == 'create' else 'Update' }}
+            </button>
+            <a href="{{ url_for('portal_joki_admin_penugasan') }}" class="btn btn-outline-secondary">
+                <i class="ti ti-x me-1"></i> Batal
+            </a>
+            
+            {% if mode == 'edit' %}
+            <button type="button" class="btn btn-outline-danger ms-auto" onclick="confirmDelete()">
+                <i class="ti ti-trash me-1"></i> Hapus
+            </button>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<!-- ==========================================================
+     DELETE CONFIRMATION MODAL
+     ========================================================== -->
+{% if mode == 'edit' %}
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">
+                    <i class="ti ti-alert-triangle me-2"></i>
+                    Konfirmasi Hapus
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus penugasan ini?</p>
+                <p class="text-muted small">Data terkait (upload, review) juga akan dihapus.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <form method="POST" action="{{ url_for('portal_joki_admin_penugasan_delete_post', penugasan_id=penugasan.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="ti ti-trash me-1"></i> Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ==========================================================
+        // Dependencies
+        // ==========================================================
+        var form = document.getElementById('penugasanForm');
+        var jokiSelect = document.getElementById('joki_id');
+        var absenAwal = document.getElementById('absen_awal');
+        var absenAkhir = document.getElementById('absen_akhir');
+        var maxAbsenDisplay = document.getElementById('maxAbsenDisplay');
+        var targetJudul = document.getElementById('target_judul');
+        var instruksi = document.getElementById('instruksi');
+        var submitBtn = document.getElementById('submitBtn');
+        
+        // ==========================================================
+        // Update max absen when joki changes
+        // ==========================================================
+        function updateMaxAbsen() {
+            var selected = jokiSelect.options[jokiSelect.selectedIndex];
+            var maxAbsen = parseInt(selected.dataset.maxAbsen) || 4;
+            maxAbsenDisplay.textContent = maxAbsen;
+            
+            // Validate current absen values
+            validateAbsen();
+        }
+        
+        jokiSelect.addEventListener('change', updateMaxAbsen);
+        
+        // ==========================================================
+        // Validate absen range
+        // ==========================================================
+        function validateAbsen() {
+            var selected = jokiSelect.options[jokiSelect.selectedIndex];
+            var maxAbsen = parseInt(selected.dataset.maxAbsen) || 4;
+            var awal = parseInt(absenAwal.value) || 0;
+            var akhir = parseInt(absenAkhir.value) || 0;
+            
+            // Reset validation
+            absenAwal.classList.remove('is-invalid');
+            absenAkhir.classList.remove('is-invalid');
+            
+            var errorMsg = document.getElementById('absenInfo');
+            
+            if (awal < 1) {
+                absenAwal.classList.add('is-invalid');
+                errorMsg.textContent = 'Absen awal minimal 1';
+                errorMsg.className = 'form-text error';
+                return false;
+            }
+            
+            if (akhir < 1) {
+                absenAkhir.classList.add('is-invalid');
+                errorMsg.textContent = 'Absen akhir minimal 1';
+                errorMsg.className = 'form-text error';
+                return false;
+            }
+            
+            if (awal > akhir) {
+                absenAwal.classList.add('is-invalid');
+                absenAkhir.classList.add('is-invalid');
+                errorMsg.textContent = 'Absen awal harus lebih kecil dari absen akhir';
+                errorMsg.className = 'form-text error';
+                return false;
+            }
+            
+            if (akhir > maxAbsen) {
+                absenAkhir.classList.add('is-invalid');
+                errorMsg.textContent = 'Absen akhir melebihi maksimal (' + maxAbsen + ')';
+                errorMsg.className = 'form-text error';
+                return false;
+            }
+            
+            errorMsg.textContent = 'Maksimal absen: ' + maxAbsen;
+            errorMsg.className = 'form-text';
+            return true;
+        }
+        
+        absenAwal.addEventListener('input', validateAbsen);
+        absenAkhir.addEventListener('input', validateAbsen);
+        
+        // Initial validation
+        updateMaxAbsen();
+        
+        // ==========================================================
+        // Validate target judul
+        // ==========================================================
+        targetJudul.addEventListener('input', function() {
+            var val = parseInt(this.value) || 0;
+            if (val < 1) {
+                this.classList.add('is-invalid');
+            } else if (val > 50) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+            }
+        });
+        
+        // ==========================================================
+        // Validate instruksi
+        // ==========================================================
+        instruksi.addEventListener('input', function() {
+            var len = this.value.length;
+            if (len < 10) {
+                this.classList.add('is-invalid');
+            } else if (len > 1000) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+            }
+        });
+        
+        // ==========================================================
+        // Form validation on submit
+        // ==========================================================
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate all fields
+            var isValid = true;
+            
+            // Required fields
+            var requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(function(field) {
+                if (!field.value || field.value.trim() === '') {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            // Validate absen
+            if (!validateAbsen()) {
+                isValid = false;
+            }
+            
+            // Validate target
+            var targetVal = parseInt(targetJudul.value) || 0;
+            if (targetVal < 1 || targetVal > 50) {
+                targetJudul.classList.add('is-invalid');
+                isValid = false;
+            }
+            
+            // Validate instruksi
+            var instruksiLen = instruksi.value.length;
+            if (instruksiLen < 10 || instruksiLen > 1000) {
+                instruksi.classList.add('is-invalid');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                // Scroll to first error
+                var firstError = form.querySelector('.is-invalid');
+                if (firstError) {
+                    firstError.focus();
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+            
+            // Submit form
+            this.submit();
+        });
+        
+        // ==========================================================
+        // Remove invalid class on focus
+        // ==========================================================
+        form.querySelectorAll('.form-control, .form-select').forEach(function(el) {
+            el.addEventListener('focus', function() {
+                this.classList.remove('is-invalid');
+            });
+        });
+        
+        // ==========================================================
+        // Delete confirmation
+        // ==========================================================
+        window.confirmDelete = function() {
+            var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        };
+        
+        // ==========================================================
+        // Show success/error messages from URL params
+        // ==========================================================
+        var urlParams = new URLSearchParams(window.location.search);
+        var error = urlParams.get('error');
+        
+        if (error) {
+            Swal.fire('Error', error, 'error');
+            var newUrl = window.location.pathname + window.location.search.replace(/[?&]error=[^&]*/, '');
+            window.history.replaceState({}, document.title, newUrl);
+        }
+    });
+</script>
+{% endblock %}

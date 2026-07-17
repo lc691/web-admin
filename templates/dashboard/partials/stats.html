@@ -1,0 +1,139 @@
+{% from "dashboard/components/stat_card.html" import stat_card %}
+
+<div class="row">
+    {{ stat_card(
+        title="Total Shows",
+        value=stats.total_shows|default(0),
+        icon="film",
+        color="primary",
+        subtitle=stats.recent_shows|default(0) ~ " new this month",
+        bg_color="99, 102, 241"
+    ) }}
+    
+    {{ stat_card(
+        title="Total Users",
+        value=stats.total_users|default(0),
+        icon="user-friends",
+        color="success",
+        subtitle="+" ~ stats.new_users_today|default(0) ~ " today",
+        subtitle_icon="user-plus",
+        bg_color="16, 185, 129"
+    ) }}
+    
+    {{ stat_card(
+        title="VIP Users",
+        value=stats.total_vip|default(0),
+        icon="gem",
+        color="warning",
+        subtitle="Active: " ~ stats.active_vip|default(0),
+        subtitle_icon="gem",
+        bg_color="245, 158, 11"
+    ) }}
+    
+    {{ stat_card(
+        title="Total Revenue",
+        value="Rp " ~ "{:,.0f}".format(stats.total_amount|default(0)).replace(',', '.'),
+        icon="dollar-sign",
+        color="info",
+        subtitle=stats.vip_percentage|default(0) ~ "% conversion rate",
+        subtitle_icon="arrow-up",
+        bg_color="14, 165, 233"
+    ) }}
+</div>
+
+<!-- Statistik Tambahan -->
+<div class="row">
+    <!-- Total Plays -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card shadow h-100 py-3">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                            <i class="fas fa-play-circle me-1"></i> Total Plays
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{ "{:,.0f}".format(stats.total_plays|default(0)).replace(',', '.') }}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-chart-line fa-2x text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Media Files -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card shadow h-100 py-3">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                            <i class="fas fa-file-video me-1"></i> Media Files
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{ stats.total_files|default(0) }}
+                        </div>
+                        <div class="small text-muted mt-1">
+                            <i class="fas fa-tag"></i> {{ stats.total_genres|default(0) }} genres
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-database fa-2x text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vouchers -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card shadow h-100 py-3">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                            <i class="fas fa-ticket-alt me-1"></i> Active Vouchers
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{ stats.active_vouchers|default(0) }}
+                            <small class="text-muted">/ {{ stats.total_vouchers|default(0) }}</small>
+                        </div>
+                        <div class="progress progress-sm mt-2">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                style="width: {% if stats.total_vouchers|default(0) > 0 %}{{ ((stats.used_vouchers|default(0) / stats.total_vouchers) * 100)|round(1) }}{% else %}0{% endif %}%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-ticket-alt fa-2x text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admins -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card shadow h-100 py-3">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                            <i class="fas fa-user-shield me-1"></i> Administrators
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{ stats.total_admins|default(0) }}
+                            <small class="text-muted">({{ stats.active_admins|default(0) }} active)</small>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-shield-alt fa-2x text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

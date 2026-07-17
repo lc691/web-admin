@@ -1,0 +1,642 @@
+<!-- ============================================================ -->
+<!-- SIDEBAR - Navigation Sidebar FINAL                            -->
+<!-- ============================================================ -->
+
+{% set path = request.url.path %}
+{% set query = request.query_params %}
+
+<ul class="navbar-nav sidebar sidebar-dark accordion custom-sidebar" id="accordionSidebar">
+
+    <!-- ========================================================== -->
+    <!-- BRAND / LOGO                                               -->
+    <!-- ========================================================== -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-film"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">DramaStream</div>
+    </a>
+
+    <hr class="sidebar-divider my-0">
+
+    <!-- ========================================================== -->
+    <!-- SCROLLABLE WRAPPER - SEMUA MENU DI DALAM INI               -->
+    <!-- ========================================================== -->
+    <div class="sidebar-scroll-wrapper">
+
+        <!-- ====================================================== -->
+        <!-- DASHBOARD                                              -->
+        <!-- ====================================================== -->
+        <li class="nav-item {% if path == '/' %}active{% endif %}">
+            <a class="nav-link" href="/">
+                <i class="fas fa-chart-line fa-fw"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- ====================================================== -->
+        <!-- SOUNDON (MUSIC MANAGEMENT)                             -->
+        <!-- ====================================================== -->
+        <div class="sidebar-heading">
+            <i class="fas fa-music me-1"></i> SoundOn
+        </div>
+
+        {% set soundon_active = path.startswith('/channels')
+            or path.startswith('/artists')
+            or path.startswith('/songs') %}
+
+        <li class="nav-item {% if soundon_active %}active{% endif %}">
+            <a class="nav-link {% if not soundon_active %}collapsed{% endif %}"
+               href="#"
+               data-toggle="collapse"
+               data-target="#menuSoundOn"
+               aria-expanded="{{ 'true' if soundon_active else 'false' }}"
+               aria-controls="menuSoundOn">
+
+                <i class="fas fa-headphones fa-fw"></i>
+                <span>Music Management</span>
+                <i class="fas fa-chevron-down ms-auto" style="font-size: 0.7rem;"></i>
+            </a>
+
+            <div id="menuSoundOn"
+                 class="collapse {% if soundon_active %}show{% endif %}"
+                 data-parent="#accordionSidebar">
+
+                <div class="collapse-inner">
+                    <!-- Channels -->
+                    <h6 class="collapse-header">
+                        <i class="fas fa-broadcast-tower"></i> Channels
+                    </h6>
+                    <a class="collapse-item {% if path == '/channels' %}active{% endif %}" href="/channels">
+                        <i class="fas fa-list"></i> List Channel
+                    </a>
+                    <a class="collapse-item {% if path == '/channel-blacklists' %}active{% endif %}" href="/channel-blacklists">
+                        <i class="fas fa-list"></i> Channel Blacklists
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Artists -->
+                    <h6 class="collapse-header">
+                        <i class="fas fa-users"></i> Artists
+                    </h6>
+                    <a class="collapse-item {% if path == '/artists' %}active{% endif %}" href="/artists">
+                        <i class="fas fa-user-musician"></i> List Artist
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Songs -->
+                    <h6 class="collapse-header">
+                        <i class="fas fa-music"></i> Songs
+                    </h6>
+                    <a class="collapse-item {% if path == '/songs' %}active{% endif %}" href="/songs">
+                        <i class="fas fa-compact-disc"></i> List Songs
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- ====================================================== -->
+        <!-- REKAP CATATAN (NOTES & REPORTS)                        -->
+        <!-- ====================================================== -->
+        <div class="sidebar-heading">
+            <i class="fas fa-book me-1"></i> Rekap Catatan
+        </div>
+
+        {% set catatan_active = path.startswith('/joki')
+            or path.startswith('/kloter')
+            or path.startswith('/catatan')
+            or path.startswith('/rekap')
+            or path.startswith('/laporan') %}
+
+        <li class="nav-item {% if catatan_active %}active{% endif %}">
+            <a class="nav-link {% if not catatan_active %}collapsed{% endif %}"
+               href="#"
+               data-toggle="collapse"
+               data-target="#menuCatatan"
+               aria-expanded="{{ 'true' if catatan_active else 'false' }}"
+               aria-controls="menuCatatan">
+
+                <i class="fas fa-clipboard-list fa-fw"></i>
+                <span>Rekap Catatan</span>
+                <i class="fas fa-chevron-down ms-auto" style="font-size: 0.7rem;"></i>
+            </a>
+
+            <div id="menuCatatan"
+                 class="collapse {% if catatan_active %}show{% endif %}"
+                 data-parent="#accordionSidebar">
+
+                <div class="collapse-inner">
+                    <!-- Master Data -->
+                    <div class="collapse-header">
+                        <i class="fas fa-database"></i> Master Data
+                    </div>
+
+                    <a class="collapse-item {% if path.startswith('/joki') %}active{% endif %}" href="/joki">
+                        <i class="fas fa-user-tie"></i> Master Joki
+                        {% if path.startswith('/joki') %}
+                        <span class="badge badge-primary float-right">Active</span>
+                        {% endif %}
+                    </a>
+
+                    <a class="collapse-item {% if path.startswith('/kloter') %}active{% endif %}" href="/kloter">
+                        <i class="fas fa-layer-group"></i> Master Kloter
+                        {% if path.startswith('/kloter') %}
+                        <span class="badge badge-primary float-right">Active</span>
+                        {% endif %}
+                    </a>
+
+                    <!-- Transaksi -->
+                    <div class="collapse-header mt-2">
+                        <i class="fas fa-exchange-alt"></i> Transaksi
+                    </div>
+
+                    <a class="collapse-item {% if path.startswith('/catatan') %}active{% endif %}" href="/catatan">
+                        <i class="fas fa-pen-alt"></i> Catatan Harian
+                        {% if path.startswith('/catatan') %}
+                        <span class="badge badge-primary float-right">Active</span>
+                        {% endif %}
+                    </a>
+
+                    <!-- Rekap & Laporan -->
+                    <div class="collapse-header mt-2">
+                        <i class="fas fa-chart-pie"></i> Rekap & Laporan
+                    </div>
+
+                    <a class="collapse-item {% if path.startswith('/rekap') %}active{% endif %}" href="/rekap">
+                        <i class="fas fa-chart-bar"></i> Rekap Harian
+                        {% if path.startswith('/rekap') %}
+                        <span class="badge badge-primary float-right">Active</span>
+                        {% endif %}
+                    </a>
+
+                    <a class="collapse-item {% if path.startswith('/laporan') and not path.startswith('/laporan/dashboard') %}active{% endif %}"
+                       href="/laporan">
+                        <i class="fas fa-file-alt"></i> Laporan
+                        {% if path.startswith('/laporan') and not path.startswith('/laporan/dashboard') %}
+                        <span class="badge badge-primary float-right">Active</span>
+                        {% endif %}
+                    </a>
+
+                    <a class="collapse-item {% if path.startswith('/laporan/dashboard') %}active{% endif %}" href="/laporan/dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                        {% if path.startswith('/laporan/dashboard') %}
+                        <span class="badge badge-primary float-right">Active</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- ====================================================== -->
+        <!-- FILES & SHOWS MANAGEMENT                                -->
+        <!-- ====================================================== -->
+        <div class="sidebar-heading">
+            <i class="fas fa-folder-open me-1"></i> File Management
+        </div>
+
+        {% set files_active = path.startswith('/files')
+            or path.startswith('/show_files')
+            or path.startswith('/shows')
+            or path.startswith('/platform') %}
+
+        <li class="nav-item {% if files_active %}active{% endif %}">
+            <a class="nav-link {% if not files_active %}collapsed{% endif %}"
+               href="#"
+               data-toggle="collapse"
+               data-target="#menuFiles"
+               aria-expanded="{{ 'true' if files_active else 'false' }}">
+
+                <i class="fas fa-database fa-fw"></i>
+                <span>Files & Shows</span>
+                <i class="fas fa-chevron-down ms-auto" style="font-size: 0.7rem;"></i>
+            </a>
+
+            <div id="menuFiles"
+                 class="collapse {% if files_active %}show{% endif %}"
+                 data-parent="#accordionSidebar">
+
+                <div class="collapse-inner">
+                    <a class="collapse-item {% if path.startswith('/files') %}active{% endif %}" href="/files">
+                        <i class="fas fa-file"></i> Daftar Files
+                    </a>
+                    <a class="collapse-item {% if path.startswith('/show_files') %}active{% endif %}" href="/show_files">
+                        <i class="fas fa-video"></i> Show Files
+                    </a>
+                    <a class="collapse-item {% if path.startswith('/shows') %}active{% endif %}" href="/shows">
+                        <i class="fas fa-tv"></i> Daftar Shows
+                    </a>
+                    <a class="collapse-item {% if path.startswith('/platform') %}active{% endif %}" href="/platform">
+                        <i class="fas fa-cog"></i> Daftar Platform
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- ====================================================== -->
+        <!-- SECURITY                                               -->
+        <!-- ====================================================== -->
+        <div class="sidebar-heading">
+            <i class="fas fa-shield-alt me-1"></i> Security
+        </div>
+
+        {% set security_active = path.startswith('/trusted_ips') %}
+
+        <li class="nav-item {% if security_active %}active{% endif %}">
+            <a class="nav-link collapsed"
+               href="#"
+               data-toggle="collapse"
+               data-target="#menuSecurity"
+               aria-expanded="{{ 'true' if security_active else 'false' }}">
+
+                <i class="fas fa-lock fa-fw"></i>
+                <span>Security</span>
+                <i class="fas fa-chevron-down ms-auto" style="font-size: 0.7rem;"></i>
+            </a>
+
+            <div id="menuSecurity"
+                 class="collapse {% if security_active %}show{% endif %}"
+                 data-parent="#accordionSidebar">
+
+                <div class="collapse-inner">
+                    <h6 class="collapse-header">
+                        <i class="fas fa-shield-virus"></i> Access Control
+                    </h6>
+                    <a class="collapse-item {% if path == '/trusted_ips' %}active{% endif %}" href="/trusted_ips">
+                        <i class="fas fa-globe"></i> Trusted IPs
+                    </a>
+                    <a class="collapse-item {% if path == '/trusted_ips/new' %}active{% endif %}" href="/trusted_ips/new">
+                        <i class="fas fa-plus-circle"></i> Add Trusted IP
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- ====================================================== -->
+        <!-- ADMIN MANAGEMENT                                       -->
+        <!-- ====================================================== -->
+        <div class="sidebar-heading">
+            <i class="fas fa-tools me-1"></i> Admin Tools
+        </div>
+
+        {% set admin_active = path.startswith('/admin')
+            or path.startswith('/admins') %}
+
+        <li class="nav-item {% if admin_active %}active{% endif %}">
+            <a class="nav-link {% if not admin_active %}collapsed{% endif %}"
+               href="#"
+               data-toggle="collapse"
+               data-target="#menuAdmin"
+               aria-expanded="{{ 'true' if admin_active else 'false' }}">
+
+                <i class="fas fa-user-shield fa-fw"></i>
+                <span>Admin Management</span>
+                <i class="fas fa-chevron-down ms-auto" style="font-size: 0.7rem;"></i>
+            </a>
+
+            <div id="menuAdmin"
+                 class="collapse {% if admin_active %}show{% endif %}"
+                 data-parent="#accordionSidebar">
+
+                <div class="collapse-inner">
+                    <a class="collapse-item {% if path == '/admins' %}active{% endif %}" href="/admins">
+                        <i class="fas fa-users"></i> List Admin
+                    </a>
+                    <a class="collapse-item {% if path == '/admin/add' %}active{% endif %}" href="/admin/add">
+                        <i class="fas fa-user-plus"></i> Tambah Admin
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <h6 class="collapse-header">
+                        <i class="fas fa-chart-line"></i> Analytics
+                    </h6>
+                    <a class="collapse-item {% if path.startswith('/admins/retention') %}active{% endif %}" href="/admins/retention">
+                        <i class="fas fa-chart-simple"></i> Retention
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- ====================================================== -->
+        <!-- USER MANAGEMENT                                        -->
+        <!-- ====================================================== -->
+        <div class="sidebar-heading">
+            <i class="fas fa-users me-1"></i> User Tools
+        </div>
+
+        {% set user_active = path.startswith('/users') %}
+        {% set filter = query.get('filter') %}
+
+        <li class="nav-item {% if user_active %}active{% endif %}">
+            <a class="nav-link {% if not user_active %}collapsed{% endif %}"
+               href="#"
+               data-toggle="collapse"
+               data-target="#menuUsers"
+               aria-expanded="{{ 'true' if user_active else 'false' }}">
+
+                <i class="fas fa-user-friends fa-fw"></i>
+                <span>User Management</span>
+                <i class="fas fa-chevron-down ms-auto" style="font-size: 0.7rem;"></i>
+            </a>
+
+            <div id="menuUsers"
+                 class="collapse {% if user_active %}show{% endif %}"
+                 data-parent="#accordionSidebar">
+
+                <div class="collapse-inner">
+                    <a class="collapse-item {% if not filter %}active{% endif %}" href="/users">
+                        <i class="fas fa-database"></i> Semua Pengguna
+                    </a>
+                    <a class="collapse-item {% if filter == 'vip' %}active{% endif %}" href="/users?filter=vip">
+                        <i class="fas fa-crown" style="color: #fbbf24;"></i> Pengguna VIP
+                        <span class="nav-badge ms-auto">Premium</span>
+                    </a>
+                    <a class="collapse-item {% if filter == 'nonvip' %}active{% endif %}" href="/users?filter=nonvip">
+                        <i class="fas fa-user"></i> Non-VIP
+                    </a>
+                    <a class="collapse-item {% if filter == 'trial' %}active{% endif %}" href="/users?filter=trial">
+                        <i class="fas fa-flask"></i> Trial
+                    </a>
+                    <a class="collapse-item {% if filter == 'affiliate' %}active{% endif %}" href="/users?filter=affiliate">
+                        <i class="fas fa-handshake"></i> Referral
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- ====================================================== -->
+        <!-- VIP MANAGEMENT                                          -->
+        <!-- ====================================================== -->
+        <div class="sidebar-heading">
+            <i class="fas fa-gem me-1"></i> VIP Management
+        </div>
+
+        {% set vip_active = path.startswith('/vip_packages')
+            or path.startswith('/vip_vouchers')
+            or path.startswith('/vip_logs')
+            or path.startswith('/donation_logs') %}
+
+        <li class="nav-item {% if vip_active %}active{% endif %}">
+            <a class="nav-link collapsed"
+               href="#"
+               data-toggle="collapse"
+               data-target="#menuVip"
+               aria-expanded="{{ 'true' if vip_active else 'false' }}">
+
+                <i class="fas fa-crown fa-fw"></i>
+                <span>VIP System</span>
+                <i class="fas fa-chevron-down ms-auto" style="font-size: 0.7rem;"></i>
+            </a>
+
+            <div id="menuVip"
+                 class="collapse {% if vip_active %}show{% endif %}"
+                 data-parent="#accordionSidebar">
+
+                <div class="collapse-inner">
+                    <h6 class="collapse-header">
+                        <i class="fas fa-star"></i> VIP Controls
+                    </h6>
+                    <a class="collapse-item {% if path.startswith('/vip_logs') %}active{% endif %}" href="/vip_logs">
+                        <i class="fas fa-history"></i> Aktivasi Logs
+                    </a>
+                    <a class="collapse-item {% if path.startswith('/donation_logs') %}active{% endif %}" href="/donation_logs">
+                        <i class="fas fa-hand-holding-heart"></i> Donation Logs
+                    </a>
+                    <a class="collapse-item {% if path.startswith('/vip_packages') %}active{% endif %}" href="/vip_packages">
+                        <i class="fas fa-box"></i> VIP Packages
+                    </a>
+                    <a class="collapse-item {% if path.startswith('/vip_vouchers') %}active{% endif %}" href="/vip_vouchers">
+                        <i class="fas fa-ticket-alt"></i> VIP Vouchers
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- ====================================================== -->
+        <!-- AFFILIATE MANAGEMENT                                    -->
+        <!-- ====================================================== -->
+        <div class="sidebar-heading">
+            <i class="fas fa-handshake me-1"></i> Affiliate
+        </div>
+
+        {% set affiliate_active = request.url.path.startswith('/referrals')
+            or request.url.path.startswith('/affiliate') %}
+
+        <li class="nav-item {% if affiliate_active %}active{% endif %}">
+            <a class="nav-link collapsed"
+               href="#"
+               data-toggle="collapse"
+               data-target="#menuAffiliate"
+               aria-expanded="{{ 'true' if affiliate_active else 'false' }}"
+               aria-controls="menuAffiliate">
+
+                <i class="fas fa-chart-line fa-fw"></i>
+                <span>Affiliate System</span>
+                <i class="fas fa-chevron-down ms-auto" style="font-size: 0.7rem;"></i>
+            </a>
+
+            <div id="menuAffiliate"
+                 class="collapse {% if affiliate_active %}show{% endif %}"
+                 data-parent="#accordionSidebar">
+
+                <div class="collapse-inner">
+                    <!-- Referrals -->
+                    <h6 class="collapse-header">
+                        <i class="fas fa-link"></i> Referrals
+                    </h6>
+                    <a class="collapse-item {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
+                        <i class="fas fa-link"></i> Semua Referral
+                    </a>
+                    <a class="collapse-item {% if request.url.path.startswith('/referrals/users') or request.url.path.startswith('/referrals/user/') %}active{% endif %}"
+                       href="/referrals/users">
+                        <i class="fas fa-user"></i> Referral by User
+                    </a>
+                    <a class="collapse-item {% if request.url.path.startswith('/referrals/referrers') or request.url.path.startswith('/referrals/referrer/') %}active{% endif %}"
+                       href="/referrals/referrers">
+                        <i class="fas fa-user-tie"></i> Referral by Referrer
+                    </a>
+                    <a class="collapse-item {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}"
+                       href="/referrals/logs">
+                        <i class="fas fa-scroll"></i> Referral Logs
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Affiliate Activity -->
+                    <h6 class="collapse-header">
+                        <i class="fas fa-exchange-alt"></i> Affiliate Activity
+                    </h6>
+                    <a class="collapse-item {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}"
+                       href="/affiliate/leaderboard">
+                        <i class="fas fa-trophy"></i> Leaderboard
+                    </a>
+                    <a class="collapse-item {% if request.url.path.startswith('/affiliate/payouts') %}active{% endif %}"
+                       href="/affiliate/payouts">
+                        <i class="fas fa-boxes"></i> Payout Batch
+                    </a>
+                    <a class="collapse-item {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}"
+                       href="/affiliate/transactions">
+                        <i class="fas fa-coins"></i> Transactions
+                    </a>
+                    <a class="collapse-item {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}"
+                       href="/affiliate/commission-logs">
+                        <i class="fas fa-chart-pie"></i> Commission Logs
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Finance -->
+                    <h6 class="collapse-header">
+                        <i class="fas fa-wallet"></i> Finance
+                    </h6>
+                    <a class="collapse-item {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}"
+                       href="/affiliate/withdraw-requests">
+                        <i class="fas fa-money-bill-wave"></i> Withdraw Requests
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <!-- Monitoring & Security -->
+                    <h6 class="collapse-header">
+                        <i class="fas fa-shield-alt"></i> Monitoring & Security
+                    </h6>
+                    <a class="collapse-item {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}"
+                       href="/affiliate/abuse-logs">
+                        <i class="fas fa-exclamation-triangle"></i> Abuse Logs
+                    </a>
+                    <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}"
+                       href="/affiliate/admin-actions">
+                        <i class="fas fa-tasks"></i> Admin Actions
+                    </a>
+                    <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}"
+                       href="/affiliate/admin-audit-logs">
+                        <i class="fas fa-file-alt"></i> Admin Audit Logs
+                    </a>
+                </div>
+            </div>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- ====================================================== -->
+        <!-- CHANNEL MANAGEMENT                                      -->
+        <!-- ====================================================== -->
+        <div class="sidebar-heading">
+            <i class="fas fa-broadcast-tower me-1"></i> Channel
+        </div>
+
+        {% set channel_active = path.startswith('/channel')
+            or path.startswith('/required-channels') %}
+
+        <li class="nav-item {% if channel_active %}active{% endif %}">
+            <a class="nav-link {% if not channel_active %}collapsed{% endif %}"
+               href="#"
+               data-toggle="collapse"
+               data-target="#menuChannel"
+               aria-expanded="{{ 'true' if channel_active else 'false' }}">
+
+                <i class="fas fa-satellite-dish fa-fw"></i>
+                <span>Channel Management</span>
+                <i class="fas fa-chevron-down ms-auto" style="font-size: 0.7rem;"></i>
+            </a>
+
+            <div id="menuChannel"
+                 class="collapse {% if channel_active %}show{% endif %}"
+                 data-parent="#accordionSidebar">
+
+                <div class="collapse-inner">
+                    <a class="collapse-item {% if path.startswith('/channel') %}active{% endif %}" href="/channel">
+                        <i class="fas fa-list"></i> Daftar Channel
+                    </a>
+                    <a class="collapse-item {% if path.startswith('/required-channels') %}active{% endif %}" href="/required-channels">
+                        <i class="fas fa-exclamation-circle"></i> Required Channels
+                    </a>
+                </div>
+            </div>
+        </li>
+
+    </div>
+    <!-- ========================================================== -->
+    <!-- END SCROLLABLE WRAPPER                                      -->
+    <!-- ========================================================== -->
+
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- ========================================================== -->
+    <!-- SIDEBAR TOGGLE BUTTON - TETAP DI BAWAH                      -->
+    <!-- ========================================================== -->
+    <div class="text-center d-none d-md-inline sidebar-toggle-wrapper">
+        <button class="rounded-circle border-0" id="sidebarToggle" title="Toggle Sidebar"></button>
+    </div>
+
+</ul>
+
+<!-- ============================================================ -->
+<!-- SIDEBAR JAVASCRIPT                                            -->
+<!-- ============================================================ -->
+<script>
+    (function() {
+        'use strict';
+
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('accordionSidebar');
+        const body = document.body;
+
+        function toggleSidebar() {
+            if (!sidebar) return;
+            sidebar.classList.toggle('toggled');
+            body.classList.toggle('sidebar-toggled');
+            const isToggled = sidebar.classList.contains('toggled');
+            localStorage.setItem('sidebarToggled', isToggled);
+            window.dispatchEvent(new Event('resize'));
+        }
+
+        function loadSidebarState() {
+            if (!sidebar) return;
+            const savedState = localStorage.getItem('sidebarToggled');
+            if (savedState === 'true') {
+                sidebar.classList.add('toggled');
+                body.classList.add('sidebar-toggled');
+            }
+        }
+
+        function handleResponsive() {
+            if (!sidebar) return;
+            const isMobile = window.innerWidth <= 768;
+            const isToggled = sidebar.classList.contains('toggled');
+            if (isMobile && !isToggled) {
+                sidebar.classList.add('toggled');
+                body.classList.add('sidebar-toggled');
+            }
+        }
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', toggleSidebar);
+        }
+
+        loadSidebarState();
+        window.addEventListener('resize', handleResponsive);
+        handleResponsive();
+
+        console.log('[Sidebar] Initialized successfully');
+
+    })();
+</script>

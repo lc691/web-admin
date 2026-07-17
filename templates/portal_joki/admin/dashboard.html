@@ -1,0 +1,880 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Portal Joki{% endblock %}
+
+{% block extra_styles %}
+<style>
+    /* ==========================================================
+       DASHBOARD CUSTOM STYLES
+       ========================================================== */
+    
+    .stat-card {
+        background: var(--tblr-bg-surface);
+        border-radius: var(--tblr-border-radius);
+        padding: 1.25rem;
+        border: 1px solid var(--tblr-border-color);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+    
+    .stat-card .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+    
+    .stat-card .stat-icon.primary {
+        background: rgba(99, 102, 241, 0.12);
+        color: #6366f1;
+    }
+    
+    .stat-card .stat-icon.success {
+        background: rgba(34, 197, 94, 0.12);
+        color: #22c55e;
+    }
+    
+    .stat-card .stat-icon.warning {
+        background: rgba(234, 179, 8, 0.12);
+        color: #eab308;
+    }
+    
+    .stat-card .stat-icon.danger {
+        background: rgba(239, 68, 68, 0.12);
+        color: #ef4444;
+    }
+    
+    .stat-card .stat-icon.info {
+        background: rgba(59, 130, 246, 0.12);
+        color: #3b82f6;
+    }
+    
+    .stat-card .stat-icon.purple {
+        background: rgba(168, 85, 247, 0.12);
+        color: #a855f7;
+    }
+    
+    .stat-card .stat-number {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 4px 0;
+    }
+    
+    .stat-card .stat-label {
+        font-size: 14px;
+        color: var(--tblr-muted);
+        font-weight: 500;
+    }
+    
+    /* ==========================================================
+       TASK LIST
+       ========================================================== */
+    .task-item {
+        padding: 10px 14px;
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        margin-bottom: 8px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+    
+    .task-item:hover {
+        background: var(--tblr-bg-surface-hover);
+        border-color: var(--tblr-primary);
+    }
+    
+    .task-item .task-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .task-item .task-title {
+        font-weight: 600;
+        font-size: 14px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .task-item .task-meta {
+        font-size: 12px;
+        color: var(--tblr-muted);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 2px;
+    }
+    
+    .task-item .task-meta .badge {
+        font-size: 11px;
+        padding: 2px 10px;
+    }
+    
+    .task-item .task-status {
+        flex-shrink: 0;
+    }
+    
+    /* ==========================================================
+       CALENDAR GRID
+       ========================================================== */
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+    }
+    
+    .calendar-grid .day-header {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--tblr-muted);
+        padding: 6px 0;
+    }
+    
+    .calendar-grid .day-cell {
+        aspect-ratio: 1;
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 4px;
+        transition: all 0.2s ease;
+        min-height: 44px;
+        cursor: pointer;
+        position: relative;
+        background: var(--tblr-bg-surface);
+    }
+    
+    .calendar-grid .day-cell:hover {
+        border-color: var(--tblr-primary);
+        transform: scale(1.02);
+    }
+    
+    .calendar-grid .day-cell .day-number {
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .calendar-grid .day-cell .day-count {
+        font-size: 10px;
+        color: var(--tblr-muted);
+        font-weight: 400;
+    }
+    
+    .calendar-grid .day-cell.has-tasks {
+        border-color: var(--tblr-primary);
+        background: rgba(99, 102, 241, 0.05);
+    }
+    
+    .calendar-grid .day-cell.is-holiday {
+        border-color: #ef4444;
+        background: rgba(239, 68, 68, 0.05);
+    }
+    
+    .calendar-grid .day-cell .holiday-badge {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        font-size: 8px;
+        background: #ef4444;
+        color: white;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .calendar-grid .day-cell .status-dots {
+        display: flex;
+        gap: 2px;
+        margin-top: 2px;
+    }
+    
+    .calendar-grid .day-cell .status-dots .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+    
+    .calendar-grid .day-cell .status-dots .dot.pending {
+        background: #eab308;
+    }
+    
+    .calendar-grid .day-cell .status-dots .dot.upload {
+        background: #3b82f6;
+    }
+    
+    .calendar-grid .day-cell .status-dots .dot.revisi {
+        background: #ef4444;
+    }
+    
+    .calendar-grid .day-cell .status-dots .dot.selesai {
+        background: #22c55e;
+    }
+    
+    /* ==========================================================
+       UPLOAD CARD
+       ========================================================== */
+    .upload-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        transition: all 0.2s ease;
+    }
+    
+    .upload-card:hover {
+        background: var(--tblr-bg-surface-hover);
+    }
+    
+    .upload-card .upload-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: rgba(99, 102, 241, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 20px;
+    }
+    
+    .upload-card .upload-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .upload-card .upload-info .filename {
+        font-weight: 500;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .upload-card .upload-info .upload-meta {
+        font-size: 12px;
+        color: var(--tblr-muted);
+    }
+    
+    /* ==========================================================
+       RESPONSIVE
+       ========================================================== */
+    @media (max-width: 768px) {
+        .stat-card .stat-number {
+            font-size: 22px;
+        }
+        
+        .calendar-grid {
+            gap: 4px;
+        }
+        
+        .calendar-grid .day-cell {
+            min-height: 36px;
+            font-size: 12px;
+        }
+        
+        .calendar-grid .day-cell .day-number {
+            font-size: 12px;
+        }
+        
+        .task-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .task-item .task-status {
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .calendar-grid .day-cell .day-count {
+            display: none;
+        }
+        
+        .calendar-grid .day-cell .status-dots .dot {
+            width: 4px;
+            height: 4px;
+        }
+    }
+    
+    /* ==========================================================
+       SECTION HEADER
+       ========================================================== */
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .section-header h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    /* ==========================================================
+       PROGRESS CIRCLE
+       ========================================================== */
+    .progress-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 700;
+        position: relative;
+    }
+    
+    .progress-circle .progress-text {
+        z-index: 1;
+    }
+    
+    .progress-circle svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+    }
+    
+    .progress-circle svg circle {
+        fill: none;
+        stroke-width: 6;
+        stroke-linecap: round;
+    }
+    
+    .progress-circle svg .bg {
+        stroke: var(--tblr-border-color);
+    }
+    
+    .progress-circle svg .progress {
+        stroke: var(--tblr-primary);
+        transition: stroke-dasharray 0.8s ease;
+    }
+    
+    .progress-circle.success svg .progress {
+        stroke: #22c55e;
+    }
+    
+    .progress-circle.warning svg .progress {
+        stroke: #eab308;
+    }
+    
+    .progress-circle.danger svg .progress {
+        stroke: #ef4444;
+    }
+    
+    /* ==========================================================
+       SCROLLABLE CONTAINER
+       ========================================================== */
+    .scrollable-body {
+        max-height: 320px;
+        overflow-y: auto;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Portal Joki</div>
+            <h2 class="page-title">Dashboard</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <span class="text-muted" style="font-size: 13px;">
+                    Updated: {{ generated_at.strftime('%Y-%m-%d %H:%M:%S') if generated_at else 'Now' }}
+                </span>
+                <a href="{{ url_for('portal_joki_admin_dashboard') }}?refresh=true" 
+                   class="btn btn-primary btn-sm d-none d-sm-inline-block">
+                    <i class="ti ti-refresh me-1"></i> Refresh
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     STATISTICS CARDS
+     ========================================================== -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-sm-4 col-xl-2">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="stat-icon primary">
+                    <i class="ti ti-list-check"></i>
+                </div>
+                <div>
+                    <div class="stat-number">{{ stats.total_tasks|default(0) }}</div>
+                    <div class="stat-label">Total Tugas</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-sm-4 col-xl-2">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="stat-icon success">
+                    <i class="ti ti-check"></i>
+                </div>
+                <div>
+                    <div class="stat-number">{{ stats.completed|default(0) }}</div>
+                    <div class="stat-label">Selesai</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-sm-4 col-xl-2">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="stat-icon warning">
+                    <i class="ti ti-clock"></i>
+                </div>
+                <div>
+                    <div class="stat-number">{{ stats.pending|default(0) }}</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-sm-4 col-xl-2">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="stat-icon danger">
+                    <i class="ti ti-rotate"></i>
+                </div>
+                <div>
+                    <div class="stat-number">{{ stats.revision|default(0) }}</div>
+                    <div class="stat-label">Revisi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-sm-4 col-xl-2">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="stat-icon purple">
+                    <i class="ti ti-users"></i>
+                </div>
+                <div>
+                    <div class="stat-number">{{ stats.total_joki|default(0) }}</div>
+                    <div class="stat-label">Joki Aktif</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-6 col-sm-4 col-xl-2">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="stat-icon info">
+                    <i class="ti ti-percentage"></i>
+                </div>
+                <div>
+                    <div class="stat-number">{{ stats.completion_rate|default(0) }}%</div>
+                    <div class="stat-label">Completion Rate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     PROGRESS & TODAY TASKS
+     ========================================================== -->
+<div class="row g-3 mb-4">
+    <!-- Progress -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Progress Bulan Ini</h3>
+            </div>
+            <div class="card-body text-center">
+                <div class="progress-circle {% if progress.persen|default(0) >= 75 %}success{% elif progress.persen|default(0) >= 50 %}warning{% else %}danger{% endif %}" 
+                     style="margin: 0 auto;">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="bg" cx="50" cy="50" r="42"/>
+                        <circle class="progress" cx="50" cy="50" r="42"
+                                stroke-dasharray="{{ (progress.persen|default(0) / 100 * 264) }}, 264"/>
+                    </svg>
+                    <div class="progress-text">{{ progress.persen|default(0) }}%</div>
+                </div>
+                
+                <div class="row g-2 mt-3 text-center">
+                    <div class="col-3">
+                        <div class="small text-muted">Total</div>
+                        <div class="fw-bold">{{ progress.total|default(0) }}</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="small text-warning">Pending</div>
+                        <div class="fw-bold">{{ progress.pending|default(0) }}</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="small text-danger">Revisi</div>
+                        <div class="fw-bold">{{ progress.revisi|default(0) }}</div>
+                    </div>
+                    <div class="col-3">
+                        <div class="small text-success">Selesai</div>
+                        <div class="fw-bold">{{ progress.selesai|default(0) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Today Tasks -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="ti ti-calendar-event me-2"></i>
+                    Tugas Hari Ini
+                    <span class="badge bg-primary ms-2">{{ today|length }}</span>
+                </h3>
+                <div class="card-actions">
+                    <a href="{{ url_for('portal_joki_admin_penugasan') }}" class="btn btn-sm btn-outline-primary">
+                        Lihat Semua
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if today %}
+                    {% for task in today[:10] %}
+                    <div class="task-item">
+                        <div class="task-info">
+                            <div class="task-title">
+                                <span class="fw-bold">{{ task.joki_nama|default(task.nama)|default('-') }}</span>
+                                <span class="badge bg-secondary">{{ task.kloter_nama|default(task.kloter)|default('-') }}</span>
+                                <span class="text-muted" style="font-weight: 400; font-size: 13px;">
+                                    Absen {{ task.absen_awal|default('-') }}-{{ task.absen_akhir|default('-') }}
+                                </span>
+                            </div>
+                            <div class="task-meta">
+                                <span>Target: {{ task.target_judul|default(0) }} judul</span>
+                                {% if task.deadline %}
+                                <span>Deadline: {{ task.deadline }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="task-status">
+                            {% set status_map = {0: 'Pending', 1: 'Upload', 2: 'Revisi', 3: 'Selesai'} %}
+                            {% set color_map = {0: 'warning', 1: 'info', 2: 'danger', 3: 'success'} %}
+                            <span class="badge bg-{{ color_map[task.status|default(0)] }}">
+                                {{ status_map[task.status|default(0)] }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    {% if today|length > 10 %}
+                    <div class="text-center mt-2">
+                        <small class="text-muted">+ {{ today|length - 10 }} tugas lainnya</small>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="ti ti-calendar-off" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
+                        Tidak ada tugas untuk hari ini.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     CALENDAR & RECENT UPLOADS
+     ========================================================== -->
+<div class="row g-3 mb-4">
+    <!-- Calendar -->
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="ti ti-calendar me-2"></i>
+                    Kalender Bulan Ini
+                </h3>
+            </div>
+            <div class="card-body">
+                {% if calendar %}
+                <div class="calendar-grid">
+                    {% for day in ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'] %}
+                    <div class="day-header">{{ day }}</div>
+                    {% endfor %}
+                    
+                    {% for day in calendar %}
+                    <div class="day-cell {% if day.total > 0 %}has-tasks{% endif %} {% if day.is_holiday %}is-holiday{% endif %}"
+                         title="{{ day.tanggal }} - {{ day.total }} tugas">
+                        <div class="day-number">{{ day.tanggal }}</div>
+                        {% if day.total > 0 %}
+                        <div class="day-count">{{ day.total }}</div>
+                        <div class="status-dots">
+                            {% if day.pending > 0 %}<span class="dot pending"></span>{% endif %}
+                            {% if day.upload > 0 %}<span class="dot upload"></span>{% endif %}
+                            {% if day.revisi > 0 %}<span class="dot revisi"></span>{% endif %}
+                            {% if day.selesai > 0 %}<span class="dot selesai"></span>{% endif %}
+                        </div>
+                        {% endif %}
+                        {% if day.is_holiday %}
+                        <div class="holiday-badge">H</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4 text-muted">
+                    <i class="ti ti-calendar-off" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
+                    Tidak ada data kalender.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Uploads -->
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="ti ti-upload me-2"></i>
+                    Upload Terbaru
+                </h3>
+                <div class="card-actions">
+                    <a href="{{ url_for('portal_joki_admin_penugasan') }}"
+                    class="btn btn-sm btn-outline-primary">
+                        Lihat Semua
+                    </a>
+                </div>
+            </div>
+            <div class="card-body scrollable-body">
+                {% if recent_uploads %}
+                    {% for upload in recent_uploads[:10] %}
+                    <div class="upload-card mb-2">
+                        <div class="upload-icon">
+                            <i class="ti ti-file-image"></i>
+                        </div>
+                        <div class="upload-info">
+                            <div class="filename">{{ upload.original_filename|default(upload.file_path)|default('file') }}</div>
+                            <div class="upload-meta">
+                                <span>{{ upload.joki_nama|default(upload.nama)|default('-') }}</span>
+                                <span class="mx-1">•</span>
+                                <span>{{ upload.tanggal }}</span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-outline-secondary">
+                            <i class="ti ti-eye"></i>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    
+                    {% if recent_uploads|length > 10 %}
+                    <div class="text-center mt-2">
+                        <small class="text-muted">+ {{ recent_uploads|length - 10 }} upload lainnya</small>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="ti ti-photo-off" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
+                        Belum ada upload.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     TOP JOKI & LATEST REVIEW
+     ========================================================== -->
+<div class="row g-3">
+    <!-- Top Joki -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="ti ti-trophy me-2"></i>
+                    Top Joki Bulan Ini
+                </h3>
+            </div>
+            <div class="card-body">
+                {% if top_joki %}
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Joki</th>
+                                <th class="text-center">Tugas</th>
+                                <th class="text-center">Selesai</th>
+                                <th class="text-center">Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for joki in top_joki[:10] %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>
+                                    <div>
+                                        <div class="fw-bold">{{ joki.nama|default('-') }}</div>
+                                        <div class="text-muted small">{{ joki.kode|default('-') }}</div>
+                                    </div>
+                                </td>
+                                <td class="text-center">{{ joki.total|default(0) }}</td>
+                                <td class="text-center">{{ joki.selesai|default(0) }}</td>
+                                <td class="text-center">
+                                    <span class="badge {% if joki.persen|default(0) >= 75 %}bg-success{% elif joki.persen|default(0) >= 50 %}bg-warning{% else %}bg-danger text-white{% endif %}">
+                                        {{ joki.persen|default(0) }}%
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4 text-muted">
+                    <i class="ti ti-trophy-off" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
+                    Belum ada data top joki.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Latest Review -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="ti ti-message-circle me-2"></i>
+                    Review Terbaru
+                </h3>
+                <div class="card-actions">
+                    <a href="{{ url_for('portal_joki_admin_review') }}" class="btn btn-sm btn-outline-primary">
+                        Lihat Semua
+                    </a>
+                </div>
+            </div>
+            <div class="card-body scrollable-body">
+                {% if latest_review %}
+                    {% for review in latest_review[:10] %}
+                    <div class="task-item">
+                        <div class="task-info">
+                            <div class="task-title">
+                                <span class="fw-bold">{{ review.joki_nama|default(review.nama)|default('-') }}</span>
+                                <span class="badge bg-secondary">{{ review.kloter_nama|default(review.kloter)|default('-') }}</span>
+                            </div>
+                            <div class="task-meta">
+                                <span>{{ review.tanggal }}</span>
+                                {% if review.komentar %}
+                                <span class="text-muted">"{{ review.komentar|truncate(50) }}"</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="task-status">
+                            {% set review_status_map = {1: 'Approved', 2: 'Revisi', 3: 'Rejected'} %}
+                            {% set review_color_map = {1: 'success', 2: 'warning', 3: 'danger'} %}
+                            <span class="badge bg-{{ review_color_map[review.status|default(1)] }}">
+                                {{ review_status_map[review.status|default(1)] }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    {% if latest_review|length > 10 %}
+                    <div class="text-center mt-2">
+                        <small class="text-muted">+ {{ latest_review|length - 10 }} review lainnya</small>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="ti ti-message-circle-off" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
+                        Belum ada review.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     AUTO-REFRESH
+     ========================================================== -->
+{% if refresh %}
+<script>
+    // Auto refresh every 60 seconds if refresh parameter is true
+    setTimeout(function() {
+        location.reload();
+    }, 60000);
+</script>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ==========================================================
+        // Progress circle animation
+        // ==========================================================
+        var circles = document.querySelectorAll('.progress-circle .progress');
+        circles.forEach(function(circle) {
+            var length = circle.getTotalLength();
+            circle.style.strokeDasharray = length + ', ' + length;
+        });
+        
+        // ==========================================================
+        // Click on calendar day
+        // ==========================================================
+        document.querySelectorAll('.calendar-grid .day-cell').forEach(function(cell) {
+            cell.addEventListener('click', function() {
+                var date = this.querySelector('.day-number')?.textContent;
+                if (date) {
+                    console.log('Selected date:', date);
+                    // Optional: redirect to day detail
+                    // window.location.href = '/admin/portal-joki/calendar?date=' + date;
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

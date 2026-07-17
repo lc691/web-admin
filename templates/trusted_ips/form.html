@@ -1,42 +1,568 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+        --success-gradient: linear-gradient(135deg, #10b981, #059669);
+        --danger-gradient: linear-gradient(135deg, #ef4444, #dc2626);
+        --border-color: #e2e8f0;
+        --bg-card: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+    }
+
+    /* Page Container */
+    .page-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    /* Header Section */
+    .page-header {
+        margin-bottom: 30px;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .page-title i {
+        background: none;
+        -webkit-text-fill-color: #8b5cf6;
+        font-size: 1.75rem;
+    }
+
+    .page-subtitle {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Card Styles */
+    .custom-card {
+        background: var(--bg-card);
+        border-radius: 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .custom-card:hover {
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        padding: 20px 28px;
+        border-bottom: none;
+    }
+
+    .card-header-custom h6 {
+        color: white;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1rem;
+    }
+
+    .card-header-custom h6 i {
+        color: #8b5cf6;
+        font-size: 1.25rem;
+    }
+
+    .card-header-custom h6 .badge {
+        background: rgba(139, 92, 246, 0.2);
+        color: #a78bfa;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+
+    /* Form Styles */
+    .form-container {
+        padding: 32px 28px;
+    }
+
+    .form-group {
+        margin-bottom: 28px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.875rem;
+    }
+
+    .form-label i {
+        color: #8b5cf6;
+        font-size: 1rem;
+    }
+
+    .form-label .required {
+        color: #ef4444;
+        font-size: 0.75rem;
+    }
+
+    .form-control {
+        border-radius: 16px;
+        padding: 12px 16px;
+        border: 1.5px solid var(--border-color);
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+        background: var(--bg-card);
+        color: var(--text-main);
+    }
+
+    .form-control:hover {
+        border-color: #cbd5e1;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    /* Help Text */
+    .form-text {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .form-text i {
+        font-size: 0.7rem;
+    }
+
+    /* Info Card */
+    .info-card {
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 28px;
+        border-left: 4px solid #0ea5e9;
+    }
+
+    .info-card-title {
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: #0c4a6e;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-card-content {
+        font-size: 0.8rem;
+        color: #075985;
+        line-height: 1.5;
+    }
+
+    .info-card-content ul {
+        margin: 8px 0 0 20px;
+        padding: 0;
+    }
+
+    .info-card-content li {
+        margin: 4px 0;
+    }
+
+    /* IP Preview */
+    .ip-preview {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-top: 12px;
+        display: none;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid var(--border-color);
+    }
+
+    .ip-preview.show {
+        display: flex;
+    }
+
+    .ip-preview-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+    }
+
+    .ip-preview-content {
+        flex: 1;
+    }
+
+    .ip-preview-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .ip-preview-value {
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #0f172a;
+    }
+
+    /* Button Styles */
+    .btn-back, .btn-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 28px;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-back {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1.5px solid var(--border-color);
+    }
+
+    .btn-back:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+        transform: translateX(-2px);
+    }
+
+    .btn-save {
+        background: var(--primary-gradient);
+        color: white;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-save:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Action Buttons Container */
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 24px 20px;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column-reverse;
+            gap: 12px;
+        }
+        
+        .btn-back, .btn-save {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .card-header-custom {
+            padding: 16px 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .custom-card {
+        animation: fadeInUp 0.4s ease-out;
+    }
+
+    /* Validation styles */
+    .form-control.is-invalid {
+        border-color: #ef4444;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'%3E%3C/line%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+    }
+
+    .invalid-feedback {
+        font-size: 0.7rem;
+        color: #ef4444;
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+</style>
+
+<div class="page-container">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div class="page-title">
+            <i class="fas fa-plus-circle"></i>
             Add Trusted IP
-        </h6>
+        </div>
+        <div class="page-subtitle">
+            <i class="fas fa-shield-alt"></i>
+            Tambahkan alamat IP yang dipercaya untuk akses sistem
+        </div>
     </div>
 
-    <div class="card-body">
-        <form method="post">
+    <!-- Main Card -->
+    <div class="custom-card">
+        <div class="card-header-custom">
+            <h6>
+                <i class="fas fa-network-wired"></i>
+                Informasi IP Trusted
+                <span class="badge">Form Input</span>
+            </h6>
+        </div>
 
-            <div class="form-group">
-                <label for="ip">IP Address</label>
-                <input type="text" class="form-control" id="ip" name="ip" placeholder="Contoh: 182.2.84.217" required>
-                <small class="form-text text-muted">
-                    Masukkan IPv4 atau IPv6 yang dipercaya
-                </small>
-            </div>
+        <div class="form-container">
+            <form method="post" id="addIpForm">
+                <!-- Info Card -->
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <i class="fas fa-info-circle"></i>
+                        Tentang Trusted IP
+                    </div>
+                    <div class="info-card-content">
+                        Trusted IP adalah daftar alamat IP yang diizinkan mengakses sistem tanpa pembatasan.
+                        <ul>
+                            <li><i class="fas fa-check-circle text-success me-1"></i> IP yang terdaftar akan dianggap aman</li>
+                            <li><i class="fas fa-shield-alt me-1"></i> Mendukung IPv4 dan IPv6</li>
+                            <li><i class="fas fa-globe me-1"></i> Bisa menggunakan format CIDR (contoh: 192.168.1.0/24)</li>
+                        </ul>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label for="description">Description</label>
-                <input type="text" class="form-control" id="description" name="description"
-                    placeholder="Contoh: Postman / Admin Office">
-            </div>
+                <!-- IP Address Field -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-network-wired"></i>
+                        IP Address
+                        <span class="required">*</span>
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="ip" 
+                           name="ip" 
+                           placeholder="Contoh: 192.168.1.100 atau 2001:db8::1"
+                           required>
+                    <div class="form-text">
+                        <i class="fas fa-info-circle"></i>
+                        Masukkan IPv4, IPv6, atau range CIDR (contoh: 192.168.1.0/24)
+                    </div>
+                    <div id="ipPreview" class="ip-preview">
+                        <div class="ip-preview-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="ip-preview-content">
+                            <div class="ip-preview-label">IP yang akan ditambahkan</div>
+                            <div class="ip-preview-value" id="previewIpValue">-</div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="d-flex justify-content-between">
-                <a href="/trusted_ips" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Back
-                </a>
+                <!-- Description Field -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-align-left"></i>
+                        Deskripsi
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="description" 
+                           name="description"
+                           placeholder="Contoh: Kantor Pusat / Server VPN / Admin Office">
+                    <div class="form-text">
+                        <i class="fas fa-lightbulb"></i>
+                        Deskripsi membantu mengidentifikasi tujuan dari IP ini (opsional)
+                    </div>
+                </div>
 
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Save
-                </button>
-            </div>
-
-        </form>
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="/trusted_ips" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                        Kembali
+                    </a>
+                    <button type="submit" class="btn-save" id="submitBtn">
+                        <i class="fas fa-save"></i>
+                        Simpan IP Trusted
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        const ipInput = document.getElementById('ip');
+        const ipPreview = document.getElementById('ipPreview');
+        const previewIpValue = document.getElementById('previewIpValue');
+        const form = document.getElementById('addIpForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // IP Address validation helper
+        function isValidIP(ip) {
+            // IPv4 pattern
+            const ipv4Pattern = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+            
+            // IPv6 pattern (simplified)
+            const ipv6Pattern = /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
+            
+            // CIDR pattern
+            const cidrPattern = /^(\d{1,3}\.){3}\d{1,3}\/\d{1,2}$/;
+            
+            return ipv4Pattern.test(ip) || ipv6Pattern.test(ip) || cidrPattern.test(ip);
+        }
+        
+        // Live IP Preview
+        if (ipInput) {
+            ipInput.addEventListener('input', function() {
+                const ipValue = this.value.trim();
+                
+                if (ipValue) {
+                    previewIpValue.textContent = ipValue;
+                    ipPreview.classList.add('show');
+                    
+                    // Validate IP format
+                    if (!isValidIP(ipValue) && ipValue.length > 5) {
+                        this.classList.add('is-invalid');
+                        // Remove existing invalid feedback
+                        const existingFeedback = this.parentElement.querySelector('.invalid-feedback');
+                        if (existingFeedback) existingFeedback.remove();
+                        
+                        // Add invalid feedback
+                        const feedback = document.createElement('div');
+                        feedback.className = 'invalid-feedback';
+                        feedback.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Format IP tidak valid. Gunakan IPv4, IPv6, atau CIDR (contoh: 192.168.1.0/24)';
+                        this.parentElement.appendChild(feedback);
+                    } else {
+                        this.classList.remove('is-invalid');
+                        const existingFeedback = this.parentElement.querySelector('.invalid-feedback');
+                        if (existingFeedback) existingFeedback.remove();
+                    }
+                } else {
+                    ipPreview.classList.remove('show');
+                    this.classList.remove('is-invalid');
+                    const existingFeedback = this.parentElement.querySelector('.invalid-feedback');
+                    if (existingFeedback) existingFeedback.remove();
+                }
+            });
+        }
+        
+        // Form submission with validation
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const ipValue = ipInput.value.trim();
+                
+                if (!ipValue) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'IP Address Required',
+                        text: 'Silakan masukkan alamat IP yang valid',
+                        confirmButtonColor: '#ef4444'
+                    });
+                    return;
+                }
+                
+                if (!isValidIP(ipValue)) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Format IP Tidak Valid',
+                        html: 'Format IP yang didukung:<br><br>' +
+                              '• IPv4: <code>192.168.1.100</code><br>' +
+                              '• IPv6: <code>2001:db8::1</code><br>' +
+                              '• CIDR: <code>192.168.1.0/24</code>',
+                        confirmButtonColor: '#ef4444'
+                    });
+                    return;
+                }
+                
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+                submitBtn.disabled = true;
+            });
+        }
+        
+        // Animation on load
+        $('.custom-card').css('animation', 'fadeInUp 0.4s ease-out');
+    });
+</script>
 {% endblock %}

@@ -1,253 +1,307 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-<style>
-    .page-wrapper {
-        background: #f4f6f9;
-        padding: 30px;
-    }
-
-    .lux-card {
-        background: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-        overflow: hidden;
-    }
-
-    .lux-header {
-        padding: 20px 25px;
-        background: linear-gradient(135deg, #1f2937, #374151);
-        color: white;
-    }
-
-    .lux-body {
-        padding: 30px;
-    }
-
-    .form-control {
-        border-radius: 12px;
-        padding: 12px 15px;
-        border: 1px solid #e5e7eb;
-    }
-
-    .form-control:focus {
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-        border-color: #3b82f6;
-    }
-
-    .field-card {
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 15px;
-        margin-bottom: 20px;
-        background: #fafafa;
-    }
-
-    .field-header {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 600;
-        margin-bottom: 10px;
-    }
-
-    .segmented {
-        display: inline-flex;
-        background: #f3f4f6;
-        border-radius: 12px;
-        padding: 4px;
-    }
-
-    .segmented input {
-        display: none;
-    }
-
-    .segmented label {
-        padding: 6px 16px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 500;
-        margin: 0;
-        transition: 0.2s ease;
-    }
-
-    .segmented input:checked+label {
-        background: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    .btn-save {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        color: white;
-        border: none;
-        padding: 10px 26px;
-        border-radius: 12px;
-        font-weight: 500;
-        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
-        transition: 0.25s ease;
-    }
-
-    .btn-save:hover {
-        transform: translateY(-2px);
-    }
-
-    .btn-cancel {
-        background: #f3f4f6;
-        color: #374151;
-        padding: 10px 22px;
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-        text-decoration: none;
-    }
-</style>
-
-<div class="page-wrapper">
-
-    <div class="lux-card">
-
-        <div class="lux-header">
-            <div class="fw-semibold">
-                Edit {{ files|length }} File Terpilih
-            </div>
-            <small class="opacity-75">
+<div class="container-fluid px-4" style="max-width: 800px;">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-edit me-2 text-warning"></i>
+                Edit {{ file_count|default(files|length) }} File Terpilih
+            </h1>
+            <small class="text-muted">
                 Perubahan akan diterapkan ke semua file yang dipilih
             </small>
         </div>
+        <a href="/files" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i>
+            Kembali ke Daftar
+        </a>
+    </div>
 
-        <div class="lux-body">
-
+    <!-- ========================================================== -->
+    <!-- FORM CARD                                                  -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h6 class="mb-0 fw-bold text-primary">
+                <i class="fas fa-pencil-alt me-2"></i>
+                Bulk Edit Files
+            </h6>
+        </div>
+        <div class="card-body">
+            
             <form method="post" action="/files/bulk-edit">
-
                 <input type="hidden" name="ids" value="{{ ids }}">
 
-                <!-- FILE NAME -->
-                <div class="field-card">
-                    <div class="field-header">
-                        File Name
-                    </div>
-                    <input type="text" class="form-control" value="(berbeda per file)" readonly>
-                    <small class="text-muted">
-                        Nama file tidak bisa diubah melalui bulk edit
-                    </small>
-                </div>
-
-                <!-- MAIN TITLE -->
-                <div class="field-card">
-                    <div class="field-header">
-                        <input type="checkbox" id="chkMainTitle" name="apply_main_title">
-                        <label for="chkMainTitle">
-                            Terapkan Main Title
-                        </label>
-                    </div>
-
-                    <input type="text" id="mainTitleInput" name="main_title" class="form-control"
-                        placeholder="Isi main title baru" disabled>
-                </div>
-
-                <!-- AKSES FILE -->
-                <div class="field-card">
-                    <div class="field-header">
-                        <input type="checkbox" id="chkIsPaid" name="apply_is_paid">
-                        <label for="chkIsPaid">
-                            Terapkan Akses File
-                        </label>
-                    </div>
-
-                    <div class="segmented mt-2">
-
-                        <input type="radio" name="is_paid" id="radioFree" value="0" disabled>
-                        <label for="radioFree">Free</label>
-
-                        <input type="radio" name="is_paid" id="radioPaid" value="1" disabled>
-                        <label for="radioPaid">Paid</label>
-
+                <!-- ====================================================== -->
+                <!-- FILE NAME (Readonly)                                   -->
+                <!-- ====================================================== -->
+                <div class="card bg-light border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="fas fa-file-signature text-primary"></i>
+                            <strong class="text-primary">File Name</strong>
+                        </div>
+                        <input type="text" 
+                               class="form-control" 
+                               value="(berbeda per file)" 
+                               readonly 
+                               disabled>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Nama file tidak bisa diubah melalui bulk edit
+                        </small>
                     </div>
                 </div>
 
-                <!-- HASH -->
-                <div class="field-card">
-                    <div class="field-header">
-                        Free Hash
+                <!-- ====================================================== -->
+                <!-- MAIN TITLE                                             -->
+                <!-- ====================================================== -->
+                <div class="card border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <input type="checkbox" 
+                                   id="chkMainTitle" 
+                                   name="apply_main_title" 
+                                   class="form-check-input">
+                            <label for="chkMainTitle" class="form-label mb-0 fw-bold">
+                                <i class="fas fa-heading me-1"></i>
+                                Terapkan Main Title
+                            </label>
+                        </div>
+                        <input type="text" 
+                               id="mainTitleInput" 
+                               name="main_title" 
+                               class="form-control" 
+                               placeholder="Isi main title baru" 
+                               disabled>
                     </div>
-                    <input type="text" class="form-control" value="(berbeda per file)" readonly>
                 </div>
 
-                <div class="field-card">
-                    <div class="field-header">
-                        Paid Hash
+                <!-- ====================================================== -->
+                <!-- ACCESS (PAID/FREE)                                     -->
+                <!-- ====================================================== -->
+                <div class="card border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <input type="checkbox" 
+                                   id="chkIsPaid" 
+                                   name="apply_is_paid" 
+                                   class="form-check-input">
+                            <label for="chkIsPaid" class="form-label mb-0 fw-bold">
+                                <i class="fas fa-lock me-1"></i>
+                                Terapkan Akses File
+                            </label>
+                        </div>
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" 
+                                   class="btn-check" 
+                                   name="is_paid" 
+                                   id="radioFree" 
+                                   value="0" 
+                                   disabled>
+                            <label class="btn btn-outline-success flex-fill" for="radioFree">
+                                <i class="fas fa-gift me-1"></i> Free
+                            </label>
+
+                            <input type="radio" 
+                                   class="btn-check" 
+                                   name="is_paid" 
+                                   id="radioPaid" 
+                                   value="1" 
+                                   disabled>
+                            <label class="btn btn-outline-warning flex-fill" for="radioPaid">
+                                <i class="fas fa-coins me-1"></i> Paid
+                            </label>
+                        </div>
                     </div>
-                    <input type="text" class="form-control" value="(berbeda per file)" readonly>
                 </div>
 
-                <!-- SHOW ID -->
-                <div class="field-card">
-                    <div class="field-header">
-                        <input type="checkbox" id="chkShowId" name="apply_show_id">
-                        <label for="chkShowId">
-                            Terapkan Show ID
-                        </label>
+                <!-- ====================================================== -->
+                <!-- FREE HASH (Readonly)                                   -->
+                <!-- ====================================================== -->
+                <div class="card bg-light border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="fas fa-hashtag text-success"></i>
+                            <strong class="text-success">Free Hash</strong>
+                        </div>
+                        <input type="text" 
+                               class="form-control font-monospace" 
+                               value="(berbeda per file)" 
+                               readonly 
+                               disabled>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Hash tidak dapat diubah melalui bulk edit
+                        </small>
                     </div>
-
-                    <input type="number" id="showIdInput" name="show_id" class="form-control"
-                        placeholder="Masukkan show ID baru" disabled>
                 </div>
 
-                <!-- ACTION -->
-                <div class="mt-4 pt-3 border-top d-flex gap-3">
+                <!-- ====================================================== -->
+                <!-- PAID HASH (Readonly)                                   -->
+                <!-- ====================================================== -->
+                <div class="card bg-light border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="fas fa-hashtag text-warning"></i>
+                            <strong class="text-warning">Paid Hash</strong>
+                        </div>
+                        <input type="text" 
+                               class="form-control font-monospace" 
+                               value="(berbeda per file)" 
+                               readonly 
+                               disabled>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Hash tidak dapat diubah melalui bulk edit
+                        </small>
+                    </div>
+                </div>
 
-                    <button type="submit" class="btn-save">
-                        <i class="bi bi-check-lg me-1"></i> Simpan Perubahan
-                    </button>
+                <!-- ====================================================== -->
+                <!-- SHOW ID                                                -->
+                <!-- ====================================================== -->
+                <div class="card border mb-3">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <input type="checkbox" 
+                                   id="chkShowId" 
+                                   name="apply_show_id" 
+                                   class="form-check-input">
+                            <label for="chkShowId" class="form-label mb-0 fw-bold">
+                                <i class="fas fa-tv me-1"></i>
+                                Terapkan Show ID
+                            </label>
+                        </div>
+                        <input type="number" 
+                               id="showIdInput" 
+                               name="show_id" 
+                               class="form-control" 
+                               placeholder="Masukkan show ID baru" 
+                               disabled>
+                    </div>
+                </div>
 
-                    <a href="/files" class="btn-cancel">
+                <!-- ====================================================== -->
+                <!-- BUTTONS                                                -->
+                <!-- ====================================================== -->
+                <div class="pt-3 border-top d-flex gap-2">
+                    <a href="/files" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i>
                         Batal
                     </a>
-
+                    <button type="submit" class="btn btn-primary" id="btnSave">
+                        <i class="fas fa-save me-1"></i>
+                        Simpan Perubahan
+                    </button>
                 </div>
 
             </form>
 
         </div>
     </div>
+
 </div>
 
-{% endblock %}
-
-{% block scripts %}
-{{ super() }}
+<!-- ========================================================== -->
+<!-- SCRIPTS                                                    -->
+<!-- ========================================================== -->
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        $('#chkMainTitle').on('change', function () {
-            $('#mainTitleInput')
-                .prop('disabled', !this.checked)
-                .val('');
-        });
-
-        $('#chkShowId').on('change', function () {
-            $('#showIdInput')
-                .prop('disabled', !this.checked)
-                .val('');
-        });
-
-        $('#chkIsPaid').on('change', function () {
-            const enabled = this.checked;
-            $('input[name="is_paid"]').prop('disabled', !enabled);
-
-            if (!enabled) {
-                $('input[name="is_paid"]').prop('checked', false);
-            }
-        });
-
-        // prevent double submit
-        $('form').on('submit', function () {
-            const btn = $(this).find('.btn-save');
-            btn.html(
-                '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...'
-            );
-            btn.prop('disabled', true);
-        });
-
+    // ==========================================================
+    // TOGGLE MAIN TITLE INPUT
+    // ==========================================================
+    $('#chkMainTitle').on('change', function () {
+        $('#mainTitleInput')
+            .prop('disabled', !this.checked)
+            .val('');
     });
+
+    // ==========================================================
+    // TOGGLE SHOW ID INPUT
+    // ==========================================================
+    $('#chkShowId').on('change', function () {
+        $('#showIdInput')
+            .prop('disabled', !this.checked)
+            .val('');
+    });
+
+    // ==========================================================
+    // TOGGLE PAID/FREE RADIO
+    // ==========================================================
+    $('#chkIsPaid').on('change', function () {
+        const enabled = this.checked;
+        $('input[name="is_paid"]').prop('disabled', !enabled);
+
+        if (!enabled) {
+            $('input[name="is_paid"]').prop('checked', false);
+        } else {
+            // Default to Free if none selected
+            if (!$('input[name="is_paid"]:checked').length) {
+                $('#radioFree').prop('checked', true);
+            }
+        }
+    });
+
+    // ==========================================================
+    // FORM SUBMIT - PREVENT DOUBLE SUBMIT
+    // ==========================================================
+    $('form').on('submit', function () {
+        const btn = $('#btnSave');
+        btn.html('<span class="spinner-border spinner-border-sm me-2"></span> Menyimpan...');
+        btn.prop('disabled', true);
+    });
+
+    // ==========================================================
+    // KEYBOARD SHORTCUT: Enter to submit
+    // ==========================================================
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+            e.preventDefault();
+            $('form').submit();
+        }
+    });
+
+    // ==========================================================
+    // VALIDATION: At least one checkbox checked
+    // ==========================================================
+    $('form').on('submit', function (e) {
+        const checked = $('input[type="checkbox"][name^="apply_"]:checked').length;
+        if (checked === 0) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak Ada Perubahan',
+                text: 'Silakan pilih minimal satu field yang ingin diubah.',
+                confirmButtonColor: '#6366f1'
+            });
+            return false;
+        }
+        return true;
+    });
+
+});
 </script>
+
+<style>
+    .font-monospace {
+        font-family: 'Courier New', monospace;
+        font-size: 0.85rem;
+    }
+    .btn-check:checked+.btn {
+        border-color: #6366f1;
+        background: #e0e7ff;
+    }
+    .card.bg-light {
+        background-color: #f8fafc !important;
+    }
+</style>
+
 {% endblock %}

@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    /* CSS tambahan untuk memberi spasi */
+.quick-action-btn i {
+    margin-right: 8px;  /* spasi antara ikon dan teks */
+}
+
+.quick-action-btn {
+    gap: 8px;  /* spasi antar elemen dalam tombol */
+}
+
+.welcome-section .text-end .h5 i {
+    margin-right: 4px;  /* spasi antara ikon rupiah dan angka */
+}
+
+.d-flex.gap-2 {
+    gap: 12px !important;  /* spasi antar tombol */
+}
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Admin Dashboard - DramaStream">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>{% block title %}Dashboard{% endblock %} - DramaStream Admin</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+
+    <!-- Fonts & Icons -->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/static/css/dark-mode.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --success-gradient: linear-gradient(135deg, #10b981, #059669);
+            --warning-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+            --danger-gradient: linear-gradient(135deg, #ef4444, #dc2626);
+            --info-gradient: linear-gradient(135deg, #0ea5e9, #0284c7);
+            --dark-bg: #0f172a;
+            --card-bg: #ffffff;
+            --card-bg-dark: #1e293b;
+        }
+
+        /* Modern Card Hover Effect */
+        .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 16px;
+            overflow: hidden;
+            border: none;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Gradient Border Cards */
+        .border-left-primary {
+            border-left: 4px solid #6366f1 !important;
+        }
+        .border-left-success {
+            border-left: 4px solid #10b981 !important;
+        }
+        .border-left-info {
+            border-left: 4px solid #0ea5e9 !important;
+        }
+        .border-left-warning {
+            border-left: 4px solid #f59e0b !important;
+        }
+
+        /* Stat Card Icons */
+        .stat-icon-bg {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Table Styles */
+        .table-modern thead th {
+            background: #f8fafc;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 12px;
+        }
+
+        .table-modern tbody td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        /* Badge Styles */
+        .badge-vip {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #78350f;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge-total {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            color: #3730a3;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            min-height: 300px;
+        }
+
+        /* Dark Mode Adjustments */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+        }
+
+        body.dark-mode .card {
+            background: var(--card-bg-dark);
+            border-color: #334155;
+        }
+
+        body.dark-mode .table-modern thead th {
+            background: #0f172a;
+            color: #94a3b8;
+            border-bottom-color: #334155;
+        }
+
+        body.dark-mode .text-gray-800 {
+            color: #f1f5f9 !important;
+        }
+
+        body.dark-mode .text-gray-600 {
+            color: #94a3b8 !important;
+        }
+
+        body.dark-mode .list-group-item {
+            background: var(--card-bg-dark);
+            border-color: #334155;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .welcome-subtitle {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        /* Recent Activity */
+        .activity-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .activity-item:hover {
+            background: #f8fafc;
+            transform: translateX(4px);
+        }
+
+        body.dark-mode .activity-item {
+            border-bottom-color: #334155;
+        }
+
+        body.dark-mode .activity-item:hover {
+            background: #334155;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        /* Counter Animation */
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .count-up {
+            animation: countUp 0.5s ease-out;
+        }
+
+        /* Quick Actions */
+        .quick-action-btn {
+            padding: 10px 18px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,.1);
+            border-radius: 50%;
+            border-top-color: #6366f1;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tooltip Custom */
+        .custom-tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        /* Progress Bar */
+        .progress-sm {
+            height: 6px;
+            border-radius: 3px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-section {
+                padding: 15px 20px;
+            }
+            .welcome-title {
+                font-size: 1.2rem;
+            }
+            .quick-action-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        body.dark-mode .skeleton {
+            background: linear-gradient(90deg, #2d3748 25%, #4a5568 50%, #2d3748 75%);
+        }
+    </style>
+
+    {% block extra_styles %}{% endblock %}
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        {% include "partials/sidebar.html" %}
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                {% include "partials/navbar.html" %}
+
+                <div class="container-fluid">
+                    {% block content %}
+                    {# Set default values untuk chart data agar tidak error #}
+                    {% if chart_labels is not defined %}{% set chart_labels = [] %}{% endif %}
+                    {% if chart_data is not defined %}{% set chart_data = [] %}{% endif %}
+                    {% if revenue_distribution is not defined %}{% set revenue_distribution = [0, 0, 0] %}{% endif %}
+                    {% if recent_activities is not defined %}{% set recent_activities = [] %}{% endif %}
+                    {% if top_shows is not defined %}{% set top_shows = [] %}{% endif %}
+                    {% if stats is not defined %}{% set stats = {} %}{% endif %}
+                    
+                    <!-- INJECT DATA FROM BACKEND -->
+                    <script>
+                    window.__REVENUE_DATA__ = {{ revenue_distribution|tojson|safe }};
+                    window.__CHART_LABELS__ = {{ chart_labels|tojson|safe }};
+                    window.__CHART_DATA__ = {{ chart_data|tojson|safe }};
+                    
+                    console.log('=== INJECTED DATA ===');
+                    console.log('Revenue Data:', window.__REVENUE_DATA__);
+                    console.log('Chart Labels:', window.__CHART_LABELS__);
+                    console.log('Chart Data:', window.__CHART_DATA__);
+                    </script>
+                    
+                    <!-- Welcome Section -->
+                    <div class="welcome-section">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <div>
+                                <h1 class="welcome-title">
+                                    <i class="fas fa-chart-line me-2"></i>
+                                    Dashboard
+                                </h1>
+                                <p class="welcome-subtitle mt-1">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    <span id="liveDate"></span>
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-sync-alt me-1"></i>
+                                    Terakhir diperbarui: <span id="lastUpdate">baru saja</span>
+                                </p>
+                            </div>
+                            <div class="d-flex gap-2 align-items-center flex-wrap">
+                                <div class="text-end me-3">
+                                    <div class="small text-white-50">Pendapatan Hari Ini</div>
+                                    <div class="h5 mb-0 text-white">
+                                        <i class="fas fa-rupiah-sign"></i> 
+                                        {{ "{:,.0f}".format(stats.revenue_today or 0).replace(',', '.') }}
+                                    </div>
+                                </div>
+                                <div class="vr bg-white-50 d-none d-md-block"></div>
+                                <div class="text-end me-3 d-none d-md-block">
+                                    <div class="small text-white-50">Bulan Ini</div>
+                                    <div class="h5 mb-0 text-white">
+                                        <i class="fas fa-rupiah-sign"></i> 
+                                        {{ "{:,.0f}".format(stats.revenue_month or 0).replace(',', '.') }}
+                                    </div>
+                                </div>
+                                
+                                <a href="/songs/youtube-generator" class="quick-action-btn">
+                                    <i class="fas fa-music"></i>
+                                    <span class="d-none d-sm-inline">Generate</span>
+                                </a>
+
+                                <a href="/shows/add" class="quick-action-btn">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <span class="d-none d-sm-inline">Tambah Show</span>
+                                </a>
+
+                                <a href="/shows" class="quick-action-btn">
+                                    <i class="fas fa-list"></i>
+                                    <span class="d-none d-sm-inline">Daftar Show</span>
+                                </a>
+
+                                <a href="/vip_vouchers/new" class="quick-action-btn">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <span class="d-none d-sm-inline">Voucher</span>
+                                </a>
+                                
+                                <button onclick="refreshDashboardData()" class="quick-action-btn" title="Refresh Data">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Row 1 -->
+                    <div class="row">
+                        <!-- Total Shows -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-3">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <i class="fas fa-tv me-1"></i> Total Shows
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 count-up stat-value" data-stat="total_shows">
+                                                {{ stats.total_shows|default(0) }}
+                                            </div>
+                                            <div class="small text-success mt-1">
+                                                <i class="fas fa-plus-circle"></i> 
+                                                {{ stats.recent_shows|default(0) }} new this month
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="stat-icon-bg" style="background: rgba(99, 102, 241, 0.1);">
+                                                <i class="fas fa-film fa-2x text-primary"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Users -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-3">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                <i class="fas fa-users me-1"></i> Total Users
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value" data-stat="total_users">
+                                                {{ stats.total_users|default(0) }}
+                                            </div>
+                                            <div class="small text-info mt-1">
+                                                <i class="fas fa-user-plus"></i> 
+                                                +{{ stats.new_users_today|default(0) }} today
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="stat-icon-bg" style="background: rgba(16, 185, 129, 0.1);">
+                                                <i class="fas fa-user-friends fa-2x text-success"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIP Users -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-3">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                <i class="fas fa-crown me-1"></i> VIP Users
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value" data-stat="total_vip">
+                                                {{ stats.total_vip|default(0) }}
+                                            </div>
+                                            <div class="small mt-1">
+                                                <span class="text-warning">
+                                                    <i class="fas fa-gem"></i> Active: {{ stats.active_vip|default(0) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="stat-icon-bg" style="background: rgba(245, 158, 11, 0.1);">
+                                                <i class="fas fa-gem fa-2x text-warning"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Revenue -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-3">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                <i class="fas fa-chart-line me-1"></i> Total Revenue
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value" data-stat="total_amount">
+                                                Rp {{ "{:,.0f}".format(stats.total_amount|default(0)).replace(',', '.') }}
+                                            </div>
+                                            <div class="small text-success mt-1">
+                                                <i class="fas fa-arrow-up"></i> 
+                                                {{ stats.vip_percentage|default(0) }}% conversion rate
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="stat-icon-bg" style="background: rgba(14, 165, 233, 0.1);">
+                                                <i class="fas fa-dollar-sign fa-2x text-info"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Row 2 -->
+                    <div class="row">
+                        <!-- Total Plays -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card shadow h-100 py-3">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                <i class="fas fa-play-circle me-1"></i> Total Plays
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {% if stats.total_plays %}
+                                                    {{ "{:,.0f}".format(stats.total_plays).replace(',', '.') }}
+                                                {% else %}
+                                                    0
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-chart-line fa-2x text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Files -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card shadow h-100 py-3">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                <i class="fas fa-file-video me-1"></i> Media Files
+                                            </div>
+                                           <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {{ stats.total_files|default(0) }}
+                                            </div>
+                                            <div class="small text-muted mt-1">
+                                                <i class="fas fa-tag"></i> {{ stats.total_genres|default(0) }} genres
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-database fa-2x text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Vouchers -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card shadow h-100 py-3">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                <i class="fas fa-ticket-alt me-1"></i> Active Vouchers
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {{ stats.active_vouchers|default(0) }}
+                                                <small class="text-muted">/ {{ stats.total_vouchers|default(0) }}</small>
+                                            </div>
+                                            <div class="progress progress-sm mt-2">
+                                                <div class="progress-bar bg-success" role="progressbar" 
+                                                    style="width: {% if stats.total_vouchers|default(0) > 0 %}{{ ((stats.used_vouchers|default(0) / stats.total_vouchers) * 100)|round(1) }}{% else %}0{% endif %}%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-ticket-alt fa-2x text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Admins -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card shadow h-100 py-3">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                                <i class="fas fa-user-shield me-1"></i> Administrators
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {{ stats.total_admins|default(0) }}
+                                                <small class="text-muted">({{ stats.active_admins|default(0) }} active)</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-shield-alt fa-2x text-gray-400"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="row">
+                        <!-- VIP Users Trend Chart -->
+                        <div class="col-xl-8 col-lg-7 mb-4">
+                            <div class="card shadow">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">
+                                        <i class="fas fa-chart-line me-1"></i> VIP Users Trend
+                                    </h6>
+                                    <div class="dropdown no-arrow">
+                                        <select id="chartPeriod" class="form-control form-control-sm" style="width: auto;">
+                                            <option value="7">Last 7 Days</option>
+                                            <option value="30" selected>Last 30 Days</option>
+                                            <option value="90">Last 90 Days</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="vipUsersChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Revenue Distribution -->
+                        <div class="col-xl-4 col-lg-5 mb-4">
+                            <div class="card shadow">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">
+                                        <i class="fas fa-chart-pie me-1"></i> Revenue Distribution
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="revenuePieChart"></canvas>
+                                    </div>
+                                    <div class="mt-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span><i class="fas fa-circle text-primary"></i> VIP Packages</span>
+                                            <span class="font-weight-bold">Rp {{ "{:,.0f}".format(revenue_distribution[0]|default(0)).replace(',', '.') }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span><i class="fas fa-circle text-success"></i> Donations</span>
+                                            <span class="font-weight-bold">Rp {{ "{:,.0f}".format(revenue_distribution[1]|default(0)).replace(',', '.') }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-circle text-warning"></i> Vouchers</span>
+                                            <span class="font-weight-bold">Rp {{ "{:,.0f}".format(revenue_distribution[2]|default(0)).replace(',', '.') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <!-- Recent Activity & Top Shows Row -->
+                    <div class="row">
+                        <!-- Recent Activity -->
+                        <div class="col-xl-6 mb-4">
+                            <div class="card shadow">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">
+                                        <i class="fas fa-clock me-1"></i> Recent Activity
+                                    </h6>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="list-group list-group-flush">
+                                        {% for activity in recent_activities %}
+                                        <div class="activity-item d-flex align-items-center gap-3" onclick="window.location.href='{{ activity.link|default('#') }}'">
+                                            <div class="activity-icon" style="background: {{ activity.bg_color|default('rgba(99, 102, 241, 0.1)') }};">
+                                                <i class="fas fa-{{ activity.icon|default('bell') }}" style="color: {{ activity.color|default('#6366f1') }};"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-semibold">{{ activity.title }}</div>
+                                                <div class="small text-muted">
+                                                    <i class="far fa-clock me-1"></i>{{ activity.time }}
+                                                </div>
+                                            </div>
+                                            {% if activity.link %}
+                                            <i class="fas fa-chevron-right text-muted"></i>
+                                            {% endif %}
+                                        </div>
+                                        {% else %}
+                                        <div class="text-center py-5 text-muted">
+                                            <i class="fas fa-inbox fa-3x mb-3 opacity-25"></i>
+                                            <p class="mb-0">No recent activity</p>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Shows -->
+                        <div class="col-xl-6 mb-4">
+                            <div class="card shadow">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">
+                                        <i class="fas fa-fire me-1"></i> Most Popular Shows
+                                    </h6>
+                                    <a href="/shows" class="btn btn-sm btn-link">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-modern mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 60px"></th>
+                                                    <th>Title</th>
+                                                    <th>Genre</th>
+                                                    <th class="text-center">Views</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for show in top_shows %}
+                                                <tr onclick="window.location.href='/shows/edit/{{ show.id }}'" style="cursor: pointer;">
+                                                    <td>
+                                                        <img src="{{ show.thumbnail_url or '/static/img/default-thumb.png' }}" 
+                                                             style="width: 45px; height: 35px; object-fit: cover; border-radius: 8px;"
+                                                             onerror="this.src='/static/img/default-thumb.png'">
+                                                    </td>
+                                                    <td class="fw-semibold">{{ show.title|truncate(35) }}</td>
+                                                    <td>
+                                                        <span class="badge badge-secondary">{{ show.genre|default('-') }}</span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <i class="fas fa-eye text-muted me-1"></i>
+                                                        {{ "{:,.0f}".format(show.views|default(0)).replace(',', '.') }}
+                                                    </td>
+                                                </tr>
+                                                {% else %}
+                                                <tr>
+                                                    <td colspan="4" class="text-center text-muted py-4">
+                                                        <i class="fas fa-video fa-2x mb-2 opacity-25 d-block"></i>
+                                                        No shows data available
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endblock %}
+                </div>
+            </div>
+
+            {% include "partials/footer.html" %}
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Core Scripts -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/static/js/sb-admin-2.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Deklarasi chart variables
+        let currentChart = null;
+        let revenueChart = null;
+
+        // Function to initialize charts
+        function initCharts() {
+            console.log('Initializing charts...');
+            
+            // Ambil data dari window
+            let chartLabels = window.__CHART_LABELS__ || [];
+            let chartData = window.__CHART_DATA__ || [];
+            let revenueData = window.__REVENUE_DATA__ || [0, 0, 0];
+            
+            console.log('Chart Labels:', chartLabels);
+            console.log('Chart Data:', chartData);
+            console.log('Revenue Data:', revenueData);
+            
+            // ========== VIP USERS TREND CHART (LINE CHART) ==========
+            const vipCanvas = document.getElementById('vipUsersChart');
+            
+            if (!vipCanvas) {
+                console.error('Canvas element vipUsersChart not found!');
+            } else {
+                const ctx = vipCanvas.getContext('2d');
+                if (!ctx) {
+                    console.error('Cannot get 2D context for vipUsersChart');
+                } else {
+                    // Destroy existing chart
+                    if (currentChart) {
+                        currentChart.destroy();
+                        currentChart = null;
+                    }
+                    
+                    // Jika data kosong, buat sample data
+                    let finalLabels = chartLabels;
+                    let finalData = chartData;
+                    
+                    if (!finalLabels.length || !finalData.length) {
+                        console.warn('No chart data from backend, using sample data');
+                        finalLabels = [];
+                        finalData = [];
+                        for (let i = 29; i >= 0; i--) {
+                            const date = new Date();
+                            date.setDate(date.getDate() - i);
+                            finalLabels.push(date.toLocaleDateString('id-ID', {day:'numeric', month:'short'}));
+                            finalData.push(Math.floor(Math.random() * 50) + 10);
+                        }
+                    }
+                    
+                    // Create chart
+                    currentChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: finalLabels,
+                            datasets: [{
+                                label: 'VIP Users',
+                                data: finalData,
+                                borderColor: '#6366f1',
+                                backgroundColor: 'rgba(99, 102, 241, 0.05)',
+                                borderWidth: 3,
+                                pointRadius: 4,
+                                pointBackgroundColor: '#8b5cf6',
+                                pointBorderColor: '#fff',
+                                pointHoverRadius: 6,
+                                fill: true,
+                                tension: 0.3
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return 'VIP Users: ' + context.parsed.y.toLocaleString();
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Number of VIP Users'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    console.log('Line chart created successfully with', finalLabels.length, 'data points');
+                }
+            }
+            
+            // ========== REVENUE DISTRIBUTION PIE CHART ==========
+            const pieCanvas = document.getElementById('revenuePieChart');
+            
+            if (!pieCanvas) {
+                console.error('Canvas element revenuePieChart not found!');
+            } else {
+                const pieCtx = pieCanvas.getContext('2d');
+                if (!pieCtx) {
+                    console.error('Cannot get 2D context for revenuePieChart');
+                } else {
+                    // Destroy existing chart
+                    if (revenueChart) {
+                        revenueChart.destroy();
+                        revenueChart = null;
+                    }
+                    
+                    // Process revenue data
+                    revenueData = revenueData.map(v => Number(v) || 0);
+                    
+                    const pieLabels = [];
+                    const pieValues = [];
+                    const pieColors = [];
+                    
+                    if (revenueData[0] > 0) {
+                        pieLabels.push('VIP Packages');
+                        pieValues.push(revenueData[0]);
+                        pieColors.push('#6366f1');
+                    }
+                    if (revenueData[1] > 0) {
+                        pieLabels.push('Donations');
+                        pieValues.push(revenueData[1]);
+                        pieColors.push('#10b981');
+                    }
+                    if (revenueData[2] > 0) {
+                        pieLabels.push('Vouchers');
+                        pieValues.push(revenueData[2]);
+                        pieColors.push('#f59e0b');
+                    }
+                    
+                    // If all data is zero, show placeholder
+                    if (pieValues.length === 0) {
+                        pieLabels.push('No Data Available');
+                        pieValues.push(1);
+                        pieColors.push('#94a3b8');
+                    }
+                    
+                    console.log('Pie chart labels:', pieLabels);
+                    console.log('Pie chart values:', pieValues);
+                    
+                    revenueChart = new Chart(pieCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: pieLabels,
+                            datasets: [{
+                                data: pieValues,
+                                backgroundColor: pieColors,
+                                borderWidth: 0,
+                                hoverOffset: 10
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        font: { size: 12 }
+                                    }
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const val = context.raw || 0;
+                                            const total = pieValues.reduce((a, b) => a + b, 0);
+                                            const percentage = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+                                            if (pieLabels[context.dataIndex] === 'No Data Available') {
+                                                return 'No revenue data available';
+                                            }
+                                            return context.label + ': Rp ' + val.toLocaleString('id-ID') + ' (' + percentage + '%)';
+                                        }
+                                    }
+                                }
+                            },
+                            cutout: '65%'
+                        }
+                    });
+                    console.log('Pie chart created successfully');
+                }
+            }
+        }
+
+        // Setup chart period handler
+        function setupChartPeriodHandler() {
+            const periodSelect = document.getElementById('chartPeriod');
+            if (periodSelect) {
+                // Remove existing listener
+                const newSelect = periodSelect.cloneNode(true);
+                periodSelect.parentNode.replaceChild(newSelect, periodSelect);
+                
+                newSelect.addEventListener('change', function() {
+                    const period = this.value;
+                    console.log('Period changed to:', period);
+                    
+                    // Show loading indicator
+                    const chartContainer = document.querySelector('#vipUsersChart').parentElement;
+                    if (chartContainer) {
+                        chartContainer.style.opacity = '0.5';
+                    }
+                    
+                    // Fetch new data from API
+                    fetch(`/api/dashboard/chart?period=${period}`)
+                        .then(response => {
+                            if (!response.ok) throw new Error('Network response was not ok');
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Chart data received:', data);
+                            console.log('Labels count:', data.labels?.length);
+                            console.log('Values count:', data.values?.length);
+                            
+                            if (currentChart && data.labels && data.values) {
+                                // Update chart data
+                                currentChart.data.labels = data.labels;
+                                currentChart.data.datasets[0].data = data.values;
+                                currentChart.update();
+                                console.log('Chart updated successfully');
+                            } else {
+                                console.error('Cannot update chart:', { currentChart, data });
+                            }
+                            
+                            // Hide loading indicator
+                            if (chartContainer) {
+                                chartContainer.style.opacity = '1';
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error loading chart data:', err);
+                            if (chartContainer) {
+                                chartContainer.style.opacity = '1';
+                            }
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to load chart data',
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                        });
+                });
+            }
+        }
+
+        // Refresh dashboard data
+        async function refreshDashboardData() {
+            const refreshBtn = document.querySelector('.quick-action-btn:last-child i');
+            if (refreshBtn) {
+                refreshBtn.classList.add('fa-spin');
+            }
+            
+            try {
+                const response = await fetch(window.location.href + '?ajax=1', {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                console.log('Refresh data received:', data);
+                
+                // Update stat values
+                if (data.stats) {
+                    document.querySelectorAll('.stat-value').forEach(el => {
+                        const statName = el.dataset.stat;
+                        const newValue = data.stats[statName];
+                        if (newValue !== undefined && String(newValue) !== el.textContent) {
+                            el.classList.remove('count-up');
+                            el.textContent = typeof newValue === 'number' ? newValue.toLocaleString() : newValue;
+                            el.classList.add('count-up');
+                        }
+                    });
+                }
+                
+                // Update chart data if available
+                if (data.chart_labels && data.chart_values && currentChart) {
+                    currentChart.data.labels = data.chart_labels;
+                    currentChart.data.datasets[0].data = data.chart_values;
+                    currentChart.update();
+                }
+                
+                // Update revenue data if available
+                if (data.revenue_distribution && revenueChart) {
+                    window.__REVENUE_DATA__ = data.revenue_distribution;
+                    initCharts(); // Re-initialize pie chart with new data
+                }
+                
+                const lastUpdateEl = document.getElementById('lastUpdate');
+                if (lastUpdateEl) {
+                    const now = new Date();
+                    lastUpdateEl.textContent = now.toLocaleTimeString('id-ID');
+                }
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Data Refreshed',
+                    text: 'Dashboard data has been updated',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                
+            } catch (err) {
+                console.error('Refresh failed:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Refresh Failed',
+                    text: 'Could not refresh dashboard data',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            } finally {
+                if (refreshBtn) {
+                    refreshBtn.classList.remove('fa-spin');
+                }
+            }
+        }
+
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing dashboard...');
+            
+            // Initialize charts
+            setTimeout(function() {
+                initCharts();
+            }, 200);
+            
+            // Setup chart period handler
+            setupChartPeriodHandler();
+            
+            // Dark Mode Handler
+            const toggle = document.getElementById('darkToggle');
+            const body = document.body;
+
+            if (toggle) {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') {
+                    body.classList.add('dark-mode');
+                    if (toggle.innerHTML) toggle.innerHTML = '☀️';
+                }
+
+                if (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    body.classList.add('dark-mode');
+                    if (toggle.innerHTML) toggle.innerHTML = '☀️';
+                }
+
+                toggle.addEventListener('click', () => {
+                    body.classList.toggle('dark-mode');
+                    localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+                    if (toggle.innerHTML) {
+                        toggle.innerHTML = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+                    }
+                });
+            }
+
+            // Live Date Update
+            function updateDateTime() {
+                const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+                const now = new Date();
+                const dateStr = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+
+                const el = document.getElementById('liveDate');
+                if (el && el.textContent !== dateStr) el.textContent = dateStr;
+            }
+
+            updateDateTime();
+            setInterval(updateDateTime, 60000);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                refreshDashboardData();
+            }
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                window.location.href = '/shows/add';
+            }
+        });
+
+        // Optional: Refresh chart when window resizes
+        window.addEventListener('resize', function() {
+            if (currentChart) currentChart.resize();
+            if (revenueChart) revenueChart.resize();
+        });
+
+        // Make functions available globally
+        window.refreshDashboardData = refreshDashboardData;
+        window.initCharts = initCharts;
+    </script>
+    
+    {% block scripts %}{% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+{# ==========================================================
+   INFO BADGE COMPONENT
+
+   Required:
+   - value
+
+   Optional:
+   - color
+   - icon
+   - suffix
+   ========================================================== #}
+
+{% set badge_color = color|default("secondary") %}
+{% set badge_icon = icon|default("") %}
+{% set badge_suffix = suffix|default("") %}
+
+<span class="badge bg-{{ badge_color }}">
+
+    {% if badge_icon %}
+        <i class="{{ badge_icon }} me-1"></i>
+    {% endif %}
+
+    {{ value or 0 }}{{ badge_suffix }}
+
+</span>

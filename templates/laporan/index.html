@@ -1,0 +1,590 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- ====================================================== -->
+    <!-- HEADER -->
+    <!-- ====================================================== -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h3 class="mb-1">
+                <i class="fas fa-chart-bar text-primary"></i>
+                Laporan
+            </h3>
+            <p class="text-muted mb-0">
+                <i class="fas fa-info-circle"></i>
+                Rekap transaksi berdasarkan periode harian, bulanan, atau tahunan.
+            </p>
+        </div>
+        <div>
+            <a href="/laporan/dashboard" class="btn btn-info">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- FILTER PERIODE -->
+    <!-- ====================================================== -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form method="get" class="row align-items-end g-2">
+                <!-- Periode -->
+                <div class="col-md-2">
+                    <label for="periode" class="font-weight-bold">Periode</label>
+                    <select name="periode" id="periode" class="form-control form-control-lg" onchange="this.form.submit()">
+                        <option value="harian" {% if periode == 'harian' %}selected{% endif %}>
+                            <i class="fas fa-calendar-day"></i> Harian
+                        </option>
+                        <option value="bulanan" {% if periode == 'bulanan' %}selected{% endif %}>
+                            <i class="fas fa-calendar-alt"></i> Bulanan
+                        </option>
+                        <option value="tahunan" {% if periode == 'tahunan' %}selected{% endif %}>
+                            <i class="fas fa-calendar"></i> Tahunan
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Tanggal (Harian) -->
+                <div class="col-md-3" id="filter_tanggal">
+                    <label for="tanggal" class="font-weight-bold">Tanggal</label>
+                    <input
+                        type="date"
+                        name="tanggal"
+                        id="tanggal"
+                        value="{{ tanggal }}"
+                        class="form-control form-control-lg"
+                        {% if periode != 'harian' %}style="display:none;"{% endif %}
+                    >
+                </div>
+
+                <!-- Bulan & Tahun (Bulanan) -->
+                <div class="col-md-2" id="filter_bulan">
+                    <label for="bulan" class="font-weight-bold">Bulan</label>
+                    <select name="bulan" id="bulan" class="form-control form-control-lg" {% if periode != 'bulanan' %}style="display:none;"{% endif %}>
+                        {% for m in range(1, 13) %}
+                        <option value="{{ m }}" {% if m == bulan %}selected{% endif %}>
+                            {{ m }} - {{ ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'][m-1] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2" id="filter_tahun_bulanan">
+                    <label for="tahun_bulanan" class="font-weight-bold">Tahun</label>
+                    <select name="tahun" id="tahun_bulanan" class="form-control form-control-lg" {% if periode != 'bulanan' %}style="display:none;"{% endif %}>
+                        {% for y in range(current_year, current_year - 5, -1) %}
+                        <option value="{{ y }}" {% if y == tahun %}selected{% endif %}>
+                            {{ y }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Tahun (Tahunan) -->
+                <div class="col-md-2" id="filter_tahun_tahunan">
+                    <label for="tahun_tahunan" class="font-weight-bold">Tahun</label>
+                    <select name="tahun" id="tahun_tahunan" class="form-control form-control-lg" {% if periode != 'tahunan' %}style="display:none;"{% endif %}>
+                        {% for y in range(current_year, current_year - 10, -1) %}
+                        <option value="{{ y }}" {% if y == tahun %}selected{% endif %}>
+                            {{ y }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Tombol Aksi -->
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-search"></i>
+                        Tampilkan
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <a href="/laporan?periode={{ periode }}" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-undo"></i>
+                        Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- SUMMARY CARDS -->
+    <!-- ====================================================== -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Transaksi
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ summary.total_transaksi|default(0)|int }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-receipt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Total Joki
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ summary.total_joki|default(0)|int }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Total Judul
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ "{:,.0f}".format(summary.total_judul|default(0)) }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-book fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Total Pendapatan
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                Rp {{ "{:,.0f}".format(summary.total_pendapatan|default(0)) }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- TABEL REKAP JOKI -->
+    <!-- ====================================================== -->
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-users"></i>
+                            Rekap Per Joki
+                        </h6>
+                        <div>
+                            <span class="badge badge-primary badge-pill">
+                                <i class="fas fa-user"></i>
+                                {{ data|length }} Joki
+                            </span>
+                            <span class="badge badge-success badge-pill ml-1">
+                                <i class="fas fa-receipt"></i>
+                                {{ summary.total_transaksi|default(0)|int }} Trans
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th width="50" class="text-center">No</th>
+                                    <th>Joki</th>
+                                    <th class="text-center" width="80">Trans</th>
+                                    <th class="text-right" width="100">Judul</th>
+                                    <th class="text-right" width="140">Pendapatan</th>
+                                    <th width="60" class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in data %}
+                                <tr>
+                                    <td class="text-center">{{ loop.index }}</td>
+                                    <td>
+                                        <strong>{{ item.nama }}</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="fas fa-tag"></i>
+                                            {{ item.kode }}
+                                        </small>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge {% if item.total_transaksi > 0 %}badge-primary{% else %}badge-secondary{% endif %} badge-pill">
+                                            {{ item.total_transaksi|default(0)|int }}
+                                        </span>
+                                    </td>
+                                    <td class="text-right">
+                                        {{ "{:,.0f}".format(item.jumlah_judul|default(0)) }}
+                                    </td>
+                                    <td class="text-right font-weight-bold text-success">
+                                        Rp {{ "{:,.0f}".format(item.total_pendapatan|default(0)) }}
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="/laporan/joki/{{ item.id }}?periode={{ periode }}&tanggal={{ tanggal }}&bulan={{ bulan }}&tahun={{ tahun }}"
+                                           class="btn btn-info btn-sm"
+                                           title="Lihat detail joki">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                {% if not data %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                                        <br>
+                                        <p class="text-muted mb-0">Belum ada data untuk periode ini.</p>
+                                        <small class="text-muted">
+                                            Silakan pilih periode atau tanggal lain.
+                                        </small>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                            {% if data %}
+                            <tfoot>
+                                <tr class="table-primary font-weight-bold">
+                                    <td colspan="2" class="text-right">
+                                        <i class="fas fa-calculator"></i>
+                                        TOTAL
+                                    </td>
+                                    <td class="text-center">
+                                        {{ summary.total_transaksi|default(0)|int }}
+                                    </td>
+                                    <td class="text-right">
+                                        {{ "{:,.0f}".format(summary.total_judul|default(0)) }}
+                                    </td>
+                                    <td class="text-right text-success">
+                                        Rp {{ "{:,.0f}".format(summary.total_pendapatan|default(0)) }}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====================================================== -->
+        <!-- TABEL REKAP KLOTER -->
+        <!-- ====================================================== -->
+        <div class="col-lg-5">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-layer-group"></i>
+                            Rekap Per Kloter
+                        </h6>
+                        <div>
+                            <span class="badge badge-success badge-pill">
+                                <i class="fas fa-layer-group"></i>
+                                {{ rekap_kloter|length }} Kloter
+                            </span>
+                            <span class="badge badge-primary badge-pill ml-1">
+                                <i class="fas fa-receipt"></i>
+                                {{ summary.total_transaksi|default(0)|int }} Trans
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th width="50" class="text-center">No</th>
+                                    <th>Kloter</th>
+                                    <th class="text-center" width="80">Trans</th>
+                                    <th class="text-right" width="140">Pendapatan</th>
+                                    <th width="60" class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in rekap_kloter %}
+                                <tr>
+                                    <td class="text-center">{{ loop.index }}</td>
+                                    <td>
+                                        <strong>{{ item.nama }}</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="fas fa-tag"></i>
+                                            {{ item.kode }}
+                                        </small>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge {% if item.total_transaksi > 0 %}badge-primary{% else %}badge-secondary{% endif %} badge-pill">
+                                            {{ item.total_transaksi|default(0)|int }}
+                                        </span>
+                                    </td>
+                                    <td class="text-right font-weight-bold text-success">
+                                        Rp {{ "{:,.0f}".format(item.total_pendapatan|default(0)) }}
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="/laporan/kloter/{{ item.id }}?periode={{ periode }}&tanggal={{ tanggal }}&bulan={{ bulan }}&tahun={{ tahun }}"
+                                           class="btn btn-info btn-sm"
+                                           title="Lihat detail kloter">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                {% if not rekap_kloter %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-5">
+                                        <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                                        <br>
+                                        <p class="text-muted mb-0">Belum ada data untuk periode ini.</p>
+                                        <small class="text-muted">
+                                            Silakan pilih periode atau tanggal lain.
+                                        </small>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                            {% if rekap_kloter %}
+                            <tfoot>
+                                <tr class="table-success font-weight-bold">
+                                    <td colspan="2" class="text-right">
+                                        <i class="fas fa-calculator"></i>
+                                        TOTAL
+                                    </td>
+                                    <td class="text-center">
+                                        {{ summary.total_transaksi|default(0)|int }}
+                                    </td>
+                                    <td class="text-right text-success">
+                                        Rp {{ "{:,.0f}".format(summary.total_pendapatan|default(0)) }}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- FOOTER INFO -->
+    <!-- ====================================================== -->
+    {% if data %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i>
+                                Periode: <strong>{{ periode|capitalize }}</strong>
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-alt"></i>
+                                {% if periode == 'harian' %}
+                                Tanggal: <strong>{{ tanggal }}</strong>
+                                {% elif periode == 'bulanan' %}
+                                Bulan: <strong>{{ bulan }} - {{ tahun }}</strong>
+                                {% else %}
+                                Tahun: <strong>{{ tahun }}</strong>
+                                {% endif %}
+                            </small>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <small class="text-muted">
+                                <i class="fas fa-users"></i>
+                                Total Joki: <strong>{{ summary.total_joki|default(0)|int }}</strong>
+                                &nbsp;|&nbsp;
+                                <i class="fas fa-layer-group"></i>
+                                Total Kloter: <strong>{{ summary.total_kloter|default(0)|int }}</strong>
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                <i class="fas fa-receipt"></i>
+                                Total Transaksi: <strong>{{ summary.total_transaksi|default(0)|int }}</strong>
+                            </small>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <div class="d-inline-block p-2 bg-light rounded">
+                                <small class="text-muted">Total Pendapatan</small>
+                                <h5 class="text-success mb-0">
+                                    Rp {{ "{:,.0f}".format(summary.total_pendapatan|default(0)) }}
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ====================================================== -->
+    <!-- QUICK NAVIGATION -->
+    <!-- ====================================================== -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <a href="/catatan" class="btn btn-primary">
+                        <i class="fas fa-clipboard-list"></i>
+                        Catatan Harian
+                    </a>
+                    <a href="/laporan/dashboard" class="btn btn-success">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                    <a href="/rekap" class="btn btn-info">
+                        <i class="fas fa-chart-line"></i>
+                        Rekap Harian
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // ============================================================
+    // TOGGLE FILTER BERDASARKAN PERIODE
+    // ============================================================
+    const periodeSelect = document.getElementById('periode');
+    const filterTanggal = document.getElementById('filter_tanggal');
+    const filterBulan = document.getElementById('filter_bulan');
+    const filterTahunBulanan = document.getElementById('filter_tahun_bulanan');
+    const filterTahunTahunan = document.getElementById('filter_tahun_tahunan');
+
+    function toggleFilters() {
+        const periode = periodeSelect.value;
+        
+        // Sembunyikan semua filter dulu
+        filterTanggal.style.display = 'none';
+        filterBulan.style.display = 'none';
+        filterTahunBulanan.style.display = 'none';
+        filterTahunTahunan.style.display = 'none';
+        
+        // Tampilkan filter sesuai periode
+        if (periode === 'harian') {
+            filterTanggal.style.display = 'block';
+        } else if (periode === 'bulanan') {
+            filterBulan.style.display = 'block';
+            filterTahunBulanan.style.display = 'block';
+        } else if (periode === 'tahunan') {
+            filterTahunTahunan.style.display = 'block';
+        }
+    }
+
+    // Inisialisasi
+    toggleFilters();
+
+    // Event listener
+    periodeSelect.addEventListener('change', function() {
+        toggleFilters();
+        // Auto submit setelah toggle
+        this.form.submit();
+    });
+
+    // ============================================================
+    // AUTO SUBMIT PADA FILTER TANGGAL
+    // ============================================================
+    const tanggalInput = document.getElementById('tanggal');
+    if (tanggalInput) {
+        tanggalInput.addEventListener('change', function() {
+            this.form.submit();
+        });
+    }
+
+    // ============================================================
+    // AUTO SUBMIT PADA FILTER BULAN & TAHUN
+    // ============================================================
+    const bulanSelect = document.getElementById('bulan');
+    const tahunBulananSelect = document.getElementById('tahun_bulanan');
+    const tahunTahunanSelect = document.getElementById('tahun_tahunan');
+
+    if (bulanSelect) {
+        bulanSelect.addEventListener('change', function() {
+            this.form.submit();
+        });
+    }
+    if (tahunBulananSelect) {
+        tahunBulananSelect.addEventListener('change', function() {
+            this.form.submit();
+        });
+    }
+    if (tahunTahunanSelect) {
+        tahunTahunanSelect.addEventListener('change', function() {
+            this.form.submit();
+        });
+    }
+
+    // ============================================================
+    // AUTO-HIDE ALERT (jika ada)
+    // ============================================================
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.classList.remove('show');
+        }, 5000);
+    });
+
+    // ============================================================
+    // TOOLTIP INISIALISASI
+    // ============================================================
+    if (typeof $ !== 'undefined' && $.fn.tooltip) {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+});
+</script>
+{% endblock %}

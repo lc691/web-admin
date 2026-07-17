@@ -1,0 +1,378 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- ====================================================== -->
+    <!-- HEADER -->
+    <!-- ====================================================== -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h3 class="mb-1">
+                <i class="fas fa-chart-line text-primary"></i>
+                Rekap Harian
+            </h3>
+            <p class="text-muted mb-0">
+                <i class="fas fa-info-circle"></i>
+                Ringkasan pekerjaan joki berdasarkan tanggal.
+            </p>
+        </div>
+        <div>
+            <span class="badge badge-primary badge-pill">
+                <i class="fas fa-calendar-alt"></i>
+                {{ tanggal }}
+            </span>
+        </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- FILTER -->
+    <!-- ====================================================== -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form method="get" class="row align-items-end">
+                <div class="col-md-3">
+                    <label for="tanggal" class="font-weight-bold">
+                        Tanggal
+                    </label>
+                    <input
+                        type="date"
+                        name="tanggal"
+                        id="tanggal"
+                        value="{{ tanggal }}"
+                        class="form-control form-control-lg"
+                    >
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-search"></i>
+                        Tampilkan
+                    </button>
+                </div>
+                <div class="col-auto">
+                    <a href="/rekap" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-calendar-day"></i>
+                        Hari Ini
+                    </a>
+                </div>
+                <div class="col-auto">
+                    <a href="/rekap?tanggal={{ yesterday }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-arrow-left"></i>
+                        Kemarin
+                    </a>
+                </div>
+                <div class="col-auto">
+                    <a href="/rekap?tanggal={{ tomorrow }}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-arrow-right"></i>
+                        Besok
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- STATISTIK CARDS -->
+    <!-- ====================================================== -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Transaksi
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ summary.total_transaksi or 0 }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-receipt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Total Joki
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ summary.total_joki or 0 }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Total Judul
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{ "{:,.0f}".format(summary.total_judul or 0) }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-book fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Total Pendapatan
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                Rp {{ "{:,.0f}".format(summary.total_pendapatan or 0) }}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- REKAP JOKI TABLE -->
+    <!-- ====================================================== -->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-users"></i>
+                    Rekap Per Joki
+                </h6>
+                <div>
+                    <span class="badge badge-primary badge-pill">
+                        <i class="fas fa-user"></i>
+                        {{ data|length }} Joki
+                    </span>
+                    <span class="badge badge-success badge-pill ml-1">
+                        <i class="fas fa-receipt"></i>
+                        {{ summary.total_transaksi or 0 }} Transaksi
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th width="50" class="text-center">No</th>
+                            <th>Joki</th>
+                            <th class="text-center" width="100">Transaksi</th>
+                            <th class="text-center" width="100">Kloter</th>
+                            <th class="text-right" width="120">Judul</th>
+                            <th class="text-right" width="140">Harga Rata-rata</th>
+                            <th class="text-right" width="180">Total Pendapatan</th>
+                            <th width="80" class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                        <tr>
+                            <td class="text-center">{{ loop.index }}</td>
+                            <td>
+                                <strong>{{ item.nama }}</strong>
+                                {% if item.total_transaksi == 0 %}
+                                <span class="badge badge-secondary badge-pill ml-1">Inaktif</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <span class="badge {% if item.total_transaksi > 0 %}badge-primary{% else %}badge-secondary{% endif %} badge-pill">
+                                    {{ item.total_transaksi }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge badge-info badge-pill">
+                                    {{ item.total_kloter or 0 }}
+                                </span>
+                            </td>
+                            <td class="text-right">
+                                {{ "{:,.0f}".format(item.jumlah_judul or 0) }}
+                            </td>
+                            <td class="text-right">
+                                Rp {{ "{:,.0f}".format(item.harga_per_judul or 0) }}
+                            </td>
+                            <td class="text-right font-weight-bold text-success">
+                                Rp {{ "{:,.0f}".format(item.total_pendapatan or 0) }}
+                            </td>
+                            <td class="text-center">
+                                <a
+                                    href="/rekap/joki/{{ item.id }}?tanggal={{ tanggal }}"
+                                    class="btn btn-info btn-sm"
+                                    title="Lihat detail joki"
+                                >
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        {% if not data %}
+                        <tr>
+                            <td colspan="8" class="text-center py-5">
+                                <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                                <br>
+                                <p class="text-muted mb-0">Belum ada data pada tanggal ini.</p>
+                                <small class="text-muted">
+                                    Silakan pilih tanggal lain atau input catatan baru.
+                                </small>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+
+                    {% if data %}
+                    <tfoot>
+                        <tr class="table-primary font-weight-bold">
+                            <td colspan="2" class="text-right">
+                                <i class="fas fa-calculator"></i>
+                                TOTAL KESELURUHAN
+                            </td>
+                            <td class="text-center">
+                                {{ summary.total_transaksi or 0 }}
+                            </td>
+                            <td class="text-center">
+                                {{ summary.total_kloter or 0 }}
+                            </td>
+                            <td class="text-right">
+                                {{ "{:,.0f}".format(summary.total_judul or 0) }}
+                            </td>
+                            <td></td>
+                            <td class="text-right text-success">
+                                Rp {{ "{:,.0f}".format(summary.total_pendapatan or 0) }}
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+
+        <!-- ====================================================== -->
+        <!-- CARD FOOTER WITH SUMMARY -->
+        <!-- ====================================================== -->
+        {% if data %}
+        <div class="card-footer bg-white">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle"></i>
+                        Menampilkan <strong>{{ data|length }}</strong> joki
+                        dengan total <strong>{{ summary.total_transaksi or 0 }}</strong> transaksi
+                    </small>
+                    <br>
+                    <small class="text-muted">
+                        <i class="fas fa-clock"></i>
+                        Data tanggal: <strong>{{ tanggal }}</strong>
+                    </small>
+                </div>
+                <div class="col-md-6 text-right">
+                    <div class="d-inline-block p-2 bg-light rounded">
+                        <small class="text-muted">Total Pendapatan</small>
+                        <h5 class="text-success mb-0">
+                            Rp {{ "{:,.0f}".format(summary.total_pendapatan or 0) }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- QUICK NAVIGATION -->
+    <!-- ====================================================== -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <a href="/catatan" class="btn btn-primary">
+                        <i class="fas fa-clipboard-list"></i>
+                        Ke Catatan Harian
+                    </a>
+                    <a href="/dashboard" class="btn btn-success">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Ke Dashboard
+                    </a>
+                    <a href="/rekap/bulanan" class="btn btn-info">
+                        <i class="fas fa-calendar-alt"></i>
+                        Rekap Bulanan
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // ============================================================
+    // AUTO-SUBMIT ON DATE CHANGE
+    // ============================================================
+    const tanggalInput = document.querySelector("input[name=tanggal]");
+    if (tanggalInput) {
+        tanggalInput.addEventListener("change", function () {
+            this.form.submit();
+        });
+    }
+
+    // ============================================================
+    // AUTO-HIDE ALERT (jika ada)
+    // ============================================================
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.classList.remove('show');
+        }, 5000);
+    });
+
+    // ============================================================
+    // FORMAT RUPIAH DI SEMUA ELEMEN (opsional)
+    // ============================================================
+    function formatRupiahElements() {
+        const elements = document.querySelectorAll('.format-rupiah');
+        elements.forEach(function(el) {
+            const value = parseFloat(el.dataset.value || 0);
+            el.textContent = 'Rp ' + value.toLocaleString('id-ID');
+        });
+    }
+    formatRupiahElements();
+});
+</script>
+{% endblock %}

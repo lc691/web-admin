@@ -1,4 +1,4 @@
-from db.connect import get_db_cursor
+from app.core.database import get_db_cursor
 
 
 def list_payout_batches():

@@ -1,0 +1,180 @@
+<!-- ==========================================================
+     HARIAN VIEW
+     ========================================================== -->
+
+<div class="row g-3 mb-4">
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=harian_stats.total,
+            label="Total Penugasan",
+            color="info"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=harian_stats.selesai,
+            label="Selesai",
+            color="success"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=harian_stats.pending,
+            label="Pending",
+            color="warning"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=harian_stats.completion_rate ~ "%",
+            label="Completion Rate",
+            color="purple"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    {% with
+        title="Laporan Harian",
+        subtitle=tanggal,
+        badge=harian|length
+    %}
+        {% include "portal_joki/admin/laporan/components/table_header.html" %}
+    {% endwith %}
+
+    <div class="card-body p-0">
+
+        {% if harian %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover table-vcenter mb-0">
+
+                <thead>
+
+                    <tr>
+                        <th width="50">#</th>
+                        <th>Joki</th>
+                        <th>Kloter</th>
+                        <th>Absen</th>
+                        <th>Target</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">File</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in harian %}
+
+                    <tr
+                        onclick="window.location='{{ url_for('portal_joki_admin_penugasan_detail', penugasan_id=item.id) }}'"
+                        style="cursor:pointer"
+                    >
+
+                        <td>{{ loop.index }}</td>
+
+                        <td>
+
+                            <div class="fw-bold">
+                                {{ item.joki_nama or item.nama or "-" }}
+                            </div>
+
+                            <div class="text-muted small">
+                                {{ item.joki_kode or item.kode or "-" }}
+                            </div>
+
+                        </td>
+
+                        <td>
+                            {{ item.kloter_nama or item.kloter or "-" }}
+                        </td>
+
+                        <td>
+                            {{ item.absen_awal or "-" }}
+                            -
+                            {{ item.absen_akhir or "-" }}
+                        </td>
+
+                        <td>
+                            {{ item.target_judul or "-" }}
+                        </td>
+
+                        <td class="text-center">
+
+                            {% with
+                                status=item.status
+                            %}
+                                {% include "portal_joki/admin/laporan/components/status_badge.html" %}
+                            {% endwith %}
+
+                        </td>
+
+                        <td class="text-center">
+
+                            {% if item.file_path %}
+
+                                {% with
+                                    value="Ada",
+                                    color="success",
+                                    icon="ti ti-check"
+                                %}
+                                    {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                                {% endwith %}
+
+                            {% else %}
+
+                                {% with
+                                    value="Belum",
+                                    color="danger",
+                                    icon="ti ti-x"
+                                %}
+                                    {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                                {% endwith %}
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+            {% with
+                icon="ti ti-calendar-off",
+                title="Tidak Ada Data",
+                message="Belum ada laporan harian" ~
+                    ((" pada tanggal " ~ tanggal ~ ".") if tanggal else ".")
+            %}
+                {% include "portal_joki/admin/laporan/components/empty_state.html" %}
+            {% endwith %}
+
+        {% endif %}
+
+    </div>
+
+</div>

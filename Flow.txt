@@ -1,0 +1,21 @@
+            Request day : disini muncul channel ceklist yang akan di kecualikan.
+            └── ADA -> muncul popup isian duplicate 1,2,3  tergantung isian ini untuk isi (DUPLICATE)
+            └── TIDAK -> semua channel di ambil - muncul popup isian duplicate 1,2,3  tergantung isian ini untuk isi (DUPLICATE)
+                ↓
+            Cek song_usage
+                ↓
+            Sudah ada?
+            ├── YA → ambil data lama
+            └── TIDAK
+                    ↓
+            ambil lagu random
+                    ↓
+            filter unik channel berdasar yang tidak masuk ceklis.
+                    ↓
+            simpan song_usage
+                    ↓
+            duplicate 2x => (DUPLICATE) pindah atas
+                    ↓
+            generate txt
+                    ↓
+            download file

@@ -1,0 +1,188 @@
+<div class="card">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+            Song Details
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            <!-- ====================================================== -->
+            <!-- ID -->
+            <!-- ====================================================== -->
+
+            <div class="col-md-2">
+
+                <label class="form-label">
+                    ID
+                </label>
+
+                <div
+                    id="detail-id"
+                    class="form-control-plaintext"
+                >
+                    {{ song.id }}
+                </div>
+
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- Title -->
+            <!-- ====================================================== -->
+
+            <div class="col-md-10">
+
+                <label class="form-label">
+                    Title
+                </label>
+
+                <div
+                    id="detail-title"
+                    class="form-control-plaintext"
+                >
+                    {{ song.title }}
+                </div>
+
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- Artist -->
+            <!-- ====================================================== -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Artist
+                </label>
+
+                <div
+                    id="detail-artist"
+                    class="form-control-plaintext"
+                >
+                    {{ song.artist }}
+                </div>
+
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- Channel -->
+            <!-- ====================================================== -->
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Channel
+                </label>
+
+                <div
+                    id="detail-channel"
+                    class="form-control-plaintext"
+                >
+                    {{ song.channel }}
+                </div>
+
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- Status -->
+            <!-- ====================================================== -->
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Status
+                </label>
+
+                <div>
+
+                    {% if song.status == "Live" %}
+
+                    <span class="badge bg-success">
+                        {{ song.status }}
+                    </span>
+
+                    {% elif song.status == "Review" %}
+
+                    <span class="badge bg-warning text-dark">
+                        {{ song.status }}
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge bg-primary">
+                        {{ song.status }}
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- Release Date -->
+            <!-- ====================================================== -->
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Release Date
+                </label>
+
+                <div
+                    id="detail-release-date"
+                    class="form-control-plaintext"
+                >
+                    {{ song.release_date or "-" }}
+                </div>
+
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- Created -->
+            <!-- ====================================================== -->
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Created At
+                </label>
+
+                <div
+                    id="detail-created-at"
+                    class="form-control-plaintext"
+                >
+                    {{ song.created_at }}
+                </div>
+
+            </div>
+
+            <!-- ====================================================== -->
+            <!-- Updated -->
+            <!-- ====================================================== -->
+
+            <div class="col-md-12">
+
+                <label class="form-label">
+                    Updated At
+                </label>
+
+                <div
+                    id="detail-updated-at"
+                    class="form-control-plaintext"
+                >
+                    {{ song.updated_at or "-" }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

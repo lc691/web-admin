@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette import status
 
 from app.templates import templates
-from db.connect import get_dict_cursor
+from app.core.database import get_dict_cursor
 
 router = APIRouter(prefix="/vip_vouchers", tags=["VIP Vouchers"])
 

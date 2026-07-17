@@ -25,7 +25,7 @@ def list_users_view(
     )
 
 
-@router.get("/users/edit/{user_id}", response_class=HTMLResponse)
+@router.get("/users/{user_id}/edit", response_class=HTMLResponse)
 def edit_user_form(request: Request, user_id: int):
     user = get_user(user_id)
     if not user:
@@ -37,13 +37,19 @@ def edit_user_form(request: Request, user_id: int):
     )
 
 
-@router.post("/users/edit/{user_id}")
+@router.post("/users/{user_id}/edit")
 def update_user_post(
     user_id: int,
     username: str = Form(""),
     is_vip: bool = Form(False),
     is_active: bool = Form(True),
 ):
+    print("=== EDIT USER ===")
+    print("user_id =", user_id)
+    print("username =", username)
+    print("is_vip =", is_vip, type(is_vip))
+    print("is_active =", is_active, type(is_active))
+
     update_user(
         id=user_id,
         username=username or None,
@@ -51,10 +57,13 @@ def update_user_post(
         vip_expired=None,
         is_active=is_active,
     )
+
+    print("UPDATE SELESAI")
+
     return RedirectResponse("/users", status_code=303)
 
 
-@router.post("/users/delete/{user_id}")
+@router.post("/users/{user_id}/delete")
 def delete_user_post(user_id: int):
     delete_user(user_id)
     return RedirectResponse("/users", status_code=303)

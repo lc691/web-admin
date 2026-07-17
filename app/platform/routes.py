@@ -4,7 +4,7 @@ from starlette.status import HTTP_302_FOUND
 
 from app.templates import templates
 from app.utils.flash import get_flash, set_flash
-from db.connect import get_dict_cursor, get_dict_cursor_dep
+from app.core.database import get_dict_cursor, get_dict_cursor_dep
 
 router = APIRouter()
 

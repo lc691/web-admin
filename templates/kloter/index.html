@@ -1,0 +1,499 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4">
+
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-layer-group me-2 text-primary"></i>
+                Master Kloter
+            </h1>
+            <small class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Kelola data master kloter untuk transaksi catatan.
+            </small>
+        </div>
+        <a href="/kloter/add" class="btn btn-success">
+            <i class="fas fa-plus me-1"></i>
+            Tambah Kloter
+        </a>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- STATISTICS CARDS                                            -->
+    <!-- ========================================================== -->
+    <div class="row g-3 mb-4">
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-primary text-uppercase">Total Kloter</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ stats.total if stats else 0 }}
+                            </div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-layer-group fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-success text-uppercase">Aktif</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ stats.aktif if stats else 0 }}
+                            </div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-left-secondary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-secondary text-uppercase">Nonaktif</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ stats.nonaktif if stats else 0 }}
+                            </div>
+                        </div>
+                        <div class="text-secondary">
+                            <i class="fas fa-times-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- ALERT MESSAGES                                             -->
+    <!-- ========================================================== -->
+    {% if message %}
+    <div class="alert alert-{{ message_type }} alert-dismissible fade show" role="alert">
+        <i class="fas fa-{% if message_type == 'success' %}check-circle{% elif message_type == 'error' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+
+    <!-- ========================================================== -->
+    <!-- SEARCH & TABLE                                             -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <!-- Card Header - Search -->
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-list me-2"></i>
+                    Daftar Kloter
+                </h6>
+                <span class="text-muted small">
+                    Total: <strong>{{ total|default(data|length) }}</strong> kloter
+                    {% if keyword %} untuk pencarian "<strong>{{ keyword }}</strong>" {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="card-body py-3 border-bottom">
+            <form method="get" class="d-flex flex-wrap gap-2">
+                <div class="flex-grow-1">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input
+                            type="text"
+                            name="keyword"
+                            value="{{ keyword }}"
+                            class="form-control border-start-0"
+                            placeholder="Cari kode atau nama kloter..."
+                        >
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i>
+                            Cari
+                        </button>
+                        {% if keyword %}
+                        <a href="/kloter" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div style="width: 160px;">
+                    <select name="per_page" id="perPageSelect" class="form-select">
+                        <option value="10" {% if per_page|default(10) == 10 %}selected{% endif %}>10 per halaman</option>
+                        <option value="25" {% if per_page|default(10) == 25 %}selected{% endif %}>25 per halaman</option>
+                        <option value="50" {% if per_page|default(10) == 50 %}selected{% endif %}>50 per halaman</option>
+                        <option value="100" {% if per_page|default(10) == 100 %}selected{% endif %}>100 per halaman</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <!-- Table -->
+        <div class="card-body table-responsive">
+            {% if data %}
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th width="60" class="text-center">No</th>
+                        <th width="100">Kode</th>
+                        <th>Nama Kloter</th>
+                        <th width="80" class="text-center">Urutan</th>
+                        <th width="100" class="text-center">Status</th>
+                        <th width="200" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td class="text-center">
+                            {{ ((page|default(1) - 1) * per_page|default(10)) + loop.index }}
+                        </td>
+                        <td>
+                            <span class="badge bg-primary text-white">
+                                {{ item.kode }}
+                            </span>
+                        </td>
+                        <td>
+                            <strong>{{ item.nama }}</strong>
+                            {% if item.keterangan %}
+                            <br>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                {{ item.keterangan }}
+                            </small>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <span class="badge bg-secondary text-white">
+                                {{ item.urutan }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            {% if item.aktif %}
+                            <span class="badge bg-success text-white">
+                                <i class="fas fa-check-circle me-1"></i>
+                                Aktif
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">
+                                <i class="fas fa-times-circle me-1"></i>
+                                Nonaktif
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                <a
+                                    href="/kloter/edit/{{ item.id }}"
+                                    class="btn btn-outline-warning btn-sm"
+                                    title="Edit data kloter"
+                                >
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form
+                                    action="/kloter/toggle/{{ item.id }}"
+                                    method="post"
+                                    class="d-inline toggle-form"
+                                >
+                                    <button
+                                        type="submit"
+                                        class="btn {% if item.aktif %}btn-outline-secondary{% else %}btn-outline-success{% endif %} btn-sm"
+                                        title="Toggle status aktif/nonaktif"
+                                    >
+                                        <i class="fas fa-power-off"></i>
+                                    </button>
+                                </form>
+                                <form
+                                    action="/kloter/delete/{{ item.id }}"
+                                    method="post"
+                                    class="d-inline delete-form"
+                                >
+                                    <button
+                                        type="submit"
+                                        class="btn btn-outline-danger btn-sm"
+                                        title="Hapus data kloter"
+                                    >
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <!-- EMPTY STATE -->
+            <div class="text-center py-5">
+                <i class="fas fa-layer-group fa-4x text-muted d-block mb-3"></i>
+                <h5 class="text-muted">Belum ada data kloter</h5>
+                <p class="text-muted mb-3">
+                    {% if keyword %}
+                    Tidak ada hasil untuk pencarian "{{ keyword }}"
+                    {% else %}
+                    Klik tombol "Tambah Kloter" untuk menambahkan data
+                    {% endif %}
+                </p>
+                {% if keyword %}
+                <a href="/kloter" class="btn btn-primary btn-sm">
+                    <i class="fas fa-undo me-1"></i>
+                    Tampilkan Semua
+                </a>
+                {% else %}
+                <a href="/kloter/add" class="btn btn-success btn-sm">
+                    <i class="fas fa-plus me-1"></i>
+                    Tambah Kloter Pertama
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- PAGINATION & FOOTER                                        -->
+        <!-- ========================================================== -->
+        {% if data and total_pages and total_pages > 1 %}
+        <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Menampilkan 
+                        <strong>
+                            {% if data %}
+                                {{ ((page|default(1) - 1) * per_page|default(10)) + 1 }}
+                                -
+                                {{ ((page|default(1) - 1) * per_page|default(10)) + data|length }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </strong>
+                        dari <strong>{{ total }}</strong> data
+                        {% if keyword %} untuk pencarian "<strong>{{ keyword }}</strong>" {% endif %}
+                    </small>
+                    <br>
+                    <small class="text-muted">
+                        <i class="fas fa-clock me-1"></i>
+                        Terakhir diupdate: 
+                        <strong>
+                            {% if data and data[0].updated_at %}
+                                {{ data[0].updated_at.strftime('%d/%m/%Y %H:%M:%S') if data[0].updated_at else '-' }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </strong>
+                    </small>
+                </div>
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm mb-0">
+                        <!-- First Page -->
+                        <li class="page-item {% if page|default(1) == 1 %}disabled{% endif %}">
+                            <a class="page-link" 
+                               href="?page=1&keyword={{ keyword }}&per_page={{ per_page|default(10) }}" 
+                               aria-label="First">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </li>
+
+                        <!-- Previous Page -->
+                        <li class="page-item {% if page|default(1) == 1 %}disabled{% endif %}">
+                            <a class="page-link" 
+                               href="?page={{ page|default(1) - 1 }}&keyword={{ keyword }}&per_page={{ per_page|default(10) }}" 
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <!-- Page Numbers -->
+                        {% set start_page = [page|default(1) - 2, 1]|max %}
+                        {% set end_page = [page|default(1) + 2, total_pages]|min %}
+                        
+                        {% if start_page > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1&keyword={{ keyword }}&per_page={{ per_page|default(10) }}">1</a>
+                            </li>
+                            {% if start_page > 2 %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+
+                        {% for page_num in range(start_page, end_page + 1) %}
+                            <li class="page-item {% if page_num == page|default(1) %}active{% endif %}">
+                                <a class="page-link" 
+                                   href="?page={{ page_num }}&keyword={{ keyword }}&per_page={{ per_page|default(10) }}">
+                                    {{ page_num }}
+                                </a>
+                            </li>
+                        {% endfor %}
+
+                        {% if end_page < total_pages %}
+                            {% if end_page < total_pages - 1 %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            {% endif %}
+                            <li class="page-item">
+                                <a class="page-link" 
+                                   href="?page={{ total_pages }}&keyword={{ keyword }}&per_page={{ per_page|default(10) }}">
+                                    {{ total_pages }}
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <!-- Next Page -->
+                        <li class="page-item {% if page|default(1) == total_pages %}disabled{% endif %}">
+                            <a class="page-link" 
+                               href="?page={{ page|default(1) + 1 }}&keyword={{ keyword }}&per_page={{ per_page|default(10) }}" 
+                               aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+
+                        <!-- Last Page -->
+                        <li class="page-item {% if page|default(1) == total_pages %}disabled{% endif %}">
+                            <a class="page-link" 
+                               href="?page={{ total_pages }}&keyword={{ keyword }}&per_page={{ per_page|default(10) }}" 
+                               aria-label="Last">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // ==========================================================
+    // AUTO-HIDE ALERT
+    // ==========================================================
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.classList.remove('show');
+        }, 5000);
+    });
+
+    // ==========================================================
+    // PER PAGE SELECTOR - AUTO SUBMIT
+    // ==========================================================
+    const perPageSelect = document.getElementById('perPageSelect');
+    if (perPageSelect) {
+        perPageSelect.addEventListener('change', function() {
+            this.form.submit();
+        });
+    }
+
+    // ==========================================================
+    // DELETE CONFIRMATION WITH SWEETALERT
+    // ==========================================================
+    document.querySelectorAll('.delete-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const row = this.closest('tr');
+            const nama = row?.querySelector('td:nth-child(3) strong')?.textContent || 'kloter ini';
+            
+            Swal.fire({
+                title: 'Hapus Kloter?',
+                text: `Apakah Anda yakin ingin menghapus kloter "${nama}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    });
+
+    // ==========================================================
+    // TOGGLE CONFIRMATION WITH SWEETALERT
+    // ==========================================================
+    document.querySelectorAll('.toggle-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const row = this.closest('tr');
+            const nama = row?.querySelector('td:nth-child(3) strong')?.textContent || 'kloter ini';
+            const currentStatus = row?.querySelector('td:nth-child(5) .badge')?.textContent?.trim() || 'Aktif';
+            const newStatus = currentStatus === 'Aktif' ? 'Nonaktif' : 'Aktif';
+            
+            Swal.fire({
+                title: 'Toggle Status?',
+                text: `Ubah status kloter "${nama}" menjadi "${newStatus}"?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#6366f1',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Ubah!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    });
+
+});
+</script>
+
+<style>
+    .border-left-primary {
+        border-left: 4px solid #6366f1;
+    }
+    .border-left-success {
+        border-left: 4px solid #22c55e;
+    }
+    .border-left-secondary {
+        border-left: 4px solid #64748b;
+    }
+    .opacity-50 {
+        opacity: 0.5;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 1rem; }
+</style>
+
+{% endblock %}

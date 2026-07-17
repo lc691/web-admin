@@ -1,0 +1,607 @@
+{% extends "base.html" %}
+
+{% block title %}Kelola Hari Libur{% endblock %}
+
+{% block extra_styles %}
+<style>
+    /* ==========================================================
+       HOLIDAY PAGE STYLES
+       ========================================================== */
+    
+    .holiday-container {
+        background: var(--tblr-bg-surface);
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 1.5rem;
+    }
+    
+    /* ==========================================================
+       FORM
+       ========================================================== */
+    .holiday-form {
+        background: var(--tblr-bg-surface-hover);
+        border-radius: var(--tblr-border-radius);
+        padding: 1.25rem;
+        border: 1px solid var(--tblr-border-color);
+        margin-bottom: 1.5rem;
+    }
+    
+    .holiday-form .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .holiday-form .form-group label {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 4px;
+        display: block;
+    }
+    
+    .holiday-form .form-group .form-control {
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 8px 12px;
+        width: 100%;
+        background: var(--tblr-bg-surface);
+        color: var(--tblr-body-color);
+        transition: border-color 0.2s ease;
+    }
+    
+    .holiday-form .form-group .form-control:focus {
+        border-color: var(--tblr-primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    
+    /* ==========================================================
+       HOLIDAY LIST TABLE
+       ========================================================== */
+    .holiday-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .holiday-table th {
+        text-align: left;
+        padding: 10px 12px;
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--tblr-muted);
+        border-bottom: 2px solid var(--tblr-border-color);
+        background: var(--tblr-bg-surface-hover);
+    }
+    
+    .holiday-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--tblr-border-color);
+        vertical-align: middle;
+        font-size: 14px;
+    }
+    
+    .holiday-table tr:hover td {
+        background: var(--tblr-bg-surface-hover);
+    }
+    
+    .holiday-table .holiday-date {
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    
+    .holiday-table .holiday-name {
+        font-weight: 500;
+    }
+    
+    .holiday-table .holiday-desc {
+        color: var(--tblr-muted);
+        font-size: 13px;
+    }
+    
+    .holiday-table .actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    
+    .holiday-table .actions .btn-sm {
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+    
+    /* ==========================================================
+       EMPTY STATE
+       ========================================================== */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--tblr-muted);
+    }
+    
+    .empty-state i {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 12px;
+        opacity: 0.3;
+    }
+    
+    .empty-state h5 {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--tblr-body-color);
+    }
+    
+    .empty-state p {
+        font-size: 14px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    /* ==========================================================
+       MODAL
+       ========================================================== */
+    .modal .modal-header {
+        border-bottom: 1px solid var(--tblr-border-color);
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal .modal-footer {
+        border-top: 1px solid var(--tblr-border-color);
+        padding: 1rem 1.5rem;
+    }
+    
+    /* ==========================================================
+       RESPONSIVE
+       ========================================================== */
+    @media (max-width: 768px) {
+        .holiday-container {
+            padding: 1rem;
+        }
+        
+        .holiday-table th,
+        .holiday-table td {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+        
+        .holiday-table .holiday-desc {
+            font-size: 12px;
+        }
+        
+        .holiday-table .actions .btn-sm {
+            padding: 2px 8px;
+            font-size: 11px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .holiday-table {
+            font-size: 12px;
+        }
+        
+        .holiday-table th,
+        .holiday-table td {
+            padding: 6px 8px;
+        }
+        
+        .holiday-table .actions {
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .holiday-form .row {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Portal Joki</div>
+            <h2 class="page-title">Kelola Hari Libur</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a href="{{ url_for('portal_joki_admin_calendar') }}" class="btn btn-outline-primary btn-sm">
+                    <i class="ti ti-calendar me-1"></i> Kembali ke Kalender
+                </a>
+                <button class="btn btn-primary btn-sm" onclick="openAddModal()">
+                    <i class="ti ti-plus me-1"></i> Tambah Libur
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     HOLIDAY CONTAINER
+     ========================================================== -->
+<div class="holiday-container">
+
+    <!-- Filter / Month Navigation -->
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+        <div>
+            <span class="fw-bold">{{ month_name }} {{ year }}</span>
+            <span class="badge bg-primary ms-2">{{ holidays|length }} hari libur</span>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('portal_joki_admin_holiday') }}?year={{ year }}&month={{ month - 1 if month > 1 else 12 }}" 
+               class="btn btn-sm btn-outline-secondary">
+                <i class="ti ti-chevron-left"></i>
+            </a>
+            <a href="{{ url_for('portal_joki_admin_holiday') }}?year={{ year }}&month={{ month + 1 if month < 12 else 1 }}" 
+               class="btn btn-sm btn-outline-secondary">
+                <i class="ti ti-chevron-right"></i>
+            </a>
+            <a href="{{ url_for('portal_joki_admin_holiday') }}" class="btn btn-sm btn-outline-secondary">
+                <i class="ti ti-calendar-today"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Holiday List -->
+    {% if holidays %}
+    <div class="table-responsive">
+        <table class="holiday-table">
+            <thead>
+                <tr>
+                    <th style="width: 30px;">
+                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                    </th>
+                    <th>Tanggal</th>
+                    <th>Nama Libur</th>
+                    <th>Keterangan</th>
+                    <th style="width: 180px;">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for holiday in holidays %}
+                <tr>
+                    <td>
+                        <input type="checkbox" class="holiday-checkbox" value="{{ holiday.id }}">
+                    </td>
+                    <td class="holiday-date">{{ holiday.tanggal }}</td>
+                    <td class="holiday-name">{{ holiday.nama }}</td>
+                    <td class="holiday-desc">{{ holiday.keterangan or '-' }}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-sm btn-outline-primary" onclick="editHoliday({{ holiday.id }})">
+                                <i class="ti ti-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteHoliday({{ holiday.id }})">
+                                <i class="ti ti-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Bulk Actions -->
+        <div class="d-flex align-items-center gap-2 mt-3">
+            <button class="btn btn-sm btn-outline-danger" onclick="bulkDelete()">
+                <i class="ti ti-trash me-1"></i> Hapus Terpilih
+            </button>
+            <span class="text-muted small" id="selectedCount">0 dipilih</span>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="ti ti-calendar-off"></i>
+        <h5>Belum Ada Hari Libur</h5>
+        <p>Belum ada hari libur yang ditambahkan untuk bulan {{ month_name }} {{ year }}.</p>
+        <button class="btn btn-primary mt-2" onclick="openAddModal()">
+            <i class="ti ti-plus me-1"></i> Tambah Hari Libur
+        </button>
+    </div>
+    {% endif %}
+</div>
+
+<!-- ==========================================================
+     ADD / EDIT MODAL
+     ========================================================== -->
+<div class="modal fade" id="holidayModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="holidayModalTitle">
+                    <i class="ti ti-calendar-plus me-2"></i>
+                    Tambah Hari Libur
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="holidayForm" onsubmit="saveHoliday(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="holidayId" name="holiday_id" value="">
+                    
+                    <div class="form-group">
+                        <label for="tanggal">Tanggal <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nama">Nama Libur <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="nama" name="nama" 
+                               placeholder="Contoh: Tahun Baru 2025" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="keterangan">Keterangan</label>
+                        <textarea class="form-control" id="keterangan" name="keterangan" 
+                                  rows="2" placeholder="Keterangan tambahan (opsional)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn">
+                        <i class="ti ti-save me-1"></i> Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     DELETE CONFIRMATION MODAL
+     ========================================================== -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">
+                    <i class="ti ti-alert-triangle me-2"></i>
+                    Konfirmasi Hapus
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteMessage">Apakah Anda yakin ingin menghapus hari libur ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <i class="ti ti-trash me-1"></i> Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // ==========================================================
+    // STATE
+    // ==========================================================
+    var deleteTargetId = null;
+    var isEditing = false;
+    
+    // ==========================================================
+    // SELECT ALL
+    // ==========================================================
+    function toggleSelectAll() {
+        var checked = document.getElementById('selectAll').checked;
+        document.querySelectorAll('.holiday-checkbox').forEach(function(cb) {
+            cb.checked = checked;
+        });
+        updateSelectedCount();
+    }
+    
+    function updateSelectedCount() {
+        var count = document.querySelectorAll('.holiday-checkbox:checked').length;
+        document.getElementById('selectedCount').textContent = count + ' dipilih';
+    }
+    
+    document.addEventListener('change', function(e) {
+        if (e.target.classList && e.target.classList.contains('holiday-checkbox')) {
+            updateSelectedCount();
+        }
+    });
+    
+    // ==========================================================
+    // ADD / EDIT MODAL
+    // ==========================================================
+    function openAddModal() {
+        isEditing = false;
+        document.getElementById('holidayModalTitle').innerHTML = 
+            '<i class="ti ti-calendar-plus me-2"></i> Tambah Hari Libur';
+        document.getElementById('holidayId').value = '';
+        document.getElementById('tanggal').value = '';
+        document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
+        document.getElementById('nama').value = '';
+        document.getElementById('keterangan').value = '';
+        document.getElementById('saveBtn').innerHTML = '<i class="ti ti-save me-1"></i> Simpan';
+        
+        var modal = new bootstrap.Modal(document.getElementById('holidayModal'));
+        modal.show();
+    }
+    
+    function editHoliday(id) {
+        isEditing = true;
+        document.getElementById('holidayModalTitle').innerHTML = 
+            '<i class="ti ti-edit me-2"></i> Edit Hari Libur';
+        document.getElementById('holidayId').value = id;
+        document.getElementById('saveBtn').innerHTML = '<i class="ti ti-save me-1"></i> Update';
+        
+        // Fetch holiday data
+        fetch('/admin/portal-joki/holiday/detail?holiday_id=' + id)
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    document.getElementById('tanggal').value = data.data.tanggal || '';
+                    document.getElementById('nama').value = data.data.nama || '';
+                    document.getElementById('keterangan').value = data.data.keterangan || '';
+                    
+                    var modal = new bootstrap.Modal(document.getElementById('holidayModal'));
+                    modal.show();
+                } else {
+                    Swal.fire('Error', data.error || 'Gagal mengambil data', 'error');
+                }
+            })
+            .catch(function(error) {
+                Swal.fire('Error', 'Gagal mengambil data: ' + error.message, 'error');
+            });
+    }
+    
+    // ==========================================================
+    // SAVE HOLIDAY
+    // ==========================================================
+    function saveHoliday(event) {
+        event.preventDefault();
+        
+        var id = document.getElementById('holidayId').value;
+        var tanggal = document.getElementById('tanggal').value;
+        var nama = document.getElementById('nama').value.trim();
+        var keterangan = document.getElementById('keterangan').value.trim();
+        
+        if (!tanggal) {
+            Swal.fire('Error', 'Tanggal wajib diisi.', 'error');
+            return;
+        }
+        if (!nama) {
+            Swal.fire('Error', 'Nama libur wajib diisi.', 'error');
+            return;
+        }
+        
+        var url = id ? '/admin/portal-joki/holiday/update' : '/admin/portal-joki/holiday/create';
+        var formData = new FormData();
+        if (id) formData.append('holiday_id', id);
+        formData.append('tanggal', tanggal);
+        formData.append('nama', nama);
+        formData.append('keterangan', keterangan);
+        
+        document.getElementById('saveBtn').disabled = true;
+        document.getElementById('saveBtn').innerHTML = 
+            '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+        
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            if (data.success) {
+                var modal = bootstrap.Modal.getInstance(document.getElementById('holidayModal'));
+                modal.hide();
+                Swal.fire('Sukses', data.message, 'success').then(function() {
+                    location.reload();
+                });
+            } else {
+                Swal.fire('Error', data.error || 'Gagal menyimpan', 'error');
+            }
+        })
+        .catch(function(error) {
+            Swal.fire('Error', 'Gagal menyimpan: ' + error.message, 'error');
+        })
+        .finally(function() {
+            document.getElementById('saveBtn').disabled = false;
+            document.getElementById('saveBtn').innerHTML = id ? 
+                '<i class="ti ti-save me-1"></i> Update' : 
+                '<i class="ti ti-save me-1"></i> Simpan';
+        });
+    }
+    
+    // ==========================================================
+    // DELETE HOLIDAY
+    // ==========================================================
+    function deleteHoliday(id) {
+        deleteTargetId = id;
+        document.getElementById('deleteMessage').textContent = 
+            'Apakah Anda yakin ingin menghapus hari libur ini?';
+        
+        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
+    }
+    
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        var btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menghapus...';
+        
+        var formData = new FormData();
+        formData.append('holiday_id', deleteTargetId);
+        
+        fetch('/admin/portal-joki/holiday/delete', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            if (data.success) {
+                var modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                modal.hide();
+                Swal.fire('Sukses', data.message, 'success').then(function() {
+                    location.reload();
+                });
+            } else {
+                Swal.fire('Error', data.error || 'Gagal menghapus', 'error');
+            }
+        })
+        .catch(function(error) {
+            Swal.fire('Error', 'Gagal menghapus: ' + error.message, 'error');
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="ti ti-trash me-1"></i> Hapus';
+        });
+    });
+    
+    // ==========================================================
+    // BULK DELETE
+    // ==========================================================
+    function bulkDelete() {
+        var selected = document.querySelectorAll('.holiday-checkbox:checked');
+        if (selected.length === 0) {
+            Swal.fire('Info', 'Pilih minimal satu hari libur.', 'info');
+            return;
+        }
+        
+        Swal.fire({
+            title: 'Konfirmasi Hapus',
+            text: 'Apakah Anda yakin ingin menghapus ' + selected.length + ' hari libur?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                var ids = [];
+                selected.forEach(function(cb) {
+                    ids.push(cb.value);
+                });
+                
+                var formData = new FormData();
+                formData.append('holiday_ids', ids.join(','));
+                
+                fetch('/admin/portal-joki/holiday/bulk-delete', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        Swal.fire('Sukses', data.message, 'success').then(function() {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Error', data.error || 'Gagal menghapus', 'error');
+                    }
+                })
+                .catch(function(error) {
+                    Swal.fire('Error', 'Gagal menghapus: ' + error.message, 'error');
+                });
+            }
+        });
+    }
+</script>
+{% endblock %}

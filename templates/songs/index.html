@@ -1,0 +1,55 @@
+
+{% extends "base.html" %}
+
+{% block title %}Songs{% endblock %}
+
+{# ========================================================== #}
+{# Extra CSS                                                   #}
+{# ========================================================== #}
+{% block extra_styles %}
+    {% include "songs/partials/head.html" %}
+{% endblock %}
+
+{# ========================================================== #}
+{# Content                                                     #}
+{# ========================================================== #}
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">Songs</h2>
+                    <div class="text-secondary mt-1">Songs Management</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+            {% include "songs/components/stats.html" %}
+            {% include "songs/components/toolbar.html" %}
+            {% include "songs/components/filters.html" %}
+            {% include "songs/components/table.html" %}
+        </div>
+    </div>
+</div>
+
+{% include "songs/components/modal_create.html" %}
+{% include "songs/components/modal_edit.html" %}
+{% include "songs/components/modal_delete.html" %}
+{% include "songs/components/modal_bulk.html" %}
+{% include "songs/components/modal_import.html" %}
+{% include "songs/components/modal_export.html" %}
+{% include "songs/components/modal_usage.html" %}
+{% include "songs/components/modal_release.html" %}
+{% endblock %}
+
+{# ========================================================== #}
+{# Page Scripts                                                #}
+{# ========================================================== #}
+{% block scripts %}
+    {{ super() }}
+    {% include "songs/partials/scripts.html" %}
+{% endblock %}

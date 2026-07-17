@@ -1,0 +1,92 @@
+/* ================================================================
+    FONT GLOBAL - POPPINS UNTUK SEMUA ELEMEN
+    ================================================================ */
+
+/* Apply ke semua elemen */
+* {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Kecuali Material Symbols - tetap pakai font sendiri */
+.material-symbols-rounded,
+.material-symbols-outlined,
+[class*="material-symbols-"] {
+    font-family: 'Material Symbols Rounded' !important;
+}
+
+/* Kecuali FontAwesome - tetap pakai font sendiri */
+.fas,
+.far,
+.fal,
+.fab,
+.fa,
+[class*="fa-"] {
+    font-family: 'Font Awesome 6 Free' !important;
+}
+
+/* Kecuali Tabler Icons - tetap pakai font sendiri */
+.ti,
+[class*="ti-"] {
+    font-family: 'tabler-icons' !important;
+}
+
+/* ================================================================
+    FONT WEIGHT UNTUK BEBERAPA ELEMEN
+    ================================================================ */
+
+body {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+.navbar-vertical .nav-link,
+.navbar-vertical .navbar-brand {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.sidebar .menu-link,
+.sidebar .menu-label,
+.sidebar .sidebar-header,
+.sidebar .sidebar-footer {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.btn,
+.form-control,
+.form-label,
+.dropdown-menu,
+.table,
+.card-title,
+.card-text,
+.nav-link,
+.navbar-brand,
+.breadcrumb,
+.alert,
+.badge,
+.modal-content,
+.popover,
+.tooltip {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Input, textarea, select */
+input,
+textarea,
+select,
+button {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* Code / monospace tetap pakai font sendiri */
+code,
+pre,
+.code,
+.monospace {
+    font-family: 'Courier New', monospace !important;
+}

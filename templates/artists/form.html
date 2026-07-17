@@ -2,116 +2,511 @@
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h3 text-gray-800 mb-0">Tambah Artist</h1>
-
-  <a href="/artists" class="btn btn-secondary btn-sm">
-    <i class="fas fa-arrow-left mr-1"></i> Kembali
-  </a>
+    <h1 class="h3 text-gray-800 mb-0">
+        <i class="fas fa-user-plus mr-2"></i> Tambah Artist
+    </h1>
+    <div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="history.back()">
+            <i class="fas fa-arrow-left mr-1"></i> Kembali
+        </button>
+    </div>
 </div>
 
-
 <div class="card shadow mb-4">
-  <div class="card-body">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-info-circle mr-2"></i> Form Artist Baru
+        </h6>
+    </div>
+    
+    <div class="card-body">
+        <form method="post" action="/artists/new" id="artistForm" novalidate>
+            
+            <!-- Channel -->
+            <div class="form-group">
+                <label class="font-weight-bold">
+                    <i class="fas fa-broadcast-tower mr-1 text-primary"></i> 
+                    Channel <span class="text-danger">*</span>
+                </label>
+                
+                <select name="channel_id" id="channelSelect" class="form-control" required>
+                    <option value="">-- Pilih Channel --</option>
+                    {% for channel in channels %}
+                    <option value="{{ channel.id }}" data-channel-name="{{ channel.name }}">
+                        {{ channel.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                
+                <small class="form-text text-muted">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Artist akan masuk ke channel ini.
+                </small>
+                <div class="invalid-feedback" id="channelError">
+                    Channel wajib dipilih
+                </div>
+            </div>
+            
+            <!-- Nama Artist -->
+            <div class="form-group">
+                <label class="font-weight-bold">
+                    <i class="fas fa-user mr-1 text-primary"></i> 
+                    Nama Artist <span class="text-danger">*</span>
+                </label>
+                
+                <input type="text"
+                       name="name"
+                       id="artistName"
+                       class="form-control"
+                       placeholder="Contoh: Andra, The Beatles, Adele..."
+                       maxlength="255"
+                       autocomplete="off"
+                       required>
+                
+                <small class="form-text text-muted">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Gunakan nama unik dalam satu channel. Maksimal 255 karakter.
+                </small>
+                <div class="invalid-feedback" id="nameError">
+                    Nama artist wajib diisi
+                </div>
+            </div>
+            
+            <!-- Preview Card (Optional) -->
+            <div class="alert alert-light border" id="previewCard" style="display: none;">
+                <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                        <i class="fas fa-user-circle fa-3x text-primary"></i>
+                    </div>
+                    <div>
+                        <small class="text-muted">Preview</small>
+                        <div>
+                            <strong id="previewChannel">Channel</strong> → 
+                            <span id="previewArtist">Artist</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="/artists" class="btn btn-light">
+                        <i class="fas fa-times mr-1"></i> Batal
+                    </a>
+                </div>
+                
+                <div>
+                    <button type="reset" class="btn btn-secondary mr-2" id="resetBtn">
+                        <i class="fas fa-undo-alt mr-1"></i> Reset
+                    </button>
+                    
+                    <button type="submit" class="btn btn-primary shadow-sm" id="submitBtn">
+                        <i class="fas fa-save mr-1"></i> Simpan Artist
+                    </button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div>
 
-    <form method="post" action="/artists/new" id="artistForm" novalidate>
-
-      <!-- Channel -->
-      <div class="form-group">
-        <label class="font-weight-bold">
-          Channel <span class="text-danger">*</span>
-        </label>
-
-        <select name="channel_id" class="form-control" required>
-          <option value="">-- Pilih Channel --</option>
-
-          {% for channel in channels %}
-          <option value="{{ channel.id }}">
-            {{ channel.name }}
-          </option>
-          {% endfor %}
-        </select>
-
-        <small class="form-text text-muted">
-          Artist akan masuk ke channel ini.
-        </small>
-      </div>
-
-
-      <!-- Nama Artist -->
-      <div class="form-group">
-        <label class="font-weight-bold">
-          Nama Artist <span class="text-danger">*</span>
-        </label>
-
-        <input type="text"
-               name="name"
-               class="form-control"
-               placeholder="Contoh: Andra"
-               required>
-
-        <small class="form-text text-muted">
-          Gunakan nama unik dalam satu channel.
-        </small>
-      </div>
-
-
-      <hr>
-
-      <div class="d-flex justify-content-between">
-
-        <a href="/artists" class="btn btn-light">
-          Batal
-        </a>
-
-        <button type="submit" class="btn btn-primary shadow-sm" id="submitBtn">
-          <i class="fas fa-save mr-1"></i> Simpan Artist
-        </button>
-
-      </div>
-
-    </form>
-
-  </div>
+<!-- Success Modal (Optional) -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-check-circle mr-2"></i> Berhasil!
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-user-check fa-5x text-success mb-3"></i>
+                <h5>Artist berhasil ditambahkan</h5>
+                <p id="successMessage" class="mb-0"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" id="gotoArtistsBtn">
+                    <i class="fas fa-list mr-1"></i> Lihat Daftar Artist
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
 
-
 {% block scripts %}
 <script>
-document.addEventListener("DOMContentLoaded", function(){
-
-  const form = document.getElementById("artistForm");
-  const nameInput = document.querySelector("input[name='name']");
-  const channelSelect = document.querySelector("select[name='channel_id']");
-  const btn = document.getElementById("submitBtn");
-
-  // Autofocus → cepat input banyak
-  nameInput.focus();
-
-  form.addEventListener("submit", function(e){
-
-    const name = nameInput.value.trim();
-    const channel = channelSelect.value;
-
-    if (!channel) {
-      e.preventDefault();
-      alert("Channel wajib dipilih");
-      return;
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // ==================== DOM ELEMENTS ====================
+    const form = document.getElementById("artistForm");
+    const nameInput = document.getElementById("artistName");
+    const channelSelect = document.getElementById("channelSelect");
+    const submitBtn = document.getElementById("submitBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const previewCard = document.getElementById("previewCard");
+    const previewChannel = document.getElementById("previewChannel");
+    const previewArtist = document.getElementById("previewArtist");
+    
+    // ==================== HELPER FUNCTIONS ====================
+    function showError(inputElement, errorDivId, message) {
+        inputElement.classList.add("is-invalid");
+        const errorDiv = document.getElementById(errorDivId);
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = "block";
+        }
     }
-
-    if (!name) {
-      e.preventDefault();
-      alert("Nama artist wajib diisi");
-      return;
+    
+    function clearError(inputElement, errorDivId) {
+        inputElement.classList.remove("is-invalid");
+        const errorDiv = document.getElementById(errorDivId);
+        if (errorDiv) {
+            errorDiv.style.display = "none";
+            errorDiv.textContent = "";
+        }
     }
-
-    // Loading state
-    btn.innerHTML = "Menyimpan...";
-    btn.disabled = true;
-
-  });
-
+    
+    function validateChannel() {
+        const channelId = channelSelect.value;
+        if (!channelId) {
+            showError(channelSelect, "channelError", "Channel wajib dipilih");
+            return false;
+        }
+        clearError(channelSelect, "channelError");
+        return true;
+    }
+    
+    function validateName() {
+        const name = nameInput.value.trim();
+        if (!name) {
+            showError(nameInput, "nameError", "Nama artist wajib diisi");
+            return false;
+        }
+        
+        if (name.length < 2) {
+            showError(nameInput, "nameError", "Nama artist minimal 2 karakter");
+            return false;
+        }
+        
+        if (name.length > 255) {
+            showError(nameInput, "nameError", "Nama artist maksimal 255 karakter");
+            return false;
+        }
+        
+        // Check for invalid characters (optional)
+        const invalidChars = /[<>"'`]/g;
+        if (invalidChars.test(name)) {
+            showError(nameInput, "nameError", "Nama artist mengandung karakter tidak valid");
+            return false;
+        }
+        
+        clearError(nameInput, "nameError");
+        return true;
+    }
+    
+    function updatePreview() {
+        const channelName = channelSelect.options[channelSelect.selectedIndex]?.text || "";
+        const artistName = nameInput.value.trim();
+        
+        if (channelName && artistName) {
+            previewChannel.textContent = channelName;
+            previewArtist.textContent = artistName;
+            previewCard.style.display = "block";
+            previewCard.classList.add("fade-in");
+        } else if (channelName) {
+            previewChannel.textContent = channelName;
+            previewArtist.textContent = "________";
+            previewCard.style.display = "block";
+        } else if (artistName) {
+            previewChannel.textContent = "________";
+            previewArtist.textContent = artistName;
+            previewCard.style.display = "block";
+        } else {
+            previewCard.style.display = "none";
+        }
+    }
+    
+    function showLoading() {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+            Menyimpan...
+        `;
+    }
+    
+    function hideLoading() {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save mr-1"></i> Simpan Artist';
+    }
+    
+    function resetForm() {
+        form.reset();
+        clearError(channelSelect, "channelError");
+        clearError(nameInput, "nameError");
+        updatePreview();
+        nameInput.focus();
+        
+        // Show toast notification
+        showToast("Form telah direset", "info");
+    }
+    
+    function showToast(message, type = 'success') {
+        // Create toast container if not exists
+        if ($('#toast-container').length === 0) {
+            $('body').append('<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>');
+        }
+        
+        const bgClass = type === 'success' ? 'bg-success' : (type === 'error' ? 'bg-danger' : 'bg-info');
+        const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
+        
+        const toastId = 'toast_' + Date.now();
+        const toast = $(`
+            <div id="${toastId}" class="toast" role="alert" data-delay="3000">
+                <div class="toast-header ${bgClass} text-white">
+                    <i class="fas ${icon} mr-2"></i>
+                    <strong class="mr-auto">${type === 'success' ? 'Sukses' : (type === 'error' ? 'Error' : 'Info')}</strong>
+                    <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast">&times;</button>
+                </div>
+                <div class="toast-body">
+                    ${escapeHtml(message)}
+                </div>
+            </div>
+        `);
+        
+        $('#toast-container').append(toast);
+        toast.toast('show');
+        toast.on('hidden.bs.toast', () => toast.remove());
+        setTimeout(() => toast.toast('hide'), 3000);
+    }
+    
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    function showSuccessModal(artistName, channelName) {
+        const message = `Artist "${artistName}" berhasil ditambahkan ke channel "${channelName}"`;
+        document.getElementById("successMessage").innerHTML = `
+            <i class="fas fa-user mr-1"></i> <strong>${escapeHtml(artistName)}</strong><br>
+            <i class="fas fa-broadcast-tower mr-1"></i> ${escapeHtml(channelName)}
+        `;
+        $('#successModal').modal('show');
+    }
+    
+    // ==================== EVENT LISTENERS ====================
+    
+    // Real-time validation
+    nameInput.addEventListener("input", function() {
+        validateName();
+        updatePreview();
+    });
+    
+    channelSelect.addEventListener("change", function() {
+        validateChannel();
+        updatePreview();
+        
+        // Show channel info
+        const selectedOption = channelSelect.options[channelSelect.selectedIndex];
+        if (selectedOption && selectedOption.value) {
+            showToast(`Channel "${selectedOption.text}" dipilih`, "info");
+        }
+    });
+    
+    // Real-time character count
+    nameInput.addEventListener("input", function() {
+        const remaining = 255 - this.value.length;
+        let counter = document.getElementById("charCounter");
+        
+        if (!counter) {
+            counter = document.createElement("small");
+            counter.id = "charCounter";
+            counter.className = "form-text text-muted";
+            this.parentNode.appendChild(counter);
+        }
+        
+        if (remaining < 10 && remaining >= 0) {
+            counter.innerHTML = `<i class="fas fa-info-circle mr-1"></i>Sisa ${remaining} karakter`;
+            counter.style.color = remaining < 5 ? "#e74a3b" : "#f6c23e";
+        } else if (remaining < 0) {
+            counter.innerHTML = `<i class="fas fa-exclamation-triangle mr-1"></i>Melebihi batas!`;
+            counter.style.color = "#e74a3b";
+        } else {
+            counter.innerHTML = "";
+        }
+    });
+    
+    // Form submission
+    form.addEventListener("submit", function(e) {
+        const isChannelValid = validateChannel();
+        const isNameValid = validateName();
+        
+        if (!isChannelValid || !isNameValid) {
+            e.preventDefault();
+            
+            // Scroll to first error
+            const firstError = document.querySelector(".is-invalid");
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+                firstError.focus();
+            }
+            
+            showToast("Mohon lengkapi data yang diperlukan", "error");
+            return;
+        }
+        
+        // Show loading state
+        showLoading();
+        
+        // Form will submit normally
+    });
+    
+    // Reset button
+    resetBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        if (confirm("Reset semua data yang sudah diisi?")) {
+            resetForm();
+        }
+    });
+    
+    // Prevent accidental double submit
+    let submitted = false;
+    form.addEventListener("submit", function() {
+        if (submitted) {
+            return false;
+        }
+        submitted = true;
+        setTimeout(() => { submitted = false; }, 3000);
+    });
+    
+    // Auto-focus on name input
+    nameInput.focus();
+    
+    // Keyboard shortcuts
+    document.addEventListener("keydown", function(e) {
+        // Ctrl/Cmd + Enter to submit
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+            e.preventDefault();
+            if (validateChannel() && validateName()) {
+                form.dispatchEvent(new Event("submit"));
+            }
+        }
+        
+        // Escape to reset
+        if (e.key === "Escape") {
+            e.preventDefault();
+            resetForm();
+        }
+    });
+    
+    // Check for success message from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === '1') {
+        const artistName = urlParams.get('name') || 'Artist';
+        const channelName = urlParams.get('channel') || 'Channel';
+        showSuccessModal(artistName, channelName);
+        
+        // Clear URL parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
+    // Initialize preview
+    updatePreview();
+    
+    // Go to artists button
+    document.getElementById("gotoArtistsBtn")?.addEventListener("click", function() {
+        window.location.href = "/artists";
+    });
+    
+    // Add animation class
+    const card = document.querySelector(".card");
+    if (card) {
+        card.classList.add("fade-in");
+    }
 });
 </script>
+
+<style>
+/* Custom styles for form */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.2rem rgba(78,115,223,0.25);
+}
+
+.form-control.is-invalid:focus {
+    box-shadow: 0 0 0 0.2rem rgba(231,74,59,0.25);
+}
+
+label {
+    margin-bottom: 0.5rem;
+}
+
+#previewCard {
+    background: linear-gradient(135deg, #f8f9fc 0%, #f1f3f9 100%);
+    border-left: 4px solid #4e73df;
+    transition: all 0.3s ease;
+}
+
+#previewCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+}
+
+.btn {
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .d-flex.justify-content-between > div:last-child {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .btn {
+        flex: 1;
+        text-align: center;
+    }
+}
+</style>
 {% endblock %}

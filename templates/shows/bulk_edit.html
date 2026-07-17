@@ -1,173 +1,114 @@
 {% extends "base.html" %}
+
 {% block content %}
-<style>
-    .page-wrapper {
-        background: #f4f6f9;
-        padding: 30px;
-    }
 
-    .lux-card {
-        background: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-        overflow: hidden;
-        margin-bottom: 40px;
-    }
-
-    .lux-header {
-        padding: 20px 25px;
-        background: linear-gradient(135deg, #1f2937, #374151);
-        color: white;
-    }
-
-    .lux-body {
-        padding: 30px;
-    }
-
-    .form-control,
-    .form-select {
-        border-radius: 12px;
-        padding: 12px 15px;
-        border: 1px solid #e5e7eb;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-        border-color: #3b82f6;
-    }
-
-    .thumbnail-preview {
-        width: 100%;
-        max-width: 260px;
-    }
-
-    .ratio-box {
-        position: relative;
-        width: 100%;
-        padding-top: 150%;
-        overflow: hidden;
-        border-radius: 16px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        background: #f3f4f6;
-    }
-
-    .preview-img {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .btn-save,
-    .btn-import {
-        border: none;
-        padding: 10px 26px;
-        border-radius: 12px;
-        font-weight: 500;
-        color: white;
-        transition: all 0.25s ease;
-    }
-
-    .btn-save {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
-    }
-
-    .btn-import {
-        background: linear-gradient(135deg, #0ea5e9, #0284c7);
-        box-shadow: 0 6px 16px rgba(14, 165, 233, 0.25);
-    }
-
-    .btn-save:hover,
-    .btn-import:hover {
-        transform: translateY(-2px);
-    }
-
-    .btn-cancel {
-        background: #f3f4f6;
-        color: #374151;
-        padding: 10px 22px;
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-        text-decoration: none;
-    }
-
-    @media (max-width:768px) {
-
-        .btn-save,
-        .btn-cancel,
-        .btn-import {
-            width: 100%;
-        }
-
-        .action-group {
-            flex-direction: column;
-        }
-    }
-</style>
-
-<div class="page-wrapper">
-
-    <div class="lux-card">
-
-        <div class="lux-header">
-            <div class="fw-semibold">Bulk Edit Show</div>
-            <small class="opacity-75">
-                Edit {{ ids.split(',')|length }} show terpilih
+<div class="container-fluid px-4" style="max-width: 900px;">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-edit me-2 text-warning"></i>
+                Bulk Edit Show
+            </h1>
+            <small class="text-muted">
+                Edit {{ ids.split(',')|length }} show terpilih secara massal
             </small>
         </div>
+        <a href="/shows" class="btn btn-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i>
+            Kembali ke Daftar
+        </a>
+    </div>
 
-        <div class="lux-body">
-
+    <!-- ========================================================== -->
+    <!-- FORM CARD                                                  -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h6 class="mb-0 fw-bold text-primary">
+                <i class="fas fa-pencil-alt me-2"></i>
+                Informasi Show
+            </h6>
+        </div>
+        <div class="card-body">
+            
             <form method="post" action="/shows/bulk-edit">
-
                 <input type="hidden" name="ids" value="{{ ids }}">
 
                 <div class="row g-4">
 
-                    <!-- LEFT COLUMN -->
+                    <!-- ====================================================== -->
+                    <!-- LEFT COLUMN                                             -->
+                    <!-- ====================================================== -->
                     <div class="col-md-8">
 
                         <!-- TITLE -->
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">
-                                <input type="checkbox" class="form-check-input me-2 bulk-check"
-                                    data-target="#titleInput" name="apply_title">
-                                Judul
-                            </label>
-                            <input type="text" id="titleInput" name="title" class="form-control" disabled>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <input type="checkbox" 
+                                       class="form-check-input bulk-check" 
+                                       id="chkTitle"
+                                       data-target="#titleInput" 
+                                       name="apply_title">
+                                <label for="chkTitle" class="form-label mb-0 fw-bold">
+                                    <i class="fas fa-heading me-1"></i>
+                                    Judul
+                                </label>
+                            </div>
+                            <input type="text" 
+                                   id="titleInput" 
+                                   name="title" 
+                                   class="form-control" 
+                                   placeholder="Masukkan judul baru" 
+                                   disabled>
                         </div>
 
                         <!-- SINOPSIS -->
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">
-                                <input type="checkbox" class="form-check-input me-2 bulk-check"
-                                    data-target="#sinopsisInput" name="apply_sinopsis">
-                                Sinopsis
-                            </label>
-                            <textarea id="sinopsisInput" name="sinopsis" rows="5" class="form-control"
-                                disabled></textarea>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <input type="checkbox" 
+                                       class="form-check-input bulk-check" 
+                                       id="chkSinopsis"
+                                       data-target="#sinopsisInput" 
+                                       name="apply_sinopsis">
+                                <label for="chkSinopsis" class="form-label mb-0 fw-bold">
+                                    <i class="fas fa-align-left me-1"></i>
+                                    Sinopsis
+                                </label>
+                            </div>
+                            <textarea id="sinopsisInput" 
+                                      name="sinopsis" 
+                                      rows="4" 
+                                      class="form-control" 
+                                      placeholder="Masukkan sinopsis baru" 
+                                      disabled></textarea>
                         </div>
 
                         <!-- GENRE + SOURCE -->
                         <div class="row g-3">
-
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">
-                                    <input type="checkbox" class="form-check-input me-2 bulk-check"
-                                        data-target="#genreInput" name="apply_genre">
-                                    Genre
-                                </label>
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <input type="checkbox" 
+                                           class="form-check-input bulk-check" 
+                                           id="chkGenre"
+                                           data-target="#genreInput" 
+                                           name="apply_genre">
+                                    <label for="chkGenre" class="form-label mb-0 fw-bold">
+                                        <i class="fas fa-tag me-1"></i>
+                                        Genre
+                                    </label>
+                                </div>
                                 <select id="genreInput" name="genre" class="form-select" disabled>
                                     <option value="">-- Pilih Genre --</option>
                                     {% set genre_options = [
-                                    "🇨🇳 Drama China",
-                                    "🇺🇸 Drama Barat",
-                                    "🇰🇷 Drama Korea",
-                                    "🇯🇵 Drama Jepang",
-                                    "🇹🇭 Drama Thailand"
+                                        "🇨🇳 Drama China",
+                                        "🇺🇸 Drama Barat",
+                                        "🇰🇷 Drama Korea",
+                                        "🇯🇵 Drama Jepang",
+                                        "🇹🇭 Drama Thailand"
                                     ] %}
                                     {% for g in genre_options %}
                                     <option value="{{ g }}">{{ g }}</option>
@@ -176,11 +117,17 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">
-                                    <input type="checkbox" class="form-check-input me-2 bulk-check"
-                                        data-target="#sourceInput" name="apply_source_id">
-                                    Source
-                                </label>
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <input type="checkbox" 
+                                           class="form-check-input bulk-check" 
+                                           id="chkSource"
+                                           data-target="#sourceInput" 
+                                           name="apply_source_id">
+                                    <label for="chkSource" class="form-label mb-0 fw-bold">
+                                        <i class="fas fa-database me-1"></i>
+                                        Source
+                                    </label>
+                                </div>
                                 <select id="sourceInput" name="source_id" class="form-select" disabled>
                                     <option value="">-- Pilih Source --</option>
                                     {% for src in sources %}
@@ -190,61 +137,101 @@
                                     {% endfor %}
                                 </select>
                             </div>
-
                         </div>
 
                         <!-- HASHTAGS -->
-                        <div class="mt-4">
-                            <label class="form-label fw-semibold">
-                                <input type="checkbox" class="form-check-input me-2 bulk-check"
-                                    data-target="#hashtagsInput" name="apply_hashtags">
-                                Hashtags
-                            </label>
-                            <input type="text" id="hashtagsInput" name="hashtags" class="form-control" disabled>
+                        <div class="mt-3">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <input type="checkbox" 
+                                       class="form-check-input bulk-check" 
+                                       id="chkHashtags"
+                                       data-target="#hashtagsInput" 
+                                       name="apply_hashtags">
+                                <label for="chkHashtags" class="form-label mb-0 fw-bold">
+                                    <i class="fas fa-hashtag me-1"></i>
+                                    Hashtags
+                                </label>
+                            </div>
+                            <input type="text" 
+                                   id="hashtagsInput" 
+                                   name="hashtags" 
+                                   class="form-control" 
+                                   placeholder="#drama #keren #viral" 
+                                   disabled>
                         </div>
 
                     </div>
 
-                    <!-- RIGHT COLUMN -->
+                    <!-- ====================================================== -->
+                    <!-- RIGHT COLUMN                                            -->
+                    <!-- ====================================================== -->
                     <div class="col-md-4">
 
                         <!-- THUMBNAIL -->
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">
-                                <input type="checkbox" class="form-check-input me-2 bulk-check"
-                                    data-target="#thumbInput" name="apply_thumbnail_url">
-                                Thumbnail URL
-                            </label>
-                            <input type="url" id="thumbInput" name="thumbnail_url" class="form-control" disabled>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <input type="checkbox" 
+                                       class="form-check-input bulk-check" 
+                                       id="chkThumb"
+                                       data-target="#thumbInput" 
+                                       name="apply_thumbnail_url">
+                                <label for="chkThumb" class="form-label mb-0 fw-bold">
+                                    <i class="fas fa-image me-1"></i>
+                                    Thumbnail URL
+                                </label>
+                            </div>
+                            <input type="url" 
+                                   id="thumbInput" 
+                                   name="thumbnail_url" 
+                                   class="form-control" 
+                                   placeholder="https://example.com/image.jpg" 
+                                   disabled>
+                            <small class="text-muted">
+                                Kosongkan untuk menggunakan gambar default
+                            </small>
                         </div>
 
                         <!-- ADULT -->
-                        <div>
-                            <label class="form-label fw-semibold">
-                                <input type="checkbox" class="form-check-input me-2 bulk-check"
-                                    data-target="#adultInput" name="apply_is_adult">
-                                Konten Dewasa
-                            </label>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <input type="checkbox" 
+                                       class="form-check-input bulk-check" 
+                                       id="chkAdult"
+                                       data-target="#adultInput" 
+                                       name="apply_is_adult">
+                                <label for="chkAdult" class="form-label mb-0 fw-bold">
+                                    <i class="fas fa-eye-slash me-1"></i>
+                                    Konten Dewasa
+                                </label>
+                            </div>
                             <select id="adultInput" name="is_adult" class="form-select" disabled>
-                                <option value="0">Tidak</option>
-                                <option value="1">Ya</option>
+                                <option value="0">❌ Tidak</option>
+                                <option value="1">⚠️ Ya (18+)</option>
                             </select>
+                        </div>
+
+                        <!-- INFO CARD -->
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>{{ ids.split(',')|length }}</strong> show akan diubah
                         </div>
 
                     </div>
 
                 </div>
 
-                <div class="pt-4 mt-4 border-top d-flex gap-3">
-
-                    <button type="submit" class="btn-save">
-                        Simpan Perubahan
-                    </button>
-
-                    <a href="/shows" class="btn-cancel">
+                <!-- ====================================================== -->
+                <!-- BUTTONS                                                -->
+                <!-- ====================================================== -->
+                <div class="pt-3 mt-3 border-top d-flex gap-2">
+                    <a href="/shows" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i>
                         Batal
                     </a>
-
+                    <button type="submit" class="btn btn-primary" id="btnSave">
+                        <i class="fas fa-save me-1"></i>
+                        Simpan Perubahan
+                    </button>
                 </div>
 
             </form>
@@ -253,21 +240,128 @@
     </div>
 
 </div>
-
 {% endblock %}
 
+<!-- ========================================================== -->
+<!-- SCRIPTS                                                    -->
+<!-- ========================================================== -->
 {% block scripts %}
-{{ super() }}
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        $('.bulk-check').on('change', function () {
-            const target = $(this).data('target');
+    // ==========================================================
+    // TOGGLE INPUT ON CHECKBOX CHANGE
+    // ==========================================================
+    $('.bulk-check').on('change', function () {
+        const target = $(this).data('target');
+        const isChecked = this.checked;
+        
+        if (isChecked) {
             $(target)
-                .prop('disabled', !this.checked)
-                .val('');
-        });
-
+                .prop('disabled', false)
+                .addClass('border-primary')
+                .focus();
+        } else {
+            $(target)
+                .prop('disabled', true)
+                .val('')
+                .removeClass('border-primary');
+        }
     });
+
+    // ==========================================================
+    // FORM SUBMIT - VALIDATION
+    // ==========================================================
+    $('form').on('submit', function (e) {
+        const checked = $('.bulk-check:checked').length;
+        
+        if (checked === 0) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak Ada Perubahan',
+                text: 'Silakan pilih minimal satu field yang ingin diubah.',
+                confirmButtonColor: '#6366f1'
+            });
+            return false;
+        }
+        
+        const btn = $('#btnSave');
+        btn.html('<span class="spinner-border spinner-border-sm me-2"></span> Menyimpan...');
+        btn.prop('disabled', true);
+        return true;
+    });
+
+    // ==========================================================
+    // KEYBOARD SHORTCUT: Enter to submit
+    // ==========================================================
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+            e.preventDefault();
+            $('form').submit();
+        }
+    });
+
+
+
+    // ==========================================================
+    // KEYBOARD SHORTCUT: Enter to submit
+    // ==========================================================
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+            e.preventDefault();
+            $('form').submit();
+        }
+    });
+
+    // ==========================================================
+    // FORM SUBMIT - PREVENT DOUBLE SUBMIT
+    // ==========================================================
+    $('form').on('submit', function (e) {
+        const checked = $('.bulk-check:checked').length;
+        
+        if (checked === 0) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak Ada Perubahan',
+                text: 'Silakan pilih minimal satu field yang ingin diubah.',
+                confirmButtonColor: '#6366f1'
+            });
+            return false;
+        }
+        
+        const btn = $('#btnSave');
+        btn.html('<span class="spinner-border spinner-border-sm me-2"></span> Menyimpan...');
+        btn.prop('disabled', true);
+        return true;
+    });
+
+    // ==========================================================
+    // KEYBOARD SHORTCUT: Enter to submit
+    // ==========================================================
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+            e.preventDefault();
+            $('form').submit();
+        }
+    });
+
+});
 </script>
+
+<style>
+    .bulk-check:checked + label {
+        color: #6366f1;
+    }
+    .border-primary {
+        border-color: #6366f1 !important;
+    }
+    .form-control:disabled, 
+    .form-select:disabled {
+        background-color: #f1f5f9;
+        cursor: not-allowed;
+    }
+</style>
+
 {% endblock %}

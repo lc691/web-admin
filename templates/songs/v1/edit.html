@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4" style="max-width:700px;">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-edit text-warning me-2"></i>
+                Edit Lagu
+            </h5>
+        </div>
+        
+        <div class="card-body">
+            <form method="post" id="editForm">
+                <input type="hidden" name="channel_id" value="{{ song.channel_id }}">
+                
+                <!-- Channel (Read-only) -->
+                <div class="mb-3">
+                    <label class="form-label">Channel</label>
+                    <input type="text" class="form-control" value="{{ song.channel_name }}" disabled>
+                    <small class="text-muted">Channel tidak dapat diubah</small>
+                </div>
+                
+                <!-- Artist Selection (Dropdown) -->
+                <div class="mb-3">
+                    <label for="artist_id" class="form-label">Artis <span class="text-danger">*</span></label>
+                    <select class="form-select" id="artist_id" name="artist_id" required>
+                        <option value="">-- Pilih Artis --</option>
+                        {% for artist in artists %}
+                        <option value="{{ artist.id }}" {% if song.artist_id == artist.id %}selected{% endif %}>
+                            {{ artist.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <small class="text-muted">Pilih artis untuk lagu ini</small>
+                </div>
+                
+                <!-- Title -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">Judul Lagu <span class="text-danger">*</span></label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="title" 
+                           name="title" 
+                           value="{{ song.title }}"
+                           required
+                           maxlength="255">
+                </div>
+                
+                <!-- Status -->
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                    <select class="form-select" id="status" name="status" required>
+                        {% for status in valid_status %}
+                        <option value="{{ status }}" {% if song.status == status %}selected{% endif %}>
+                            {{ status }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Release Date -->
+                <div class="mb-3">
+                    <label for="release_date" class="form-label">Release Date</label>
+                    <input type="date" 
+                           class="form-control" 
+                           id="release_date" 
+                           name="release_date" 
+                           value="{{ song.release_date if song.release_date else '' }}">
+                    <small class="text-muted">Format: YYYY-MM-DD (Opsional)</small>
+                </div>
+                
+                <hr>
+                
+                <div class="d-flex justify-content-between">
+                    <a href="/songs?channel_id={{ song.channel_id }}" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i> Batal
+                    </a>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-save me-1"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function() {
+    const form = $('#editForm');
+    const submitBtn = $('#submitBtn');
+    const artistSelect = $('#artist_id');
+    
+    // Form validation
+    form.on('submit', function(e) {
+        const title = $('#title').val().trim();
+        
+        if (!title) {
+            e.preventDefault();
+            alert('Judul lagu tidak boleh kosong!');
+            $('#title').focus();
+            return false;
+        }
+        
+        if (title.length > 255) {
+            e.preventDefault();
+            alert('Judul lagu maksimal 255 karakter!');
+            $('#title').focus();
+            return false;
+        }
+        
+        // Validate artist
+        const selectedArtist = artistSelect.val();
+        
+        if (!selectedArtist) {
+            e.preventDefault();
+            alert('Pilih artis untuk lagu ini!');
+            artistSelect.focus();
+            return false;
+        }
+        
+        // Disable button to prevent double submit
+        submitBtn.prop('disabled', true);
+        submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...');
+        
+        return true;
+    });
+    
+    // Preview status change
+    $('#status').on('change', function() {
+        const selected = $(this).val();
+        console.log('Status changed to:', selected);
+    });
+});
+</script>
+
+<style>
+select:required:invalid {
+    color: #6c757d;
+}
+
+option[value=""][disabled] {
+    display: none;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.btn {
+    border-radius: 5px;
+    padding: 8px 20px;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+</style>
+{% endblock %}

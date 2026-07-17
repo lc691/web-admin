@@ -1,0 +1,21 @@
+{# ==========================================================
+   STATUS BADGE COMPONENT
+   Required:
+   - status
+   Optional:
+   - size (sm | md | lg)
+   ========================================================== #}
+
+{% set badge_size = size|default("md") %}
+
+<span
+    class="
+        badge
+        bg-{{ get_status_color(status or 0) }}
+        {% if badge_size == 'sm' %}px-2 py-1{% endif %}
+        {% if badge_size == 'md' %}px-3 py-2{% endif %}
+        {% if badge_size == 'lg' %}px-4 py-2 fs-6{% endif %}
+    "
+>
+    {{ get_status_label(status or 0) }}
+</span>

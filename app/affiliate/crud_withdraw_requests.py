@@ -1,6 +1,6 @@
 # app/affiliate/crud_withdraw_requests.py
 
-from db.connect import get_db_cursor, get_dict_cursor
+from app.core.database import get_db_cursor, get_dict_cursor
 
 
 # =====================================================

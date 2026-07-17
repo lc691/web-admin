@@ -1,0 +1,78 @@
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+
+            <!-- ================================================== -->
+            <!-- Search -->
+            <!-- ================================================== -->
+            <div class="col-lg-4">
+                <label class="form-label fw-bold" for="filter-keyword">
+                    <i class="fas fa-search me-1"></i> Search
+                </label>
+                <input
+                    id="filter-keyword"
+                    class="form-control"
+                    type="text"
+                    placeholder="Title, Artist, Channel..."
+                >
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Channel -->
+            <!-- ================================================== -->
+            <div class="col-lg-2">
+                <label class="form-label fw-bold" for="filter-channel">
+                    <i class="fas fa-broadcast-tower me-1"></i> Channel
+                </label>
+                <select id="filter-channel" class="form-select">
+                    <option value="">All Channels</option>
+                    {% for channel in filters.channels %}
+                    <option value="{{ channel.id }}">{{ channel.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Artist -->
+            <!-- ================================================== -->
+            <div class="col-lg-3">
+                <label class="form-label fw-bold" for="filter-artist">
+                    <i class="fas fa-user me-1"></i> Artist
+                </label>
+                <select id="filter-artist" class="form-select">
+                    <option value="">All Artists</option>
+                    {% for artist in filters.artists %}
+                    <option value="{{ artist.id }}" data-channel="{{ artist.channel_id }}">
+                        {{ artist.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Status -->
+            <!-- ================================================== -->
+            <div class="col-lg-2">
+                <label class="form-label fw-bold" for="filter-status">
+                    <i class="fas fa-tag me-1"></i> Status
+                </label>
+                <select id="filter-status" class="form-select">
+                    <option value="">All Status</option>
+                    {% for status in filters.statuses %}
+                    <option value="{{ status.value }}">{{ status.label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Action -->
+            <!-- ================================================== -->
+            <div class="col-lg-1">
+                <button id="btn-reset-filter" class="btn btn-outline-secondary w-100" type="button">
+                    <i class="fas fa-undo me-1"></i> Reset
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

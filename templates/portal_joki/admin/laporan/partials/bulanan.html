@@ -1,0 +1,192 @@
+<!-- ==========================================================
+     BULANAN VIEW
+     ========================================================== -->
+
+<div class="row g-3 mb-4">
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=bulanan_stats.total_joki,
+            label="Total Joki",
+            color="primary"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=bulanan_stats.total_penugasan,
+            label="Total Penugasan",
+            color="info"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=bulanan_stats.selesai,
+            label="Selesai",
+            color="success"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+    <div class="col-6 col-md-3">
+        {% with
+            value=bulanan_stats.completion_rate ~ "%",
+            label="Completion Rate",
+            color="purple"
+        %}
+            {% include "portal_joki/admin/laporan/components/stat_card.html" %}
+        {% endwith %}
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    {% with
+        title="Laporan Bulanan",
+        subtitle=month_name ~ " " ~ tahun,
+        badge=bulanan|length
+    %}
+        {% include "portal_joki/admin/laporan/components/table_header.html" %}
+    {% endwith %}
+
+    <div class="card-body p-0">
+
+        {% if bulanan %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover table-vcenter mb-0">
+
+                <thead>
+
+                    <tr>
+                        <th width="50">#</th>
+                        <th>Joki</th>
+                        <th class="text-center">Target</th>
+                        <th class="text-center">Total</th>
+                        <th class="text-center">Selesai</th>
+                        <th class="text-center">Pending</th>
+                        <th class="text-center">Revisi</th>
+                        <th class="text-center">Rate</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in bulanan %}
+
+                    {% set total = item.total_penugasan or 0 %}
+                    {% set selesai = item.selesai or 0 %}
+                    {% set rate = (selesai / total * 100)|round(2) if total else 0 %}
+
+                    <tr>
+
+                        <td>{{ loop.index }}</td>
+
+                        <td>
+
+                            <div class="fw-bold">
+                                {{ item.nama or "-" }}
+                            </div>
+
+                            <div class="text-muted small">
+                                {{ item.kode or "-" }}
+                            </div>
+
+                        </td>
+
+                        <td class="text-center">
+                            {{ item.total_target or 0 }}
+                        </td>
+
+                        <td class="text-center">
+                            {{ total }}
+                        </td>
+
+                        <td class="text-center">
+
+                            {% with
+                                value=item.selesai,
+                                color="success"
+                            %}
+                                {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                            {% endwith %}
+
+                        </td>
+
+                        <td class="text-center">
+
+                            {% with
+                                value=item.pending,
+                                color="warning"
+                            %}
+                                {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                            {% endwith %}
+
+                        </td>
+
+                        <td class="text-center">
+
+                            {% with
+                                value=item.revisi,
+                                color="danger"
+                            %}
+                                {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                            {% endwith %}
+
+                        </td>
+
+                        <td class="text-center">
+
+                            {% if rate >= 75 %}
+                                {% set badge_color = "success" %}
+                            {% elif rate >= 50 %}
+                                {% set badge_color = "warning" %}
+                            {% else %}
+                                {% set badge_color = "danger" %}
+                            {% endif %}
+
+                            {% with
+                                value=rate,
+                                suffix="%",
+                                color=badge_color
+                            %}
+                                {% include "portal_joki/admin/laporan/components/info_badge.html" %}
+                            {% endwith %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+            {% with
+                icon="ti ti-calendar-month",
+                title="Tidak Ada Data",
+                message="Belum ada laporan untuk " ~ month_name ~ " " ~ tahun ~ "."
+            %}
+                {% include "portal_joki/admin/laporan/components/empty_state.html" %}
+            {% endwith %}
+
+        {% endif %}
+
+    </div>
+
+</div>

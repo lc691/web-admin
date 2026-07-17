@@ -1,0 +1,40 @@
+{# ==========================================================
+   EMPTY STATE COMPONENT
+   Optional:
+   - icon
+   - title
+   - message
+   - action_url
+   - action_label
+   ========================================================== #}
+
+{% set empty_icon = icon|default("ti ti-database-off") %}
+{% set empty_title = title|default("Tidak Ada Data") %}
+{% set empty_message = message|default("Belum ada data yang dapat ditampilkan.") %}
+
+<div class="empty-state">
+
+    <i class="{{ empty_icon }}"></i>
+
+    <h5>
+        {{ empty_title }}
+    </h5>
+
+    <p class="text-muted mb-0">
+        {{ empty_message }}
+    </p>
+
+    {% if action_url is defined and action_label is defined %}
+    <div class="mt-3">
+
+        <a
+            href="{{ action_url }}"
+            class="btn btn-primary btn-sm"
+        >
+            {{ action_label }}
+        </a>
+
+    </div>
+    {% endif %}
+
+</div>

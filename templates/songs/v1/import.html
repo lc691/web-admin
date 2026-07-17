@@ -1,0 +1,819 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4" style="max-width: 920px;">
+
+    <!-- ===================================================== -->
+    <!-- HEADER -->
+    <!-- ===================================================== -->
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+        <div>
+            <h4 class="mb-1">
+                <i class="fas fa-file-import text-success me-2"></i>
+                Import Songs
+            </h4>
+
+            {% if channel %}
+            <small class="text-muted">
+                Channel:
+                <strong>{{ channel.name }}</strong>
+            </small>
+            {% endif %}
+        </div>
+
+        <a href="/songs{% if channel %}?channel_id={{ channel.id }}{% endif %}"
+           class="btn btn-outline-secondary btn-sm">
+            <i class="fas fa-arrow-left me-1"></i>
+            Kembali
+        </a>
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- CARD -->
+    <!-- ===================================================== -->
+
+    <div class="card">
+
+        <!-- TABS -->
+        <div class="card-header">
+
+            <ul class="nav nav-tabs card-header-tabs">
+
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       data-bs-toggle="tab"
+                       href="#pasteTab">
+
+                        <i class="fas fa-paste me-1"></i>
+                        Paste Data
+
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       data-bs-toggle="tab"
+                       href="#uploadTab">
+
+                        <i class="fas fa-upload me-1"></i>
+                        Upload File
+
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                       data-bs-toggle="tab"
+                       href="#templateTab">
+
+                        <i class="fas fa-download me-1"></i>
+                        Template
+
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="tab-content">
+
+                <!-- ===================================================== -->
+                <!-- PASTE TAB -->
+                <!-- ===================================================== -->
+
+                <div class="tab-pane fade show active"
+                     id="pasteTab">
+
+                    <form id="importForm"
+                          method="post"
+                          action="/songs/import">
+
+                        <!-- CHANNEL -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Channel
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            {% if channel %}
+
+                            <input type="hidden"
+                                   name="channel_id"
+                                   value="{{ channel.id }}">
+
+                            <input type="text"
+                                   class="form-control"
+                                   value="{{ channel.name }}"
+                                   readonly>
+
+                            {% else %}
+
+                            <select name="channel_id"
+                                    id="channel_id"
+                                    class="form-select">
+
+                                <option value="">
+                                    -- Pilih Channel --
+                                </option>
+
+                                {% for ch in channels %}
+                                <option value="{{ ch.id }}">
+                                    {{ ch.name }}
+                                </option>
+                                {% endfor %}
+
+                            </select>
+
+                            <small class="text-muted d-block mt-2">
+                                Atau buat channel baru di bawah
+                            </small>
+
+                            <input type="text"
+                                   name="new_channel"
+                                   class="form-control mt-2"
+                                   placeholder="Nama channel baru">
+
+                            {% endif %}
+
+                        </div>
+
+                        <!-- DATA -->
+
+                        <div class="mb-3">
+
+                            <div class="d-flex justify-content-between mb-2">
+
+                                <label class="form-label mb-0">
+                                    Data Songs
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <small id="lineCount"
+                                       class="text-muted">
+                                    0 baris
+                                </small>
+
+                            </div>
+
+                            <textarea name="data"
+                                      id="dataInput"
+                                      class="form-control font-monospace"
+                                      rows="12"
+                                      placeholder="Title[TAB]Artist[TAB]Status"
+                                      required></textarea>
+
+                            <small class="text-muted d-block mt-2">
+                                Format:
+                                <strong>
+                                    Title[TAB]Artist[TAB]Status
+                                </strong>
+                            </small>
+
+                            <div class="invalid-feedback"
+                                 id="dataError"></div>
+
+                        </div>
+
+                        <!-- ACTIONS -->
+
+                        <div class="d-flex justify-content-between flex-wrap mt-4">
+
+                            <div class="mb-2">
+
+                                <button type="button"
+                                        class="btn btn-light btn-sm"
+                                        id="sampleBtn">
+
+                                    <i class="fas fa-eye me-1"></i>
+                                    Sample
+
+                                </button>
+
+                                <button type="button"
+                                        class="btn btn-outline-danger btn-sm"
+                                        id="clearBtn">
+
+                                    <i class="fas fa-trash me-1"></i>
+                                    Clear
+
+                                </button>
+
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-success"
+                                    id="submitBtn">
+
+                                <i class="fas fa-upload me-1"></i>
+                                Import Songs
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- ===================================================== -->
+                <!-- UPLOAD TAB -->
+                <!-- ===================================================== -->
+
+                <div class="tab-pane fade"
+                     id="uploadTab">
+
+                    <form id="uploadForm"
+                          method="post"
+                          action="/songs/import"
+                          enctype="multipart/form-data">
+
+                        <!-- CHANNEL -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Channel
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            {% if channel %}
+
+                            <input type="hidden"
+                                   name="channel_id"
+                                   value="{{ channel.id }}">
+
+                            <input type="text"
+                                   class="form-control"
+                                   value="{{ channel.name }}"
+                                   readonly>
+
+                            {% else %}
+
+                            <select name="channel_id"
+                                    class="form-select">
+
+                                <option value="">
+                                    -- Pilih Channel --
+                                </option>
+
+                                {% for ch in channels %}
+                                <option value="{{ ch.id }}">
+                                    {{ ch.name }}
+                                </option>
+                                {% endfor %}
+
+                            </select>
+
+                            <small class="text-muted d-block mt-2">
+                                Atau buat channel baru di bawah
+                            </small>
+
+                            <input type="text"
+                                   name="new_channel"
+                                   class="form-control mt-2"
+                                   placeholder="Nama channel baru">
+
+                            {% endif %}
+
+                        </div>
+
+                        <!-- FILE -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Upload File
+                            </label>
+
+                            <input type="file"
+                                   class="form-control"
+                                   id="fileInput"
+                                   name="file"
+                                   accept=".txt,.csv"
+                                   required>
+
+                            <small class="text-muted d-block mt-2">
+                                Format .txt / .csv maksimal 5MB
+                            </small>
+
+                        </div>
+
+                        <div class="text-end">
+
+                            <button type="submit"
+                                    class="btn btn-success"
+                                    id="uploadBtn">
+
+                                <i class="fas fa-cloud-upload-alt me-1"></i>
+                                Upload & Import
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- ===================================================== -->
+                <!-- TEMPLATE TAB -->
+                <!-- ===================================================== -->
+
+                <div class="tab-pane fade"
+                     id="templateTab">
+
+                    <pre class="bg-light rounded p-3 small mb-3">Dream of Almira	Almira Veen	Review
+Rise Again	Selina Marv	Approved
+Tied to the Echo	Elvina Noen	Live
+Spark in the Air	Tahlia Reen	
+Midnight Dreams	Zahira Mein	Topic</pre>
+
+                    <button class="btn btn-primary"
+                            id="downloadTemplateBtn">
+
+                        <i class="fas fa-download me-1"></i>
+                        Download Template
+
+                    </button>
+
+                    <div class="alert alert-info mt-4 mb-0">
+
+                        <ul class="mb-0 ps-3">
+                            <li>Status optional (default: Review)</li>
+                            <li>Separator wajib TAB</li>
+                            <li>Artist dibuat otomatis</li>
+                            <li>Status valid:
+                                Review,
+                                Approved,
+                                Live,
+                                Take Down,
+                                Topic
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- RESULT MODAL -->
+<!-- ===================================================== -->
+
+<div class="modal fade"
+     id="resultModal"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header"
+                 id="resultHeader">
+
+                <h5 class="modal-title">
+                    Hasil Import
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
+
+            </div>
+
+            <div class="modal-body"
+                 id="resultBody"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+$(function () {
+
+    const VALID_STATUS = [
+        "Review",
+        "Approved",
+        "Live",
+        "Take Down",
+        "Topic"
+    ];
+
+    const textarea = $("#dataInput");
+
+    // =====================================================
+    // LINE COUNTER
+    // =====================================================
+
+    function updateLineCount() {
+
+        const total = textarea
+            .val()
+            .split("\n")
+            .filter(v => v.trim())
+            .length;
+
+        $("#lineCount").text(`${total} baris`);
+    }
+
+    textarea.on("input", updateLineCount);
+
+    // =====================================================
+    // VALIDATION
+    // =====================================================
+
+    function validateTextarea() {
+
+        const lines = textarea
+            .val()
+            .split("\n")
+            .filter(v => v.trim());
+
+        if (!lines.length) {
+            return setError("Data songs wajib diisi");
+        }
+
+        for (let i = 0; i < lines.length; i++) {
+
+            const parts = lines[i]
+                .split(/\t+/)
+                .map(v => v.trim());
+
+            if (parts.length < 2) {
+                return setError(
+                    `Baris ${i + 1}: minimal Title + Artist`
+                );
+            }
+
+            const title = parts[0];
+            const artist = parts[1];
+            const status = parts[2] || "Review";
+
+            if (!title) {
+                return setError(
+                    `Baris ${i + 1}: title kosong`
+                );
+            }
+
+            if (!artist) {
+                return setError(
+                    `Baris ${i + 1}: artist kosong`
+                );
+            }
+
+            if (!VALID_STATUS.includes(status)) {
+                return setError(
+                    `Baris ${i + 1}: status '${status}' tidak valid`
+                );
+            }
+        }
+
+        clearError();
+
+        return true;
+    }
+
+    function setError(message) {
+
+        textarea.addClass("is-invalid");
+
+        $("#dataError").text(message);
+
+        return false;
+    }
+
+    function clearError() {
+
+        textarea.removeClass("is-invalid");
+
+        $("#dataError").text("");
+    }
+
+    // =====================================================
+    // AJAX SUBMIT
+    // =====================================================
+
+    function ajaxSubmit(form, button, loadingText) {
+
+        const original = button.html();
+
+        button.prop("disabled", true);
+
+        button.html(`
+            <i class="fas fa-spinner fa-spin me-1"></i>
+            ${loadingText}
+        `);
+
+        $.ajax({
+
+            url: form.attr("action"),
+            method: "POST",
+            data: new FormData(form[0]),
+            processData: false,
+            contentType: false,
+
+            success(response) {
+                showResult(response);
+            },
+
+            error(xhr) {
+
+                showError(
+                    xhr.responseJSON?.detail ||
+                    "Terjadi kesalahan"
+                );
+            },
+
+            complete() {
+
+                button.prop("disabled", false);
+
+                button.html(original);
+            }
+
+        });
+    }
+
+    // =====================================================
+    // IMPORT FORM
+    // =====================================================
+
+    $("#importForm").on("submit", function (e) {
+
+        e.preventDefault();
+
+        if (!validateTextarea()) {
+            return;
+        }
+
+        ajaxSubmit(
+            $(this),
+            $("#submitBtn"),
+            "Mengimport..."
+        );
+    });
+
+    // =====================================================
+    // UPLOAD FORM
+    // =====================================================
+
+    $("#uploadForm").on("submit", function (e) {
+
+        e.preventDefault();
+
+        const file = $("#fileInput")[0].files[0];
+
+        if (!file) {
+            return alert("File wajib dipilih");
+        }
+
+        ajaxSubmit(
+            $(this),
+            $("#uploadBtn"),
+            "Uploading..."
+        );
+    });
+
+    // =====================================================
+    // FILE LABEL
+    // =====================================================
+
+    $("#fileInput").on("change", function () {
+
+        const name =
+            this.files[0]?.name ||
+            "Choose file...";
+
+        $(this)
+            .next(".custom-file-label")
+            .text(name);
+    });
+
+    // =====================================================
+    // SAMPLE
+    // =====================================================
+
+    $("#sampleBtn").on("click", function () {
+
+        textarea.val(
+`Dream of Almira	Almira Veen	Review
+Rise Again	Selina Marv	Approved
+Tied to the Echo	Elvina Noen	Live`
+        );
+
+        updateLineCount();
+
+        clearError();
+    });
+
+    // =====================================================
+    // CLEAR
+    // =====================================================
+
+    $("#clearBtn").on("click", function () {
+
+        if (!confirm("Hapus semua data ?")) {
+            return;
+        }
+
+        textarea.val("");
+
+        updateLineCount();
+
+        clearError();
+    });
+
+    // =====================================================
+    // TEMPLATE DOWNLOAD
+    // =====================================================
+
+    $("#downloadTemplateBtn").on("click", function () {
+
+        const content =
+`Judul Lagu	Nama Artist	Review`;
+
+        const blob = new Blob(
+            [content],
+            { type: "text/plain;charset=utf-8" }
+        );
+
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+
+        a.href = url;
+        a.download = "songs_template.txt";
+
+        a.click();
+
+        URL.revokeObjectURL(url);
+    });
+
+    // =====================================================
+    // RESULT
+    // =====================================================
+
+    function showResult(data) {
+
+        const success = data.imported > 0;
+
+        $("#resultHeader")
+            .attr(
+                "class",
+                `modal-header ${
+                    success
+                    ? "bg-success text-white"
+                    : "bg-danger text-white"
+                }`
+            );
+
+        $("#resultBody").html(`
+
+            <div class="text-center">
+
+                <h4 class="mb-4">
+                    ${
+                        success
+                        ? "Import Berhasil"
+                        : "Import Gagal"
+                    }
+                </h4>
+
+                <div class="row">
+
+                    <div class="col">
+                        <div class="border rounded p-3">
+                            <small>Total</small>
+                            <h4>${data.total || 0}</h4>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="border rounded p-3 bg-success text-white">
+                            <small>Imported</small>
+                            <h4>${data.imported || 0}</h4>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="border rounded p-3 bg-danger text-white">
+                            <small>Skipped</small>
+                            <h4>${data.skipped || 0}</h4>
+                        </div>
+                    </div>
+
+                </div>
+
+                ${
+                    data.errors?.length
+                    ? `
+                    <div class="text-start mt-4">
+
+                        <strong>Error:</strong>
+
+                        <ul class="small text-danger mt-2">
+
+                            ${data.errors
+                                .map(v => `<li>${escapeHtml(v)}</li>`)
+                                .join("")}
+
+                        </ul>
+
+                    </div>
+                    `
+                    : ""
+                }
+
+            </div>
+        `);
+
+        $("#resultModal").modal("show");
+    }
+
+    function showError(message) {
+
+        $("#resultHeader")
+            .attr(
+                "class",
+                "modal-header bg-danger text-white"
+            );
+
+        $("#resultBody").html(`
+            <div class="alert alert-danger mb-0">
+                ${escapeHtml(message)}
+            </div>
+        `);
+
+        $("#resultModal").modal("show");
+    }
+
+    function escapeHtml(text) {
+
+        return $("<div>")
+            .text(text)
+            .html();
+    }
+
+    updateLineCount();
+});
+
+</script>
+
+<style>
+
+.font-monospace,
+textarea {
+    font-family: "Courier New", monospace;
+}
+
+textarea {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: 600;
+}
+
+#resultBody {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+
+    .modal-dialog {
+        margin: 1rem;
+    }
+
+    .d-flex.justify-content-between {
+        gap: 10px;
+    }
+}
+
+</style>
+
+{% endblock %}

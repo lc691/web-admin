@@ -1,0 +1,553 @@
+{% extends "base.html" %}
+
+{% block title %}Detail Review{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .detail-container {
+        background: var(--tblr-bg-surface);
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 1.5rem;
+    }
+    
+    .detail-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .detail-section .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--tblr-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--tblr-border-color);
+        padding-bottom: 6px;
+    }
+    
+    .detail-item {
+        display: flex;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--tblr-border-color-light);
+    }
+    
+    .detail-item:last-child {
+        border-bottom: none;
+    }
+    
+    .detail-item .label {
+        width: 150px;
+        flex-shrink: 0;
+        font-weight: 500;
+        color: var(--tblr-muted);
+        font-size: 14px;
+    }
+    
+    .detail-item .value {
+        flex: 1;
+        font-size: 14px;
+    }
+    
+    .status-badge {
+        font-size: 16px;
+        padding: 6px 20px;
+        border-radius: 20px;
+        display: inline-block;
+    }
+    
+    .review-comment-box {
+        background: var(--tblr-bg-surface-hover);
+        border-radius: var(--tblr-border-radius);
+        padding: 1rem;
+        border-left: 4px solid var(--tblr-primary);
+        margin-top: 8px;
+    }
+    
+    .review-comment-box .comment-text {
+        font-size: 15px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+    }
+    
+    .review-comment-box .comment-meta {
+        font-size: 12px;
+        color: var(--tblr-muted);
+        margin-top: 8px;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+    
+    .action-buttons .btn {
+        padding: 8px 20px;
+        font-weight: 500;
+    }
+    
+    .related-penugasan {
+        background: var(--tblr-bg-surface-hover);
+        border-radius: var(--tblr-border-radius);
+        padding: 1rem;
+        border: 1px solid var(--tblr-border-color);
+    }
+    
+    .related-penugasan .penugasan-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 2rem 1.5rem;
+        color: var(--tblr-muted);
+    }
+    
+    .empty-state i {
+        font-size: 36px;
+        display: block;
+        margin-bottom: 8px;
+        opacity: 0.3;
+    }
+    
+    @media (max-width: 768px) {
+        .detail-container {
+            padding: 1rem;
+        }
+        
+        .detail-item {
+            flex-direction: column;
+            padding: 6px 0;
+        }
+        
+        .detail-item .label {
+            width: 100%;
+            font-size: 13px;
+        }
+        
+        .detail-item .value {
+            font-size: 13px;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .action-buttons .btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Portal Joki</div>
+            <h2 class="page-title">Detail Review</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a href="{{ url_for('portal_joki_admin_review') }}" class="btn btn-outline-secondary btn-sm">
+                    <i class="ti ti-arrow-left me-1"></i> Kembali
+                </a>
+                {% if penugasan %}
+                <a href="{{ url_for('portal_joki_admin_penugasan_detail', penugasan_id=penugasan.id) }}" 
+                   class="btn btn-primary btn-sm" target="_blank">
+                    <i class="ti ti-eye me-1"></i> Lihat Penugasan
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     ERROR STATE
+     ========================================================== -->
+{% if error %}
+<div class="alert alert-danger">
+    <i class="ti ti-alert-circle me-2"></i>
+    {{ error }}
+</div>
+{% endif %}
+
+<!-- ==========================================================
+     DETAIL CONTAINER
+     ========================================================== -->
+{% if review %}
+<div class="detail-container">
+
+    <!-- Status & Actions -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+        <div>
+            <span class="status-badge bg-{{ review.status_color|default('secondary') }}">
+                {{ review.status_label|default('Unknown') }}
+            </span>
+            <span class="text-muted ms-2">#{{ review.id }}</span>
+        </div>
+        <div class="action-buttons">
+            {% if review.status == 2 or review.status == 3 %}
+            <button class="btn btn-success" onclick="approveReview({{ review.id }})">
+                <i class="ti ti-check me-1"></i> Approve
+            </button>
+            {% endif %}
+            
+            {% if review.status == 1 %}
+            <button class="btn btn-warning" onclick="rejectReview({{ review.id }})">
+                <i class="ti ti-rotate me-1"></i> Revisi
+            </button>
+            {% endif %}
+            
+            <button class="btn btn-outline-secondary" onclick="editComment({{ review.id }})">
+                <i class="ti ti-edit me-1"></i> Edit Komentar
+            </button>
+        </div>
+    </div>
+
+    <!-- ==========================================================
+         REVIEW INFO
+         ========================================================== -->
+    <div class="detail-section">
+        <div class="section-title">Informasi Review</div>
+        
+        <div class="detail-item">
+            <span class="label">ID Review</span>
+            <span class="value">#{{ review.id }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Status</span>
+            <span class="value">
+                <span class="badge bg-{{ review.status_color|default('secondary') }}">
+                    {{ review.status_label|default('Unknown') }}
+                </span>
+            </span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Reviewer</span>
+            <span class="value">{{ review.reviewed_by|default('Admin') }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Waktu Review</span>
+            <span class="value">{{ review.reviewed_at|default('-') }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Penugasan ID</span>
+            <span class="value">
+                <a href="{{ url_for('portal_joki_admin_penugasan_detail', penugasan_id=review.penugasan_id) }}" target="_blank">
+                    #{{ review.penugasan_id }}
+                </a>
+            </span>
+        </div>
+    </div>
+
+    <!-- ==========================================================
+         KOMENTAR
+     ========================================================== -->
+    <div class="detail-section">
+        <div class="section-title">Komentar</div>
+        {% if review.komentar %}
+        <div class="review-comment-box">
+            <div class="comment-text">{{ review.komentar }}</div>
+            <div class="comment-meta">
+                {% if review.reviewed_by %}Oleh: {{ review.reviewed_by }}{% endif %}
+                {% if review.reviewed_at %} • {{ review.reviewed_at }}{% endif %}
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="ti ti-message-circle-off"></i>
+            <p>Tidak ada komentar.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ==========================================================
+         RELATED PENUGASAN
+     ========================================================== -->
+    {% if penugasan %}
+    <div class="detail-section">
+        <div class="section-title">Detail Penugasan Terkait</div>
+        <div class="related-penugasan">
+            <div class="penugasan-item">
+                <div>
+                    <span class="text-muted">Tanggal:</span>
+                    <span class="fw-bold">{{ penugasan.tanggal }}</span>
+                </div>
+                <div>
+                    <span class="text-muted">Joki:</span>
+                    <span class="fw-bold">{{ penugasan.joki_nama|default('-') }}</span>
+                    <span class="text-muted">({{ penugasan.joki_kode|default('-') }})</span>
+                </div>
+                <div>
+                    <span class="text-muted">Kloter:</span>
+                    <span class="fw-bold">{{ penugasan.kloter_nama|default('-') }}</span>
+                </div>
+                <div>
+                    <span class="text-muted">Target:</span>
+                    <span class="fw-bold">{{ penugasan.target_judul|default(0) }}</span>
+                </div>
+                <div>
+                    <span class="text-muted">Status:</span>
+                    <span class="badge bg-{{ 
+                        'warning' if penugasan.status == 0 else 
+                        'info' if penugasan.status == 1 else 
+                        'danger' if penugasan.status == 2 else 
+                        'success' if penugasan.status == 3 else 'secondary' 
+                    }}">
+                        {{ 
+                            'Pending' if penugasan.status == 0 else 
+                            'Upload' if penugasan.status == 1 else 
+                            'Revisi' if penugasan.status == 2 else 
+                            'Selesai' if penugasan.status == 3 else 'Unknown' 
+                        }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endif %}
+
+<!-- ==========================================================
+     REJECT MODAL
+     ========================================================== -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-warning">
+                    <i class="ti ti-alert-triangle me-2"></i>
+                    Kirim Revisi
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Masukkan komentar revisi untuk penugasan ini.</p>
+                <textarea class="form-control" id="rejectComment" rows="4" 
+                          placeholder="Masukkan komentar revisi..." required></textarea>
+                <div class="text-muted small mt-1">Komentar revisi wajib diisi.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-warning" id="confirmRejectBtn">
+                    <i class="ti ti-rotate me-1"></i> Kirim Revisi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     EDIT COMMENT MODAL
+     ========================================================== -->
+<div class="modal fade" id="editCommentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="ti ti-edit me-2"></i>
+                    Edit Komentar
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control" id="editCommentText" rows="4" 
+                          placeholder="Masukkan komentar baru...">{{ review.komentar if review and review.komentar else '' }}</textarea>
+                <div class="text-muted small mt-1">Komentar minimal 3 karakter.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" id="confirmEditCommentBtn">
+                    <i class="ti ti-save me-1"></i> Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // ==========================================================
+    // STATE
+    // ==========================================================
+    var currentReviewId = {{ review.id if review else 0 }};
+    
+    // ==========================================================
+    // APPROVE REVIEW
+    // ==========================================================
+    function approveReview(reviewId) {
+        Swal.fire({
+            title: 'Konfirmasi Approve',
+            text: 'Apakah Anda yakin ingin menyetujui review ini?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#22c55e',
+            confirmButtonText: 'Ya, Approve!',
+            cancelButtonText: 'Batal',
+            input: 'textarea',
+            inputPlaceholder: 'Masukkan komentar (opsional)',
+            inputLabel: 'Komentar',
+            inputAttributes: {
+                'aria-label': 'Komentar approve'
+            }
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                var formData = new FormData();
+                if (result.value) {
+                    formData.append('komentar', result.value);
+                }
+                
+                fetch('/admin/portal-joki/review/' + reviewId + '/approve', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        Swal.fire('Sukses', data.message, 'success').then(function() {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Error', data.error || 'Gagal approve review', 'error');
+                    }
+                })
+                .catch(function(error) {
+                    Swal.fire('Error', 'Gagal approve review: ' + error.message, 'error');
+                });
+            }
+        });
+    }
+    
+    // ==========================================================
+    // REJECT REVIEW
+    // ==========================================================
+    function rejectReview(reviewId) {
+        document.getElementById('rejectComment').value = '';
+        var modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+        modal.show();
+    }
+    
+    document.getElementById('confirmRejectBtn').addEventListener('click', function() {
+        var comment = document.getElementById('rejectComment').value.trim();
+        
+        if (!comment) {
+            Swal.fire('Error', 'Komentar revisi wajib diisi.', 'error');
+            return;
+        }
+        
+        var btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Mengirim...';
+        
+        var formData = new FormData();
+        formData.append('komentar', comment);
+        
+        fetch('/admin/portal-joki/review/' + currentReviewId + '/reject', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            if (data.success) {
+                var modal = bootstrap.Modal.getInstance(document.getElementById('rejectModal'));
+                modal.hide();
+                Swal.fire('Sukses', data.message, 'success').then(function() {
+                    location.reload();
+                });
+            } else {
+                Swal.fire('Error', data.error || 'Gagal kirim revisi', 'error');
+            }
+        })
+        .catch(function(error) {
+            Swal.fire('Error', 'Gagal kirim revisi: ' + error.message, 'error');
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="ti ti-rotate me-1"></i> Kirim Revisi';
+        });
+    });
+    
+    // ==========================================================
+    // EDIT COMMENT
+    // ==========================================================
+    function editComment(reviewId) {
+        var modal = new bootstrap.Modal(document.getElementById('editCommentModal'));
+        modal.show();
+    }
+    
+    document.getElementById('confirmEditCommentBtn').addEventListener('click', function() {
+        var comment = document.getElementById('editCommentText').value.trim();
+        
+        if (!comment) {
+            Swal.fire('Error', 'Komentar tidak boleh kosong.', 'error');
+            return;
+        }
+        
+        if (comment.length < 3) {
+            Swal.fire('Error', 'Komentar minimal 3 karakter.', 'error');
+            return;
+        }
+        
+        var btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+        
+        var formData = new FormData();
+        formData.append('komentar', comment);
+        
+        fetch('/admin/portal-joki/review/' + currentReviewId + '/comment', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            if (data.success) {
+                var modal = bootstrap.Modal.getInstance(document.getElementById('editCommentModal'));
+                modal.hide();
+                Swal.fire('Sukses', data.message, 'success').then(function() {
+                    location.reload();
+                });
+            } else {
+                Swal.fire('Error', data.error || 'Gagal update komentar', 'error');
+            }
+        })
+        .catch(function(error) {
+            Swal.fire('Error', 'Gagal update komentar: ' + error.message, 'error');
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="ti ti-save me-1"></i> Simpan';
+        });
+    });
+    
+    // ==========================================================
+    // SHOW SUCCESS/ERROR MESSAGES
+    // ==========================================================
+    var urlParams = new URLSearchParams(window.location.search);
+    var success = urlParams.get('success');
+    var error = urlParams.get('error');
+    
+    if (success) {
+        Swal.fire('Sukses', success, 'success');
+        var newUrl = window.location.pathname + window.location.search.replace(/[?&]success=[^&]*/, '');
+        window.history.replaceState({}, document.title, newUrl);
+    }
+    
+    if (error) {
+        Swal.fire('Error', error, 'error');
+        var newUrl = window.location.pathname + window.location.search.replace(/[?&]error=[^&]*/, '');
+        window.history.replaceState({}, document.title, newUrl);
+    }
+</script>
+{% endblock %}

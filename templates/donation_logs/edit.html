@@ -1,87 +1,825 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1 class="h3 mb-2 text-gray-800">Edit Donation Log</h1>
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+        --success-gradient: linear-gradient(135deg, #10b981, #059669);
+        --warning-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+        --danger-gradient: linear-gradient(135deg, #ef4444, #dc2626);
+        --info-gradient: linear-gradient(135deg, #0ea5e9, #0284c7);
+        --border-color: #e2e8f0;
+        --bg-card: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+    }
 
-<div class="card shadow mb-4">
-    <div class="card-body">
-        <form method="post" action="/donation_logs/{{ log.id }}/edit">
+    /* Page Container */
+    .page-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
 
-            <div class="form-group">
-                <label>ID</label>
-                <input type="text" class="form-control" value="{{ log.id }}" readonly>
+    /* Page Header */
+    .page-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        background: var(--success-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .page-title i {
+        background: none;
+        -webkit-text-fill-color: #10b981;
+        font-size: 1.75rem;
+    }
+
+    .page-subtitle {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Card Styles */
+    .custom-card {
+        background: var(--bg-card);
+        border-radius: 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .custom-card:hover {
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        padding: 20px 28px;
+        border-bottom: none;
+    }
+
+    .card-header-custom h6 {
+        color: white;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1rem;
+    }
+
+    .card-header-custom h6 i {
+        color: #10b981;
+        font-size: 1.25rem;
+    }
+
+    .card-header-custom h6 .badge {
+        background: rgba(16, 185, 129, 0.2);
+        color: #34d399;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+
+    /* Form Styles */
+    .form-container {
+        padding: 32px 28px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.875rem;
+    }
+
+    .form-label i {
+        color: #10b981;
+        font-size: 1rem;
+    }
+
+    .form-label .required {
+        color: #ef4444;
+        font-size: 0.75rem;
+    }
+
+    .form-control {
+        border-radius: 16px;
+        padding: 12px 16px;
+        border: 1.5px solid var(--border-color);
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+        background: var(--bg-card);
+        color: var(--text-main);
+    }
+
+    .form-control:hover {
+        border-color: #cbd5e1;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .form-control[readonly] {
+        background: #f8fafc;
+        color: #475569;
+        cursor: not-allowed;
+        border-color: #e2e8f0;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    select.form-control {
+        cursor: pointer;
+    }
+
+    /* Help Text */
+    .form-text {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .form-text i {
+        font-size: 0.7rem;
+    }
+
+    /* Read-only Display Card */
+    .readonly-card {
+        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+        border-radius: 16px;
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .readonly-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .readonly-content {
+        flex: 1;
+    }
+
+    .readonly-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .readonly-value {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--text-main);
+    }
+
+    /* Checkbox Style */
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 0;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #10b981;
+    }
+
+    .checkbox-group label {
+        margin: 0;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    /* Info Card */
+    .info-card {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 28px;
+        border-left: 4px solid #10b981;
+    }
+
+    .info-card-title {
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: #065f46;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-card-content {
+        font-size: 0.8rem;
+        color: #065f46;
+        line-height: 1.5;
+    }
+
+    /* Button Styles */
+    .btn-save, .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 28px;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-save {
+        background: var(--success-gradient);
+        color: white;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-save:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .btn-cancel {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1.5px solid var(--border-color);
+    }
+
+    .btn-cancel:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+        transform: translateX(-2px);
+    }
+
+    /* Action Buttons Container */
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 16px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 24px 20px;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column-reverse;
+            gap: 12px;
+        }
+        
+        .btn-save, .btn-cancel {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .card-header-custom {
+            padding: 16px 20px;
+        }
+        
+        .readonly-card {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .readonly-icon {
+            margin: 0 auto;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .custom-card {
+        animation: fadeInUp 0.4s ease-out;
+    }
+
+    /* Status Badge Preview */
+    .status-preview {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+
+    .status-preview.pending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status-preview.confirmed {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .status-preview.failed {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+</style>
+
+<div class="page-container">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div>
+            <div class="page-title">
+                <i class="fas fa-edit"></i>
+                Edit Donation Log
             </div>
-
-            <div class="form-group">
-                <label>Email</label>
-                <input type="text" class="form-control" name="email" value="{{ log.email or '' }}">
+            <div class="page-subtitle">
+                <i class="fas fa-hand-holding-heart"></i>
+                Ubah data riwayat donasi dan transaksi
             </div>
+        </div>
+    </div>
 
-            <div class="form-group">
-                <label>User ID</label>
-                <input type="number" class="form-control" name="user_id" value="{{ log.user_id or '' }}">
-            </div>
+    <!-- Main Card -->
+    <div class="custom-card">
+        <div class="card-header-custom">
+            <h6>
+                <i class="fas fa-pencil-alt"></i>
+                Form Edit Donasi
+                <span class="badge">ID: {{ log.id }}</span>
+            </h6>
+        </div>
 
-            <div class="form-group">
-                <label>Amount</label>
-                <input type="number" class="form-control" name="amount" value="{{ log.amount or '' }}">
-            </div>
+        <div class="form-container">
+            <form method="post" action="/donation_logs/{{ log.id }}/edit" id="editDonationForm">
 
-            <div class="form-group">
-                <label>Paket</label>
-                <input type="text" class="form-control" name="paket" value="{{ log.paket or '' }}">
-            </div>
+                <!-- Info Card -->
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <i class="fas fa-info-circle"></i>
+                        Informasi Penting
+                    </div>
+                    <div class="info-card-content">
+                        <i class="fas fa-lock me-1"></i>
+                        Edit data donasi akan mempengaruhi riwayat transaksi. Pastikan data yang dimasukkan sudah benar.
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Message</label>
-                <textarea class="form-control" name="message" rows="3">{{ log.message or '' }}</textarea>
-            </div>
+                <!-- Read-only fields summary -->
+                <div class="readonly-card">
+                    <div class="readonly-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="readonly-content">
+                        <div class="readonly-label">ID Transaksi</div>
+                        <div class="readonly-value">#{{ log.id }}</div>
+                    </div>
+                    <div class="readonly-content">
+                        <div class="readonly-label">Timestamp</div>
+                        <div class="readonly-value">{{ log.timestamp }}</div>
+                    </div>
+                    <div class="readonly-content">
+                        <div class="readonly-label">Source Bot</div>
+                        <div class="readonly-value">{{ log.source_bot }}</div>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Type</label>
-                <input type="text" class="form-control" name="type" value="{{ log.type or '' }}">
-            </div>
+                <!-- Form Fields - 2 columns layout -->
+                <div class="form-row">
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i>
+                            Email
+                        </label>
+                        <input type="email" 
+                               class="form-control" 
+                               name="email" 
+                               value="{{ log.email or '' }}"
+                               placeholder="user@example.com">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i>
+                            Email pengguna yang melakukan donasi
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                <label>Status</label>
-                <select name="status" class="form-control">
-                    <option value="pending" {% if log.status=='pending' %}selected{% endif %}>Pending</option>
-                    <option value="confirmed" {% if log.status=='confirmed' %}selected{% endif %}>Confirmed</option>
-                    <option value="failed" {% if log.status=='failed' %}selected{% endif %}>Failed</option>
-                </select>
-            </div>
+                    <!-- User ID -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fab fa-telegram"></i>
+                            User ID
+                        </label>
+                        <input type="number" 
+                               class="form-control" 
+                               name="user_id" 
+                               value="{{ log.user_id or '' }}"
+                               placeholder="Contoh: 123456789">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i>
+                            ID Telegram user
+                        </div>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Notified</label><br>
-                <input type="checkbox" name="is_notified" value="true" {% if log.is_notified %}checked{% endif %}>
-                Sudah Dikirim Notifikasi
-            </div>
+                <div class="form-row">
+                    <!-- Amount -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-coins"></i>
+                            Amount (Nominal)
+                        </label>
+                        <input type="number" 
+                               class="form-control" 
+                               name="amount" 
+                               value="{{ log.amount or '' }}"
+                               placeholder="Contoh: 50000"
+                               min="0"
+                               step="1000">
+                        <div class="form-text">
+                            <i class="fas fa-money-bill-wave"></i>
+                            Nominal donasi dalam Rupiah
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                <label>Source Bot</label>
-                <input type="text" class="form-control" value="{{ log.source_bot }}" readonly>
-            </div>
+                    <!-- Paket -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-gem"></i>
+                            Paket
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               name="paket" 
+                               value="{{ log.paket or '' }}"
+                               placeholder="Contoh: Premium 30 Hari">
+                        <div class="form-text">
+                            <i class="fas fa-tag"></i>
+                            Paket yang dibeli (jika ada)
+                        </div>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Timestamp</label>
-                <input type="text" class="form-control" value="{{ log.timestamp }}" readonly>
-            </div>
+                <div class="form-row">
+                    <!-- Type -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-tag"></i>
+                            Type
+                        </label>
+                        <select name="type" class="form-control">
+                            <option value="donation" {% if log.type == 'donation' %}selected{% endif %}>
+                                <i class="fas fa-hand-holding-heart"></i> Donasi
+                            </option>
+                            <option value="vip" {% if log.type == 'vip' %}selected{% endif %}>
+                                <i class="fas fa-crown"></i> VIP
+                            </option>
+                            <option value="other" {% if log.type == 'other' %}selected{% endif %}>
+                                <i class="fas fa-ellipsis-h"></i> Lainnya
+                            </option>
+                        </select>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i>
+                            Tipe transaksi
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                <label>Confirmed At</label>
-                <input type="text" class="form-control" value="{{ log.confirmed_at or '-' }}" readonly>
-            </div>
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-flag-checkered"></i>
+                            Status
+                        </label>
+                        <select name="status" class="form-control" id="statusSelect">
+                            <option value="pending" {% if log.status == 'pending' %}selected{% endif %}>
+                                ⏳ Pending
+                            </option>
+                            <option value="confirmed" {% if log.status == 'confirmed' %}selected{% endif %}>
+                                ✅ Confirmed
+                            </option>
+                            <option value="failed" {% if log.status == 'failed' %}selected{% endif %}>
+                                ❌ Failed
+                            </option>
+                        </select>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i>
+                            Status transaksi donasi
+                        </div>
+                        <div id="statusPreview" class="status-preview {{ log.status }}">
+                            {% if log.status == 'pending' %}⏳ Pending
+                            {% elif log.status == 'confirmed' %}✅ Confirmed
+                            {% else %}❌ Failed{% endif %}
+                        </div>
+                    </div>
+                </div>
 
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Simpan
-            </button>
+                <!-- Message - Full width -->
+                <div class="form-group full-width">
+                    <label class="form-label">
+                        <i class="fas fa-comment-dots"></i>
+                        Message (Pesan)
+                    </label>
+                    <textarea class="form-control" 
+                              name="message" 
+                              rows="3"
+                              placeholder="Tulis pesan dari donatur...">{{ log.message or '' }}</textarea>
+                    <div class="form-text">
+                        <i class="fas fa-lightbulb"></i>
+                        Pesan atau catatan dari donatur (opsional)
+                    </div>
+                    <div class="form-text" style="text-align: right; margin-top: 4px;">
+                        <i class="fas fa-hashtag"></i> <span id="charCount">0</span> / 500 karakter
+                    </div>
+                </div>
 
-            <a href="/donation_logs" class="btn btn-secondary">
-                Kembali
-            </a>
+                <!-- Notified Checkbox -->
+                <div class="form-group full-width">
+                    <label class="form-label">
+                        <i class="fas fa-bell"></i>
+                        Notifikasi
+                    </label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" 
+                               name="is_notified" 
+                               id="is_notified" 
+                               value="true" 
+                               {% if log.is_notified %}checked{% endif %}>
+                        <label for="is_notified">
+                            <i class="fas fa-check-circle text-success"></i>
+                            Sudah Dikirim Notifikasi ke User
+                        </label>
+                    </div>
+                    <div class="form-text">
+                        <i class="fas fa-info-circle"></i>
+                        Centang jika notifikasi sudah dikirimkan ke pengguna
+                    </div>
+                </div>
 
-        </form>
+                <!-- Confirmed At - Readonly -->
+                <div class="form-group full-width">
+                    <label class="form-label">
+                        <i class="fas fa-calendar-check"></i>
+                        Confirmed At
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           value="{{ log.confirmed_at or '-' }}" 
+                           readonly>
+                    <div class="form-text">
+                        <i class="fas fa-clock"></i>
+                        Waktu konfirmasi transaksi (otomatis)
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="/donation_logs" class="btn-cancel">
+                        <i class="fas fa-arrow-left"></i>
+                        Kembali ke Daftar
+                    </a>
+                    <button type="submit" class="btn-save" id="submitBtn">
+                        <i class="fas fa-save"></i>
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        const messageInput = document.getElementById('message');
+        const charCountSpan = document.getElementById('charCount');
+        const statusSelect = document.getElementById('statusSelect');
+        const statusPreview = document.getElementById('statusPreview');
+        const form = document.getElementById('editDonationForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Store original values for change detection
+        const originalValues = {
+            email: document.querySelector('input[name="email"]').value,
+            user_id: document.querySelector('input[name="user_id"]').value,
+            amount: document.querySelector('input[name="amount"]').value,
+            paket: document.querySelector('input[name="paket"]').value,
+            type: document.querySelector('select[name="type"]').value,
+            status: statusSelect.value,
+            message: messageInput ? messageInput.value : '',
+            is_notified: document.querySelector('input[name="is_notified"]').checked
+        };
+        
+        let formChanged = false;
+        
+        // Character counter for message
+        if (messageInput && charCountSpan) {
+            function updateCharCount() {
+                const length = messageInput.value.length;
+                const maxLength = 500;
+                charCountSpan.textContent = length;
+                
+                if (length > maxLength - 50) {
+                    charCountSpan.style.color = '#f59e0b';
+                } else if (length > maxLength - 100) {
+                    charCountSpan.style.color = '#64748b';
+                } else {
+                    charCountSpan.style.color = '#94a3b8';
+                }
+                
+                if (length > maxLength) {
+                    charCountSpan.style.color = '#ef4444';
+                    messageInput.style.borderColor = '#ef4444';
+                } else {
+                    messageInput.style.borderColor = '';
+                }
+            }
+            messageInput.addEventListener('input', updateCharCount);
+            updateCharCount();
+        }
+        
+        // Status preview
+        if (statusSelect && statusPreview) {
+            function updateStatusPreview() {
+                const status = statusSelect.value;
+                statusPreview.className = 'status-preview ' + status;
+                if (status === 'pending') {
+                    statusPreview.innerHTML = '⏳ Pending';
+                } else if (status === 'confirmed') {
+                    statusPreview.innerHTML = '✅ Confirmed';
+                } else {
+                    statusPreview.innerHTML = '❌ Failed';
+                }
+            }
+            statusSelect.addEventListener('change', updateStatusPreview);
+        }
+        
+        // Check for form changes
+        function checkFormChanges() {
+            const currentValues = {
+                email: document.querySelector('input[name="email"]').value,
+                user_id: document.querySelector('input[name="user_id"]').value,
+                amount: document.querySelector('input[name="amount"]').value,
+                paket: document.querySelector('input[name="paket"]').value,
+                type: document.querySelector('select[name="type"]').value,
+                status: statusSelect.value,
+                message: messageInput ? messageInput.value : '',
+                is_notified: document.querySelector('input[name="is_notified"]').checked
+            };
+            
+            formChanged = (
+                currentValues.email !== originalValues.email ||
+                currentValues.user_id !== originalValues.user_id ||
+                currentValues.amount !== originalValues.amount ||
+                currentValues.paket !== originalValues.paket ||
+                currentValues.type !== originalValues.type ||
+                currentValues.status !== originalValues.status ||
+                currentValues.message !== originalValues.message ||
+                currentValues.is_notified !== originalValues.is_notified
+            );
+        }
+        
+        const formInputs = document.querySelectorAll('#editDonationForm input, #editDonationForm select, #editDonationForm textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('input', checkFormChanges);
+            input.addEventListener('change', checkFormChanges);
+        });
+        
+        // Warn before leaving
+        window.addEventListener('beforeunload', function(e) {
+            if (formChanged) {
+                e.preventDefault();
+                e.returnValue = 'Anda belum menyimpan perubahan. Yakin ingin keluar?';
+                return e.returnValue;
+            }
+        });
+        
+        // Form submission with confirmation
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const amountValue = document.querySelector('input[name="amount"]').value;
+                if (amountValue && amountValue < 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Nominal Tidak Valid',
+                        text: 'Nominal tidak boleh kurang dari 0',
+                        confirmButtonColor: '#10b981'
+                    });
+                    return;
+                }
+                
+                Swal.fire({
+                    title: 'Konfirmasi Update',
+                    text: 'Apakah Anda yakin ingin menyimpan perubahan data donasi ini?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#10b981',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: '<i class="fas fa-save"></i> Ya, Simpan!',
+                    cancelButtonText: '<i class="fas fa-times"></i> Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+                        submitBtn.disabled = true;
+                        form.submit();
+                    }
+                });
+            });
+        }
+        
+        // Animation
+        $('.custom-card').css('animation', 'fadeInUp 0.4s ease-out');
+    });
+</script>
 {% endblock %}

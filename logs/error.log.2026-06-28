@@ -1,0 +1,13 @@
+[2026-06-28 10:47:15] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 51, in get_dict_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/services/export/repository.py", line 162, in save_song_usage
+    cursor.execute(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "song_usage_song_id_key"
+DETAIL:  Key (song_id)=(246) already exists.
+

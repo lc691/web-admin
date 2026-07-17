@@ -1,0 +1,354 @@
+<style>
+
+/* ================================================================
+   MODAL EXPORT - TABLER CUSTOM STYLES
+   ================================================================ */
+
+/* ==========================================================
+   1. GRADIENT HEADER
+   ========================================================== */
+.modal-export-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* ==========================================================
+   2. GLASS EFFECT CARDS
+   ========================================================== */
+.modal-export-glass {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ==========================================================
+   3. GRADIENT TEXT
+   ========================================================== */
+.modal-export-gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ==========================================================
+   4. GRADIENT PROGRESS BAR
+   ========================================================== */
+.modal-export-progress {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+/* ==========================================================
+   5. GRADIENT BUTTON SUCCESS
+   ========================================================== */
+.modal-export-btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border: none !important;
+    transition: all 0.3s ease;
+}
+
+.modal-export-btn-success:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.modal-export-btn-success:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ==========================================================
+   6. CLOSE BUTTON (✕)
+   ========================================================== */
+.modal-export-header .btn-close {
+    filter: brightness(0) invert(1) !important;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.modal-export-header .btn-close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+/* ==========================================================
+   7. ALERT GRADIENT
+   ========================================================== */
+.modal-export-alert {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+    border: none !important;
+}
+
+/* ==========================================================
+   8. STATISTIK CIRCLE ICON
+   ========================================================== */
+.modal-export-icon-circle {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.modal-export-icon-circle i {
+    font-size: 1.8rem;
+}
+
+/* ==========================================================
+   9. FORM ROUNDED
+   ========================================================== */
+.modal-export-rounded {
+    border-radius: 50px !important;
+    background: #f1f5f9 !important;
+    border: none !important;
+    transition: all 0.3s ease;
+}
+
+.modal-export-rounded:focus {
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    background: #ffffff !important;
+}
+
+/* ==========================================================
+   10. CARD DAY HOVER
+   ========================================================== */
+.export-day {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.export-day:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.export-day.border-primary {
+    border-width: 2px !important;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.25);
+}
+
+/* ==========================================================
+   11. MODAL BACKGROUND
+   ========================================================== */
+.modal-export-body {
+    background: #f8fafc;
+}
+
+/* ==========================================================
+   12. FOOTER
+   ========================================================== */
+.modal-export-footer {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: none !important;
+}
+
+/* ==========================================================
+   13. STATISTICS CARDS
+   ========================================================== */
+.modal-export-stat-card {
+    transition: all 0.3s ease;
+}
+
+.modal-export-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ==========================================================
+   14. RESPONSIVE
+   ========================================================== */
+@media (max-width: 768px) {
+    .modal-export-stat-card {
+        margin-bottom: 0.5rem;
+    }
+}
+
+
+/* ================================================================
+   MODAL USAGE - TABLER CUSTOM STYLES
+   ================================================================ */
+
+/* ==========================================================
+   1. GRADIENT HEADER
+   ========================================================== */
+.modal-usage-header {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* ==========================================================
+   2. GLASS EFFECT CARDS
+   ========================================================== */
+.modal-usage-glass {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ==========================================================
+   3. MODAL BACKGROUND
+   ========================================================== */
+.modal-usage-body {
+    background: #f8fafc;
+}
+
+/* ==========================================================
+   4. FOOTER
+   ========================================================== */
+.modal-usage-footer {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: none !important;
+}
+
+/* ==========================================================
+   5. FORM ROUNDED
+   ========================================================== */
+.modal-usage-rounded {
+    border-radius: 50px !important;
+    background: #f1f5f9 !important;
+    border: none !important;
+    transition: all 0.3s ease;
+}
+
+.modal-usage-rounded:focus {
+    box-shadow: 0 0 0 3px rgba(245, 87, 108, 0.2);
+    background: #ffffff !important;
+}
+
+/* ==========================================================
+   6. STATISTIK CIRCLE ICON
+   ========================================================== */
+.modal-usage-icon-circle {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.modal-usage-icon-circle i {
+    font-size: 1.3rem;
+}
+
+/* ==========================================================
+   7. STATISTICS CARDS
+   ========================================================== */
+.modal-usage-stat-card {
+    transition: all 0.3s ease;
+}
+
+.modal-usage-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ==========================================================
+   8. CLOSE BUTTON (✕)
+   ========================================================== */
+.modal-usage-header .btn-close {
+    filter: brightness(0) invert(1) !important;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.modal-usage-header .btn-close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+/* ==========================================================
+   9. BUTTONS
+   ========================================================== */
+#usage-delete:hover,
+#usage-reset:hover,
+#usage-export:hover {
+    transform: translateY(-2px);
+}
+
+/* ==========================================================
+   10. RESPONSIVE
+   ========================================================== */
+@media (max-width: 768px) {
+    .modal-usage-stat-card {
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-usage-icon-circle {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .modal-usage-icon-circle i {
+        font-size: 1rem;
+    }
+}
+
+/* ================================================================
+   EXISTING STYLES (YANG SUDAH ADA)
+   ================================================================ */
+
+#stat-total,
+#stat-live,
+#stat-review,
+#stat-approved {
+    font-weight: 700;
+}
+
+#filter-keyword {
+    min-width: 240px;
+}
+
+#songs-table tbody tr {
+    cursor: pointer;
+}
+
+#songs-table td,
+#songs-table th {
+    vertical-align: middle;
+}
+
+#songs-table .form-check-input {
+    cursor: pointer;
+}
+
+#selected-counter {
+    font-weight: 600;
+}
+
+.modal .form-label {
+    font-weight: 600;
+}
+
+.modal .form-hint {
+    font-size: .875rem;
+}
+
+#import-table th,
+#import-table td {
+    white-space: nowrap;
+}
+
+.btn-list {
+    gap: .5rem;
+}
+
+@media (max-width: 768px) {
+    #filter-keyword {
+        min-width: 100%;
+    }
+    .btn-list {
+        width: 100%;
+    }
+}
+</style>

@@ -1,0 +1,51 @@
+{# ==========================================================
+   TABLE HEADER COMPONENT
+
+   Required:
+   - title
+
+   Optional:
+   - subtitle
+   - badge
+   - badge_color
+   - actions
+   ========================================================== #}
+
+{% set header_badge = badge|default(None) %}
+{% set header_badge_color = badge_color|default("primary") %}
+
+<div class="card-header">
+
+    <div class="d-flex justify-content-between align-items-center w-100">
+
+        <div>
+
+            <h3 class="card-title mb-0">
+                {{ title }}
+            </h3>
+
+            {% if subtitle %}
+                <div class="text-muted small mt-1">
+                    {{ subtitle }}
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+
+            {% if actions %}
+                {{ actions|safe }}
+            {% endif %}
+
+            {% if header_badge is not none %}
+                <span class="badge bg-{{ header_badge_color }}">
+                    {{ header_badge }}
+                </span>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,8 +1,9 @@
 import asyncio
 import time
+import ipaddress
 
-from configs.logging_setup import log
-from db.connect import get_dict_cursor
+from app.utils.logger import log
+from app.core.database import get_dict_cursor
 
 # =====================================================
 # CACHE GLOBAL
@@ -18,19 +19,31 @@ DEFAULT_TRUSTED_IPS = {
 }
 
 
+def is_valid_ip_or_cidr(value: str) -> bool:
+    try:
+        if "/" in value:
+            ipaddress.ip_network(value, strict=False)
+        else:
+            ipaddress.ip_address(value)
+        return True
+    except ValueError:
+        return False
+
+
 async def load_trusted_ips() -> set[str]:
-    """
-    Load daftar IP terpercaya dari DB dengan TTL cache.
-    Tidak perlu restart service jika data DB berubah.
-    """
     global _trusted_ips_cache, _last_load_time
 
     now = time.monotonic()
+
+    # ===============================
+    # FAST PATH (CACHE HIT)
+    # ===============================
     if now - _last_load_time < CACHE_TTL and _trusted_ips_cache:
         return _trusted_ips_cache
 
     async with _lock:
         now = time.monotonic()
+
         if now - _last_load_time < CACHE_TTL and _trusted_ips_cache:
             return _trusted_ips_cache
 
@@ -39,7 +52,25 @@ async def load_trusted_ips() -> set[str]:
                 cursor.execute("SELECT ip FROM trusted_ips")
                 rows = cursor.fetchall()
 
-                _trusted_ips_cache = {r["ip"] for r in rows}
+                raw_ips = {r["ip"] for r in rows}
+
+                # ===============================
+                # VALIDASI
+                # ===============================
+                valid_ips = {ip for ip in raw_ips if is_valid_ip_or_cidr(ip)}
+
+                invalid_count = len(raw_ips) - len(valid_ips)
+
+                if invalid_count:
+                    log.warning(
+                        "[WEBHOOK] invalid trusted IP skipped count=%s",
+                        invalid_count,
+                    )
+
+                if not valid_ips:
+                    raise ValueError("No valid trusted IPs from DB")
+
+                _trusted_ips_cache = valid_ips
                 _last_load_time = now
 
                 log.info(
@@ -48,12 +79,20 @@ async def load_trusted_ips() -> set[str]:
                 )
 
         except Exception as e:
-            log.error("[WEBHOOK] Gagal load trusted IPs dari DB: %s", e)
+            log.error("[WEBHOOK] Gagal load trusted IPs: %s", e)
 
-            if not _trusted_ips_cache:
+            # ===============================
+            # FALLBACK
+            # ===============================
+            if _trusted_ips_cache:
+                log.warning(
+                    "[WEBHOOK] Using STALE cache count=%s",
+                    len(_trusted_ips_cache),
+                )
+            else:
                 _trusted_ips_cache = DEFAULT_TRUSTED_IPS.copy()
                 log.warning(
-                    "[WEBHOOK] Using fallback trusted IPs count=%s",
+                    "[WEBHOOK] Using DEFAULT trusted IPs count=%s",
                     len(_trusted_ips_cache),
                 )
 
@@ -63,7 +102,10 @@ async def load_trusted_ips() -> set[str]:
 def invalidate_trusted_ip_cache():
     """
     Paksa cache trusted IP di-refresh pada request berikutnya.
-    Dipanggil setelah admin panel INSERT / UPDATE / DELETE.
     """
-    global _last_load_time
+    global _last_load_time, _trusted_ips_cache
+
     _last_load_time = 0
+    _trusted_ips_cache = set()
+
+    log.info("[WEBHOOK] Trusted IP cache invalidated")

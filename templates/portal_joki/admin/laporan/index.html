@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+Laporan
+{% endblock %}
+
+
+{# ==========================================================
+   STYLES
+   ========================================================== #}
+
+{% block extra_styles %}
+    {% include "portal_joki/admin/laporan/partials/styles.html" %}
+{% endblock %}
+
+
+{# ==========================================================
+   CONTENT
+   ========================================================== #}
+
+{% block content %}
+
+    {% include "portal_joki/admin/laporan/partials/header.html" %}
+
+    {% include "portal_joki/admin/laporan/partials/filter.html" %}
+
+    {% include "portal_joki/admin/laporan/partials/tabs.html" %}
+
+
+    {% if view == "statistik" %}
+
+        {% include "portal_joki/admin/laporan/partials/statistik.html" %}
+
+    {% elif view == "bulanan" %}
+
+        {% include "portal_joki/admin/laporan/partials/bulanan.html" %}
+
+    {% elif view == "harian" %}
+
+        {% include "portal_joki/admin/laporan/partials/harian.html" %}
+
+    {% endif %}
+
+{% endblock %}
+
+
+{# ==========================================================
+   SCRIPTS
+   ========================================================== #}
+
+{% block scripts %}
+    {% include "portal_joki/admin/laporan/partials/scripts.html" %}
+{% endblock %}

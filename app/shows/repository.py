@@ -1,4 +1,4 @@
-from db.connect import get_db_cursor, get_dict_cursor
+from app.core.database import get_db_cursor, get_dict_cursor
 
 
 class ShowRepository:
@@ -11,6 +11,7 @@ class ShowRepository:
     # CONFIG
     # =====================================================
     TABLE_NAME = "shows"
+    SOURCE_TABLE = "request_sources"
 
     ALLOWED_UPDATE_FIELDS = {
         "title",
@@ -51,45 +52,191 @@ class ShowRepository:
         return ", ".join(fields), values
 
     # =====================================================
-    # LIST ALL
+    # LIST ALL (DENGAN PAGINATION)
     # =====================================================
-    def list_all(self) -> list[dict]:
+
+    def list_all(
+        self,
+        page: int = 1,
+        per_page: int = 20,
+        search: str | None = None,
+    ) -> dict:
+        """
+        Get shows with pagination and search.
+        
+        Returns:
+            {
+                "data": list[dict],
+                "total": int,
+                "page": int,
+                "per_page": int,
+                "total_pages": int
+            }
+        """
+        offset = (page - 1) * per_page
+        
+        # =====================================================
+        # BUILD WHERE CLAUSE
+        # =====================================================
+        where_clause, params = self._build_search(search)
+        
+        # =====================================================
+        # COUNT TOTAL
+        # =====================================================
+        count_query = f"""
+            SELECT COUNT(*) AS total
+            FROM {self.TABLE_NAME} s
+            {where_clause}
+        """
+        
+        with get_dict_cursor() as (cur, _):
+            cur.execute(count_query, params)
+            total = cur.fetchone()["total"]
+        
+        if total == 0:
+            return {
+                "data": [],
+                "total": 0,
+                "page": page,
+                "per_page": per_page,
+                "total_pages": 0
+            }
+        
+        # =====================================================
+        # MAIN QUERY
+        # =====================================================
         query = f"""
-            SELECT 
+            WITH file_stats AS (
+                SELECT
+                    f.show_id,
+                    STRING_AGG(
+                        DISTINCT f.channel_username,
+                        ', '
+                    ) FILTER (
+                        WHERE f.channel_username IS NOT NULL
+                    ) AS channel_username,
+                    BOOL_OR(f.message_id IS NOT NULL) AS has_released,
+                    COUNT(*) AS total_files
+                FROM files f
+                GROUP BY f.show_id
+            )
+
+            SELECT
                 s.id,
                 s.title,
                 s.thumbnail_url,
-                s.sinopsis,
+                LEFT(s.sinopsis, 150) AS sinopsis,
                 s.genre,
                 s.hashtags,
                 s.source_id,
                 r.label AS source_label,
                 s.is_adult,
-
+                s.created_at,
+                fs.channel_username,
                 CASE
-                    WHEN NOT EXISTS (
-                        SELECT 1 FROM show_files sf
-                        WHERE sf.show_id = s.id
-                    ) THEN 'draft'
-
-                    WHEN EXISTS (
-                        SELECT 1 FROM show_files sf
-                        WHERE sf.show_id = s.id
-                        AND sf.message_id IS NOT NULL
-                    ) THEN 'released'
-
+                    WHEN fs.total_files IS NULL THEN 'draft'
+                    WHEN fs.has_released THEN 'released'
                     ELSE 'scheduled'
                 END AS release_status
 
             FROM {self.TABLE_NAME} s
-            LEFT JOIN request_sources r
-                ON s.source_id = r.id
+            LEFT JOIN {self.SOURCE_TABLE} r ON s.source_id = r.id
+            LEFT JOIN file_stats fs ON fs.show_id = s.id
+            {where_clause}
             ORDER BY s.id DESC
+            LIMIT %s OFFSET %s
         """
-
+        
+        params.extend([per_page, offset])
+        
         with get_dict_cursor() as (cur, _):
-            cur.execute(query)
-            return cur.fetchall()
+            cur.execute(query, params)
+            data = cur.fetchall()
+        
+        return {
+            "data": data,
+            "total": total,
+            "page": page,
+            "per_page": per_page,
+            "total_pages": (total + per_page - 1) // per_page
+        }
+
+    # =====================================================
+    # LIST ALL SIMPLE (TANPA FILE STATS)
+    # =====================================================
+
+    def list_all_simple(
+        self,
+        page: int = 1,
+        per_page: int = 20,
+        search: str | None = None,
+    ) -> dict:
+        """
+        Get shows WITHOUT file stats (lebih cepat).
+        """
+        offset = (page - 1) * per_page
+        
+        where_clause = ""
+        params = []
+        
+        if search and len(search.strip()) >= 2:
+            where_clause = "WHERE s.title ILIKE %s OR s.genre ILIKE %s"
+            search_term = f"%{search.strip()}%"
+            params = [search_term, search_term]
+        
+        # Count
+        count_query = f"""
+            SELECT COUNT(*) AS total
+            FROM {self.TABLE_NAME} s
+            {where_clause}
+        """
+        
+        with get_dict_cursor() as (cur, _):
+            cur.execute(count_query, params)
+            total = cur.fetchone()["total"]
+        
+        if total == 0:
+            return {
+                "data": [],
+                "total": 0,
+                "page": page,
+                "per_page": per_page,
+                "total_pages": 0
+            }
+        
+        # Main query (tanpa file_stats)
+        query = f"""
+            SELECT
+                s.id,
+                s.title,
+                s.thumbnail_url,
+                LEFT(s.sinopsis, 150) AS sinopsis,
+                s.genre,
+                s.hashtags,
+                s.source_id,
+                r.label AS source_label,
+                s.is_adult,
+                s.created_at
+            FROM {self.TABLE_NAME} s
+            LEFT JOIN {self.SOURCE_TABLE} r ON s.source_id = r.id
+            {where_clause}
+            ORDER BY s.id DESC
+            LIMIT %s OFFSET %s
+        """
+        
+        params.extend([per_page, offset])
+        
+        with get_dict_cursor() as (cur, _):
+            cur.execute(query, params)
+            data = cur.fetchall()
+        
+        return {
+            "data": data,
+            "total": total,
+            "page": page,
+            "per_page": per_page,
+            "total_pages": (total + per_page - 1) // per_page
+        }
 
     # =====================================================
     # GET BY ID
@@ -103,8 +250,7 @@ class ShowRepository:
                 s.*,
                 r.label AS source_label
             FROM {self.TABLE_NAME} s
-            LEFT JOIN request_sources r
-                ON s.source_id = r.id
+            LEFT JOIN {self.SOURCE_TABLE} r ON s.source_id = r.id
             WHERE s.id = %s
         """
 
@@ -228,3 +374,71 @@ class ShowRepository:
         with get_db_cursor(commit=True) as (cur, _):
             cur.execute(query, (show_id,))
             return cur.rowcount
+
+    # =====================================================
+    # SEARCH
+    # =====================================================
+    def search(self, keyword: str, limit: int = 50) -> list[dict]:
+        """
+        Search shows by title or genre.
+        """
+        query = f"""
+            SELECT 
+                s.id,
+                s.title,
+                s.genre,
+                s.thumbnail_url,
+                r.label AS source_label,
+                s.is_adult
+            FROM {self.TABLE_NAME} s
+            LEFT JOIN {self.SOURCE_TABLE} r ON s.source_id = r.id
+            WHERE s.title ILIKE %s
+               OR s.genre ILIKE %s
+            ORDER BY s.title ASC
+            LIMIT %s
+        """
+        
+        search_term = f"%{keyword}%"
+        
+        with get_dict_cursor() as (cur, _):
+            cur.execute(query, (search_term, search_term, limit))
+            return cur.fetchall()
+
+    def _build_search(
+        self,
+        search: str | None,
+    ) -> tuple[str, list]:
+        where = ""
+        params = []
+
+        if search and len(search.strip()) >= 2:
+            keyword = f"%{search.strip()}%"
+            where = """
+            WHERE
+                s.title ILIKE %s
+                OR s.genre ILIKE %s
+            """
+            params = [keyword, keyword]
+
+        return where, params
+    
+    # =====================================================
+    # STATS
+    # =====================================================
+    def get_stats(self) -> dict:
+        """
+        Get statistics for dashboard.
+        """
+        query = f"""
+            SELECT
+                COUNT(*) AS total_shows,
+                COUNT(CASE WHEN is_adult = TRUE THEN 1 END) AS adult_shows,
+                COUNT(CASE WHEN is_active = TRUE THEN 1 END) AS active_shows,
+                COUNT(DISTINCT source_id) AS total_sources,
+                COUNT(CASE WHEN thumbnail_url IS NOT NULL THEN 1 END) AS has_thumbnail
+            FROM {self.TABLE_NAME}
+        """
+        
+        with get_dict_cursor() as (cur, _):
+            cur.execute(query)
+            return cur.fetchone()

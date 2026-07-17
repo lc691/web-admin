@@ -1,0 +1,589 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4" style="max-width:800px;">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+        <div>
+            <h4 class="mb-0">
+                <i class="fas fa-plus-circle text-success me-2"></i>
+                Tambah Song
+            </h4>
+            {% if channel %}
+            <small class="text-muted ms-4">
+                Channel: {{ channel.name }}
+            </small>
+            {% endif %}
+        </div>
+
+        <div>
+            <a href="/songs{% if channel %}?channel_id={{ channel.id }}{% endif %}" 
+               class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Kembali
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">
+                <i class="fas fa-info-circle text-info me-2"></i>
+                Informasi Lagu
+            </h5>
+        </div>
+        
+        <div class="card-body">
+            <form method="post" action="/songs/new" id="songForm" novalidate>
+                
+                <!-- Channel Info (if from channel context) -->
+                {% if channel %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-waveform me-1"></i> Channel
+                    </label>
+                    <div class="form-control-plaintext">
+                        <span class="badge bg-primary">
+                            <i class="fas fa-tv me-1"></i>
+                            {{ channel.name }}
+                        </span>
+                    </div>
+                    <input type="hidden" name="channel_id" value="{{ channel.id }}">
+                </div>
+                {% endif %}
+
+                <!-- Artist -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-user me-1"></i> Artist <span class="text-danger">*</span>
+                    </label>
+                    
+                    <div class="input-group">
+                        <select name="artist_id" id="artist_id" class="form-select" required>
+                            <option value="">-- Pilih Artist --</option>
+                            {% for artist in artists %}
+                            <option value="{{ artist.id }}" 
+                                    {% if channel and artist.channel_id == channel.id %}selected{% endif %}>
+                                {{ artist.name }}
+                                {% if not channel and artist.channel_name %}
+                                <small class="text-muted">({{ artist.channel_name }})</small>
+                                {% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        
+                        <a href="/artists/new{% if channel %}?channel_id={{ channel.id }}{% endif %}" 
+                           class="btn btn-outline-success"
+                           data-bs-toggle="tooltip"
+                           title="Tambah Artist Baru">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                    
+                    <small class="text-muted">
+                        Pilih artist yang sudah ada, atau <a href="/artists/new{% if channel %}?channel_id={{ channel.id }}{% endif %}">tambah artist baru</a>.
+                    </small>
+                    <div id="artistError" class="invalid-feedback"></div>
+                </div>
+
+                <!-- Judul Lagu -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-heading me-1"></i> Judul Lagu <span class="text-danger">*</span>
+                    </label>
+                    
+                    <input type="text"
+                           name="title"
+                           id="title"
+                           class="form-control form-control-lg"
+                           placeholder="Contoh: Hati Yang Luka"
+                           required
+                           maxlength="255"
+                           autofocus>
+                    
+                    <small class="text-muted">
+                        <span id="charCount">0</span>/255 karakter. Hindari judul duplikat pada artist yang sama.
+                    </small>
+                    <div id="titleError" class="invalid-feedback"></div>
+                </div>
+
+                <!-- Status -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-tag me-1"></i> Status
+                    </label>
+                    
+                    <select name="status" id="status" class="form-select">
+                        <option value="Review" selected>
+                            📝 Review
+                        </option>
+                        <option value="Approved">
+                            ✅ Approved
+                        </option>
+                        <option value="Live">
+                            🚀 Live
+                        </option>
+                        <option value="Take Down">
+                            🗑️ Take Down
+                        </option>
+                        <option value="Topic">
+                            📌 Topic
+                        </option>
+                    </select>
+                    
+                    <!-- Status Preview -->
+                    <div class="mt-2" id="statusPreview">
+                        <small class="text-muted">Preview: </small>
+                        <span id="statusBadge" class="badge bg-secondary">
+                            📝 Review
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Release Date -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-calendar-alt me-1"></i> Tanggal Rilis
+                    </label>
+                    
+                    <input type="date"
+                           name="release_date"
+                           id="release_date"
+                           class="form-control">
+                    
+                    <small class="text-muted">
+                        Format: YYYY-MM-DD (Opsional. Bisa diisi nanti)
+                    </small>
+                    <div id="dateError" class="invalid-feedback"></div>
+                </div>
+
+                <!-- Quick Add Section -->
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="fas fa-lightbulb me-2"></i>
+                    <strong>Tips:</strong> 
+                    Untuk menambah banyak lagu sekaligus, gunakan fitur 
+                    <a href="/songs/import{% if channel %}?channel_id={{ channel.id }}{% endif %}" class="alert-link">
+                        Import Lagu
+                    </a>.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <button type="button" 
+                                class="btn btn-outline-info" 
+                                id="resetBtn"
+                                data-bs-toggle="tooltip"
+                                title="Reset form">
+                            <i class="fas fa-undo-alt me-1"></i> Reset
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <a href="/songs{% if channel %}?channel_id={{ channel.id }}{% endif %}" 
+                           class="btn btn-light me-2">
+                            <i class="fas fa-times me-1"></i> Batal
+                        </a>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-save me-1"></i> Simpan Song
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal (Optional) -->
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Sukses!
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Lagu berhasil ditambahkan.</p>
+                <div class="alert alert-info">
+                    <strong>Ingin menambah lagu lagi?</strong><br>
+                    Anda bisa langsung mengisi form berikutnya.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Tutup
+                </button>
+                <button type="button" class="btn btn-success" id="addAnotherBtn">
+                    <i class="fas fa-plus me-1"></i> Tambah Lagi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function () {
+    const form = $('#songForm');
+    const titleInput = $('#title');
+    const artistSelect = $('#artist_id');
+    const statusSelect = $('#status');
+    const releaseDateInput = $('#release_date');
+    const submitBtn = $('#submitBtn');
+    const resetBtn = $('#resetBtn');
+    const charCountSpan = $('#charCount');
+    
+    let isSubmitting = false;
+    
+    // ==================== AUTO-FOCUS ====================
+    titleInput.focus();
+    
+    // ==================== CHARACTER COUNTER ====================
+    function updateCharCount() {
+        const length = titleInput.val().length;
+        charCountSpan.text(length);
+        
+        if (length === 255) {
+            charCountSpan.addClass('text-danger');
+        } else if (length > 200) {
+            charCountSpan.addClass('text-warning');
+            charCountSpan.removeClass('text-danger');
+        } else {
+            charCountSpan.removeClass('text-warning text-danger');
+        }
+    }
+    
+    titleInput.on('input', function() {
+        updateCharCount();
+        validateTitle();
+    });
+    
+    updateCharCount();
+    
+    // ==================== STATUS PREVIEW ====================
+    function updateStatusPreview() {
+        const status = statusSelect.val();
+        let badgeClass = 'bg-secondary';
+        let icon = '📝';
+        
+        switch(status) {
+            case 'Live':
+                badgeClass = 'bg-success';
+                icon = '🚀';
+                break;
+            case 'Approved':
+                badgeClass = 'bg-warning';
+                icon = '✅';
+                break;
+            case 'Take Down':
+                badgeClass = 'bg-danger';
+                icon = '🗑️';
+                break;
+            case 'Topic':
+                badgeClass = 'bg-info';
+                icon = '📌';
+                break;
+            default:
+                badgeClass = 'bg-secondary';
+                icon = '📝';
+        }
+        
+        $('#statusBadge').attr('class', `badge ${badgeClass} text-white`);
+        $('#statusBadge').html(`${icon} ${status}`);
+    }
+    
+    statusSelect.on('change', updateStatusPreview);
+    updateStatusPreview();
+    
+    // ==================== VALIDATION FUNCTIONS ====================
+    function validateArtist() {
+        const artistId = artistSelect.val();
+        
+        if (!artistId) {
+            artistSelect.addClass('is-invalid');
+            $('#artistError').text('Artist wajib dipilih');
+            return false;
+        }
+        
+        artistSelect.removeClass('is-invalid');
+        return true;
+    }
+    
+    function validateTitle() {
+        const title = titleInput.val().trim();
+        
+        if (!title) {
+            titleInput.addClass('is-invalid');
+            $('#titleError').text('Judul lagu wajib diisi');
+            return false;
+        }
+        
+        if (title.length > 255) {
+            titleInput.addClass('is-invalid');
+            $('#titleError').text('Judul lagu maksimal 255 karakter');
+            return false;
+        }
+        
+        titleInput.removeClass('is-invalid');
+        return true;
+    }
+    
+    function validateReleaseDate() {
+        const date = releaseDateInput.val();
+        
+        if (date) {
+            const regex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!regex.test(date)) {
+                releaseDateInput.addClass('is-invalid');
+                $('#dateError').text('Format tanggal harus YYYY-MM-DD');
+                return false;
+            }
+            
+            // Check if date is valid
+            const d = new Date(date);
+            if (isNaN(d.getTime())) {
+                releaseDateInput.addClass('is-invalid');
+                $('#dateError').text('Tanggal tidak valid');
+                return false;
+            }
+        }
+        
+        releaseDateInput.removeClass('is-invalid');
+        return true;
+    }
+    
+    // Real-time validation
+    artistSelect.on('change', validateArtist);
+    titleInput.on('input', validateTitle);
+    releaseDateInput.on('change', validateReleaseDate);
+    
+    // ==================== CHECK DUPLICATE TITLE ====================
+    function checkDuplicateTitle() {
+        const artistId = artistSelect.val();
+        const title = titleInput.val().trim();
+        
+        if (!artistId || !title) {
+            return Promise.resolve(true);
+        }
+        
+        // Optional: Check for duplicate via AJAX
+        return $.ajax({
+            url: '/songs/check-duplicate',
+            method: 'GET',
+            data: {
+                artist_id: artistId,
+                title: title
+            },
+            async: false
+        }).then(function(response) {
+            if (response.exists) {
+                titleInput.addClass('is-invalid');
+                $('#titleError').text('Judul lagu sudah ada untuk artist ini');
+                return false;
+            }
+            return true;
+        }).catch(function() {
+            return true; // If check fails, proceed anyway
+        });
+    }
+    
+    // ==================== FORM SUBMIT ====================
+    form.on('submit', function(e) {
+        e.preventDefault();
+        
+        if (isSubmitting) return false;
+        
+        // Validate all fields
+        const isArtistValid = validateArtist();
+        const isTitleValid = validateTitle();
+        const isDateValid = validateReleaseDate();
+        
+        if (!isArtistValid || !isTitleValid || !isDateValid) {
+            showToast('Mohon lengkapi data dengan benar', 'error');
+            return false;
+        }
+        
+        // Check for duplicate (optional - uncomment if needed)
+        // const isNotDuplicate = checkDuplicateTitle();
+        // if (!isNotDuplicate) return false;
+        
+        isSubmitting = true;
+        
+        // Show loading state
+        submitBtn.prop('disabled', true);
+        submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> Menyimpan...');
+        
+        // Submit via AJAX
+        $.ajax({
+            url: form.attr('action'),
+            method: 'POST',
+            data: form.serialize(),
+            success: function(response) {
+                showToast('Lagu berhasil ditambahkan!', 'success');
+                
+                // Check if we should reset form for adding another
+                if (confirm('Lagu berhasil ditambahkan! Apakah Anda ingin menambah lagu lagi?')) {
+                    resetForm();
+                    isSubmitting = false;
+                    submitBtn.prop('disabled', false);
+                    submitBtn.html('<i class="fas fa-save me-1"></i> Simpan Song');
+                    titleInput.focus();
+                } else {
+                    // Redirect back
+                    const channelId = $('input[name="channel_id"]').val();
+                    window.location.href = `/songs${channelId ? '?channel_id=' + channelId : ''}`;
+                }
+            },
+            error: function(xhr) {
+                let errorMsg = 'Gagal menyimpan lagu';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMsg = xhr.responseJSON.message;
+                }
+                showToast(errorMsg, 'error');
+                isSubmitting = false;
+                submitBtn.prop('disabled', false);
+                submitBtn.html('<i class="fas fa-save me-1"></i> Simpan Song');
+            }
+        });
+        
+        return false;
+    });
+    
+    // ==================== RESET FORM ====================
+    function resetForm() {
+        form[0].reset();
+        artistSelect.removeClass('is-invalid');
+        titleInput.removeClass('is-invalid');
+        releaseDateInput.removeClass('is-invalid');
+        updateCharCount();
+        updateStatusPreview();
+        titleInput.focus();
+    }
+    
+    resetBtn.on('click', function() {
+        if (confirm('Reset form? Semua data yang sudah diisi akan hilang.')) {
+            resetForm();
+        }
+    });
+    
+    // ==================== TOAST NOTIFICATION ====================
+    function showToast(message, type = 'success') {
+        if ($('#toast-container').length === 0) {
+            $('body').append('<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>');
+        }
+        
+        const bgClass = type === 'success' ? 'bg-success' : 'bg-danger';
+        const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
+        const toast = $(`
+            <div class="toast" role="alert" data-delay="3000">
+                <div class="toast-header ${bgClass} text-white">
+                    <i class="fas ${icon} me-2"></i>
+                    <strong class="me-auto">${type === 'success' ? 'Sukses' : 'Error'}</strong>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            </div>
+        `);
+        
+        $('#toast-container').append(toast);
+        toast.toast('show');
+        toast.on('hidden.bs.toast', () => toast.remove());
+    }
+    
+    // ==================== KEYBOARD SHORTCUTS ====================
+    // Ctrl/Cmd + Enter to submit
+    $(document).on('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.keyCode === 13) {
+            e.preventDefault();
+            if (!isSubmitting) {
+                form.submit();
+            }
+        }
+        
+        // Ctrl/Cmd + R to reset
+        if ((e.ctrlKey || e.metaKey) && e.keyCode === 82) {
+            e.preventDefault();
+            resetBtn.click();
+        }
+    });
+    
+    // ==================== SUGGESTIONS / AUTO-COMPLETE ====================
+    // Optional: Fetch recent titles for the selected artist
+    artistSelect.on('change', function() {
+        const artistId = $(this).val();
+        if (artistId) {
+            // Could fetch recent songs for this artist to suggest
+            // This is optional and can be implemented later
+            validateArtist();
+        }
+    });
+    
+    // ==================== INITIALIZE TOOLTIPS ====================
+    $('[data-bs-toggle="tooltip"]').tooltip();
+    
+});
+</script>
+
+<style>
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.form-control.is-invalid:focus {
+    box-shadow: 0 0 0 0.2rem rgba(220,53,69,.25);
+}
+
+.card {
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+#statusPreview {
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+}
+
+.toast {
+    min-width: 300px;
+    opacity: 1 !important;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .input-group-append {
+        margin-top: 10px;
+        margin-left: 0 !important;
+    }
+    
+    .input-group-append .btn {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}

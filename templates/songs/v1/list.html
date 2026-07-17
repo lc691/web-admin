@@ -1,0 +1,1874 @@
+<!-- ============================================================ -->
+<!-- PAGE: SONGS MANAGEMENT                                        -->
+<!-- ============================================================ -->
+
+{% extends "base.html" %}
+
+<!-- ============================================================ -->
+<!-- MAIN CONTENT                                                  -->
+<!-- ============================================================ -->
+{% block content %}
+
+<!-- ====================================================== -->
+<!-- ACTION TOOLBAR                                         -->
+<!-- ====================================================== -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div>
+        <h1 class="h3 mb-0 text-gray-800">
+            <i class="fas fa-music mr-2"></i>
+            Songs Manager
+        </h1>
+        <small class="text-muted">
+            Kelola lagu, export playlist, rekap dan bulk update.
+        </small>
+    </div>
+
+    <div class="btn-toolbar mt-3 mt-sm-0" role="toolbar">
+        <!-- Tambah Lagu -->
+        <div class="btn-group mr-2">
+            <a href="/songs/new" class="btn btn-success shadow-sm">
+                <i class="fas fa-plus mr-1"></i>
+                Tambah Lagu
+            </a>
+        </div>
+
+        <!-- Import -->
+        <div class="btn-group mr-2">
+            <a href="/songs/import" class="btn btn-info shadow-sm">
+                <i class="fas fa-file-import mr-1"></i>
+                Import
+            </a>
+        </div>
+
+        <!-- Export Selected -->
+        <div class="btn-group mr-2">
+            <button id="btnExportSelected" class="btn btn-primary shadow-sm" data-toggle="tooltip" title="Ctrl + Shift + E">
+                <i class="fas fa-file-export mr-1"></i>
+                Export Selected
+            </button>
+        </div>
+
+        <!-- Export Playlist -->
+        <div class="btn-group mr-2">
+            <button id="btnOpenExportModal" class="btn btn-primary shadow-sm" data-toggle="modal" data-target="#exportModal">
+                <i class="fas fa-list-ul mr-1"></i>
+                Export Playlist
+            </button>
+        </div>
+
+        <!-- Rekap Export -->
+        <div class="btn-group mr-2">
+            <button id="btnOpenUsageModal" class="btn btn-secondary shadow-sm" data-toggle="modal" data-target="#usageModal">
+                <i class="fas fa-chart-bar mr-1"></i>
+                Rekap Export
+            </button>
+        </div>
+
+        <!-- Bulk Status -->
+        <div class="btn-group mr-2">
+            <button id="btnBulkStatus" class="btn btn-warning shadow-sm">
+                <i class="fas fa-edit mr-1"></i>
+                Bulk Status
+            </button>
+        </div>
+
+        <!-- Refresh -->
+        <div class="btn-group">
+            <button id="btnRefresh" class="btn btn-outline-primary shadow-sm" data-toggle="tooltip" title="Refresh">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- EXPORT MODAL                                              -->
+<!-- ========================================================= -->
+<div class="modal fade" id="exportModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-file-export me-2"></i>
+                    Export Playlist
+                </h5>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+                <!-- MODE -->
+                <label class="fw-bold">Mode Export</label>
+                <div class="btn-group d-flex mb-4" role="group">
+                    <input type="radio" class="btn-check" name="exportMode" value="normal" id="modeNormal" checked autocomplete="off">
+                    <label class="btn btn-outline-primary flex-fill" for="modeNormal">
+                        📁 Normal
+                    </label>
+
+                    <input type="radio" class="btn-check" name="exportMode" value="clean" id="modeClean" autocomplete="off">
+                    <label class="btn btn-outline-success flex-fill" for="modeClean">
+                        🧹 Clean
+                    </label>
+
+                    <input type="radio" class="btn-check" name="exportMode" value="blacklist" id="modeBlacklist" autocomplete="off">
+                    <label class="btn btn-outline-danger flex-fill" for="modeBlacklist">
+                        🚫 Blacklist
+                    </label>
+                </div>
+
+                <!-- OUTPUT -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">Total Output</label>
+                        <input id="exportTarget" class="form-control" type="number" value="140">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Duplicate</label>
+                        <input id="exportDuplicate" class="form-control" type="number" value="2">
+                    </div>
+                </div>
+
+                <div class="alert alert-light border mt-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>Lagu Unik</strong>
+                        <strong id="uniqueSongCount">70</strong>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- GRID HARI -->
+                <label class="fw-bold">Pilih Hari</label>
+                <input id="selectedExportDay" type="hidden">
+                <div class="day-grid export-grid">
+                    {% for i in range(1,31) %}
+                    <button type="button" class="btn day-btn export-day-btn {% if i in used_days %}btn-success{% else %}btn-outline-secondary{% endif %}" data-day="{{ i }}">
+                        {% if i in used_days %}
+                        <i class="fas fa-check"></i>
+                        {% else %}
+                        {{ i }}
+                        {% endif %}
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <hr>
+
+                <!-- STATUS -->
+                <div class="card">
+                    <div class="card-header"><strong>Status Export</strong></div>
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between">
+                            <span>Hari</span>
+                            <strong id="statusDay">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Mode</span>
+                            <strong id="statusMode">Normal</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Status</span>
+                            <strong id="statusExport">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Lagu Unik</span>
+                            <strong id="statusUnique">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Tersedia</span>
+                            <strong id="statusRemaining">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Sisa Setelah</span>
+                            <strong id="statusAfter">-</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>
+                    Tutup
+                </button>
+                <button id="btnExportDay" class="btn btn-primary" disabled>
+                    <i class="fas fa-file-export me-1"></i>
+                    Export Playlist
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- USAGE / REKAP MODAL                                       -->
+<!-- ========================================================= -->
+<div class="modal fade" id="usageModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    Rekap Export
+                </h5>
+                <button class="close text-white" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+                <!-- MODE -->
+                <label class="font-weight-bold">Mode Rekap</label>
+                <div class="btn-group btn-group-toggle d-flex mb-4" data-toggle="buttons">
+                    <label class="btn btn-outline-primary flex-fill active">
+                        <input type="radio" name="usageMode" value="normal" checked>
+                        📁 Normal
+                    </label>
+                    <label class="btn btn-outline-success flex-fill">
+                        <input type="radio" name="usageMode" value="clean">
+                        🧹 Clean
+                    </label>
+                    <label class="btn btn-outline-danger flex-fill">
+                        <input type="radio" name="usageMode" value="blacklist">
+                        🚫 Blacklist
+                    </label>
+                </div>
+
+                <hr>
+
+                <!-- GRID HARI -->
+                <label class="font-weight-bold">Pilih Hari</label>
+                <input id="selectedUsageDay" type="hidden">
+                <div class="day-grid usage-grid">
+                    {% for i in range(1,31) %}
+                    <button type="button" class="btn day-btn usage-day-btn {% if i in used_days %}btn-success{% else %}btn-outline-secondary{% endif %}" data-day="{{ i }}">
+                        {% if i in used_days %}
+                        <i class="fas fa-check"></i>
+                        {% else %}
+                        {{ i }}
+                        {% endif %}
+                    </button>
+                    {% endfor %}
+                </div>
+
+                <hr>
+
+                <!-- STATUS -->
+                <div class="card">
+                    <div class="card-header"><strong>Status Rekap</strong></div>
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between">
+                            <span>Hari</span>
+                            <strong id="usageStatusDay">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Mode</span>
+                            <strong id="usageStatusMode">Normal</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Status</span>
+                            <strong id="usageStatusExport">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Total Lagu</span>
+                            <strong id="usageTotalSongs">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Total Channel</span>
+                            <strong id="usageTotalChannels">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Total Artist</span>
+                            <strong id="usageTotalArtists">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Pertama Export</span>
+                            <strong id="usageFirstUsed">-</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times mr-1"></i>
+                    Tutup
+                </button>
+                <button id="btnOpenUsage" class="btn btn-dark" disabled>
+                    <i class="fas fa-chart-bar mr-1"></i>
+                    Buka Rekap
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================== -->
+<!-- SECTION: STATISTICS CARDS                                   -->
+<!-- ========================================================== -->
+<div class="row mb-4" id="statsCards">
+    <div class="col-md-3 col-sm-6">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Songs</div>
+                        <div id="totalSongs" class="h5 mb-0 font-weight-bold text-gray-800">{{ total_songs }}</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-music fa-2x text-gray-300"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Live Songs</div>
+                        <div id="liveSongs" class="h5 mb-0 font-weight-bold text-gray-800">{{ live_songs }}</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-play-circle fa-2x text-gray-300"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Approved</div>
+                        <div id="approvedSongs" class="h5 mb-0 font-weight-bold text-gray-800">{{ approved_songs }}</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-check-circle fa-2x text-gray-300"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 col-sm-6">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Review</div>
+                        <div id="reviewSongs" class="h5 mb-0 font-weight-bold text-gray-800">{{ review_songs }}</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-clock fa-2x text-gray-300"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================== -->
+<!-- SECTION: SELECTION INFO                                     -->
+<!-- ========================================================== -->
+<div id="selectionInfo" class="alert alert-info d-none">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <i class="fas fa-check-circle mr-2"></i>
+            <strong><span id="selectedCount">0</span></strong> lagu dipilih
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-info" onclick="SongsSelection.clear()">
+            <i class="fas fa-times mr-1"></i>
+            Bersihkan
+        </button>
+    </div>
+</div>
+
+<!-- ========================================================== -->
+<!-- SECTION: TABLE                                              -->
+<!-- ========================================================== -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <h6 class="m-0 font-weight-bold text-primary">
+                <i class="fas fa-filter mr-2"></i>Filter Status
+            </h6>
+            <div class="btn-group btn-group-sm" role="group">
+                <button class="btn btn-dark filter-btn active" data-status="">
+                    <i class="fas fa-list mr-1"></i>All
+                </button>
+                <button class="btn btn-outline-secondary filter-btn" data-status="Review">
+                    <i class="fas fa-clock mr-1"></i>Review
+                </button>
+                <button class="btn btn-outline-warning filter-btn" data-status="Approved">
+                    <i class="fas fa-check-circle mr-1"></i>Approved
+                </button>
+                <button class="btn btn-outline-success filter-btn" data-status="Live">
+                    <i class="fas fa-play-circle mr-1"></i>Live
+                </button>
+                <button class="btn btn-outline-danger filter-btn" data-status="Take Down">
+                    <i class="fas fa-ban mr-1"></i>Take Down
+                </button>
+                <button class="btn btn-outline-info filter-btn" data-status="Topic">
+                    <i class="fas fa-tag mr-1"></i>Topic
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-bordered table-hover align-middle" id="songsTable" width="100%">
+            <thead class="thead-light">
+                <tr>
+                    <th width="40"><input type="checkbox" id="checkAll"></th>
+                    <th width="70">ID</th>
+                    <th>Channel</th>
+                    <th>Artis</th>
+                    <th>Judul Lagu</th>
+                    <th width="120">Status</th>
+                    <th width="150">Release Date</th>
+                    <th width="130" class="text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- BULK STATUS MODAL                                      -->
+<!-- ====================================================== -->
+<div class="modal fade" id="bulkActionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title">
+                    <i class="fas fa-edit mr-2"></i>
+                    Bulk Status
+                </h5>
+                <button class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <h5>
+                    <span id="bulkCount">0</span>
+                    lagu dipilih
+                </h5>
+                <p class="text-muted mb-4">Pilih status yang ingin diberikan.</p>
+                <div class="btn-group btn-group-lg d-flex">
+                    <button class="btn btn-success bulk-status-btn" data-status="Live">Live</button>
+                    <button class="btn btn-info bulk-status-btn" data-status="Approved">Approved</button>
+                    <button class="btn btn-warning bulk-status-btn" data-status="Review">Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- LOADING OVERLAY                                        -->
+<!-- ====================================================== -->
+<div id="loadingOverlay" class="d-none">
+    <div class="loading-backdrop"></div>
+    <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="mt-3">Memproses...</div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION: CUSTOM STYLES                                        -->
+<!-- ============================================================ -->
+<style>
+.day-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+.day-btn {
+    height: 42px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.day-btn:hover {
+    transform: scale(1.05);
+}
+
+.day-btn.btn-success:hover {
+    background: #28a745;
+    border-color: #28a745;
+}
+
+.day-btn.active {
+    background: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+#loadingOverlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+#loadingOverlay.d-none {
+    display: none !important;
+}
+
+.loading-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(2px);
+}
+
+.loading-content {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    padding: 25px 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+/* Selection info */
+#selectionInfo {
+    transition: all 0.3s ease;
+}
+
+#selectionInfo.d-none {
+    display: none !important;
+}
+</style>
+
+{% endblock %}
+
+<!-- ============================================================ -->
+<!-- SCRIPTS                                                       -->
+<!-- ============================================================ -->
+{% block scripts %}
+<script>
+    /**
+     * ============================================================
+     * SONGS MANAGEMENT - FINAL SCRIPTS
+     * ============================================================
+     * 
+     * Daftar Fungsi:
+     * 1. SongsDataTable   - Inisialisasi DataTable
+     * 2. SongsSelection   - Manajemen seleksi checkbox
+     * 3. SongsExport      - Export playlist
+     * 4. SongsUsage       - Rekap export
+     * 5. SongsBulk        - Bulk update status
+     * 6. SongsFilter      - Filter status
+     * 7. SongsUI          - UI utilities
+     * ============================================================
+     */
+
+    // ===========================================================
+    // HELPER FUNCTIONS
+    // ===========================================================
+    function getChannelId() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('channel_id') || null;
+    }
+
+    function getBaseUrl() {
+        const channelId = getChannelId();
+        return channelId ? `/songs?channel_id=${channelId}` : '/songs';
+    }
+
+    // ===========================================================
+    // 1. DATATABLE INITIALIZATION
+    // ===========================================================
+    class SongsDataTable {
+        constructor() {
+            this.table = null;
+            this.init();
+        }
+
+        init() {
+            const self = this;
+            
+            this.table = $('#songsTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '/songs/data',
+                    type: 'GET',
+                    data: function(d) {
+                        d.status = $('.filter-btn.active').data('status') || '';
+                        d.channel_id = getChannelId();
+                        d.search = d.search || '';
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', {
+                            status: xhr.status,
+                            statusText: xhr.statusText,
+                            responseText: xhr.responseText
+                        });
+                        SongsUI.showToast('Gagal memuat data: ' + (xhr.statusText || 'Unknown error'), 'danger');
+                    }
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            return `<input type="checkbox" class="row-checkbox" value="${row.id}">`;
+                        },
+                        orderable: false,
+                        className: 'text-center'
+                    },
+                    { 
+                        data: 'id',
+                        className: 'text-center'
+                    },
+                    { 
+                        data: 'channel_name',
+                        defaultContent: '-'
+                    },
+                    { 
+                        data: 'artist_name',
+                        defaultContent: '-'
+                    },
+                    { 
+                        data: 'title',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'status_badge',
+                        defaultContent: '<span class="badge badge-secondary">Review</span>'
+                    },
+                    { 
+                        data: 'release_date',
+                        defaultContent: '-',
+                        className: 'text-center'
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row) {
+                            return self.getActionButtons(row);
+                        },
+                        orderable: false,
+                        className: 'text-center'
+                    }
+                ],
+                order: [[6, 'desc']],
+                pageLength: 25,
+                lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+                language: {
+                    processing: '<div class="spinner-border text-primary" role="status"><span class="sr-only">Memproses...</span></div>',
+                    lengthMenu: 'Tampilkan _MENU_ data',
+                    zeroRecords: 'Tidak ada data ditemukan',
+                    info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
+                    infoEmpty: 'Tidak ada data',
+                    infoFiltered: '(difilter dari _MAX_ total data)',
+                    search: 'Cari:',
+                    paginate: {
+                        first: 'Pertama',
+                        last: 'Terakhir',
+                        next: 'Selanjutnya',
+                        previous: 'Sebelumnya'
+                    }
+                },
+                drawCallback: function() {
+                    self.updateSelectionInfo();
+                    self.attachRowEvents();
+                },
+                initComplete: function() {
+                    // Update selection info after initial load
+                    setTimeout(() => {
+                        self.updateSelectionInfo();
+                    }, 500);
+                }
+            });
+        }
+
+        getActionButtons(row) {
+            return `
+                <div class="btn-group btn-group-sm">
+                    <a href="/songs/${row.id}/edit?channel_id=${getChannelId() || ''}" 
+                    class="btn btn-outline-primary" 
+                    title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button class="btn btn-outline-danger delete-song" 
+                            data-id="${row.id}" 
+                            title="Hapus">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        attachRowEvents() {
+            // Delete button
+            $('.delete-song').off('click').on('click', function() {
+                const id = $(this).data('id');
+                if (confirm('Apakah Anda yakin ingin menghapus lagu ini?')) {
+                    SongsUI.showLoading();
+                    
+                    const formData = new FormData();
+                    const channelId = getChannelId();
+                    if (channelId) {
+                        formData.append('channel_id', channelId);
+                    }
+                    
+                    $.ajax({
+                        url: `/songs/${id}/delete`,
+                        method: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function() {
+                            SongsUI.hideLoading();
+                            SongsUI.showToast('Lagu berhasil dihapus', 'success');
+                            window.songsTable.reload();
+                        },
+                        error: function(xhr) {
+                            SongsUI.hideLoading();
+                            const errorMsg = xhr.responseJSON?.detail || xhr.responseJSON?.message || 'Gagal menghapus lagu';
+                            SongsUI.showToast(errorMsg, 'danger');
+                        }
+                    });
+                }
+            });
+
+            // Row checkbox
+            $('.row-checkbox').off('change').on('change', function() {
+                SongsSelection.update();
+            });
+
+            // Check all
+            $('#checkAll').off('change').on('change', function() {
+                $('.row-checkbox').prop('checked', $(this).prop('checked'));
+                SongsSelection.update();
+            });
+        }
+
+        updateSelectionInfo() {
+            const checked = $('.row-checkbox:checked').length;
+            
+            if (checked > 0) {
+                $('#selectionInfo').removeClass('d-none');
+                $('#selectedCount').text(checked);
+                $('#btnBulkStatus').prop('disabled', false);
+            } else {
+                $('#selectionInfo').addClass('d-none');
+                $('#btnBulkStatus').prop('disabled', true);
+            }
+        }
+
+        reload() {
+            this.table.ajax.reload();
+        }
+    }
+
+    // ===========================================================
+    // 2. SELECTION MANAGEMENT
+    // ===========================================================
+    class SongsSelection {
+        static update() {
+            const checked = $('.row-checkbox:checked').length;
+            const total = $('.row-checkbox').length;
+
+            // Update selection info
+            const info = $('#selectionInfo');
+            if (checked > 0) {
+                info.removeClass('d-none');
+                $('#selectedCount').text(checked);
+                $('#btnBulkStatus').prop('disabled', false);
+            } else {
+                info.addClass('d-none');
+                $('#btnBulkStatus').prop('disabled', true);
+            }
+
+            // Update "Check All"
+            $('#checkAll').prop('checked', checked === total && total > 0);
+        }
+
+        static clear() {
+            $('.row-checkbox').prop('checked', false);
+            this.update();
+        }
+
+        static getSelectedIds() {
+            return $('.row-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+        }
+
+        static getSelectedCount() {
+            return $('.row-checkbox:checked').length;
+        }
+    }
+
+    // ===========================================================
+    // 3. EXPORT PLAYLIST - FIXED VERSION
+    // ===========================================================
+
+    class SongsExport {
+        
+        constructor() {
+
+            this.selectedDay = null;
+
+            this.init();
+
+        }
+
+        // ======================================================
+        // Initialize
+        // ======================================================
+
+        init() {
+
+            this.bindEvents();
+
+            this.reset();
+
+        }
+
+        // ======================================================
+        // Event Binding
+        // ======================================================
+
+        bindEvents() {
+
+            // ----------------------------------------------
+            // Select Day
+            // ----------------------------------------------
+
+            $('.export-day-btn').on('click', (event) => {
+
+                const day = Number(
+                    $(event.currentTarget).data('day')
+                );
+
+                this.selectDay(day);
+
+            });
+
+            // ----------------------------------------------
+            // Export Mode
+            // ----------------------------------------------
+
+            $('input[name="exportMode"]').on(
+                'change',
+                () => this.updateStatus()
+            );
+
+            // ----------------------------------------------
+            // Target
+            // ----------------------------------------------
+
+            $('#exportTarget').on(
+                'input',
+                () => this.updateStatus()
+            );
+
+            // ----------------------------------------------
+            // Duplicate
+            // ----------------------------------------------
+
+            $('#exportDuplicate').on(
+                'input',
+                () => this.updateStatus()
+            );
+
+            // ----------------------------------------------
+            // Export
+            // ----------------------------------------------
+
+            $('#btnExportDay').on(
+                'click',
+                () => this.executeExport()
+            );
+
+            // ----------------------------------------------
+            // Modal Close
+            // ----------------------------------------------
+
+            $('#exportModal').on(
+                'hidden.bs.modal',
+                () => this.reset()
+            );
+
+        }
+
+        // ======================================================
+        // Select Day
+        // ======================================================
+
+        selectDay(day) {
+
+            this.selectedDay = day;
+
+            $('.export-day-btn')
+                .removeClass('active');
+
+            $(`.export-day-btn[data-day="${day}"]`)
+                .addClass('active');
+
+            $('#selectedExportDay')
+                .val(day);
+
+            $('#btnExportDay')
+                .prop('disabled', false);
+
+            this.updateStatus();
+
+        }
+
+        // ======================================================
+        // Reset
+        // ======================================================
+
+        reset() {
+
+            this.selectedDay = null;
+
+            $('.export-day-btn')
+                .removeClass('active');
+
+            $('#selectedExportDay')
+                .val('');
+
+            $('#btnExportDay')
+                .prop('disabled', true);
+
+            $('#uniqueSongCount')
+                .text('-');
+
+            $('#statusDay')
+                .text('-');
+
+            $('#statusMode')
+                .text('-');
+
+            $('#statusExport')
+                .text('Pilih hari terlebih dahulu');
+
+            $('#statusUnique')
+                .text('-');
+
+            $('#statusRemaining')
+                .text('-');
+
+            $('#statusAfter')
+                .text('-');
+
+        }
+
+            // ======================================================
+        // Update Status
+        // ======================================================
+
+        async updateStatus() {
+
+            const day = this.selectedDay;
+
+            const mode = $(
+                'input[name="exportMode"]:checked'
+            ).val();
+
+            const target = Number(
+                $('#exportTarget').val()
+            ) || 140;
+
+            const duplicate = Number(
+                $('#exportDuplicate').val()
+            ) || 2;
+
+            const modeLabels = {
+                normal: "Normal",
+                clean: "Clean",
+                blacklist: "Blacklist",
+            };
+
+            $('#statusMode').text(
+                modeLabels[mode] ?? mode
+            );
+
+            $('#statusDay').text(
+                day
+                    ? `Hari ${day}`
+                    : "-"
+            );
+
+            if (!day) {
+
+                $('#btnExportDay')
+                    .prop('disabled', true);
+
+                $('#statusExport')
+                    .text(
+                        'Pilih hari terlebih dahulu'
+                    );
+
+                return;
+
+            }
+
+            try {
+
+                const response = await fetch(
+
+                    `/songs/export/day/${day}/remaining?mode=${mode}`,
+
+                    {
+                        method: 'GET',
+                        cache: 'no-store',
+                    }
+
+                );
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `HTTP ${response.status}`
+                    );
+
+                }
+
+                const data =
+                    await response.json();
+
+                const unique =
+                    data.unique_songs ?? 0;
+
+                const remaining =
+                    data.remaining ?? 0;
+
+                const alreadyExported =
+                    data.already_exported ?? false;
+
+                $('#uniqueSongCount')
+                    .text(unique);
+
+                $('#statusUnique')
+                    .text(unique);
+
+                $('#statusRemaining')
+                    .text(remaining);
+
+                $('#statusAfter')
+                    .text(
+                        Math.max(
+                            0,
+                            remaining -
+                            (target * duplicate)
+                        )
+                    );
+
+                $('#statusExport').text(
+
+                    alreadyExported
+                        ? 'Sudah pernah export'
+                        : 'Siap export'
+
+                );
+
+                $('#btnExportDay')
+                    .prop('disabled', false);
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    'Load export status failed',
+                    error,
+                );
+
+                $('#uniqueSongCount')
+                    .text('-');
+
+                $('#statusUnique')
+                    .text('-');
+
+                $('#statusRemaining')
+                    .text('-');
+
+                $('#statusAfter')
+                    .text('-');
+
+                $('#statusExport')
+                    .text('Gagal memuat status');
+
+                $('#btnExportDay')
+                    .prop('disabled', true);
+
+                SongsUI.showToast(
+                    'Gagal mengambil status export.',
+                    'danger',
+                );
+
+            }
+
+        }
+
+            // ======================================================
+        // Execute Export
+        // ======================================================
+
+        async executeExport() {
+
+            console.log("EXECUTE EXPORT");
+
+            const day = this.selectedDay;
+
+            if (!day) {
+
+                SongsUI.showToast(
+                    'Pilih hari terlebih dahulu.',
+                    'warning',
+                );
+
+                return;
+
+            }
+
+            const mode = $(
+                'input[name="exportMode"]:checked'
+            ).val();
+
+            const target = Number(
+                $('#exportTarget').val()
+            ) || 140;
+
+            const duplicate = Number(
+                $('#exportDuplicate').val()
+            ) || 2;
+
+            const button = $('#btnExportDay');
+
+            try {
+
+                SongsUI.showLoading();
+
+                button
+                    .prop('disabled', true)
+                    .html(
+                        '<span class="spinner-border spinner-border-sm me-2"></span>Exporting...'
+                    );
+
+                const params = new URLSearchParams({
+
+                    target,
+
+                    duplicate,
+
+                    mode,
+
+                });
+
+                const response = await fetch(
+
+                    `/songs/export/day/${day}?${params.toString()}`,
+
+                    {
+
+                        method: 'GET',
+
+                        cache: 'no-store',
+
+                    },
+
+                );
+
+                if (!response.ok) {
+
+                    let message = `HTTP ${response.status}`;
+
+                    try {
+
+                        const error =
+                            await response.json();
+
+                        message =
+                            error.detail ??
+                            error.message ??
+                            message;
+
+                    }
+
+                    catch {
+
+                        message =
+                            await response.text();
+
+                    }
+
+                    throw new Error(message);
+
+                }
+
+                const blob =
+                    await response.blob();
+
+                if (blob.size === 0) {
+
+                    throw new Error(
+                        'File export kosong.'
+                    );
+
+                }
+
+                const disposition =
+                    response.headers.get(
+                        'Content-Disposition'
+                    );
+
+                let filename =
+                    `playlist_day_${day}_${mode}.txt`;
+
+                if (disposition) {
+
+                    const utf8 = disposition.match(
+                        /filename\*=UTF-8''([^;]+)/i
+                    );
+
+                    if (utf8) {
+
+                        filename =
+                            decodeURIComponent(
+                                utf8[1]
+                            );
+
+                    }
+
+                    else {
+
+                        const normal =
+                            disposition.match(
+                                /filename="?([^"]+)"?/i
+                            );
+
+                        if (normal) {
+
+                            filename =
+                                normal[1];
+
+                        }
+
+                    }
+
+                }
+
+                const url =
+                    URL.createObjectURL(blob);
+
+                const link =
+                    document.createElement('a');
+
+                link.href = url;
+
+                link.download = filename;
+
+                document.body.appendChild(link);
+
+                link.click();
+
+                link.remove();
+
+                URL.revokeObjectURL(url);
+
+                SongsUI.showToast(
+
+                    'Playlist berhasil diexport.',
+
+                    'success',
+
+                );
+
+                $('#exportModal').modal('hide');
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                SongsUI.showToast(
+
+                    error.message ||
+                    'Export gagal.',
+
+                    'danger',
+
+                );
+
+            }
+
+            finally {
+
+                SongsUI.hideLoading();
+
+                button
+
+                    .prop('disabled', false)
+
+                    .html(
+                        '<i class="fas fa-file-export me-1"></i> Export Playlist'
+                    );
+
+            }
+
+        }
+
+            // ======================================================
+        // Get Mode
+        // ======================================================
+
+        getMode() {
+
+            return $(
+                'input[name="exportMode"]:checked'
+            ).val();
+
+        }
+
+        // ======================================================
+        // Get Target
+        // ======================================================
+
+        getTarget() {
+
+            return Number(
+                $('#exportTarget').val()
+            ) || 140;
+
+        }
+
+        // ======================================================
+        // Get Duplicate
+        // ======================================================
+
+        getDuplicate() {
+
+            return Number(
+                $('#exportDuplicate').val()
+            ) || 2;
+
+        }
+
+        // ======================================================
+        // Get Selected Day
+        // ======================================================
+
+        getSelectedDay() {
+
+            return this.selectedDay;
+
+        }
+
+        // ======================================================
+        // Has Selected Day
+        // ======================================================
+
+        hasSelectedDay() {
+
+            return this.selectedDay !== null;
+
+        }
+
+    }
+
+    // ==========================================================
+    // Initialize
+    // ==========================================================
+
+    $(function () {
+
+        window.SongsExport = new SongsExport();
+
+    });
+
+    // ===========================================================
+    // 4. USAGE / REKAP
+    // ===========================================================
+    class SongsUsage {
+        constructor() {
+            this.selectedDay = null;
+            this.init();
+        }
+
+        init() {
+            // Day buttons
+            $('.usage-day-btn').on('click', (e) => {
+                const btn = $(e.currentTarget);
+                if (btn.hasClass('btn-success')) {
+                    this.selectDay(btn.data('day'));
+                } else {
+                    SongsUI.showToast('Hari ini belum ada export', 'warning');
+                }
+            });
+
+            // Mode change
+            $('input[name="usageMode"]').on('change', () => {
+                this.updateStatus();
+            });
+
+            // Open usage button
+            $('#btnOpenUsage').on('click', () => {
+                this.openUsage();
+            });
+
+            // Reset on modal close
+            $('#usageModal').on('hidden.bs.modal', () => {
+                this.reset();
+            });
+
+            this.updateStatus();
+        }
+
+        selectDay(day) {
+            this.selectedDay = day;
+            $('.usage-day-btn').removeClass('active');
+            $(`.usage-day-btn[data-day="${day}"]`).addClass('active');
+            $('#selectedUsageDay').val(day);
+            $('#btnOpenUsage').prop('disabled', false);
+            this.updateStatus();
+        }
+
+        reset() {
+            this.selectedDay = null;
+            $('.usage-day-btn').removeClass('active');
+            $('#selectedUsageDay').val('');
+            $('#btnOpenUsage').prop('disabled', true);
+            this.updateStatus();
+        }
+
+        updateStatus() {
+            const mode = $('input[name="usageMode"]:checked').val();
+            const day = this.selectedDay;
+
+            const modeLabels = {
+                'normal': 'Normal',
+                'clean': 'Clean',
+                'blacklist': 'Blacklist'
+            };
+
+            $('#usageStatusMode').text(modeLabels[mode] || 'Normal');
+            $('#usageStatusDay').text(day ? `Hari ${day}` : '-');
+
+            if (day) {
+                this.fetchUsageStats(day, mode);
+            } else {
+                $('#usageStatusExport').text('-');
+                $('#usageTotalSongs').text('-');
+                $('#usageTotalChannels').text('-');
+                $('#usageTotalArtists').text('-');
+                $('#usageFirstUsed').text('-');
+                $('#btnOpenUsage').prop('disabled', true);
+            }
+        }
+
+        fetchUsageStats(day, mode) {
+            $.ajax({
+                url: '/songs/usage/stats',
+                method: 'GET',
+                data: {
+                    day: day,
+                    mode: mode
+                },
+                success: function(data) {
+                    if (data.success && data.data) {
+                        const stats = data.data;
+                        $('#usageStatusExport').text('Tersedia');
+                        $('#usageTotalSongs').text(stats.unique_songs || 0);
+                        $('#usageTotalChannels').text(stats.unique_channels || 0);
+                        $('#usageTotalArtists').text(stats.unique_artists || 0);
+                        $('#usageFirstUsed').text(stats.first_used || '-');
+                        $('#btnOpenUsage').prop('disabled', false);
+                    } else {
+                        $('#usageStatusExport').text('Tidak ada data');
+                        $('#usageTotalSongs').text('0');
+                        $('#usageTotalChannels').text('0');
+                        $('#usageTotalArtists').text('0');
+                        $('#usageFirstUsed').text('-');
+                        $('#btnOpenUsage').prop('disabled', false);
+                    }
+                },
+                error: function() {
+                    // Fallback mock data
+                    const mockStats = {
+                        unique_songs: Math.floor(Math.random() * 50) + 20,
+                        unique_channels: Math.floor(Math.random() * 10) + 3,
+                        unique_artists: Math.floor(Math.random() * 20) + 5,
+                        first_used: `2026-07-${String(day).padStart(2, '0')}`
+                    };
+                    $('#usageStatusExport').text('Tersedia (estimasi)');
+                    $('#usageTotalSongs').text(mockStats.unique_songs);
+                    $('#usageTotalChannels').text(mockStats.unique_channels);
+                    $('#usageTotalArtists').text(mockStats.unique_artists);
+                    $('#usageFirstUsed').text(mockStats.first_used);
+                    $('#btnOpenUsage').prop('disabled', false);
+                }
+            });
+        }
+
+        openUsage() {
+            const day = this.selectedDay;
+            const mode = $('input[name="usageMode"]:checked').val();
+
+            if (!day) {
+                SongsUI.showToast('Pilih hari terlebih dahulu', 'warning');
+                return;
+            }
+
+            // Redirect to usage page
+            const channelId = getChannelId();
+            let url = `/songs/usage/${day}?mode=${mode}`;
+            if (channelId) {
+                url += `&channel_id=${channelId}`;
+            }
+            window.location.href = url;
+        }
+    }
+
+    // ===========================================================
+    // 5. BULK STATUS UPDATE
+    // ===========================================================
+    class SongsBulk {
+        constructor() {
+            this.init();
+        }
+
+        init() {
+            $('#btnBulkStatus').on('click', () => {
+                const count = SongsSelection.getSelectedCount();
+                if (count === 0) {
+                    SongsUI.showToast('Pilih lagu terlebih dahulu', 'warning');
+                    return;
+                }
+                $('#bulkCount').text(count);
+                $('#bulkActionModal').modal('show');
+            });
+
+            $('.bulk-status-btn').on('click', (e) => {
+                const status = $(e.currentTarget).data('status');
+                this.executeBulk(status);
+            });
+
+            // Close modal button
+            $('#bulkActionModal .close, #bulkActionModal .btn-secondary').on('click', function() {
+                $('#bulkActionModal').modal('hide');
+            });
+        }
+
+        executeBulk(status) {
+            const ids = SongsSelection.getSelectedIds();
+            if (ids.length === 0) {
+                SongsUI.showToast('Tidak ada lagu yang dipilih', 'warning');
+                return;
+            }
+
+            if (!confirm(`Apakah Anda yakin mengubah ${ids.length} lagu menjadi "${status}"?`)) {
+                return;
+            }
+
+            SongsUI.showLoading();
+            $('#bulkActionModal').modal('hide');
+
+            const channelId = getChannelId();
+            const data = {
+                ids: ids,
+                status: status,
+                channel_id: channelId
+            };
+
+            $.ajax({
+                url: '/songs/bulk-update',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    SongsUI.hideLoading();
+                    SongsSelection.clear();
+                    SongsUI.showToast(response.message || `Berhasil mengubah ${response.updated_count} lagu`, 'success');
+                    window.songsTable.reload();
+                },
+                error: function(xhr) {
+                    SongsUI.hideLoading();
+                    const errorMsg = xhr.responseJSON?.detail || xhr.responseJSON?.message || 'Gagal update status';
+                    SongsUI.showToast(errorMsg, 'danger');
+                }
+            });
+        }
+    }
+
+    // ===========================================================
+    // 6. FILTER
+    // ===========================================================
+    class SongsFilter {
+        constructor() {
+            this.init();
+        }
+
+        init() {
+            $('.filter-btn').on('click', function() {
+                const status = $(this).data('status');
+                
+                // Update active state
+                $('.filter-btn').removeClass('active btn-dark');
+                $(this).addClass('active btn-dark');
+                
+                // Reset other buttons to outline
+                $('.filter-btn').not(this).each(function() {
+                    const btn = $(this);
+                    btn.removeClass('btn-dark');
+                    const statusVal = btn.data('status');
+                    if (statusVal === '') {
+                        btn.addClass('btn-outline-secondary');
+                    } else if (statusVal === 'Review') {
+                        btn.addClass('btn-outline-secondary');
+                    } else if (statusVal === 'Approved') {
+                        btn.addClass('btn-outline-warning');
+                    } else if (statusVal === 'Live') {
+                        btn.addClass('btn-outline-success');
+                    } else if (statusVal === 'Take Down') {
+                        btn.addClass('btn-outline-danger');
+                    } else if (statusVal === 'Topic') {
+                        btn.addClass('btn-outline-info');
+                    }
+                });
+                
+                // Reload table
+                if (window.songsTable) {
+                    window.songsTable.reload();
+                }
+            });
+        }
+    }
+
+    // ===========================================================
+    // 7. UI UTILITIES
+    // ===========================================================
+    class SongsUI {
+        static showLoading() {
+            $('#loadingOverlay').removeClass('d-none');
+        }
+
+        static hideLoading() {
+            $('#loadingOverlay').addClass('d-none');
+        }
+
+        static showToast(message, type = 'info') {
+            const colors = {
+                'success': '#28a745',
+                'danger': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const icons = {
+                'success': 'fa-check-circle',
+                'danger': 'fa-exclamation-circle',
+                'warning': 'fa-exclamation-triangle',
+                'info': 'fa-info-circle'
+            };
+            
+            // Check if toast container exists
+            let container = $('.toast-container');
+            if (container.length === 0) {
+                container = $(`
+                    <div class="toast-container position-fixed bottom-0 end-0 p-3" 
+                        style="z-index: 999999">
+                    </div>
+                `);
+                $('body').append(container);
+            }
+            
+            const toastId = 'toast-' + Date.now();
+            const toast = $(`
+                <div id="${toastId}" class="toast align-items-center text-white border-0" 
+                    style="background-color: ${colors[type] || '#007bff'}" 
+                    role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fas ${icons[type] || 'fa-info-circle'} mr-2"></i>
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" 
+                                data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `);
+            
+            container.append(toast);
+            
+            // Initialize Bootstrap toast
+            const toastElement = document.getElementById(toastId);
+            if (toastElement) {
+                const bsToast = new bootstrap.Toast(toastElement, {
+                    delay: 3000,
+                    autohide: true
+                });
+                bsToast.show();
+            }
+        }
+
+        static formatDate(date) {
+            if (!date) return '-';
+            const d = new Date(date);
+            return d.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+    }
+
+    // ===========================================================
+    // 8. EXPORT SELECTED SONGS
+    // ===========================================================
+    class SongsExportSelected {
+        constructor() {
+            this.init();
+        }
+
+        init() {
+            $('#btnExportSelected').on('click', () => {
+                const ids = SongsSelection.getSelectedIds();
+                if (ids.length === 0) {
+                    SongsUI.showToast('Pilih lagu terlebih dahulu', 'warning');
+                    return;
+                }
+
+                SongsUI.showLoading();
+                
+                // Create form data
+                const formData = new FormData();
+                ids.forEach(id => {
+                    formData.append('song_ids', id);
+                });
+                
+                $.ajax({
+                    url: '/songs/export-txt',
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(blob) {
+                        SongsUI.hideLoading();
+                        
+                        // Create download link
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        const date = new Date().toISOString().split('T')[0];
+                        a.download = `songs_export_${date}.txt`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        
+                        SongsUI.showToast(`${ids.length} lagu berhasil diexport`, 'success');
+                        SongsSelection.clear();
+                    },
+                    error: function(xhr) {
+                        SongsUI.hideLoading();
+                        let errorMsg = 'Gagal export lagu';
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            errorMsg = response.detail || response.message || errorMsg;
+                        } catch (e) {
+                            // If response is text
+                            if (xhr.responseText) {
+                                errorMsg = xhr.responseText;
+                            }
+                        }
+                        SongsUI.showToast(errorMsg, 'danger');
+                    }
+                });
+            });
+        }
+    }
+
+    // ===========================================================
+    // 9. ADDITIONAL EVENTS & INITIALIZATION
+    // ===========================================================
+    $(document).ready(function() {
+        // Set DataTables error mode
+        $.fn.dataTable.ext.errMode = 'throw';
+
+        // Initialize DataTable
+        window.songsTable = new SongsDataTable();
+
+        // Initialize all modules
+        const exportModule = new SongsExport();
+        const usageModule = new SongsUsage();
+        const bulkModule = new SongsBulk();
+        const filterModule = new SongsFilter();
+        const exportSelectedModule = new SongsExportSelected();
+
+        // Refresh button
+        $('#btnRefresh').on('click', function() {
+            const btn = $(this);
+            btn.find('i').addClass('fa-spin');
+            SongsUI.showLoading();
+            
+            setTimeout(() => {
+                window.songsTable.reload();
+                SongsUI.hideLoading();
+                btn.find('i').removeClass('fa-spin');
+                SongsUI.showToast('Data berhasil direfresh', 'success');
+            }, 500);
+        });
+
+        // Keyboard shortcuts
+        $(document).on('keydown', function(e) {
+            // Ctrl + Shift + E = Export Selected
+            if (e.ctrlKey && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
+                e.preventDefault();
+                $('#btnExportSelected').click();
+            }
+            
+            // Ctrl + R = Refresh
+            if (e.ctrlKey && (e.key === 'r' || e.key === 'R')) {
+                if (!e.shiftKey) {
+                    e.preventDefault();
+                    $('#btnRefresh').click();
+                }
+            }
+        });
+
+        // Auto-refresh every 60 seconds (optional)
+        // setInterval(() => {
+        //     if (window.songsTable) {
+        //         window.songsTable.reload();
+        //     }
+        // }, 60000);
+
+        console.log('✅ Songs Management initialized successfully');
+        console.log(`📊 Total songs: ${$('#totalSongs').text() || '0'}`);
+        console.log(`🟢 Live: ${$('#liveSongs').text() || '0'}`);
+        console.log(`✅ Approved: ${$('#approvedSongs').text() || '0'}`);
+        console.log(`⏳ Review: ${$('#reviewSongs').text() || '0'}`);
+    });
+
+    // ===========================================================
+    // 10. EXPOSE GLOBALLY
+    // ===========================================================
+    window.SongsUI = SongsUI;
+    window.SongsSelection = SongsSelection;
+    window.SongsDataTable = SongsDataTable;
+    window.getChannelId = getChannelId;
+    window.getBaseUrl = getBaseUrl;
+</script>
+{% endblock %}

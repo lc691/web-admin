@@ -1,139 +1,633 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 
 <head>
-
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Login - DramaStream Admin">
+    <meta name="author" content="DramaStream">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Login • DramaStream Admin</title>
 
-    <!-- Custom fonts for this template-->
-    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <!-- ===================================================== -->
+    <!-- Favicon -->
+    <!-- ===================================================== -->
+    <link rel="icon" href="{{ url_for('static', path='favicon.ico') }}">
 
-    <!-- Custom styles for this template-->
-    <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- ===================================================== -->
+    <!-- Google Fonts (Poppins)                                -->
+    <!-- ===================================================== -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- ===================================================== -->
+    <!-- Material Symbols                                      -->
+    <!-- ===================================================== -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <!-- ===================================================== -->
+    <!-- Tabler UI                                             -->
+    <!-- ===================================================== -->
+    <link rel="stylesheet" href="{{ url_for('static', path='tabler/css/tabler.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='tabler/icons/tabler-icons.min.css') }}">
+
+    <!-- ===================================================== -->
+    <!-- Custom CSS - Login Page                               -->
+    <!-- ===================================================== -->
+    <style>
+        /* ================================
+           LOGIN PAGE SPECIFIC STYLES
+           ================================ */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-attachment: fixed;
+            padding: 20px;
+        }
+
+        /* ================================
+           LOGIN CONTAINER
+           ================================ */
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ================================
+           LOGIN CARD
+           ================================ */
+        .login-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 30px 60px -12px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        /* ================================
+           LOGO / BRAND
+           ================================ */
+        .login-brand {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-brand .logo-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 32px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        .login-brand h1 {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        .login-brand p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* ================================
+           FORM
+           ================================ */
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        .login-form .input-wrapper {
+            position: relative;
+        }
+
+        .login-form .input-wrapper .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+
+        .login-form .input-wrapper input {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .login-form .input-wrapper input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .login-form .input-wrapper input:focus {
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .login-form .input-wrapper input:focus + .input-icon {
+            color: #6366f1;
+        }
+
+        .login-form .input-wrapper input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px rgba(30, 27, 75, 0.9) inset !important;
+            -webkit-text-fill-color: #ffffff !important;
+            border-color: #6366f1;
+        }
+
+        /* ================================
+           REMEMBER ME & FORGOT PASSWORD
+           ================================ */
+        .login-form .form-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .login-form .form-options .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .login-form .form-options .remember-me:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .login-form .form-options .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #6366f1;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .login-form .form-options .forgot-link {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 13px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .login-form .form-options .forgot-link:hover {
+            color: #6366f1;
+        }
+
+        /* ================================
+           SUBMIT BUTTON
+           ================================ */
+        .login-form .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-form .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.35);
+        }
+
+        .login-form .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .login-form .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .login-form .btn-login .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        .login-form .btn-login.loading .btn-text {
+            display: none;
+        }
+
+        .login-form .btn-login.loading .spinner {
+            display: block;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ================================
+           ALERT / NOTIFICATION
+           ================================ */
+        .login-alert {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-alert.error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .login-alert.success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        .login-alert .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* ================================
+           FOOTER
+           ================================ */
+        .login-footer {
+            text-align: center;
+            margin-top: 24px;
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 13px;
+        }
+
+        .login-footer a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .login-footer a:hover {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .login-footer .separator {
+            margin: 0 8px;
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ================================
+           RESPONSIVE
+           ================================ */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 32px 24px;
+                border-radius: 20px;
+            }
+
+            .login-brand .logo-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 28px;
+            }
+
+            .login-brand h1 {
+                font-size: 22px;
+            }
+
+            .login-form .input-wrapper input {
+                padding: 11px 14px 11px 44px;
+                font-size: 14px;
+            }
+
+            .login-form .form-options {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .login-form .btn-login {
+                padding: 13px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .login-card {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+
+    {% block extra_styles %}{% endblock %}
 </head>
 
-<body class="bg-gradient-primary">
+<body>
 
-    <div class="container">
+    <!-- ================================ -->
+    <!-- LOGIN CONTAINER                  -->
+    <!-- ================================ -->
+    <div class="login-container">
 
-        <!-- Outer Row -->
-        <div class="row justify-content-center">
+        <div class="login-card">
 
-            <div class="col-xl-10 col-lg-12 col-md-9">
+            <!-- ================================ -->
+            <!-- BRAND / LOGO                     -->
+            <!-- ================================ -->
+            <div class="login-brand">
+                <div class="logo-icon">
+                    <span class="material-symbols-rounded" style="font-size: 36px;">dashboard</span>
+                </div>
+                <h1>DramaStream Admin</h1>
+                <p>Sign in to your account</p>
+            </div>
 
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <!-- Nested Row within Card Body -->
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                                    </div>
-                                    <form class="user" method="post" action="/login">
-                                        <div class="form-group">
-                                            <input type="text"
-                                                name="username"
-                                                class="form-control form-control-user"
-                                                placeholder="Username"
-                                                required>
+            <!-- ================================ -->
+            <!-- ALERT / ERROR MESSAGE           -->
+            <!-- ================================ -->
+            {% if error %}
+            <div class="login-alert error">
+                <span class="alert-icon material-symbols-rounded">error</span>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
 
-                                        </div>
-                                        <div class="form-group">
-                                            <div style="position: relative;">
-                                                <input type="password"
-                                                    id="password"
-                                                    name="password"
-                                                    class="form-control form-control-user"
-                                                    placeholder="Password"
-                                                    required>
+            {% if message %}
+            <div class="login-alert success">
+                <span class="alert-icon material-symbols-rounded">check_circle</span>
+                <span>{{ message }}</span>
+            </div>
+            {% endif %}
 
-                                                    <span onclick="togglePassword()"
-                                                        style="position:absolute; right:15px; top:50%; transform:translateY(-50%);
-                                                                cursor:pointer;">
-                                                        <i id="eye" class="fas fa-eye"></i>
-                                                    </span>
-                                            </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox"
-                                                    class="custom-control-input"
-                                                    id="remember"
-                                                    name="remember">
-                                                <label class="custom-control-label" for="remember">
-                                                    Remember Me
-                                                </label>
-                                            </div>
-                                        </div>
+            <!-- ================================ -->
+            <!-- LOGIN FORM                      -->
+            <!-- ================================ -->
+            <form class="login-form" method="POST" action="/login" id="loginForm" autocomplete="off">
 
-                                            <button type="submit" class="btn btn-primary btn-user btn-block">
-                                                Login
-                                            </button>
-                                        <hr>
-                                        <a href="index.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
-                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a>
-                                    </form>
-
-                                    <script>
-                                    function togglePassword() {
-                                        const input = document.getElementById("password");
-                                        const eye = document.getElementById("eye");
-
-                                        if (input.type === "password") {
-                                            input.type = "text";
-                                            eye.classList.remove("fa-eye");
-                                            eye.classList.add("fa-eye-slash");
-                                        } else {
-                                            input.type = "password";
-                                            eye.classList.remove("fa-eye-slash");
-                                            eye.classList.add("fa-eye");
-                                        }
-                                    }
-                                    </script>
-
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="register.html">Create an Account!</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Username -->
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            placeholder="Enter your username"
+                            required
+                            autofocus
+                            value="{{ username or '' }}"
+                        >
+                        <span class="input-icon material-symbols-rounded">person</span>
                     </div>
                 </div>
 
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <span class="input-icon material-symbols-rounded">lock</span>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember" value="true" {% if remember %}checked{% endif %}>
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <span class="btn-text">Sign In</span>
+                    <div class="spinner"></div>
+                </button>
+
+            </form>
+
+            <!-- ================================ -->
+            <!-- FOOTER                           -->
+            <!-- ================================ -->
+            <div class="login-footer">
+                <span>&copy; 2026 DramaStream</span>
+                <span class="separator">•</span>
+                <a href="#">Privacy Policy</a>
+                <span class="separator">•</span>
+                <a href="#">Terms of Service</a>
             </div>
 
         </div>
 
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="/static/vendor/jquery/jquery.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ================================ -->
+    <!-- SCRIPTS                         -->
+    <!-- ================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
 
-    <!-- Core plugin JavaScript-->
-    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+            // =====================================================
+            // Loading state on form submit
+            // =====================================================
+            loginForm.addEventListener('submit', function(e) {
+                // Check if form is valid
+                if (!loginForm.checkValidity()) {
+                    return;
+                }
 
-    <!-- Custom scripts for all pages-->
-    <script src="/static/js/sb-admin-2.min.js"></script>
+                // Show loading state
+                loginBtn.classList.add('loading');
+                loginBtn.disabled = true;
+
+                // Optional: Hide any previous alerts
+                const alerts = document.querySelectorAll('.login-alert');
+                alerts.forEach(alert => alert.style.display = 'none');
+            });
+
+            // =====================================================
+            // Auto-dismiss alerts after 5 seconds
+            // =====================================================
+            const alerts = document.querySelectorAll('.login-alert');
+            alerts.forEach(alert => {
+                setTimeout(function() {
+                    alert.style.opacity = '0';
+                    alert.style.transition = 'opacity 0.5s ease';
+                    setTimeout(function() {
+                        alert.style.display = 'none';
+                    }, 500);
+                }, 5000);
+            });
+
+            // =====================================================
+            // Remove loading state if back button is pressed
+            // =====================================================
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    loginBtn.classList.remove('loading');
+                    loginBtn.disabled = false;
+                }
+            });
+
+            // =====================================================
+            // Keyboard shortcut: press Ctrl+Enter to submit
+            // =====================================================
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    const form = document.getElementById('loginForm');
+                    if (form) {
+                        form.submit();
+                    }
+                }
+            });
+
+            // =====================================================
+            // Show password toggle (optional)
+            // =====================================================
+            // Add toggle visibility if needed
+            const passwordInput = document.getElementById('password');
+            
+            // You can add a toggle button here if desired
+            // Example: Create toggle button dynamically
+            const toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'password-toggle';
+            toggleBtn.innerHTML = '<span class="material-symbols-rounded" style="font-size:20px;">visibility_off</span>';
+            toggleBtn.style.cssText = `
+                        position: absolute;
+                        right: 14px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: none;
+                        border: none;
+                        color: rgba(255,255,255,0.3);
+                        cursor: pointer;
+                        padding: 4px;
+                        transition: color 0.3s ease;
+                    `;
+            
+            // Only add if we're not on a touch device (optional)
+            if ('ontouchstart' in window === false) {
+                const wrapper = passwordInput.closest('.input-wrapper');
+                if (wrapper) {
+                    wrapper.style.position = 'relative';
+                    wrapper.appendChild(toggleBtn);
+                    
+                    toggleBtn.addEventListener('click', function() {
+                        const isPassword = passwordInput.type === 'password';
+                        passwordInput.type = isPassword ? 'text' : 'password';
+                        toggleBtn.innerHTML = isPassword 
+                            ? '<span class="material-symbols-rounded" style="font-size:20px;">visibility</span>'
+                            : '<span class="material-symbols-rounded" style="font-size:20px;">visibility_off</span>';
+                        toggleBtn.style.color = isPassword ? '#6366f1' : 'rgba(255,255,255,0.3)';
+                    });
+                }
+            }
+        });
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
 
 </body>
 

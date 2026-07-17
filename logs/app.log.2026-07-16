@@ -1,0 +1,19 @@
+[2026-07-17 07:21:19] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-17 07:27:55] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-17 08:42:21] [INFO] [soundon] Login attempt: admin | IP: 172.71.82.125
+[2026-07-17 08:42:21] [INFO] [soundon] Login success: admin | IP: 172.71.82.125 | Remember: False
+[2026-07-17 08:42:22] [INFO] [soundon] [Dashboard] Loaded Users=6880 Shows=4480
+[2026-07-17 08:42:22] [INFO] [soundon] [REQ DONE] path=/ ms=262.17 status=200
+[2026-07-17 08:42:34] [INFO] [soundon] Admin penugasan list: page=1, limit=20, status=None
+[2026-07-17 08:42:34] [INFO] [soundon] List all penugasan: limit=20, offset=0, status=None, joki_id=None
+[2026-07-17 08:42:34] [INFO] [soundon] [REQ DONE] path=/admin/portal-joki/penugasan/ ms=130.35 status=200
+[2026-07-17 08:42:38] [INFO] [soundon] Admin penugasan create page
+[2026-07-17 08:42:38] [INFO] [soundon] [REQ DONE] path=/admin/portal-joki/penugasan/create ms=107.9 status=200
+[2026-07-17 08:45:57] [INFO] [soundon] Admin laporan page: tahun=None, bulan=None, tanggal=None, view=bulanan
+[2026-07-17 08:45:57] [INFO] [soundon] Get statistik: period=None
+[2026-07-17 08:45:57] [INFO] [soundon] Get laporan bulanan: tahun=2026, bulan=7
+[2026-07-17 08:45:57] [INFO] [soundon] [REQ DONE] path=/admin/portal-joki/laporan/ ms=154.22 status=200
+[2026-07-17 08:47:37] [INFO] [soundon] Admin laporan page: tahun=2026, bulan=7, tanggal=None, view=statistik
+[2026-07-17 08:47:37] [INFO] [soundon] Get statistik: period=None
+[2026-07-17 08:47:37] [INFO] [soundon] Get laporan bulanan: tahun=2026, bulan=7
+[2026-07-17 08:47:37] [INFO] [soundon] [REQ DONE] path=/admin/portal-joki/laporan/ ms=124.91 status=200

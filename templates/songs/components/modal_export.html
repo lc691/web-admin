@@ -1,0 +1,242 @@
+<div class="modal fade" id="modal-export" tabindex="-1" aria-labelledby="modal-export-title" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <!-- ================================================= -->
+            <!-- HEADER -->
+            <!-- ================================================= -->
+            <div class="modal-header modal-export-header text-white border-0">
+                <div>
+                    <h3 class="modal-title text-white fw-bold" id="modal-export-title">
+                        <i class="ti ti-file-export me-2"></i>
+                        Export Playlist
+                    </h3>
+                    <div class="text-white-50">
+                        <i class="ti ti-info-circle me-1"></i>
+                        Ekspor playlist ke format TXT (Multiple export allowed)
+                    </div>
+                </div>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- ================================================= -->
+            <!-- BODY -->
+            <!-- ================================================= -->
+            <div class="modal-body modal-export-body">
+
+                <!-- ============================================= -->
+                <!-- ROW PERTAMA: STATISTIK CEPAT -->
+                <!-- ============================================= -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                            <div class="bg-white p-3 rounded-3 shadow-sm flex-fill modal-export-stat-card">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-primary-lt modal-export-icon-circle">
+                                        <i class="ti ti-music text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Total Songs</div>
+                                        <div class="h3 fw-bold mb-0" id="selected-target">160</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded-3 shadow-sm flex-fill modal-export-stat-card">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-success-lt modal-export-icon-circle">
+                                        <i class="ti ti-check text-success"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Exported</div>
+                                        <div class="h3 fw-bold mb-0" id="selected-exported">80</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded-3 shadow-sm flex-fill modal-export-stat-card">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-danger-lt modal-export-icon-circle">
+                                        <i class="ti ti-clock text-danger"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Remaining</div>
+                                        <div class="h3 fw-bold mb-0" id="selected-remaining">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded-3 shadow-sm flex-fill modal-export-stat-card">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-info-lt modal-export-icon-circle">
+                                        <i class="ti ti-users text-info"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Channels</div>
+                                        <div class="h3 fw-bold mb-0" id="selected-channel-limit">2</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================= -->
+                <!-- ROW KEDUA: SETTINGS + DAYS -->
+                <!-- ============================================= -->
+                <div class="row g-3">
+
+                    <!-- ============================================= -->
+                    <!-- KOLOM KIRI: SETTINGS -->
+                    <!-- ============================================= -->
+                    <div class="col-lg-4">
+
+                        <!-- Alert -->
+                        <div class="alert modal-export-alert d-flex align-items-start gap-3 mb-3 shadow-sm" role="alert">
+                            <i class="ti ti-info-circle fs-1 text-info"></i>
+                            <div>
+                                <strong class="d-block">Multi Export</strong>
+                                <span class="small">Bisa export mode berbeda di hari yang sama</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Settings -->
+                        <div class="card shadow-sm border-0 mb-3 modal-export-glass">
+                            <div class="card-header bg-transparent border-0 pt-3">
+                                <h4 class="card-title">
+                                    <i class="ti ti-settings me-2 text-primary"></i>
+                                    Pengaturan
+                                </h4>
+                            </div>
+                            <div class="card-body pt-0">
+                                <input id="export-day" name="day" type="hidden" value="1">
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="ti ti-flag me-1 text-primary"></i>
+                                        Mode Export
+                                    </label>
+                                    <select id="export-mode" class="form-select modal-export-rounded">
+                                        <option value="normal">📁 Normal</option>
+                                        <option value="clean">🧹 Clean</option>
+                                        <option value="blacklist">🚫 Blacklist</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="ti ti-crosshair me-1 text-primary"></i>
+                                        Target Playlist
+                                    </label>
+                                    <input id="export-target" class="form-control modal-export-rounded" type="number" min="1" step="1" value="160">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="ti ti-copy me-1 text-warning"></i>
+                                        Duplicate
+                                    </label>
+                                    <input id="export-duplicate" class="form-control modal-export-rounded" type="number" min="1" step="1" value="2">
+                                </div>
+
+                                <div class="mb-0">
+                                    <label class="form-label fw-semibold">
+                                        <i class="ti ti-users me-1 text-info"></i>
+                                        Channel Limit
+                                    </label>
+                                    <input id="export-channel-limit" class="form-control modal-export-rounded" type="number" min="1" step="1" value="2">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Selected Day -->
+                        <div class="card shadow-sm border-0 modal-export-glass">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <div class="text-muted small text-uppercase fw-semibold">Hari Terpilih</div>
+                                        <h1 id="selected-day-title" class="display-4 fw-bold modal-export-gradient-text mb-0">Day 1</h1>
+                                    </div>
+                                    <span id="selected-status">
+                                        <span class="badge bg-success rounded-pill px-3 py-2">
+                                            <i class="ti ti-check me-1"></i>
+                                            Ready
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <!-- Progress -->
+                                <div class="progress mb-3" style="height: 8px; background: #e9ecef;">
+                                    <div id="selected-progress" class="progress-bar modal-export-progress" role="progressbar" style="width:50%">
+                                    </div>
+                                </div>
+
+                                <!-- Estimated Output -->
+                                <div class="bg-light p-3 rounded-3">
+                                    <div class="row g-2">
+                                        <div class="col-4 text-center">
+                                            <div class="text-muted small text-uppercase fw-semibold">Unique</div>
+                                            <div id="estimated-unique" class="h4 fw-bold text-success mb-0">80</div>
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <div class="text-muted small text-uppercase fw-semibold">Playlist</div>
+                                            <div id="estimated-playlist" class="h4 fw-bold text-primary mb-0">160</div>
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <div class="text-muted small text-uppercase fw-semibold">Duplicate</div>
+                                            <div id="estimated-duplicate" class="h4 fw-bold text-warning mb-0">×2</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ============================================= -->
+                    <!-- KOLOM KANAN: DAYS -->
+                    <!-- ============================================= -->
+                    <div class="col-lg-8">
+
+                        <!-- Card Days - Ukuran Small -->
+                        <div class="card card-sm shadow-sm border-0 modal-export-glass">
+                            <div class="card-header bg-transparent border-0 py-2 d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">
+                                    <i class="ti ti-calendar me-2 text-primary"></i>
+                                    Hari Export
+                                </h5>
+                                <span class="badge bg-primary text-white px-2 py-1" id="export-total-days">7 Days</span>
+                            </div>
+                            <div class="card-body pt-0 pb-2">
+                                <div id="export-days" class="row g-2 export-days">
+                                    <!-- JavaScript render -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ================================================= -->
+            <!-- FOOTER -->
+            <!-- ================================================= -->
+            <div class="modal-footer modal-export-footer border-0">
+                <div class="me-auto text-muted small">
+                    <i class="ti ti-info-circle me-1 text-info"></i>
+                    Playlist akan diexport dalam format <strong>TXT</strong> (.txt)
+                </div>
+
+                <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">
+                    <i class="ti ti-x me-1"></i>
+                    Batal
+                </button>
+
+                <button id="btn-export-run" type="button" class="btn btn-success rounded-pill px-4 modal-export-btn-success">
+                    <i class="ti ti-file-export me-1"></i>
+                    Export Playlist
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

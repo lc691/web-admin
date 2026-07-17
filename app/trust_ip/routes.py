@@ -3,11 +3,25 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.status import HTTP_302_FOUND
 
 from app.templates import templates
-from db.connect import get_dict_cursor, get_dict_cursor_dep
+from app.core.database import get_dict_cursor, get_dict_cursor_dep
 
 from .services.trusted_ip import invalidate_trusted_ip_cache
 
 router = APIRouter()
+
+
+import ipaddress
+
+
+def validate_ip_or_cidr(ip: str) -> str:
+    try:
+        if "/" in ip:
+            ipaddress.ip_network(ip, strict=False)
+        else:
+            ipaddress.ip_address(ip)
+        return ip
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Format IP tidak valid")
 
 
 # ---------------------------
@@ -52,6 +66,8 @@ def create_trusted_ip(
     description: str | None = Form(None),
     db=Depends(get_dict_cursor_dep),
 ):
+    ip = validate_ip_or_cidr(ip)
+
     cursor, conn = db
 
     cursor.execute(
@@ -65,13 +81,9 @@ def create_trusted_ip(
     )
     conn.commit()
 
-    # 🔥 invalidate cache supaya webhook langsung aware
     invalidate_trusted_ip_cache()
 
-    return RedirectResponse(
-        url="/trusted_ips",
-        status_code=HTTP_302_FOUND,
-    )
+    return RedirectResponse("/trusted_ips", status_code=302)
 
 
 # ---------------------------
@@ -117,14 +129,15 @@ def update_trusted_ip(
         """,
         (description, ip),
     )
+
+    if cursor.rowcount == 0:
+        raise HTTPException(404, "IP tidak ditemukan")
+
     conn.commit()
 
     invalidate_trusted_ip_cache()
 
-    return RedirectResponse(
-        url="/trusted_ips",
-        status_code=HTTP_302_FOUND,
-    )
+    return RedirectResponse("/trusted_ips", status_code=302)
 
 
 # ---------------------------
@@ -141,11 +154,12 @@ def delete_trusted_ip(
         "DELETE FROM trusted_ips WHERE ip = %s",
         (ip,),
     )
+
+    if cursor.rowcount == 0:
+        raise HTTPException(404, "IP tidak ditemukan")
+
     conn.commit()
 
     invalidate_trusted_ip_cache()
 
-    return RedirectResponse(
-        url="/trusted_ips",
-        status_code=HTTP_302_FOUND,
-    )
+    return RedirectResponse("/trusted_ips", status_code=302)

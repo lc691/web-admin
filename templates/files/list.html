@@ -1,316 +1,605 @@
 {% extends "base.html" %}
+
 {% block content %}
 
-<style>
-    .page-wrapper {
-        padding: 25px;
-    }
-
-    .lux-card {
-        background: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        overflow: hidden;
-    }
-
-    .table thead th {
-        background: #f8fafc;
-        font-weight: 600;
-        font-size: 14px;
-        border-bottom: 1px solid #e5e7eb;
-    }
-
-    .table td {
-        vertical-align: middle;
-    }
-
-    .badge-used {
-        background: #fef3c7;
-        color: #92400e;
-        border-radius: 999px;
-        padding: 5px 10px;
-    }
-
-    .badge-single {
-        background: #dcfce7;
-        color: #166534;
-        border-radius: 999px;
-        padding: 5px 10px;
-    }
-
-    .badge-unused {
-        background: #e5e7eb;
-        color: #374151;
-        border-radius: 999px;
-        padding: 5px 10px;
-    }
-
-    .btn-bulk {
-        border-radius: 12px;
-        padding: 6px 14px;
-        font-weight: 500;
-    }
-
-    .btn-sync {
-        background: linear-gradient(135deg, #2563eb, #1e40af);
-        color: white;
-        border-radius: 12px;
-        padding: 6px 16px;
-        border: none;
-    }
-</style>
-
-<div class="page-wrapper">
-
-    <h4 class="fw-semibold mb-4">Daftar File (Master)</h4>
-
-    <!-- BULK ACTION BAR -->
-    <div class="d-flex flex-wrap gap-3 mb-4 align-items-center">
-
-        <form id="bulkDeleteForm" method="post" action="/files/bulk-delete">
-            <input type="hidden" name="ids" id="bulkDeleteIds">
-            <button id="bulkDeleteBtn" type="button" class="btn btn-danger btn-bulk" disabled>
-                🗑 Hapus Terpilih
-            </button>
-        </form>
-
-        <form id="bulkEditForm" method="get" action="/files/bulk-edit">
-            <input type="hidden" name="ids" id="bulkEditIds">
-            <button id="bulkEditBtn" type="button" class="btn btn-warning btn-bulk" disabled>
-                ✏ Edit Terpilih
-            </button>
-        </form>
-
-        <form method="post" action="/files/sync-show-files" class="d-flex align-items-center gap-2">
-
-            <input type="number" name="show_id" class="form-control form-control-sm" placeholder="Show ID"
-                style="width:120px;" required>
-
-            <button type="submit" class="btn-sync">
-                🔄 Sync
-            </button>
-
-        </form>
-
-    </div>
-
-    <!-- TABLE -->
-    <div class="lux-card">
-        <div class="card-body p-4">
-
-            <div class="table-responsive">
-                <table id="filesTable" class="table align-middle table-hover">
-
-                    <thead>
-                        <tr>
-                            <th style="width:40px;">
-                                <input type="checkbox" id="checkAll">
-                            </th>
-                            <th>ID</th>
-                            <th>File Name</th>
-                            <th>Akses</th>
-                            <th>Main Title</th>
-                            <th>channel_username</th>
-                            <th>Dipakai</th>
-                            <th>Show ID</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        {% for f in files %}
-                        <tr>
-
-                            <td class="text-center">
-                                <input type="checkbox" class="row-check" value="{{ f.id }}"
-                                    data-show-count="{{ f.show_count }}">
-                            </td>
-
-                            <td class="fw-semibold">{{ f.id }}</td>
-
-                            <td class="text-break">
-                                {{ f.file_name }}
-                            </td>
-
-                            <td class="text-center">
-                                {% if f.is_paid %}
-                                <span class="text-success">Paid</span>
-                                {% else %}
-                                <span class="text-danger">Free</span>
-                                {% endif %}
-                            </td>
-
-                            <td>{{ f.main_title or "-" }}</td>
-
-                            <td>{{ f.channel_username or "-" }}</td>
-                            <td>
-                                {% if f.show_count > 1 %}
-                                <span class="badge-used">
-                                    {{ f.show_count }} shows
-                                </span>
-                                {% elif f.show_count == 1 %}
-                                <span class="badge-single">
-                                    1 show
-                                </span>
-                                {% else %}
-                                <span class="badge-unused">
-                                    unused
-                                </span>
-                                {% endif %}
-                            </td>
-
-                            <td>{{ f.show_id or "-" }}</td>
-
-                            <td class="text-nowrap">
-
-                                <a href="/files/edit/{{ f.id }}" class="btn btn-warning btn-sm me-1" title="Edit">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
-
-                                <form action="/files/delete/{{ f.id }}" method="post" class="d-inline delete-form"
-                                    data-show-count="{{ f.show_count }}">
-
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-
-                                </form>
-
-                            </td>
-
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td colspan="9" class="text-center text-muted">
-                                Tidak ada data
-                            </td>
-                        </tr>
-                        {% endfor %}
-
-                    </tbody>
-                </table>
-            </div>
-
+<div class="container-fluid px-4">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-file me-2 text-primary"></i>
+                Daftar File (Master)
+            </h1>
+            <small class="text-muted">
+                Kelola file master yang terhubung dengan shows
+            </small>
+        </div>
+        <div>
+            <a href="/files/add" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i>
+                Tambah File
+            </a>
         </div>
     </div>
 
+    <!-- ========================================================== -->
+    <!-- STATISTICS CARDS                                            -->
+    <!-- ========================================================== -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-primary text-uppercase">Total Files</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ stats.total_files|default(files|length) }}</div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-file fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-success text-uppercase">Paid</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ stats.paid_files|default(0) }}</div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-coins fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-danger shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-danger text-uppercase">Free</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ stats.free_files|default(0) }}</div>
+                        </div>
+                        <div class="text-danger">
+                            <i class="fas fa-gift fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card border-left-info shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-info text-uppercase">Used Shows</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ stats.used_shows|default(0) }}</div>
+                        </div>
+                        <div class="text-info">
+                            <i class="fas fa-tv fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- SEARCH BAR                                                 -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body py-3">
+            <form method="get" action="/files" class="d-flex flex-wrap gap-2">
+                <div class="flex-grow-1">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" 
+                               name="search" 
+                               class="form-control border-start-0" 
+                               placeholder="Cari file berdasarkan nama atau title..."
+                               value="{{ search or '' }}">
+                    </div>
+                </div>
+                <div style="width: 150px;">
+                    <select name="file_type" class="form-select">
+                        <option value="">All Types</option>
+                        <option value="video" {% if file_type == 'video' %}selected{% endif %}>Video</option>
+                        <option value="audio" {% if file_type == 'audio' %}selected{% endif %}>Audio</option>
+                        <option value="image" {% if file_type == 'image' %}selected{% endif %}>Image</option>
+                        <option value="document" {% if file_type == 'document' %}selected{% endif %}>Document</option>
+                    </select>
+                </div>
+                <div style="width: 120px;">
+                    <select name="is_paid" class="form-select">
+                        <option value="">All</option>
+                        <option value="true" {% if is_paid == true %}selected{% endif %}>Paid</option>
+                        <option value="false" {% if is_paid == false %}selected{% endif %}>Free</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search me-1"></i>
+                    Cari
+                </button>
+                {% if search or file_type or is_paid is not none %}
+                <a href="/files" class="btn btn-outline-secondary">
+                    <i class="fas fa-times"></i>
+                </a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- BULK ACTION BAR                                            -->
+    <!-- ========================================================== -->
+    <div class="d-flex flex-wrap gap-2 mb-4 align-items-center">
+        <form id="bulkDeleteForm" method="post" action="/files/bulk-delete" class="d-inline">
+            <input type="hidden" name="ids" id="bulkDeleteIds">
+            <button id="bulkDeleteBtn" type="button" class="btn btn-danger btn-sm" disabled>
+                <i class="fas fa-trash me-1"></i>
+                Hapus Terpilih
+            </button>
+        </form>
+
+        <form id="bulkEditForm" method="get" action="/files/bulk-edit" class="d-inline">
+            <input type="hidden" name="ids" id="bulkEditIds">
+            <button id="bulkEditBtn" type="button" class="btn btn-warning btn-sm" disabled>
+                <i class="fas fa-edit me-1"></i>
+                Edit Terpilih
+            </button>
+        </form>
+
+        <form method="post" action="/files/sync-show-files" class="d-flex gap-2 align-items-center">
+            <input type="number" name="show_id" class="form-control form-control-sm" placeholder="Show ID" style="width:120px;" required>
+            <button type="submit" class="btn btn-info btn-sm">
+                <i class="fas fa-sync-alt me-1"></i>
+                Sync
+            </button>
+        </form>
+
+        <span class="text-muted small ms-auto" id="selectedInfo">
+            <span id="selectedCount">0</span> file dipilih
+        </span>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- TABLE                                                      -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-list me-2"></i>
+                    Daftar File
+                    {% if search %}
+                    <span class="badge bg-primary ms-2">Hasil pencarian: "{{ search }}"</span>
+                    {% endif %}
+                </h6>
+                <span class="text-muted small">
+                    Total: <strong>{{ total|default(files|length) }}</strong> file
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body table-responsive">
+            {% if files %}
+            <table class="table table-hover table-striped align-middle" id="filesTable">
+                <thead class="table-light">
+                    <tr>
+                        <th width="40">
+                            <input type="checkbox" id="checkAll" class="form-check-input">
+                        </th>
+                        <th width="60">ID</th>
+                        <th>File Name</th>
+                        <th width="70">Akses</th>
+                        <th>Main Title</th>
+                        <th>Channel</th>
+                        <th width="100">Dipakai</th>
+                        <th width="80">Show ID</th>
+                        <th width="120" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in files %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="form-check-input row-check" value="{{ f.id }}" data-show-count="{{ f.show_count|default(0) }}">
+                        </td>
+                        <td class="fw-bold">{{ f.id }}</td>
+                        <td>
+                            <div class="text-truncate" style="max-width: 200px;" title="{{ f.file_name }}">
+                                {{ f.file_name }}
+                            </div>
+                            {% if f.file_type %}
+                            <span class="badge bg-secondary text-white">{{ f.file_type }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if f.is_paid %}
+                            <span class="badge bg-success text-white">
+                                <i class="fas fa-coins me-1"></i>Paid
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">
+                                <i class="fas fa-gift me-1"></i>Free
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="text-truncate" style="max-width: 150px;" title="{{ f.main_title or '-' }}">
+                                {{ f.main_title or '-' }}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="text-truncate" style="max-width: 120px; display: inline-block;" title="{{ f.channel_username or '-' }}">
+                                {{ f.channel_username or '-' }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if f.show_count > 1 %}
+                            <span class="badge bg-warning text-dark">
+                                <i class="fas fa-tv me-1"></i>{{ f.show_count }} shows
+                            </span>
+                            {% elif f.show_count == 1 %}
+                            <span class="badge bg-success text-white">
+                                <i class="fas fa-check me-1"></i>1 show
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">
+                                <i class="fas fa-times me-1"></i>unused
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if f.show_id %}
+                            <a href="/shows/edit/{{ f.show_id }}" class="text-decoration-none">
+                                {{ f.show_id }}
+                            </a>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                <a href="/files/edit/{{ f.id }}" class="btn btn-outline-warning btn-sm" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <form action="/files/delete/{{ f.id }}" method="post" class="d-inline delete-form" data-show-count="{{ f.show_count|default(0) }}">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <!-- EMPTY STATE -->
+            <div class="text-center py-5">
+                <i class="fas fa-inbox fa-4x text-muted d-block mb-3"></i>
+                <h5 class="text-muted">Belum ada file</h5>
+                <p class="text-muted mb-3">Mulai dengan menambahkan file pertama Anda</p>
+                <a href="/files/add" class="btn btn-success">
+                    <i class="fas fa-plus me-1"></i>
+                    Tambah File Pertama
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- FOOTER -->
+        {% if files %}
+        <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <span class="text-muted small">
+                    <strong>{{ total|default(files|length) }}</strong> file ditemukan
+                    {% if search %}
+                    <span class="text-muted small ms-2">
+                        (filter: "{{ search }}")
+                        <a href="/files" class="text-decoration-none ms-1">✕</a>
+                    </span>
+                    {% endif %}
+                </span>
+                <button class="btn btn-outline-secondary btn-sm" id="btnRefresh">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    Refresh
+                </button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- PAGINATION                                                 -->
+    <!-- ========================================================== -->
+    {% if files and total_pages and total_pages > 1 %}
+    <div class="d-flex justify-content-between align-items-center flex-wrap mt-3">
+        <div class="text-muted small">
+            Halaman {{ page }} dari {{ total_pages }}
+        </div>
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <!-- Previous -->
+                <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ page - 1 }}&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}{% if file_type %}&file_type={{ file_type }}{% endif %}{% if is_paid is not none %}&is_paid={{ is_paid }}{% endif %}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                
+                <!-- First -->
+                {% if page > 3 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}{% if file_type %}&file_type={{ file_type }}{% endif %}{% if is_paid is not none %}&is_paid={{ is_paid }}{% endif %}">1</a>
+                </li>
+                {% if page > 4 %}
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+                {% endif %}
+                {% endif %}
+                
+                <!-- Pages -->
+                {% set start = [1, page - 2]|max %}
+                {% set end = [total_pages, page + 2]|min %}
+                
+                {% for p in range(start, end + 1) %}
+                    {% if p == page %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ p }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ p }}&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}{% if file_type %}&file_type={{ file_type }}{% endif %}{% if is_paid is not none %}&is_paid={{ is_paid }}{% endif %}">
+                            {{ p }}
+                        </a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                
+                <!-- Last -->
+                {% if page < total_pages - 2 %}
+                    {% if page < total_pages - 3 %}
+                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ total_pages }}&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}{% if file_type %}&file_type={{ file_type }}{% endif %}{% if is_paid is not none %}&is_paid={{ is_paid }}{% endif %}">
+                            {{ total_pages }}
+                        </a>
+                    </li>
+                {% endif %}
+                
+                <!-- Next -->
+                <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                    <a class="page-link" href="?page={{ page + 1 }}&per_page={{ per_page|default(20) }}{% if search %}&search={{ search }}{% endif %}{% if file_type %}&file_type={{ file_type }}{% endif %}{% if is_paid is not none %}&is_paid={{ is_paid }}{% endif %}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Per Page Selector -->
+        <div>
+            <select class="form-select form-select-sm" id="perPageSelect" style="width: 80px;">
+                <option value="10" {% if per_page|default(20) == 10 %}selected{% endif %}>10</option>
+                <option value="20" {% if per_page|default(20) == 20 %}selected{% endif %}>20</option>
+                <option value="50" {% if per_page|default(20) == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if per_page|default(20) == 100 %}selected{% endif %}>100</option>
+            </select>
+        </div>
+    </div>
+    {% endif %}
+
 </div>
+
+<!-- ========================================================== -->
+<!-- STYLES                                                     -->
+<!-- ========================================================== -->
+<style>
+    .border-left-primary {
+        border-left: 4px solid #6366f1;
+    }
+    .border-left-success {
+        border-left: 4px solid #22c55e;
+    }
+    .border-left-danger {
+        border-left: 4px solid #ef4444;
+    }
+    .border-left-info {
+        border-left: 4px solid #3b82f6;
+    }
+    .opacity-50 {
+        opacity: 0.5;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .table tr:hover {
+        cursor: default;
+    }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 1rem; }
+    .text-truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+
 {% endblock %}
 
 {% block scripts %}
-{{ super() }}
-
 <script>
-    $(document).ready(function () {
-
-        const table = $('#filesTable').DataTable({
-            stateSave: true,
-            order: [[1, 'desc']]
-        });
-
-        // ================= BULK BUTTON TOGGLE =================
-        function toggleBulk() {
-            const count = $('.row-check:checked').length;
-            $('#bulkDeleteBtn').prop('disabled', count === 0);
-            $('#bulkEditBtn').prop('disabled', count === 0);
+$(document).ready(function () {
+    
+    // ==========================================================
+    // DATATABLE - INFO DISABLED (menghindari duplikasi)
+    // ==========================================================
+    var table = $('#filesTable').DataTable({
+        "language": {
+            "search": "Cari:",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "paginate": {
+                "first": "Awal",
+                "last": "Akhir",
+                "next": "Berikutnya",
+                "previous": "Sebelumnya"
+            },
+            "zeroRecords": "Tidak ada data ditemukan"
+        },
+        "info": false,  // ✅ MATIKAN info bawaan DataTable
+        "pageLength": {{ per_page|default(20) }},
+        "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "Semua"]],
+        "order": [[1, "desc"]],
+        "columnDefs": [
+            { "orderable": false, "targets": [0, 8] }
+        ],
+        "drawCallback": function() {
+            toggleBulk();
         }
-
-        $('#checkAll').on('change', function () {
-            $('.row-check').prop('checked', this.checked);
-            toggleBulk();
-        });
-
-        $(document).on('change', '.row-check', function () {
-            $('#checkAll').prop(
-                'checked',
-                $('.row-check').length === $('.row-check:checked').length
-            );
-            toggleBulk();
-        });
-
-        // ================= BULK EDIT =================
-        $('#bulkEditBtn').on('click', function () {
-            const ids = $('.row-check:checked')
-                .map(function () { return this.value; })
-                .get();
-
-            if (!ids.length) return;
-
-            $('#bulkEditIds').val(ids.join(','));
-            $('#bulkEditForm').submit();
-        });
-
-        // ================= BULK DELETE (SweetAlert) =================
-        $('#bulkDeleteBtn').on('click', function () {
-
-            const checked = $('.row-check:checked');
-            if (!checked.length) return;
-
-            let totalShows = 0;
-            let ids = [];
-
-            checked.each(function () {
-                ids.push(this.value);
-                totalShows += parseInt($(this).data('show-count'), 10);
-            });
-
-            let text = "File akan dihapus secara global.";
-
-            if (totalShows > 0) {
-                text =
-                    `⚠️ ${checked.length} file dipakai oleh ${totalShows} show.\n\n` +
-                    `Menghapus file ini akan menghapusnya dari SEMUA show.\n\n` +
-                    `Yakin ingin melanjutkan?`;
-            }
-
-            Swal.fire({
-                title: 'Hapus File?',
-                text: text,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Hapus',
-                cancelButtonText: 'Batal',
-                confirmButtonColor: '#dc2626'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#bulkDeleteIds').val(ids.join(','));
-                    $('#bulkDeleteForm').submit();
-                }
-            });
-
-        });
-
-        // ================= SINGLE DELETE =================
-        $('.delete-form').on('submit', function (e) {
-            e.preventDefault();
-
-            const showCount =
-                parseInt($(this).data('show-count'), 10);
-
-            let text = "File akan dihapus.";
-
-            if (showCount > 0) {
-                text =
-                    `File ini dipakai oleh ${showCount} show.\n` +
-                    `Menghapus akan berdampak global.\n\n` +
-                    `Yakin?`;
-            }
-
-            Swal.fire({
-                title: 'Hapus File?',
-                text: text,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#dc2626'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.submit();
-                }
-            });
-
-        });
-
     });
+    
+    // ==========================================================
+    // BULK BUTTON TOGGLE
+    // ==========================================================
+    function toggleBulk() {
+        const count = $('.row-check:checked').length;
+        $('#bulkDeleteBtn').prop('disabled', count === 0);
+        $('#bulkEditBtn').prop('disabled', count === 0);
+        $('#selectedCount').text(count);
+    }
+    
+    $('#checkAll').on('change', function() {
+        $('.row-check').prop('checked', this.checked);
+        toggleBulk();
+    });
+    
+    $(document).on('change', '.row-check', function() {
+        $('#checkAll').prop(
+            'checked',
+            $('.row-check').length === $('.row-check:checked').length
+        );
+        toggleBulk();
+    });
+    
+    // ==========================================================
+    // BULK EDIT
+    // ==========================================================
+    $('#bulkEditBtn').on('click', function() {
+        const ids = $('.row-check:checked').map(function() {
+            return this.value;
+        }).get();
+        
+        if (!ids.length) return;
+        
+        $('#bulkEditIds').val(ids.join(','));
+        $('#bulkEditForm').submit();
+    });
+    
+    // ==========================================================
+    // BULK DELETE
+    // ==========================================================
+    $('#bulkDeleteBtn').on('click', function() {
+        const checked = $('.row-check:checked');
+        if (!checked.length) return;
+        
+        let totalShows = 0;
+        let ids = [];
+        
+        checked.each(function() {
+            ids.push(this.value);
+            totalShows += parseInt($(this).data('show-count'), 10);
+        });
+        
+        let text = "File akan dihapus secara global.";
+        
+        if (totalShows > 0) {
+            text = `${checked.length} file dipakai oleh ${totalShows} show. Menghapus file ini akan menghapusnya dari SEMUA show. Yakin ingin melanjutkan?`;
+        }
+        
+        Swal.fire({
+            title: 'Hapus File?',
+            text: text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#dc2626'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#bulkDeleteIds').val(ids.join(','));
+                $('#bulkDeleteForm').submit();
+            }
+        });
+    });
+    
+    // ==========================================================
+    // SINGLE DELETE
+    // ==========================================================
+    $('.delete-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        const showCount = parseInt($(this).data('show-count'), 10);
+        let text = "File akan dihapus.";
+        
+        if (showCount > 0) {
+            text = `File ini dipakai oleh ${showCount} show. Menghapus akan berdampak global. Yakin?`;
+        }
+        
+        Swal.fire({
+            title: 'Hapus File?',
+            text: text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        });
+    });
+    
+    // ==========================================================
+    // REFRESH
+    // ==========================================================
+    $('#btnRefresh').on('click', function() {
+        table.ajax.reload();
+        $(this).html('<i class="fas fa-spinner fa-spin me-1"></i>');
+        setTimeout(() => {
+            $(this).html('<i class="fas fa-sync-alt me-1"></i> Refresh');
+        }, 800);
+    });
+    
+    // ==========================================================
+    // PER PAGE SELECTOR - REDIRECT KE BACKEND
+    // ==========================================================
+    $('#perPageSelect').on('change', function() {
+        const perPage = $(this).val();
+        const search = '{{ search or "" }}';
+        const fileType = '{{ file_type or "" }}';
+        const isPaid = '{{ is_paid|string or "" }}';
+        
+        let url = `?page=1&per_page=${perPage}`;
+        if (search) url += `&search=${encodeURIComponent(search)}`;
+        if (fileType) url += `&file_type=${fileType}`;
+        if (isPaid) url += `&is_paid=${isPaid}`;
+        window.location.href = url;
+    });
+    
+});
 </script>
 {% endblock %}

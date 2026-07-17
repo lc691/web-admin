@@ -1,4 +1,4 @@
-from db.connect import get_dict_cursor
+from app.core.database import get_dict_cursor
 
 
 def get_all_commissions(limit: int = 500):

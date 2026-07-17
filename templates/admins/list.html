@@ -1,60 +1,281 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1 class="h3 mb-2 text-gray-800">{{ title }}</h1>
 
-<a href="/admins/add" class="btn btn-primary mb-3">+ Tambah Admin</a>
-
-<div class="card shadow mb-4">
-  <div class="card-body">
-    <div class="table-responsive">
-      <p>Jumlah admin ditemukan: {{ admins|length }}</p>
-      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-        <thead>
-          <tr>
-            <th>User ID</th>
-            <th>Nama</th>
-            <th>Username</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for admin in admins %}
-            <tr>
-              <td>{{ admin.user_id }}</td>
-              <td>{{ admin.first_name }}</td>
-              <td>{{ admin.username }}</td>
-              <td>
-                <a href="/admins/edit/{{ admin.user_id }}" class="btn btn-sm btn-warning">Edit</a>
-                <form method="post" action="/admins/delete/{{ admin.user_id }}" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus admin ini?');">
-                  <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                </form>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+<div class="container-fluid px-4">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-user-shield me-2 text-primary"></i>
+                Admin Management
+            </h1>
+            <small class="text-muted">
+                Kelola administrator sistem
+            </small>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/admins/add" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i>
+                Tambah Admin
+            </a>
+            <a href="/admins/retention" class="btn btn-info">
+                <i class="fas fa-chart-line me-1"></i>
+                Retention
+            </a>
+        </div>
     </div>
-  </div>
+
+    <!-- ========================================================== -->
+    <!-- STATISTICS CARDS                                            -->
+    <!-- ========================================================== -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-primary text-uppercase">Total Admin</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ admins|length }}</div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-users fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-success text-uppercase">Active</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ admins|selectattr('is_active', 'equalto', true)|list|length if admins else 0 }}
+                            </div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-left-info shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-info text-uppercase">Retention</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                <a href="/admins/retention" class="text-decoration-none">
+                                    <i class="fas fa-arrow-right me-1"></i> Lihat
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-info">
+                            <i class="fas fa-chart-line fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- TABLE                                                      -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-list me-2"></i>
+                    Daftar Admin
+                </h6>
+                <span class="text-muted small">
+                    Total: <strong>{{ admins|length }}</strong> admin
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body table-responsive">
+            {% if admins %}
+            <table class="table table-hover table-striped align-middle" id="adminsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th width="80">User ID</th>
+                        <th>First Name</th>
+                        <th>Username</th>
+                        <th width="120" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admin in admins %}
+                    <tr>
+                        <td class="fw-bold">{{ admin.user_id }}</td>
+                        <td>{{ admin.first_name }}</td>
+                        <td>
+                            <span class="badge bg-secondary text-info">
+                                <i class="fas fa-at me-1"></i>
+                                {{ admin.username }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                <a href="/admins/edit/{{ admin.user_id }}" 
+                                   class="btn btn-outline-warning btn-sm" 
+                                   title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <form method="post" 
+                                      action="/admins/delete/{{ admin.user_id }}" 
+                                      class="d-inline delete-form">
+                                    <button type="submit" 
+                                            class="btn btn-outline-danger btn-sm" 
+                                            title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <!-- EMPTY STATE -->
+            <div class="text-center py-5">
+                <i class="fas fa-user-shield fa-4x text-muted d-block mb-3"></i>
+                <h5 class="text-muted">Belum ada admin</h5>
+                <p class="text-muted mb-3">Tambahkan admin pertama Anda</p>
+                <a href="/admins/add" class="btn btn-success">
+                    <i class="fas fa-plus me-1"></i>
+                    Tambah Admin Pertama
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- FOOTER -->
+        {% if admins %}
+        <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <span class="text-muted small">
+                    Menampilkan <strong>{{ admins|length }}</strong> admin
+                </span>
+                <div>
+                    <button class="btn btn-outline-secondary btn-sm" id="btnRefresh">
+                        <i class="fas fa-sync-alt me-1"></i>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
 </div>
+
+<!-- ========================================================== -->
+<!-- STYLES                                                     -->
+<!-- ========================================================== -->
+<style>
+    .border-left-primary {
+        border-left: 4px solid #6366f1;
+    }
+    .border-left-success {
+        border-left: 4px solid #22c55e;
+    }
+    .border-left-info {
+        border-left: 4px solid #3b82f6;
+    }
+    .opacity-50 {
+        opacity: 0.5;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .table tr:hover {
+        cursor: default;
+    }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 1rem; }
+</style>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
-  $(document).ready(function () {
-    $('#dataTable').DataTable({
-      "language": {
-        "search": "Cari:",
-        "lengthMenu": "Tampilkan _MENU_ entri",
-        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-        "paginate": {
-          "first": "Awal",
-          "last": "Akhir",
-          "next": "Berikutnya",
-          "previous": "Sebelumnya"
+$(document).ready(function () {
+    
+    // ==========================================================
+    // DATATABLE
+    // ==========================================================
+    var table = $('#adminsTable').DataTable({
+        "language": {
+            "search": "Cari:",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "infoEmpty": "Tidak ada data",
+            "infoFiltered": "(difilter dari _MAX_ total entri)",
+            "paginate": {
+                "first": "Awal",
+                "last": "Akhir",
+                "next": "Berikutnya",
+                "previous": "Sebelumnya"
+            },
+            "zeroRecords": "Tidak ada data ditemukan"
         },
-        "zeroRecords": "Tidak ada data ditemukan",
-      }
+        "pageLength": 10,
+        "lengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "Semua"]],
+        "order": [[0, "desc"]],
+        "columnDefs": [
+            { "orderable": false, "targets": [3] }  // Aksi column
+        ]
     });
-  });
+    
+    // ==========================================================
+    // REFRESH
+    // ==========================================================
+    $('#btnRefresh').on('click', function() {
+        table.ajax.reload();
+        $(this).html('<i class="fas fa-spinner fa-spin me-1"></i>');
+        setTimeout(() => {
+            $(this).html('<i class="fas fa-sync-alt me-1"></i> Refresh');
+        }, 800);
+    });
+    
+    // ==========================================================
+    // DELETE CONFIRMATION WITH SWEETALERT
+    // ==========================================================
+    $('.delete-form').on('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+        const name = $(this).closest('tr').find('td:eq(1)').text().trim();
+        
+        Swal.fire({
+            title: 'Hapus Admin?',
+            html: `Anda akan menghapus admin <strong>${name}</strong>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+    
+});
 </script>
 {% endblock %}

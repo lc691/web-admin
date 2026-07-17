@@ -1,0 +1,416 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4">
+
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-users me-2 text-primary"></i>
+                Master Joki
+            </h1>
+            <small class="text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                Kelola data master joki yang digunakan pada Catatan Harian.
+            </small>
+        </div>
+        <a href="/joki/add" class="btn btn-success">
+            <i class="fas fa-plus me-1"></i>
+            Tambah Joki
+        </a>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- STATISTICS CARDS                                            -->
+    <!-- ========================================================== -->
+    <div class="row g-3 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-primary text-uppercase">Total Joki</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ stats.total if stats else 0 }}
+                            </div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-users fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-success text-uppercase">Aktif</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ stats.aktif if stats else 0 }}
+                            </div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-left-danger shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-danger text-uppercase">Nonaktif</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ stats.nonaktif if stats else 0 }}
+                            </div>
+                        </div>
+                        <div class="text-danger">
+                            <i class="fas fa-times-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-left-info shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-info text-uppercase">Digunakan di Catatan</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ stats.digunakan if stats else 0 }}
+                            </div>
+                            <small class="text-muted">
+                                dari {{ stats.total if stats else 0 }} joki
+                            </small>
+                        </div>
+                        <div class="text-info">
+                            <i class="fas fa-clipboard-list fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- ALERT MESSAGES                                             -->
+    <!-- ========================================================== -->
+    {% if message %}
+    <div class="alert alert-{{ message_type }} alert-dismissible fade show" role="alert">
+        <i class="fas fa-{% if message_type == 'success' %}check-circle{% elif message_type == 'error' %}exclamation-circle{% else %}info-circle{% endif %} me-2"></i>
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endif %}
+
+    <!-- ========================================================== -->
+    <!-- SEARCH & TABLE                                             -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <!-- Card Header - Search -->
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-list me-2"></i>
+                    Daftar Joki
+                </h6>
+                <span class="text-muted small">
+                    Total: <strong>{{ data|length }}</strong> joki
+                    {% if keyword %} untuk pencarian "<strong>{{ keyword }}</strong>" {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="card-body py-3 border-bottom">
+            <form method="get" class="d-flex gap-2">
+                <div class="flex-grow-1">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input
+                            type="text"
+                            name="keyword"
+                            value="{{ keyword }}"
+                            class="form-control border-start-0"
+                            placeholder="Cari kode atau nama joki..."
+                        >
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search me-1"></i>
+                            Cari
+                        </button>
+                        {% if keyword %}
+                        <a href="/joki" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Table -->
+        <div class="card-body table-responsive">
+            {% if data %}
+            <table class="table table-hover table-striped align-middle" id="dataTable">
+                <thead class="table-light">
+                    <tr>
+                        <th width="50" class="text-center">No</th>
+                        <th width="100">Kode</th>
+                        <th>Nama Joki</th>
+                        <th class="text-end" width="150">Harga / Judul</th>
+                        <th width="180">No. HP</th>
+                        <th width="100" class="text-center">Status</th>
+                        <th width="200" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr>
+                        <td class="text-center">{{ loop.index }}</td>
+                        <td>
+                            <span class="badge bg-primary text-white">
+                                {{ item.kode }}
+                            </span>
+                        </td>
+                        <td>
+                            <strong>{{ item.nama }}</strong>
+                            {% if item.keterangan %}
+                            <br>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                {{ item.keterangan }}
+                            </small>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <strong class="text-success">
+                                Rp {{ "{:,.0f}".format(item.harga_per_judul or 0) }}
+                            </strong>
+                        </td>
+                        <td>
+                            {% if item.no_hp %}
+                            <i class="fas fa-phone text-muted me-1"></i>
+                            {{ item.no_hp }}
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if item.aktif %}
+                            <span class="badge bg-success text-white">
+                                <i class="fas fa-check-circle me-1"></i>
+                                Aktif
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">
+                                <i class="fas fa-times-circle me-1"></i>
+                                Nonaktif
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                <a
+                                    href="/joki/edit/{{ item.id }}"
+                                    class="btn btn-outline-warning btn-sm"
+                                    title="Edit data joki"
+                                >
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form
+                                    action="/joki/toggle/{{ item.id }}"
+                                    method="post"
+                                    class="d-inline toggle-form"
+                                >
+                                    <button
+                                        type="submit"
+                                        class="btn {% if item.aktif %}btn-outline-secondary{% else %}btn-outline-success{% endif %} btn-sm"
+                                        title="Toggle status aktif/nonaktif"
+                                    >
+                                        <i class="fas fa-power-off"></i>
+                                    </button>
+                                </form>
+                                <form
+                                    action="/joki/delete/{{ item.id }}"
+                                    method="post"
+                                    class="d-inline delete-form"
+                                >
+                                    <button
+                                        type="submit"
+                                        class="btn btn-outline-danger btn-sm"
+                                        title="Hapus data joki"
+                                    >
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Footer with Pagination Info -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap mt-3">
+                <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Menampilkan <strong>{{ data|length }}</strong> data joki
+                    {% if keyword %} untuk pencarian "<strong>{{ keyword }}</strong>" {% endif %}
+                </small>
+                <small class="text-muted">
+                    <i class="fas fa-clock me-1"></i>
+                    Terakhir diupdate:
+                    <strong>
+                        {% if data and data[0].updated_at %}
+                            {{ data[0].updated_at.strftime('%d/%m/%Y %H:%M:%S') if data[0].updated_at else '-' }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </strong>
+                </small>
+            </div>
+
+            {% else %}
+            <!-- EMPTY STATE -->
+            <div class="text-center py-5">
+                <i class="fas fa-users fa-4x text-muted d-block mb-3"></i>
+                <h5 class="text-muted">Belum ada data joki</h5>
+                <p class="text-muted mb-3">
+                    {% if keyword %}
+                    Tidak ada hasil untuk pencarian "{{ keyword }}"
+                    {% else %}
+                    Klik tombol "Tambah Joki" untuk menambahkan data
+                    {% endif %}
+                </p>
+                {% if keyword %}
+                <a href="/joki" class="btn btn-primary btn-sm">
+                    <i class="fas fa-undo me-1"></i>
+                    Tampilkan Semua
+                </a>
+                {% else %}
+                <a href="/joki/add" class="btn btn-success btn-sm">
+                    <i class="fas fa-plus me-1"></i>
+                    Tambah Joki Pertama
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // ==========================================================
+    // AUTO-HIDE ALERT
+    // ==========================================================
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.classList.remove('show');
+        }, 5000);
+    });
+
+    // ==========================================================
+    // DELETE CONFIRMATION WITH SWEETALERT
+    // ==========================================================
+    document.querySelectorAll('.delete-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const row = this.closest('tr');
+            const nama = row?.querySelector('td:nth-child(3) strong')?.textContent || 'joki ini';
+            
+            Swal.fire({
+                title: 'Hapus Joki?',
+                text: `Apakah Anda yakin ingin menghapus joki "${nama}"?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    });
+
+    // ==========================================================
+    // TOGGLE CONFIRMATION WITH SWEETALERT
+    // ==========================================================
+    document.querySelectorAll('.toggle-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const row = this.closest('tr');
+            const nama = row?.querySelector('td:nth-child(3) strong')?.textContent || 'joki ini';
+            const currentStatus = row?.querySelector('td:nth-child(6) .badge')?.textContent?.trim() || 'Aktif';
+            const newStatus = currentStatus === 'Aktif' ? 'Nonaktif' : 'Aktif';
+            
+            Swal.fire({
+                title: 'Toggle Status?',
+                text: `Ubah status joki "${nama}" menjadi "${newStatus}"?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#6366f1',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Ubah!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    });
+
+});
+</script>
+
+<style>
+    .border-left-primary {
+        border-left: 4px solid #6366f1;
+    }
+    .border-left-success {
+        border-left: 4px solid #22c55e;
+    }
+    .border-left-danger {
+        border-left: 4px solid #ef4444;
+    }
+    .border-left-info {
+        border-left: 4px solid #3b82f6;
+    }
+    .opacity-50 {
+        opacity: 0.5;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 1rem; }
+</style>
+
+{% endblock %}

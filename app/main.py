@@ -1,87 +1,113 @@
+"""
+SoundON Admin Dashboard - Aplikasi Utama
+"""
+
+from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from starlette.middleware.sessions import SessionMiddleware
+from fastapi.exceptions import RequestValidationError
 
-from app.admins.routes import router as admins_router
-from app.affiliate.router_payout import router as affiliate_router_payout
-from app.affiliate.routes import router as affiliate_router
-from app.base.routes import get_dashboard_stats
-from app.channel.channel_posting.routes import router as channel_router
-from app.channel.channel_required.routes import router as required_channel_routes
-from app.core.middleware import auth_middleware_factory
-from app.donation_logs.routes import router as donation_logs_router
-from app.platform.routes import router as platform_router
-from app.referrals.routes import router as referral_router
-
-# from app.files.routes import router as files_router
-from app.routers.auth import router as auth_router
-from app.routers.files import router as files_router
-from app.routers.show_files import router as shows_files_router
-
-# SoundON
-from app.routes import artists, channels, songs
-from app.shows.routes import router as shows_router
-
-# Template Engine
-from app.templates import templates
-from app.trust_ip.routes import router as trust_ip_router
-
-# Routers
-from app.users.routes import router as user_router
-from app.vip_logs.routes import router as vip_logs_router
-from app.vip_packages.routes import router as vip_pakages_router
-from app.vip_users.routes import router as vip_user_router
-from app.vip_vouchers.routes import router as vip_voucheres_router
-
-app = FastAPI()
-
-# 1️⃣ Session middleware dulu
-app.add_middleware(
-    SessionMiddleware,
-    secret_key="super-secret-key",
+from app.core.config import settings
+from app.core.middleware import setup_middleware
+from app.core.routes import register_routers
+from app.core.exceptions import (
+    validation_exception_handler,
+    business_exception_handler,
+    general_exception_handler,
+    BusinessError,
 )
-
-# 2️⃣ Baru auth middleware
-app.middleware("http")(auth_middleware_factory())
-
-# Include routers
-app.include_router(auth_router)
-app.include_router(admins_router)
-app.include_router(user_router)
-app.include_router(files_router)
-app.include_router(shows_files_router)
-app.include_router(shows_router)
-app.include_router(vip_user_router)
-app.include_router(vip_logs_router)
-app.include_router(donation_logs_router)
-app.include_router(vip_pakages_router)
-app.include_router(vip_voucheres_router)
-app.include_router(referral_router)
-app.include_router(affiliate_router)
-app.include_router(affiliate_router_payout)
-app.include_router(channel_router)
-app.include_router(required_channel_routes)
-app.include_router(trust_ip_router)
-app.include_router(platform_router)
-
-app.include_router(channels.router)
-app.include_router(artists.router)
-app.include_router(songs.router)
-
-BASE_DIR = Path(__file__).resolve().parent.parent  # project_root
-app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+from app.utils.logger import log
 
 
-# ========================
-# Route: Dashboard
-# ========================
-@app.get("/", response_class=HTMLResponse)
-async def dashboard(request: Request):
-    stats = get_dashboard_stats()
-    return templates.TemplateResponse(
-        "base.html",
-        {"request": request, "stats": stats},
+# ================================
+# Siklus Hidup (Startup / Shutdown)
+# ================================
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Menangani event saat aplikasi mulai dan berhenti."""
+    log.info(f"🚀 Menjalankan {settings.APP_NAME} v{settings.APP_VERSION}")
+    log.info(f"Mode debug: {settings.DEBUG}")
+    log.info(f"Environment: {settings.ENVIRONMENT}")
+    log.info(f"Cookie autentikasi: {settings.AUTH_COOKIE_NAME}")
+    
+    # Test database connection
+    try:
+        from app.core.database import test_connection
+        if test_connection():
+            log.info("✅ Database connected successfully")
+        else:
+            log.warning("⚠️ Database connection failed")
+    except ImportError:
+        log.warning("⚠️ Database module not found")
+    except Exception as e:
+        log.error(f"❌ Database error: {e}")
+    
+    yield
+    
+    log.info(f"🛑 Mematikan {settings.APP_NAME}")
+
+
+# ================================
+# Pengaturan File Statis
+# ================================
+def setup_static_files(app: FastAPI):
+    """Memasang direktori file statis."""
+    static_dir = settings.STATIC_DIR
+
+    if not static_dir.exists():
+        log.warning(f"⚠️ Direktori statis tidak ditemukan: {static_dir}")
+        return
+
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+    log.info(f"📦 File statis dipasang di: {static_dir}")
+
+
+# ================================
+# Pabrik Aplikasi
+# ================================
+def create_app() -> FastAPI:
+    """Membuat dan mengkonfigurasi aplikasi FastAPI."""
+    app = FastAPI(
+        title=settings.APP_NAME,
+        version=settings.APP_VERSION,
+        debug=settings.DEBUG,
+        lifespan=lifespan,
+        docs_url="/docs" if settings.DEBUG else None,
+        redoc_url="/redoc" if settings.DEBUG else None,
+        openapi_url="/openapi.json" if settings.DEBUG else None,
+    )
+
+    # Register exception handlers
+    app.add_exception_handler(RequestValidationError, validation_exception_handler)
+    app.add_exception_handler(BusinessError, business_exception_handler)
+    app.add_exception_handler(Exception, general_exception_handler)
+
+    # Setup middleware, routes, dan static files
+    setup_middleware(app)
+    register_routers(app)
+    setup_static_files(app)
+
+    return app
+
+
+# ================================
+# Instance Aplikasi
+# ================================
+app = create_app()
+
+
+# ================================
+# Menjalankan (Hanya untuk Pengembangan)
+# ================================
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "app.main:app",
+        host=settings.HOST,
+        port=settings.PORT,
+        reload=settings.DEBUG,
+        log_level="info",
     )

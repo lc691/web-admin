@@ -1,0 +1,168 @@
+<div
+    class="modal modal-blur fade"
+    id="modal-import"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <!-- ================================================== -->
+            <!-- Header -->
+            <!-- ================================================== -->
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Import Songs
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Body -->
+            <!-- ================================================== -->
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label
+                        class="form-label"
+                        for="import-file"
+                    >
+                        Import File
+                    </label>
+
+                    <input
+                        id="import-file"
+                        class="form-control"
+                        type="file"
+                        accept=".csv,.xlsx,.xls"
+                    >
+
+                    <small class="form-hint">
+                        Supported formats:
+                        CSV, XLSX, XLS
+                    </small>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label
+                        class="form-label"
+                        for="import-mode"
+                    >
+                        Import Mode
+                    </label>
+
+                    <select
+                        id="import-mode"
+                        class="form-select"
+                    >
+
+                        <option value="skip">
+                            Skip Duplicate Songs
+                        </option>
+
+                        <option value="update">
+                            Update Existing Songs
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div
+                    id="import-preview"
+                    class="d-none"
+                >
+
+                    <hr>
+
+                    <h4 class="mb-3">
+                        Preview
+                    </h4>
+
+                    <div
+                        id="import-summary"
+                        class="alert alert-info mb-3"
+                    >
+                        Waiting for file...
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table
+                            id="import-table"
+                            class="table table-sm table-striped"
+                        >
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Artist</th>
+                                    <th>Status</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                {# Filled by JavaScript #}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================================================== -->
+            <!-- Footer -->
+            <!-- ================================================== -->
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-link"
+                    data-bs-dismiss="modal"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    id="btn-import-start"
+                    type="button"
+                    class="btn btn-success"
+                >
+                    <i class="ti ti-upload me-1"></i>
+
+                    Import Songs
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

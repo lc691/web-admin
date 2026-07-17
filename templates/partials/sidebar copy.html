@@ -1,508 +1,664 @@
+<!-- ============================================================ -->
+<!-- SIDEBAR - Navigation Sidebar Tabler                           -->
+<!-- ============================================================ -->
+
+{% set path = request.url.path %}
+{% set query = request.query_params %}
+
 <style>
-    /* ================= BASE ================= */
+/* ================================================================
+   SIDEBAR - FIX UNTUK DARK & LIGHT MODE
+   ================================================================ */
 
-    .sidebar {
-        font-size: 14px;
-    }
+/* Sidebar Background - Tetap Gelap */
+.navbar-vertical {
+    background: #1a1a2e !important;
+    border-right: 1px solid rgba(255,255,255,0.05);
+}
 
-    .custom-sidebar {
-        background: linear-gradient(180deg, #1f2937, #111827);
-    }
+/* ==========================================================
+   SEMUA TEKS PUTIH - BIAR KELIATAN DI KEDUA MODE
+   ========================================================== */
 
-    /* ================= BRAND ================= */
+/* Brand / Logo */
+.navbar-vertical .navbar-brand {
+    color: #ffffff !important;
+}
+.navbar-vertical .navbar-brand:hover {
+    color: #ffffff !important;
+}
 
-    .sidebar-brand {
-        font-weight: 600;
-        letter-spacing: 0.5px;
-    }
+/* Nav Link - Normal */
+.navbar-vertical .nav-link {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
 
-    /* ================= HEADING ================= */
+/* Nav Link - Hover */
+.navbar-vertical .nav-link:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
 
-    .sidebar-heading {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        opacity: 0.75;
-        margin-top: 14px;
-    }
+/* Nav Link - Active */
+.navbar-vertical .nav-link.active {
+    color: #ffffff !important;
+    background: rgba(99, 102, 241, 0.2) !important;
+}
 
-    /* ================= NAV LINK ================= */
+/* Nav Link - Disabled */
+.navbar-vertical .nav-link.disabled {
+    color: rgba(255, 255, 255, 0.3) !important;
+}
 
-    .sidebar .nav-link {
-        border-radius: 10px;
-        margin: 4px 12px;
-        padding: 10px 14px;
-        transition: all 0.2s ease;
-    }
+/* Icon */
+.navbar-vertical .nav-link i {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+.navbar-vertical .nav-link.active i {
+    color: #ffffff !important;
+}
 
-    /* Hover */
-    .sidebar .nav-link:hover {
-        background: rgba(255, 255, 255, 0.08);
-    }
+/* Chevron */
+.navbar-vertical .nav-link .ms-auto i {
+    color: rgba(255, 255, 255, 0.3) !important;
+}
 
-    /* Active item */
-    .sidebar .nav-item.active>.nav-link {
-        background: rgba(255, 255, 255, 0.15);
-        font-weight: 600;
-        position: relative;
-    }
+/* Divider */
+.navbar-vertical .navbar-divider {
+    border-color: rgba(255, 255, 255, 0.06) !important;
+}
 
-    /* Active indicator bar */
-    .sidebar .nav-item.active>.nav-link::before {
-        content: "";
-        position: absolute;
-        left: -6px;
-        top: 8px;
-        bottom: 8px;
-        width: 4px;
-        border-radius: 4px;
-        background: #3b82f6;
-    }
+/* Sub Menu */
+.navbar-vertical .collapse .nav-link {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+.navbar-vertical .collapse .nav-link:hover {
+    color: #ffffff !important;
+}
+.navbar-vertical .collapse .nav-link.active {
+    color: #ffffff !important;
+}
 
-    /* ================= COLLAPSE ================= */
+/* Logout */
+.navbar-vertical .nav-link.text-danger {
+    color: #ef4444 !important;
+}
+.navbar-vertical .nav-link.text-danger:hover {
+    color: #dc2626 !important;
+}
 
-    .sidebar .collapse-inner {
-        background: rgba(255, 255, 255, 0.06);
-        border-radius: 12px;
-        margin: 6px 12px;
-        padding: 8px 0;
-        transition: all 0.2s ease;
-    }
-
-    /* Collapse text fix */
-    .sidebar .collapse-item {
-        color: #e5e7eb !important;
-    }
-
-    .sidebar .collapse-item:hover {
-        background: rgba(255, 255, 255, 0.08);
-        color: #ffffff !important;
-    }
-
-
-    /* Active collapse item */
-    .sidebar .collapse-item.active {
-        background: rgba(255, 255, 255, 0.12);
-        color: #ffffff !important;
-        font-weight: 600;
-    }
-
-    .sidebar .collapse-item.active .sidebar-icon {
-        color: #3b82f6;
-    }
-
-    /* ================= ICON ================= */
-
-    .sidebar .nav-link i {
-        width: 20px;
-        text-align: center;
-    }
-
-    /* ================= DIVIDER ================= */
-
-    .sidebar-divider {
-        margin: 18px 0;
-        opacity: 0.2;
-    }
+/* Mobile Toggle Icon - Putih */
+.navbar-vertical .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
 </style>
 
+<div class="navbar navbar-vertical navbar-expand-sm collapsible" data-bs-theme="dark">
+    <div class="container-fluid">
+        
+        <!-- Brand / Logo -->
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-film me-2"></i>
+            DramaStream
+        </a>
 
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#sidebarMenu" 
+                aria-controls="sidebarMenu" 
+                aria-expanded="false" 
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <!-- Sidebar Menu -->
+        <div class="collapse navbar-collapse" id="sidebarMenu">
+            
+            <ul class="navbar-nav flex-column w-100">
 
-<ul class="navbar-nav sidebar sidebar-dark accordion custom-sidebar " id="accordionSidebar">
+                <!-- ====================================================== -->
+                <!-- DASHBOARD                                             -->
+                <!-- ====================================================== -->
+                <li class="nav-item">
+                    <a class="nav-link {% if path == '/' %}active{% endif %}" href="/">
+                        <i class="fas fa-chart-line me-2"></i>
+                        Dashboard
+                    </a>
+                </li>
 
-    {# ================= BRAND ================= #}
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- MUSIC MANAGEMENT                                      -->
+                <!-- ====================================================== -->
+                {% set soundon_active = path.startswith(('/channels', '/artists', '/songs', '/channel-blacklists')) %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if soundon_active %}active{% endif %}" 
+                       data-bs-toggle="collapse" 
+                       href="#menuSoundOn" 
+                       role="button" 
+                       aria-expanded="{{ 'true' if soundon_active else 'false' }}" 
+                       aria-controls="menuSoundOn">
+                        <i class="fas fa-headphones me-2"></i>
+                        Music Management
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="collapse {% if soundon_active %}show{% endif %}" id="menuSoundOn">
+                        <ul class="nav flex-column ps-3">
+                            <li class="nav-item">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-broadcast-tower me-2"></i> Channels
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path == '/channels' %}active{% endif %}" href="/channels">
+                                    <i class="fas fa-list me-2"></i> List Channel
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path == '/channel-blacklists' %}active{% endif %}" href="/channel-blacklists">
+                                    <i class="fas fa-list me-2"></i> Channel Blacklists
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-users me-2"></i> Artists
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path == '/artists' %}active{% endif %}" href="/artists">
+                                    <i class="fas fa-user-musician me-2"></i> List Artist
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-music me-2"></i> Songs
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path == '/songs' %}active{% endif %}" href="/songs">
+                                    <i class="fas fa-compact-disc me-2"></i> List Songs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- REKAP CATATAN                                         -->
+                <!-- ====================================================== -->
+                {% set catatan_active = path.startswith(('/joki', '/kloter', '/catatan', '/rekap', '/laporan')) %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if catatan_active %}active{% endif %}" 
+                       data-bs-toggle="collapse" 
+                       href="#menuCatatan" 
+                       role="button" 
+                       aria-expanded="{{ 'true' if catatan_active else 'false' }}" 
+                       aria-controls="menuCatatan">
+                        <i class="fas fa-clipboard-list me-2"></i>
+                        Rekap Catatan
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="collapse {% if catatan_active %}show{% endif %}" id="menuCatatan">
+                        <ul class="nav flex-column ps-3">
+                            <li class="nav-item">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-database me-2"></i> Master Data
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/joki') %}active{% endif %}" href="/joki">
+                                    <i class="fas fa-user-tie me-2"></i> Master Joki
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/kloter') %}active{% endif %}" href="/kloter">
+                                    <i class="fas fa-layer-group me-2"></i> Master Kloter
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-exchange-alt me-2"></i> Transaksi
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/catatan') %}active{% endif %}" href="/catatan">
+                                    <i class="fas fa-pen-alt me-2"></i> Catatan Harian
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-chart-pie me-2"></i> Rekap & Laporan
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/rekap') %}active{% endif %}" href="/rekap">
+                                    <i class="fas fa-chart-bar me-2"></i> Rekap Harian
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/laporan') and not path.startswith('/laporan/dashboard') %}active{% endif %}" href="/laporan">
+                                    <i class="fas fa-file-alt me-2"></i> Laporan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/laporan/dashboard') %}active{% endif %}" href="/laporan/dashboard">
+                                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- FILES & SHOWS                                         -->
+                <!-- ====================================================== -->
+                {% set files_active = path.startswith(('/files', '/show_files', '/shows', '/platform')) %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if files_active %}active{% endif %}" 
+                       data-bs-toggle="collapse" 
+                       href="#menuFiles" 
+                       role="button" 
+                       aria-expanded="{{ 'true' if files_active else 'false' }}" 
+                       aria-controls="menuFiles">
+                        <i class="fas fa-database me-2"></i>
+                        Files & Shows
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="collapse {% if files_active %}show{% endif %}" id="menuFiles">
+                        <ul class="nav flex-column ps-3">
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/files') %}active{% endif %}" href="/files">
+                                    <i class="fas fa-file me-2"></i> Daftar Files
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/show_files') %}active{% endif %}" href="/show_files">
+                                    <i class="fas fa-video me-2"></i> Show Files
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/shows') %}active{% endif %}" href="/shows">
+                                    <i class="fas fa-tv me-2"></i> Daftar Shows
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/platform') %}active{% endif %}" href="/platform">
+                                    <i class="fas fa-cog me-2"></i> Daftar Platform
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- SECURITY                                              -->
+                <!-- ====================================================== -->
+                {% set security_active = path.startswith('/trusted_ips') %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if security_active %}active{% endif %}" 
+                       data-bs-toggle="collapse" 
+                       href="#menuSecurity" 
+                       role="button" 
+                       aria-expanded="{{ 'true' if security_active else 'false' }}" 
+                       aria-controls="menuSecurity">
+                        <i class="fas fa-lock me-2"></i>
+                        Security
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="collapse {% if security_active %}show{% endif %}" id="menuSecurity">
+                        <ul class="nav flex-column ps-3">
+                            <li class="nav-item">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-shield-virus me-2"></i> Access Control
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path == '/trusted_ips' %}active{% endif %}" href="/trusted_ips">
+                                    <i class="fas fa-globe me-2"></i> Trusted IPs
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path == '/trusted_ips/new' %}active{% endif %}" href="/trusted_ips/new">
+                                    <i class="fas fa-plus-circle me-2"></i> Add Trusted IP
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- ADMIN MANAGEMENT                                      -->
+                <!-- ====================================================== -->
+                {% set admin_active = path.startswith(('/admins')) %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if admin_active %}active{% endif %}" 
+                       data-bs-toggle="collapse" 
+                       href="#menuAdmin" 
+                       role="button" 
+                       aria-expanded="{{ 'true' if admin_active else 'false' }}" 
+                       aria-controls="menuAdmin">
+                        <i class="fas fa-user-shield me-2"></i>
+                        Admin Management
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="collapse {% if admin_active %}show{% endif %}" id="menuAdmin">
+                        <ul class="nav flex-column ps-3">
+                            <li class="nav-item">
+                                <a class="nav-link {% if path == '/admins' %}active{% endif %}" href="/admins">
+                                    <i class="fas fa-users me-2"></i> List Admin
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path == '/admins/add' %}active{% endif %}" href="/admins/add">
+                                    <i class="fas fa-user-plus me-2"></i> Tambah Admin
+                                </a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-chart-line me-2"></i> Analytics
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/admins/retention') %}active{% endif %}" href="/admins/retention">
+                                    <i class="fas fa-chart-simple me-2"></i> Retention
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- USER MANAGEMENT                                       -->
+                <!-- ====================================================== -->
+                {% set user_active = path.startswith('/users') %}
+                {% set filter = query.get('filter') %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if user_active %}active{% endif %}" 
+                       data-bs-toggle="collapse" 
+                       href="#menuUsers" 
+                       role="button" 
+                       aria-expanded="{{ 'true' if user_active else 'false' }}" 
+                       aria-controls="menuUsers">
+                        <i class="fas fa-user-friends me-2"></i>
+                        User Management
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="collapse {% if user_active %}show{% endif %}" id="menuUsers">
+                        <ul class="nav flex-column ps-3">
+                            <li class="nav-item">
+                                <a class="nav-link {% if not filter %}active{% endif %}" href="/users">
+                                    <i class="fas fa-database me-2"></i> Semua Pengguna
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if filter == 'vip' %}active{% endif %}" href="/users?filter=vip">
+                                    <i class="fas fa-crown me-2" style="color: #fbbf24;"></i> Pengguna VIP
+                                    <span class="badge bg-warning ms-auto">Premium</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if filter == 'nonvip' %}active{% endif %}" href="/users?filter=nonvip">
+                                    <i class="fas fa-user me-2"></i> Non-VIP
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if filter == 'trial' %}active{% endif %}" href="/users?filter=trial">
+                                    <i class="fas fa-flask me-2"></i> Trial
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if filter == 'affiliate' %}active{% endif %}" href="/users?filter=affiliate">
+                                    <i class="fas fa-handshake me-2"></i> Referral
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- VIP SYSTEM                                            -->
+                <!-- ====================================================== -->
+                {% set vip_active = path.startswith(('/vip_packages', '/vip_vouchers', '/vip_logs', '/donation_logs')) %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if vip_active %}active{% endif %}" 
+                       data-bs-toggle="collapse" 
+                       href="#menuVip" 
+                       role="button" 
+                       aria-expanded="{{ 'true' if vip_active else 'false' }}" 
+                       aria-controls="menuVip">
+                        <i class="fas fa-crown me-2"></i>
+                        VIP System
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="collapse {% if vip_active %}show{% endif %}" id="menuVip">
+                        <ul class="nav flex-column ps-3">
+                            <li class="nav-item">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-star me-2"></i> VIP Controls
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/vip_logs') %}active{% endif %}" href="/vip_logs">
+                                    <i class="fas fa-history me-2"></i> Aktivasi Logs
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/donation_logs') %}active{% endif %}" href="/donation_logs">
+                                    <i class="fas fa-hand-holding-heart me-2"></i> Donation Logs
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/vip_packages') %}active{% endif %}" href="/vip_packages">
+                                    <i class="fas fa-box me-2"></i> VIP Packages
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/vip_vouchers') %}active{% endif %}" href="/vip_vouchers">
+                                    <i class="fas fa-ticket-alt me-2"></i> VIP Vouchers
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- AFFILIATE SYSTEM                                      -->
+                <!-- ====================================================== -->
+                {% set affiliate_active = path.startswith(('/referrals', '/affiliate')) %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if affiliate_active %}active{% endif %}" 
+                       data-bs-toggle="collapse" 
+                       href="#menuAffiliate" 
+                       role="button" 
+                       aria-expanded="{{ 'true' if affiliate_active else 'false' }}" 
+                       aria-controls="menuAffiliate">
+                        <i class="fas fa-handshake me-2"></i>
+                        Affiliate System
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="collapse {% if affiliate_active %}show{% endif %}" id="menuAffiliate">
+                        <ul class="nav flex-column ps-3">
+                            <li class="nav-item">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-link me-2"></i> Referrals
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
+                                    <i class="fas fa-link me-2"></i> Semua Referral
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/referrals/users') or request.url.path.startswith('/referrals/user/') %}active{% endif %}" href="/referrals/users">
+                                    <i class="fas fa-user me-2"></i> Referral by User
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/referrals/referrers') or request.url.path.startswith('/referrals/referrer/') %}active{% endif %}" href="/referrals/referrers">
+                                    <i class="fas fa-user-tie me-2"></i> Referral by Referrer
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}" href="/referrals/logs">
+                                    <i class="fas fa-scroll me-2"></i> Referral Logs
+                                </a>
+                            </li>
+
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-exchange-alt me-2"></i> Affiliate Activity
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}" href="/affiliate/leaderboard">
+                                    <i class="fas fa-trophy me-2"></i> Leaderboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/affiliate/payouts') %}active{% endif %}" href="/affiliate/payouts">
+                                    <i class="fas fa-boxes me-2"></i> Payout Batch
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}" href="/affiliate/transactions">
+                                    <i class="fas fa-coins me-2"></i> Transactions
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}" href="/affiliate/commission-logs">
+                                    <i class="fas fa-chart-pie me-2"></i> Commission Logs
+                                </a>
+                            </li>
+
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-wallet me-2"></i> Finance
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}" href="/affiliate/withdraw-requests">
+                                    <i class="fas fa-money-bill-wave me-2"></i> Withdraw Requests
+                                </a>
+                            </li>
+
+                            <li class="nav-item mt-2">
+                                <span class="nav-link disabled">
+                                    <i class="fas fa-shield-alt me-2"></i> Monitoring & Security
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}" href="/affiliate/abuse-logs">
+                                    <i class="fas fa-exclamation-triangle me-2"></i> Abuse Logs
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}" href="/affiliate/admin-actions">
+                                    <i class="fas fa-tasks me-2"></i> Admin Actions
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}" href="/affiliate/admin-audit-logs">
+                                    <i class="fas fa-file-alt me-2"></i> Admin Audit Logs
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- CHANNEL MANAGEMENT                                    -->
+                <!-- ====================================================== -->
+                {% set channel_active = path.startswith(('/channel', '/required-channels')) %}
+
+                <li class="nav-item">
+                    <a class="nav-link {% if channel_active %}active{% endif %}" 
+                       data-bs-toggle="collapse" 
+                       href="#menuChannel" 
+                       role="button" 
+                       aria-expanded="{{ 'true' if channel_active else 'false' }}" 
+                       aria-controls="menuChannel">
+                        <i class="fas fa-satellite-dish me-2"></i>
+                        Channel Management
+                        <span class="ms-auto">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </a>
+                    <div class="collapse {% if channel_active %}show{% endif %}" id="menuChannel">
+                        <ul class="nav flex-column ps-3">
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/channel') %}active{% endif %}" href="/channel">
+                                    <i class="fas fa-list me-2"></i> Daftar Channel
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if path.startswith('/required-channels') %}active{% endif %}" href="/required-channels">
+                                    <i class="fas fa-exclamation-circle me-2"></i> Required Channels
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <hr class="navbar-divider">
+
+                <!-- ====================================================== -->
+                <!-- LOGOUT (Bottom)                                       -->
+                <!-- ====================================================== -->
+                <li class="nav-item mt-auto">
+                    <a class="nav-link text-danger" href="/logout">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                        Logout
+                    </a>
+                </li>
+
+            </ul>
+
         </div>
-        <div class="sidebar-brand-text mx-3">Admin Panel</div>
-    </a>
-
-    <hr class="sidebar-divider my-0">
-
-    {# ================= DASHBOARD ================= #}
-    <li class="nav-item {% if request.path == '/' %}active{% endif %}">
-        <a class="nav-link" href="/">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-    </li>
-
-    <hr class="sidebar-divider">
-
-    {% set path = request.url.path %}
-
-    {# ================= ADMIN TOOLS ================= #}
-    <div class="sidebar-heading">Admin Tools</div>
-
-    {% set admin_active = path.startswith('/admin') or path.startswith('/admins') %}
-    <li class="nav-item {% if admin_active %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuAdmin"
-            aria-expanded="{{ 'true' if admin_active else 'false' }}">
-            <i class="fas fa-user-shield fa-fw"></i>
-            <span>Admin Management</span>
-        </a>
-
-        <div id="menuAdmin" class="collapse {% if admin_active %}show{% endif %}" data-parent="#accordionSidebar">
-            <div class="collapse-inner">
-                <h6 class="collapse-header">Admin Controls</h6>
-
-                <a class="collapse-item {% if path == '/admins' %}active{% endif %}" href="/admins">
-                    List Admin
-                </a>
-
-                <a class="collapse-item {% if path == '/admin/add' %}active{% endif %}" href="/admin/add">
-                    Tambah Admin
-                </a>
-            </div>
-        </div>
-    </li>
-    {# ================= RETENTION ================= #}
-    <div class="sidebar-heading">Analytics</div>
-
-    {% set retention_active = path.startswith('/admin/retention') %}
-
-    <li class="nav-item {% if retention_active %}active{% endif %}">
-        <a class="nav-link {% if not retention_active %}collapsed{% endif %}" href="/admins/retention">
-            <i class="fas fa-chart-line fa-fw"></i>
-            <span>Retention</span>
-        </a>
-    </li>
-
-    {# ================= SECURITY ================= #}
-    <div class="sidebar-heading">Security</div>
-
-    {% set security_active = path.startswith('/trusted_ips') %}
-
-    <li class="nav-item {% if security_active %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuSecurity"
-            aria-expanded="{{ 'true' if security_active else 'false' }}">
-            <i class="fas fa-shield-alt fa-fw"></i>
-            <span>Security</span>
-        </a>
-
-        <div id="menuSecurity" class="collapse {% if security_active %}show{% endif %}" data-parent="#accordionSidebar">
-            <div class="collapse-inner">
-
-                <h6 class="collapse-header">
-                    <i class="fas fa-lock text-danger mr-1"></i>
-                    Access Control
-                </h6>
-
-                <a class="collapse-item {% if path == '/trusted_ips' %}active{% endif %}" href="/trusted_ips">
-                    🌐 Trusted IPs
-                </a>
-
-                <a class="collapse-item {% if path == '/trusted_ips/new' %}active{% endif %}" href="/trusted_ips/new">
-                    ➕ Add Trusted IP
-                </a>
-
-            </div>
-        </div>
-    </li>
-
-
-    {# ================= USER TOOLS ================= #}
-    <div class="sidebar-heading">User Tools</div>
-
-    {% set user_active = path == '/users' %}
-    <li class="nav-item {% if user_active %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuUsers"
-            aria-expanded="{{ 'true' if user_active else 'false' }}">
-            <i class="fas fa-users fa-fw"></i>
-            <span>User Management</span>
-        </a>
-
-        <div id="menuUsers" class="collapse {% if user_active %}show{% endif %}" data-parent="#accordionSidebar">
-            <div class="collapse-inner">
-
-                <a class="collapse-item {% if not request.query_params.get('filter') %}active{% endif %}" href="/users">
-                    📋 Semua Pengguna
-                </a>
-
-                <a class="collapse-item {% if request.query_params.get('filter') == 'vip' %}active{% endif %}"
-                    href="/users?filter=vip">
-                    ⭐ Pengguna VIP
-                </a>
-
-                <a class="collapse-item {% if request.query_params.get('filter') == 'nonvip' %}active{% endif %}"
-                    href="/users?filter=nonvip">
-                    👤 Non-VIP
-                </a>
-
-                <a class="collapse-item {% if request.query_params.get('filter') == 'trial' %}active{% endif %}"
-                    href="/users?filter=trial">
-                    🎁 Trial
-                </a>
-
-                <a class="collapse-item {% if request.query_params.get('filter') == 'affiliate' %}active{% endif %}"
-                    href="/users?filter=affiliate">
-                    🔗 Referral
-                </a>
-
-            </div>
-        </div>
-    </li>
-
-    {# ================= VIP MANAGEMENT ================= #}
-
-    {% set path = request.url.path %}
-
-    <div class="sidebar-heading">VIP Management</div>
-
-    {% set vip_active = path.startswith('/vip_packages')
-    or path.startswith('/vip_vouchers')
-    or path.startswith('/vip_logs')
-    or path.startswith('/donation_logs')
-    %}
-
-    <li class="nav-item {% if vip_active %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuVip"
-            aria-expanded="{{ 'true' if vip_active else 'false' }}">
-            <i class="fas fa-crown fa-fw"></i>
-            <span>VIP System</span>
-        </a>
-
-        <div id="menuVip" class="collapse {% if vip_active %}show{% endif %}" data-parent="#accordionSidebar">
-
-            <div class="collapse-inner">
-
-                <h6 class="collapse-header">
-                    <i class="fas fa-star text-warning mr-1"></i>
-                    VIP Controls
-                </h6>
-
-                <!-- VIP Logs -->
-                <a class="collapse-item {% if path.startswith('/vip_logs') %}active{% endif %}" href="/vip_logs">
-                    <i class="fas fa-history text-success mr-2"></i>
-                    Aktivasi Logs
-                </a>
-
-                <!-- Donations Logs -->
-                <a class="collapse-item {% if path.startswith('/donation_logs') %}active{% endif %}"
-                    href="/donation_logs">
-                    <i class="fas fa-hand-holding-heart text-success mr-2"></i>
-                    Donation Logs
-                </a>
-
-                <!-- VIP Packages -->
-                <a class="collapse-item {% if path.startswith('/vip_packages') %}active{% endif %}"
-                    href="/vip_packages">
-                    <i class="fas fa-box text-danger mr-2"></i>
-                    VIP Packages
-                </a>
-
-                <!-- VIP Vouchers -->
-                <a class="collapse-item {% if path.startswith('/vip_vouchers') %}active{% endif %}"
-                    href="/vip_vouchers">
-                    <i class="fas fa-ticket-alt text-info mr-2"></i>
-                    VIP Vouchers
-                </a>
-
-            </div>
-        </div>
-    </li>
-
-
-    {# ================= AFFILIATE MANAGEMENT ================= #}
-    <div class="sidebar-heading">
-        Affiliate Management
+        <!-- End Sidebar Menu -->
+        
     </div>
-
-    {% set affiliate_active = request.url.path.startswith('/referrals')
-    or request.url.path.startswith('/affiliate') %}
-
-    <li class="nav-item {% if affiliate_active %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuAffiliate"
-            aria-expanded="{{ 'true' if affiliate_active else 'false' }}" aria-controls="menuAffiliate">
-            <i class="fas fa-handshake fa-fw"></i>
-            <span>Affiliate System</span>
-        </a>
-
-        <div id="menuAffiliate" class="collapse {% if affiliate_active %}show{% endif %}"
-            data-parent="#accordionSidebar">
-            <div class="collapse-inner">
-
-                {# ================= REFERRALS ================= #}
-                <h6 class="collapse-header"><i class="fas fa-link text-primary mr-1"></i> Referrals</h6>
-
-                <a class="collapse-item {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
-                    🔗 Semua Referral
-                </a>
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/users') 
-                                       or request.url.path.startswith('/referrals/user/') %}active{% endif %}"
-                    href="/referrals/users">
-                    👤 Referral by User
-                </a>
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/referrers') 
-                                       or request.url.path.startswith('/referrals/referrer/') %}active{% endif %}"
-                    href="/referrals/referrers">
-                    🧑‍💼 Referral by Referrer
-                </a>
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}"
-                    href="/referrals/logs">
-                    📜 Referral Logs
-                </a>
-
-                <hr class="dropdown-divider">
-
-                {# ================= AFFILIATE ACTIVITY ================= #}
-                <h6 class="collapse-header"><i class="fas fa-exchange-alt text-info mr-1"></i> Affiliate Activity
-                </h6>
-
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}"
-                    href="/affiliate/leaderboard">
-                    🏆 Leaderboard
-                </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/payouts') %}active{% endif %}"
-                    href="/affiliate/payouts">
-                    📦 Payout Batch
-                </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}"
-                    href="/affiliate/transactions">
-                    💸 Transactions
-                </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}"
-                    href="/affiliate/commission-logs">
-                    🪙 Commission Logs
-                </a>
-
-                <hr class="dropdown-divider">
-
-                {# ================= FINANCE ================= #}
-                <h6 class="collapse-header"><i class="fas fa-wallet text-warning mr-1"></i> Finance</h6>
-
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}"
-                    href="/affiliate/withdraw-requests">
-                    💵 Withdraw Requests
-                </a>
-
-                <hr class="dropdown-divider">
-
-                {# ================= MONITORING ================= #}
-                <h6 class="collapse-header"><i class="fas fa-shield-alt text-danger mr-1"></i> Monitoring & Security
-                </h6>
-
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}"
-                    href="/affiliate/abuse-logs">
-                    🚨 Abuse Logs
-                </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}"
-                    href="/affiliate/admin-actions">
-                    🛠️ Admin Actions
-                </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}"
-                    href="/affiliate/admin-audit-logs">
-                    🛡️ Admin Audit Logs
-                </a>
-
-            </div>
-        </div>
-    </li>
-
-
-
-
-    {# ================= FILE MANAGEMENT ================= #}
-    <div class="sidebar-heading">File Management</div>
-
-    {# Path helper #}
-    {% set is_files = path.startswith('/files') %}
-    {% set is_show_files = path.startswith('/show_files') %}
-    {% set is_shows = path.startswith('/shows') %}
-    {% set is_platform = path.startswith('/platform') %}
-
-    {% set files_active = is_files or is_show_files or is_shows or is_platform %}
-
-    <li class="nav-item {% if files_active %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuFiles"
-            aria-expanded="{{ 'true' if files_active else 'false' }}" aria-controls="menuFiles">
-            <i class="fas fa-folder-open fa-fw"></i>
-            <span>Files & Shows</span>
-        </a>
-
-        <div id="menuFiles" class="collapse {% if files_active %}show{% endif %}" data-parent="#accordionSidebar">
-
-            <div class="collapse-inner">
-
-                <a class="collapse-item {% if is_files %}active{% endif %}" href="/files">
-                    <i class="fas fa-file-video mr-2"></i>
-                    Daftar Files
-                </a>
-
-                <a class="collapse-item {% if is_show_files %}active{% endif %}" href="/show_files">
-                    <i class="fas fa-layer-group mr-2"></i>
-                    Show Files
-                </a>
-
-                <a class="collapse-item {% if is_shows %}active{% endif %}" href="/shows">
-                    <i class="fas fa-film mr-2"></i>
-                    Daftar Shows
-                </a>
-
-                <a class="collapse-item {% if is_platform %}active{% endif %}" href="/platform">
-                    <i class="fas fa-globe mr-2"></i>
-                    Daftar Platform
-                </a>
-
-            </div>
-        </div>
-    </li>
-
-    {# ================= CHANNEL MANAGEMENT ================= #}
-    <div class="sidebar-heading">Channel Management</div>
-
-    {# ================= SAFE PATH DETECTION ================= #}
-    {% set current_path = path if path is defined else request.url.path %}
-
-    {% set is_channel_index = current_path.startswith('/channel') %}
-    {% set is_required_channels_index = current_path.startswith('/required-channels') %}
-
-    {% set channel_active = is_channel_index or is_required_channels_index %}
-
-    <li class="nav-item {% if channel_active %}active{% endif %}">
-        <a class="nav-link {% if not channel_active %}collapsed{% endif %}"
-        href="#"
-        data-toggle="collapse"
-        data-target="#menuChannel"
-        aria-expanded="{{ 'true' if channel_active else 'false' }}"
-        aria-controls="menuChannel">
-
-            <i class="fas fa-broadcast-tower fa-fw"></i>
-            <span>Channel Management</span>
-        </a>
-
-        <div id="menuChannel"
-            class="collapse {% if channel_active %}show{% endif %}"
-            data-parent="#accordionSidebar">
-
-            <div class="collapse-inner">
-
-                <!-- Daftar Channel -->
-                <a class="collapse-item {% if is_channel_index %}active{% endif %}"
-                href="/channel/">
-                    <i class="fas fa-list mr-2"></i>
-                    Daftar Channel
-                </a>
-
-                <!-- Required Channels -->
-                <a class="collapse-item {% if is_required_channels_index %}active{% endif %}"
-                href="/required-channels/">
-                    <i class="fas fa-lock mr-2"></i>
-                    Required Channels
-                </a>
-
-            </div>
-        </div>
-    </li>
-
-
-    <hr class="sidebar-divider d-none d-md-block">
-
-    {# ================= TOGGLER ================= #}
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-    </div>
-
-</ul>
+    <!-- End Container -->
+</div>
+<!-- End Sidebar -->

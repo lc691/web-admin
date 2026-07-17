@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.status import HTTP_302_FOUND
 
 from app.templates import templates
-from db.connect import get_dict_cursor, get_dict_cursor_dep
+from app.core.database import get_dict_cursor, get_dict_cursor_dep
 
 router = APIRouter()
 

@@ -1,0 +1,529 @@
+{% extends "base.html" %}
+
+{% block title %}Daftar Review{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .filter-section {
+        background: var(--tblr-bg-surface-hover);
+        border-radius: var(--tblr-border-radius);
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--tblr-border-color);
+    }
+    
+    .filter-section .form-control,
+    .filter-section .form-select {
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 6px 12px;
+        font-size: 14px;
+        background: var(--tblr-bg-surface);
+        color: var(--tblr-body-color);
+    }
+    
+    .filter-section .form-control:focus,
+    .filter-section .form-select:focus {
+        border-color: var(--tblr-primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    
+    .review-card {
+        background: var(--tblr-bg-surface);
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        transition: all 0.2s ease;
+    }
+    
+    .review-card:hover {
+        border-color: var(--tblr-primary);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .review-card .review-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+    
+    .review-card .review-header .review-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    
+    .review-card .review-header .review-info .reviewer {
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .review-card .review-header .review-info .review-meta {
+        font-size: 12px;
+        color: var(--tblr-muted);
+    }
+    
+    .review-card .review-body {
+        padding-left: 0;
+    }
+    
+    .review-card .review-body .review-comment {
+        font-size: 14px;
+        margin: 4px 0;
+        padding: 8px 12px;
+        background: var(--tblr-bg-surface-hover);
+        border-radius: var(--tblr-border-radius);
+        border-left: 3px solid var(--tblr-primary);
+    }
+    
+    .review-card .review-body .task-info {
+        font-size: 13px;
+        color: var(--tblr-muted);
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 4px;
+    }
+    
+    .review-card .review-body .task-info .task-link {
+        color: var(--tblr-primary);
+        text-decoration: none;
+    }
+    
+    .review-card .review-body .task-info .task-link:hover {
+        text-decoration: underline;
+    }
+    
+    .review-card .review-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+    }
+    
+    .review-card .review-actions .btn-sm {
+        padding: 4px 12px;
+        font-size: 12px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--tblr-muted);
+    }
+    
+    .empty-state i {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 12px;
+        opacity: 0.3;
+    }
+    
+    .status-badge {
+        font-size: 12px;
+        padding: 3px 12px;
+        border-radius: 20px;
+    }
+    
+    .pagination-custom {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .pagination-custom .page-link {
+        padding: 6px 12px;
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        background: var(--tblr-bg-surface);
+        color: var(--tblr-body-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    
+    .pagination-custom .page-link:hover {
+        background: var(--tblr-primary);
+        color: white;
+        border-color: var(--tblr-primary);
+    }
+    
+    .pagination-custom .page-link.active {
+        background: var(--tblr-primary);
+        color: white;
+        border-color: var(--tblr-primary);
+    }
+    
+    .pagination-custom .page-link.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Portal Joki</div>
+            <h2 class="page-title">Daftar Review</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a href="{{ url_for('portal_joki_admin_review') }}?status=2" class="btn btn-outline-warning btn-sm">
+                    <i class="ti ti-rotate me-1"></i> Revisi
+                </a>
+                <a href="{{ url_for('portal_joki_admin_review') }}?status=1" class="btn btn-outline-success btn-sm">
+                    <i class="ti ti-check me-1"></i> Approved
+                </a>
+                <a href="{{ url_for('portal_joki_admin_review') }}" class="btn btn-primary btn-sm">
+                    <i class="ti ti-refresh me-1"></i> Semua
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     FILTER SECTION
+     ========================================================== -->
+<div class="filter-section">
+    <form method="GET" action="{{ url_for('portal_joki_admin_review') }}" class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label small text-muted">Status</label>
+            <select name="status" class="form-select">
+                <option value="">Semua Status</option>
+                <option value="1" {% if status == 1 %}selected{% endif %}>Approved</option>
+                <option value="2" {% if status == 2 %}selected{% endif %}>Revisi</option>
+                <option value="3" {% if status == 3 %}selected{% endif %}>Rejected</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label small text-muted">Penugasan ID</label>
+            <input type="number" name="penugasan_id" class="form-control" 
+                   placeholder="ID Penugasan" value="{{ penugasan_id or '' }}">
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="ti ti-search me-1"></i> Filter
+                </button>
+                <a href="{{ url_for('portal_joki_admin_review') }}" class="btn btn-outline-secondary">
+                    <i class="ti ti-x"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- ==========================================================
+     REVIEW LIST
+     ========================================================== -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            Hasil Review
+            <span class="badge bg-primary ms-2">{{ total }}</span>
+        </h3>
+        <div class="card-actions">
+            <span class="text-muted small">Menampilkan {{ reviews|length }} dari {{ total }}</span>
+        </div>
+    </div>
+    <div class="card-body">
+        {% if reviews %}
+            {% for review in reviews %}
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-info">
+                        <span class="reviewer">
+                            {{ review.joki_nama|default(review.nama)|default('Joki') }}
+                            <span class="text-muted small">({{ review.joki_kode|default(review.kode)|default('') }})</span>
+                        </span>
+                        <span class="badge status-badge bg-{{ get_status_color(review.status|default(0)) }}">
+                            {{ get_status_label(review.status|default(0)) }}
+                        </span>
+                        <span class="review-meta">
+                            {{ review.reviewed_at|default(review.created_at)|default('') }}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="text-muted small">#{{ review.id }}</span>
+                    </div>
+                </div>
+                
+                <div class="review-body">
+                    {% if review.komentar %}
+                    <div class="review-comment">{{ review.komentar }}</div>
+                    {% endif %}
+                    
+                    <div class="task-info">
+                        <span>
+                            <i class="ti ti-calendar me-1"></i>
+                            {{ review.tanggal|default('-') }}
+                        </span>
+                        <span>
+                            <i class="ti ti-users me-1"></i>
+                            {{ review.kloter_nama|default(review.kloter)|default('-') }}
+                        </span>
+                        <span>
+                            <i class="ti ti-list me-1"></i>
+                            Target: {{ review.target_judul|default(0) }}
+                        </span>
+                        <span>
+                            <i class="ti ti-file me-1"></i>
+                            Absen {{ review.absen_awal|default('-') }}-{{ review.absen_akhir|default('-') }}
+                        </span>
+                        <a href="{{ url_for('portal_joki_admin_penugasan_detail', penugasan_id=review.penugasan_id) }}" 
+                           class="task-link" target="_blank">
+                            <i class="ti ti-eye me-1"></i> Lihat Penugasan
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="review-actions">
+                    <a href="{{ url_for('portal_joki_admin_review_detail', review_id=review.id) }}" 
+                       class="btn btn-sm btn-outline-primary">
+                        <i class="ti ti-eye me-1"></i> Detail
+                    </a>
+                    
+                    {% if review.status == 2 or review.status == 3 %}
+                    <button class="btn btn-sm btn-outline-success" 
+                            onclick="approveReview({{ review.id }})">
+                        <i class="ti ti-check me-1"></i> Approve
+                    </button>
+                    {% endif %}
+                    
+                    {% if review.status == 1 %}
+                    <button class="btn btn-sm btn-outline-danger" 
+                            onclick="rejectReview({{ review.id }})">
+                        <i class="ti ti-rotate me-1"></i> Revisi
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="empty-state">
+            <i class="ti ti-message-circle-off"></i>
+            <h5>Tidak Ada Review</h5>
+            <p>Belum ada review yang sesuai dengan filter yang dipilih.</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if total_pages and total_pages > 1 %}
+    <div class="card-footer d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div class="text-muted small">
+            Halaman {{ page }} dari {{ total_pages }} ({{ total }} total)
+        </div>
+        <div class="pagination-custom">
+            <a href="?page=1&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if penugasan_id %}&penugasan_id={{ penugasan_id }}{% endif %}" 
+               class="page-link {% if page == 1 %}disabled{% endif %}">
+                <i class="ti ti-chevrons-left"></i>
+            </a>
+            <a href="?page={{ page - 1 }}&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if penugasan_id %}&penugasan_id={{ penugasan_id }}{% endif %}" 
+               class="page-link {% if page == 1 %}disabled{% endif %}">
+                <i class="ti ti-chevron-left"></i>
+            </a>
+            
+            {% for p in range(1, total_pages + 1) %}
+                {% if p == page %}
+                <span class="page-link active">{{ p }}</span>
+                {% elif p <= 3 or p > total_pages - 3 or p >= page - 2 and p <= page + 2 %}
+                <a href="?page={{ p }}&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if penugasan_id %}&penugasan_id={{ penugasan_id }}{% endif %}" 
+                   class="page-link">
+                    {{ p }}
+                </a>
+                {% elif p == 4 and page > 5 %}
+                <span class="page-link disabled">...</span>
+                {% elif p == total_pages - 3 and page < total_pages - 4 %}
+                <span class="page-link disabled">...</span>
+                {% endif %}
+            {% endfor %}
+            
+            <a href="?page={{ page + 1 }}&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if penugasan_id %}&penugasan_id={{ penugasan_id }}{% endif %}" 
+               class="page-link {% if page == total_pages %}disabled{% endif %}">
+                <i class="ti ti-chevron-right"></i>
+            </a>
+            <a href="?page={{ total_pages }}&limit={{ limit }}{% if status %}&status={{ status }}{% endif %}{% if penugasan_id %}&penugasan_id={{ penugasan_id }}{% endif %}" 
+               class="page-link {% if page == total_pages %}disabled{% endif %}">
+                <i class="ti ti-chevrons-right"></i>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- ==========================================================
+     REJECT MODAL
+     ========================================================== -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">
+                    <i class="ti ti-alert-triangle me-2"></i>
+                    Kirim Revisi
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Masukkan komentar revisi untuk penugasan ini.</p>
+                <textarea class="form-control" id="rejectComment" rows="4" 
+                          placeholder="Masukkan komentar revisi..." required></textarea>
+                <div class="text-muted small mt-1">Komentar revisi wajib diisi.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="confirmRejectBtn">
+                    <i class="ti ti-rotate me-1"></i> Kirim Revisi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // ==========================================================
+    // STATE
+    // ==========================================================
+    var currentReviewId = null;
+    
+    // ==========================================================
+    // APPROVE REVIEW
+    // ==========================================================
+    function approveReview(reviewId) {
+        Swal.fire({
+            title: 'Konfirmasi Approve',
+            text: 'Apakah Anda yakin ingin menyetujui review ini?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#22c55e',
+            confirmButtonText: 'Ya, Approve!',
+            cancelButtonText: 'Batal',
+            input: 'textarea',
+            inputPlaceholder: 'Masukkan komentar (opsional)',
+            inputLabel: 'Komentar',
+            inputAttributes: {
+                'aria-label': 'Komentar approve'
+            }
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                var formData = new FormData();
+                if (result.value) {
+                    formData.append('komentar', result.value);
+                }
+                
+                fetch('/admin/portal-joki/review/' + reviewId + '/approve', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        Swal.fire('Sukses', data.message, 'success').then(function() {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Error', data.error || 'Gagal approve review', 'error');
+                    }
+                })
+                .catch(function(error) {
+                    Swal.fire('Error', 'Gagal approve review: ' + error.message, 'error');
+                });
+            }
+        });
+    }
+    
+    // ==========================================================
+    // REJECT REVIEW
+    // ==========================================================
+    function rejectReview(reviewId) {
+        currentReviewId = reviewId;
+        document.getElementById('rejectComment').value = '';
+        var modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+        modal.show();
+    }
+    
+    document.getElementById('confirmRejectBtn').addEventListener('click', function() {
+        var comment = document.getElementById('rejectComment').value.trim();
+        
+        if (!comment) {
+            Swal.fire('Error', 'Komentar revisi wajib diisi.', 'error');
+            return;
+        }
+        
+        var btn = this;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Mengirim...';
+        
+        var formData = new FormData();
+        formData.append('komentar', comment);
+        
+        fetch('/admin/portal-joki/review/' + currentReviewId + '/reject', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            if (data.success) {
+                var modal = bootstrap.Modal.getInstance(document.getElementById('rejectModal'));
+                modal.hide();
+                Swal.fire('Sukses', data.message, 'success').then(function() {
+                    location.reload();
+                });
+            } else {
+                Swal.fire('Error', data.error || 'Gagal kirim revisi', 'error');
+            }
+        })
+        .catch(function(error) {
+            Swal.fire('Error', 'Gagal kirim revisi: ' + error.message, 'error');
+        })
+        .finally(function() {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="ti ti-rotate me-1"></i> Kirim Revisi';
+        });
+    });
+    
+    // ==========================================================
+    // AUTO SUBMIT FILTER
+    // ==========================================================
+    document.querySelectorAll('.filter-section input, .filter-section select').forEach(function(el) {
+        el.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                this.closest('form').submit();
+            }
+        });
+    });
+    
+    // ==========================================================
+    // SHOW SUCCESS/ERROR MESSAGES
+    // ==========================================================
+    var urlParams = new URLSearchParams(window.location.search);
+    var success = urlParams.get('success');
+    var error = urlParams.get('error');
+    
+    if (success) {
+        Swal.fire('Sukses', success, 'success');
+        var newUrl = window.location.pathname + window.location.search.replace(/[?&]success=[^&]*/, '');
+        window.history.replaceState({}, document.title, newUrl);
+    }
+    
+    if (error) {
+        Swal.fire('Error', error, 'error');
+        var newUrl = window.location.pathname + window.location.search.replace(/[?&]error=[^&]*/, '');
+        window.history.replaceState({}, document.title, newUrl);
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,582 @@
+{% extends "base.html" %}
+
+{% block title %}Detail Penugasan{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .detail-container {
+        background: var(--tblr-bg-surface);
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 1.5rem;
+    }
+    
+    .detail-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .detail-section .section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--tblr-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--tblr-border-color);
+        padding-bottom: 6px;
+    }
+    
+    .detail-item {
+        display: flex;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--tblr-border-color-light);
+    }
+    
+    .detail-item:last-child {
+        border-bottom: none;
+    }
+    
+    .detail-item .label {
+        width: 150px;
+        flex-shrink: 0;
+        font-weight: 500;
+        color: var(--tblr-muted);
+        font-size: 14px;
+    }
+    
+    .detail-item .value {
+        flex: 1;
+        font-size: 14px;
+    }
+    
+    .status-badge {
+        font-size: 14px;
+        padding: 4px 16px;
+        border-radius: 20px;
+        display: inline-block;
+    }
+    
+    .upload-list .upload-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        margin-bottom: 8px;
+        transition: all 0.2s ease;
+    }
+    
+    .upload-list .upload-item:hover {
+        background: var(--tblr-bg-surface-hover);
+    }
+    
+    .upload-list .upload-item .upload-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: rgba(99, 102, 241, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 20px;
+        color: var(--tblr-primary);
+    }
+    
+    .upload-list .upload-item .upload-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .upload-list .upload-item .upload-info .filename {
+        font-weight: 500;
+        font-size: 14px;
+    }
+    
+    .upload-list .upload-item .upload-info .upload-meta {
+        font-size: 12px;
+        color: var(--tblr-muted);
+    }
+    
+    .review-list .review-item {
+        padding: 10px 14px;
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        margin-bottom: 8px;
+    }
+    
+    .review-list .review-item .review-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+    
+    .review-list .review-item .review-header .reviewer {
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .review-list .review-item .review-header .review-time {
+        font-size: 12px;
+        color: var(--tblr-muted);
+    }
+    
+    .review-list .review-item .review-comment {
+        font-size: 14px;
+        margin-top: 4px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 2rem 1.5rem;
+        color: var(--tblr-muted);
+    }
+    
+    .empty-state i {
+        font-size: 36px;
+        display: block;
+        margin-bottom: 8px;
+        opacity: 0.3;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .action-buttons .btn {
+        padding: 6px 16px;
+        font-size: 13px;
+    }
+    
+    @media (max-width: 768px) {
+        .detail-container {
+            padding: 1rem;
+        }
+        
+        .detail-item {
+            flex-direction: column;
+            padding: 6px 0;
+        }
+        
+        .detail-item .label {
+            width: 100%;
+            font-size: 13px;
+        }
+        
+        .detail-item .value {
+            font-size: 13px;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+        }
+        
+        .action-buttons .btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Portal Joki</div>
+            <h2 class="page-title">Detail Penugasan</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a href="{{ url_for('portal_joki_admin_penugasan') }}" class="btn btn-outline-secondary btn-sm">
+                    <i class="ti ti-arrow-left me-1"></i> Kembali
+                </a>
+                <a href="{{ url_for('portal_joki_admin_penugasan_edit', penugasan_id=penugasan.id) }}" class="btn btn-primary btn-sm">
+                    <i class="ti ti-edit me-1"></i> Edit
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     ERROR STATE
+     ========================================================== -->
+{% if error %}
+<div class="alert alert-danger">
+    <i class="ti ti-alert-circle me-2"></i>
+    {{ error }}
+</div>
+{% endif %}
+
+<!-- ==========================================================
+     DETAIL CONTAINER
+     ========================================================== -->
+{% if penugasan %}
+<div class="detail-container">
+
+    <!-- Status & Actions -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+        <div>
+            <span class="status-badge bg-{{ get_status_color(penugasan.status|default(0)) }}">
+                {{ get_status_label(penugasan.status|default(0)) }}
+            </span>
+            {% if penugasan.is_overdue %}
+            <span class="badge bg-danger ms-2">
+                <i class="ti ti-clock me-1"></i> Overdue
+            </span>
+            {% endif %}
+        </div>
+        <div class="action-buttons">
+            <!-- Status Update Dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="ti ti-arrow-right me-1"></i> Update Status
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <form method="POST" action="{{ url_for('portal_joki_admin_penugasan_status', penugasan_id=penugasan.id) }}" class="status-form" data-status="0">
+                            <button type="submit" class="dropdown-item">
+                                <span class="badge bg-warning me-2">Pending</span>
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="POST" action="{{ url_for('portal_joki_admin_penugasan_status', penugasan_id=penugasan.id) }}" class="status-form" data-status="1">
+                            <button type="submit" class="dropdown-item">
+                                <span class="badge bg-info me-2">Upload</span>
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="POST" action="{{ url_for('portal_joki_admin_penugasan_status', penugasan_id=penugasan.id) }}" class="status-form" data-status="2">
+                            <button type="submit" class="dropdown-item">
+                                <span class="badge bg-danger me-2">Revisi</span>
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                        <form method="POST" action="{{ url_for('portal_joki_admin_penugasan_status', penugasan_id=penugasan.id) }}" class="status-form" data-status="3">
+                            <button type="submit" class="dropdown-item">
+                                <span class="badge bg-success me-2">Selesai</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Delete Button -->
+            <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete()">
+                <i class="ti ti-trash me-1"></i> Hapus
+            </button>
+        </div>
+    </div>
+
+    <!-- ==========================================================
+         INFO DETAIL
+         ========================================================== -->
+    <div class="detail-section">
+        <div class="section-title">Informasi Penugasan</div>
+        
+        <div class="detail-item">
+            <span class="label">ID</span>
+            <span class="value">#{{ penugasan.id }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Tanggal</span>
+            <span class="value">{{ penugasan.tanggal }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Deadline</span>
+            <span class="value">{{ penugasan.deadline or '-' }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Joki</span>
+            <span class="value">
+                <strong>{{ penugasan.joki_nama or '-' }}</strong>
+                <span class="text-muted ms-2">({{ penugasan.joki_kode or '-' }})</span>
+            </span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Kloter</span>
+            <span class="value">{{ penugasan.kloter_nama or '-' }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Absen</span>
+            <span class="value">{{ penugasan.absen_awal or '-' }} - {{ penugasan.absen_akhir or '-' }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Target Judul</span>
+            <span class="value">{{ penugasan.target_judul or 0 }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Dibuat</span>
+            <span class="value">{{ penugasan.created_at }} <span class="text-muted">({{ penugasan.days_since_created or 0 }} hari lalu)</span></span>
+        </div>
+        <div class="detail-item">
+            <span class="label">Terakhir Update</span>
+            <span class="value">{{ penugasan.updated_at or '-' }}</span>
+        </div>
+    </div>
+
+    <!-- ==========================================================
+         INSTRUKSI
+         ========================================================== -->
+    {% if penugasan.instruksi %}
+    <div class="detail-section">
+        <div class="section-title">Instruksi</div>
+        <div class="p-3 bg-light rounded">
+            {{ penugasan.instruksi|nl2br }}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ==========================================================
+         UPLOADS
+         ========================================================== -->
+    {% if related and related.uploads %}
+    <div class="detail-section">
+        <div class="section-title d-flex align-items-center justify-content-between">
+            <span>Upload <span class="badge bg-secondary ms-2">{{ related.uploads|length }}</span></span>
+        </div>
+        <div class="upload-list">
+            {% for upload in related.uploads %}
+            <div class="upload-item">
+                <div class="upload-icon">
+                    <i class="ti ti-file-image"></i>
+                </div>
+                <div class="upload-info">
+                    <div class="filename">{{ upload.original_filename or 'File' }}</div>
+                    <div class="upload-meta">
+                        <span>Nomor: {{ upload.nomor or '-' }}</span>
+                        <span class="mx-1">•</span>
+                        <span>{{ upload.uploaded_at }}</span>
+                        {% if upload.catatan %}
+                        <span class="mx-1">•</span>
+                        <span>{{ upload.catatan }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{{ upload.file_path }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                    <i class="ti ti-eye"></i>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="detail-section">
+        <div class="section-title">Upload</div>
+        <div class="empty-state">
+            <i class="ti ti-photo-off"></i>
+            <p>Belum ada upload untuk penugasan ini.</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ==========================================================
+         REVIEWS
+         ========================================================== -->
+    {% if related and related.reviews %}
+    <div class="detail-section">
+        <div class="section-title d-flex align-items-center justify-content-between">
+            <span>Review <span class="badge bg-secondary ms-2">{{ related.reviews|length }}</span></span>
+        </div>
+        <div class="review-list">
+            {% for review in related.reviews %}
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="reviewer">
+                        <span class="badge bg-{{ 
+                            'success' if review.status == 1 else 
+                            'warning' if review.status == 2 else 
+                            'danger' if review.status == 3 else 'secondary' 
+                        }}">
+                            {{ 
+                                'Approved' if review.status == 1 else 
+                                'Revisi' if review.status == 2 else 
+                                'Rejected' if review.status == 3 else 'Unknown' 
+                            }}
+                        </span>
+                        {{ review.reviewed_by or 'Admin' }}
+                    </span>
+                    <span class="review-time">{{ review.reviewed_at }}</span>
+                </div>
+                {% if review.komentar %}
+                <div class="review-comment">{{ review.komentar }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="detail-section">
+        <div class="section-title">Review</div>
+        <div class="empty-state">
+            <i class="ti ti-message-circle-off"></i>
+            <p>Belum ada review untuk penugasan ini.</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ==========================================================
+         PROGRESS STATS
+         ========================================================== -->
+    {% if related and related.progress_stats %}
+    <div class="detail-section">
+        <div class="section-title">Statistik Progress</div>
+        <div class="row g-2">
+            <div class="col-6 col-md-3">
+                <div class="card bg-light">
+                    <div class="card-body text-center p-2">
+                        <div class="h5 mb-0">{{ related.progress_stats.total_upload or 0 }}</div>
+                        <div class="small text-muted">Total Upload</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card bg-light">
+                    <div class="card-body text-center p-2">
+                        <div class="h5 mb-0">{{ related.progress_stats.total_review or 0 }}</div>
+                        <div class="small text-muted">Total Review</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card bg-light">
+                    <div class="card-body text-center p-2">
+                        <div class="h5 mb-0">{{ related.progress_stats.total_approved or 0 }}</div>
+                        <div class="small text-muted">Approved</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card bg-light">
+                    <div class="card-body text-center p-2">
+                        <div class="h5 mb-0">{{ related.progress_stats.total_revision or 0 }}</div>
+                        <div class="small text-muted">Revisi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endif %}
+
+<!-- ==========================================================
+     DELETE CONFIRMATION MODAL
+     ========================================================== -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">
+                    <i class="ti ti-alert-triangle me-2"></i>
+                    Konfirmasi Hapus
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus penugasan ini?</p>
+                <p class="text-muted small">Data terkait (upload, review) juga akan dihapus.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <form method="POST" action="{{ url_for('portal_joki_admin_penugasan_delete_post', penugasan_id=penugasan.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="ti ti-trash me-1"></i> Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ==========================================================
+        // Status update forms
+        // ==========================================================
+        document.querySelectorAll('.status-form').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                var status = this.dataset.status;
+                var statusLabels = ['Pending', 'Upload', 'Revisi', 'Selesai'];
+                var statusColors = ['warning', 'info', 'danger', 'success'];
+                
+                Swal.fire({
+                    title: 'Update Status',
+                    text: 'Ubah status menjadi "' + statusLabels[status] + '"?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#' + (statusColors[status] === 'warning' ? 'eab308' : 
+                                                statusColors[status] === 'info' ? '3b82f6' :
+                                                statusColors[status] === 'danger' ? 'ef4444' : '22c55e'),
+                    confirmButtonText: 'Ya, Update!',
+                    cancelButtonText: 'Batal'
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        // Submit form
+                        var formData = new FormData(form);
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(function(response) { return response.json(); })
+                        .then(function(data) {
+                            if (data.success) {
+                                Swal.fire('Sukses', data.message, 'success').then(function() {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire('Error', data.error || 'Gagal update status', 'error');
+                            }
+                        })
+                        .catch(function(error) {
+                            Swal.fire('Error', 'Gagal update status: ' + error.message, 'error');
+                        });
+                    }
+                });
+            });
+        });
+        
+        // ==========================================================
+        // Delete confirmation
+        // ==========================================================
+        window.confirmDelete = function() {
+            var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        };
+        
+        // ==========================================================
+        // Show success/error messages from URL params
+        // ==========================================================
+        var urlParams = new URLSearchParams(window.location.search);
+        var success = urlParams.get('success');
+        var error = urlParams.get('error');
+        
+        if (success) {
+            Swal.fire('Sukses', success, 'success');
+            var newUrl = window.location.pathname + window.location.search.replace(/[?&]success=[^&]*/, '');
+            window.history.replaceState({}, document.title, newUrl);
+        }
+        
+        if (error) {
+            Swal.fire('Error', error, 'error');
+            var newUrl = window.location.pathname + window.location.search.replace(/[?&]error=[^&]*/, '');
+            window.history.replaceState({}, document.title, newUrl);
+        }
+    });
+</script>
+{% endblock %}

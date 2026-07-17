@@ -2,134 +2,727 @@
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <h1 class="h3 text-gray-800 mb-2">
+        <i class="fas fa-users mr-2"></i> Artists
+        <span class="badge badge-secondary ml-2" id="totalArtists">--</span>
+    </h1>
+    <div>
+        <button type="button" class="btn btn-primary shadow-sm" id="btnRefresh">
+            <i class="fas fa-sync-alt mr-1"></i> Refresh
+        </button>
+        <a href="/artists/new" class="btn btn-success shadow-sm">
+            <i class="fas fa-plus mr-1"></i> Tambah Artis
+        </a>
+    </div>
+</div>
 
-  <h1 class="h3 text-gray-800 mb-2">Artists</h1>
+<!-- Statistics Cards -->
+<div class="row mb-4" id="statsCards">
+    <div class="col-md-4 col-sm-6">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Total Artists
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalArtistsStat">--</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 col-sm-6">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Total Songs
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalSongsStat">--</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-music fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 col-sm-6">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Active Channels
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="activeChannelsStat">--</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-broadcast-tower fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-  <a href="/artists/new" class="btn btn-primary shadow-sm">
-    <i class="fas fa-plus mr-1"></i> Tambah Artis
-  </a>
-
+<!-- Selection Info Bar -->
+<div id="selectionInfo" style="display: none;" class="alert alert-info alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle mr-2"></i>
+    <strong id="selectedCount">0</strong> artis dipilih
+    <div class="float-right">
+        <button type="button" class="btn btn-sm btn-danger" id="btnBulkDelete">
+            <i class="fas fa-trash-alt mr-1"></i> Hapus Terpilih
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" id="btnClearSelection">
+            <i class="fas fa-times mr-1"></i> Batal
+        </button>
+    </div>
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
 </div>
 
 <div class="card shadow mb-4">
-  <div class="card-body table-responsive">
-
-    <table class="table table-bordered table-hover align-middle" id="artistsTable" width="100%">
-
-      <thead class="thead-light text-center">
-        <tr>
-          <th style="width: 60px;">ID</th>
-          <th>Channel</th>
-          <th>Nama Artis</th>
-          <th style="width: 150px;">Dibuat</th>
-          <th style="width: 120px;">Aksi</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {% for artist in artists %}
-        <tr>
-
-          <td class="text-center">{{ artist.id }}</td>
-
-          <td>
-            <span class="text-primary font-weight-bold">
-              {{ artist.channel_name }}
-            </span>
-          </td>
-
-          <td>
-            <strong>{{ artist.name }}</strong>
-          </td>
-
-          <td class="text-center">
-            {% if artist.created_at %}
-              <div>{{ artist.created_at.strftime("%d %b %Y") }}</div>
-              <small class="text-muted">
-                {{ artist.created_at.strftime("%H:%M") }}
-              </small>
-            {% else %}
-              <span class="text-muted">-</span>
-            {% endif %}
-          </td>
-
-          <td class="text-center text-nowrap">
-
-            <div class="btn-group" role="group">
-
-              <a href="/artists/{{ artist.id }}/edit"
-                 class="btn btn-warning btn-sm"
-                 data-toggle="tooltip"
-                 title="Edit">
-                <i class="fas fa-pencil-alt"></i>
-              </a>
-
-              <form method="post"
-                    action="/artists/{{ artist.id }}/delete"
-                    onsubmit="return confirm('Yakin ingin menghapus artis ini?');">
-
-                <button type="submit"
-                        class="btn btn-danger btn-sm"
-                        data-toggle="tooltip"
-                        title="Hapus">
-                  <i class="fas fa-trash"></i>
-                </button>
-
-              </form>
-
+    <div class="card-header py-3 d-flex justify-content-between align-items-center flex-wrap">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-table mr-2"></i> Daftar Artists
+        </h6>
+        
+        <!-- Filter Channel Dropdown -->
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="channelFilterBtn" data-toggle="dropdown">
+                <i class="fas fa-filter mr-1"></i> <span id="selectedChannelName">Semua Channel</span>
+            </button>
+            <div class="dropdown-menu" id="channelFilterMenu">
+                <a class="dropdown-item active" href="#" data-channel-id="">Semua Channel</a>
+                <div class="dropdown-divider"></div>
+                <!-- Channels will be loaded here -->
             </div>
+        </div>
+    </div>
+    
+    <div class="card-body table-responsive">
+        <table class="table table-bordered table-hover align-middle" id="artistsTable" width="100%">
+            <thead class="thead-light text-center">
+                <tr>
+                    <th style="width: 50px;">
+                        <input type="checkbox" id="checkAll">
+                    </th>
+                    <th style="width: 60px;">ID</th>
+                    <th>Channel</th>
+                    <th>Nama Artis</th>
+                    <th>Total Lagu</th>
+                    <th style="width: 150px;">Dibuat</th>
+                    <th style="width: 120px;">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data loaded via DataTables server-side -->
+            </tbody>
+        </table>
+    </div>
+</div>
 
-          </td>
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; text-align: center; padding-top: 20%;">
+    <div class="spinner-border text-light" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <h5 class="text-white mt-3">Memproses...</h5>
+</div>
 
-        </tr>
-        {% else %}
-        <tr>
-          <td colspan="5" class="text-center text-muted">
-            Belum ada data artist
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-
-    </table>
-
-  </div>
+<!-- Bulk Delete Confirmation Modal -->
+<div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> Konfirmasi Hapus
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Yakin ingin menghapus <strong id="bulkDeleteCount">0</strong> artis?</p>
+                <p class="text-danger mb-0"><small>Tindakan ini tidak dapat dibatalkan!</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="confirmBulkDelete">Hapus</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
 
 {% block scripts %}
 <script>
-$(document).ready(function () {
-
-    $('#artistsTable').DataTable({
-
+$(function () {
+    // ==================== GLOBAL STATE ====================
+    const selectedIds = new Set();
+    let selectedChannelId = "";
+    let currentStats = {};
+    
+    // ==================== LOAD CHANNELS FOR FILTER ====================
+    function loadChannels() {
+        $.ajax({
+            url: "/channels/list",
+            method: "GET",
+            success: function(response) {
+                const menu = $('#channelFilterMenu');
+                menu.find('a:not(.active):not(.dropdown-divider)').remove();
+                
+                response.channels.forEach(channel => {
+                    menu.append(`
+                        <a class="dropdown-item" href="#" data-channel-id="${channel.id}">
+                            <i class="fas fa-broadcast-tower mr-2"></i> ${escapeHtml(channel.name)}
+                        </a>
+                    `);
+                });
+                
+                // Add click handlers
+                menu.find('.dropdown-item').on('click', function(e) {
+                    e.preventDefault();
+                    const channelId = $(this).data('channel-id');
+                    const channelName = $(this).text().trim();
+                    
+                    menu.find('.dropdown-item').removeClass('active');
+                    $(this).addClass('active');
+                    
+                    if (channelId) {
+                        selectedChannelId = channelId;
+                        $('#selectedChannelName').text(channelName);
+                    } else {
+                        selectedChannelId = "";
+                        $('#selectedChannelName').text('Semua Channel');
+                    }
+                    
+                    table.ajax.reload();
+                    loadStats();
+                    selectedIds.clear();
+                    updateSelectionInfo();
+                });
+            },
+            error: function() {
+                console.error("Failed to load channels");
+            }
+        });
+    }
+    
+    // ==================== LOAD STATISTICS ====================
+    function loadStats() {
+        $.ajax({
+            url: "/artists/stats",
+            method: "GET",
+            data: selectedChannelId ? { channel_id: selectedChannelId } : {},
+            success: function(response) {
+                if (response.success) {
+                    currentStats = response.data;
+                    $('#totalArtistsStat').text(currentStats.total_artists || 0);
+                    $('#totalSongsStat').text(currentStats.total_songs || 0);
+                    $('#activeChannelsStat').text(currentStats.active_channels || 0);
+                    $('#totalArtists').text(currentStats.total_artists || 0);
+                }
+            },
+            error: function() {
+                console.log("Failed to load stats");
+            }
+        });
+    }
+    
+    // ==================== INIT DATATABLE ====================
+    const table = $('#artistsTable').DataTable({
+        processing: true,
+        serverSide: true,
+        pageLength: 10,
+        lengthMenu: [10, 25, 50, 100, 250],
+        order: [[1, "desc"]],
         language: {
+            processing: '<i class="fas fa-spinner fa-spin fa-2x"></i><br>Memproses...',
             search: "Cari:",
+            searchPlaceholder: "Nama artis atau channel...",
             lengthMenu: "Tampilkan _MENU_ entri",
             info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+            infoEmpty: "Tidak ada data",
+            infoFiltered: "(difilter dari _MAX_ total data)",
             zeroRecords: "Tidak ada data ditemukan",
             paginate: {
-                first: "Awal",
-                last: "Akhir",
+                first: "« Awal",
+                last: "Akhir »",
                 next: "›",
                 previous: "‹"
             }
         },
-
-        pageLength: 10,
-        lengthMenu: [5, 10, 25, 50, 100],
-
-        order: [[0, "desc"]],
-
-        columnDefs: [
-            { orderable: false, targets: 4 }
-        ]
-
+        ajax: {
+            url: "/artists/data",
+            type: "GET",
+            data: function(d) {
+                const params = {
+                    draw: d.draw,
+                    start: d.start,
+                    length: d.length,
+                    search: d.search.value,
+                    order_column: d.order[0]?.column || 0,
+                    order_dir: d.order[0]?.dir || "desc"
+                };
+                
+                if (selectedChannelId) {
+                    params.channel_id = selectedChannelId;
+                }
+                
+                return params;
+            },
+            error: function(xhr, status, error) {
+                console.error("DataTables error:", error);
+                let errorMsg = "Gagal memuat data";
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.detail) {
+                        errorMsg = Array.isArray(response.detail) ? response.detail[0]?.msg : response.detail;
+                    }
+                } catch(e) {}
+                showToast(errorMsg, "error");
+            }
+        },
+        columns: [
+            {
+                data: "id",
+                orderable: false,
+                render: function(data) {
+                    return `<input type="checkbox" class="row-check" value="${data}">`;
+                }
+            },
+            { data: "id" },
+            { 
+                data: "channel_name",
+                render: function(data) {
+                    return `<span class="font-weight-bold text-primary">${escapeHtml(data)}</span>`;
+                }
+            },
+            { 
+                data: "name",
+                render: function(data) {
+                    return `<strong>${escapeHtml(data)}</strong>`;
+                }
+            },
+            { 
+                data: "song_count",
+                render: function(data) {
+                    return `<span class="badge badge-info px-3 py-2">${data || 0} Lagu</span>`;
+                }
+            },
+            { 
+                data: "created_at",
+                render: function(data) {
+                    if (!data) return '<span class="text-muted">-</span>';
+                    return `<i class="far fa-calendar-alt mr-1"></i>${data}`;
+                }
+            },
+            {
+                data: "id",
+                orderable: false,
+                render: function(data) {
+                    return `
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="/artists/${data}/edit" 
+                               class="btn btn-warning" 
+                               data-toggle="tooltip" 
+                               title="Edit">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            <button type="button" 
+                                    class="btn btn-danger delete-btn" 
+                                    data-id="${data}"
+                                    data-toggle="tooltip" 
+                                    title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        ],
+        drawCallback: function() {
+            // Restore checkboxes
+            $('.row-check').each(function() {
+                const id = $(this).val();
+                if (selectedIds.has(id)) {
+                    $(this).prop('checked', true);
+                    $(this).closest('tr').addClass('table-active');
+                }
+            });
+            
+            // Update checkAll state
+            const totalChecked = $('.row-check:checked').length;
+            const totalCheckbox = $('.row-check').length;
+            $('#checkAll').prop('checked', totalChecked > 0 && totalChecked === totalCheckbox);
+            $('#checkAll').prop('indeterminate', totalChecked > 0 && totalChecked < totalCheckbox);
+            
+            // Update selection info
+            updateSelectionInfo();
+            
+            // Reinitialize tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+        },
+        initComplete: function() {
+            updateSelectionInfo();
+            
+            // Style search input
+            const searchInput = $('.dataTables_filter input');
+            searchInput.attr('placeholder', '🔍 Cari nama artis atau channel...');
+            searchInput.addClass('form-control form-control-sm');
+            searchInput.css({
+                'border-radius': '20px',
+                'padding': '0.375rem 1rem',
+                'border': '1px solid #d1d3e2',
+                'width': '280px'
+            });
+            
+            // Style length menu
+            $('.dataTables_length select').addClass('form-control form-control-sm');
+            
+            // Add search delay
+            let searchTimeout;
+            searchInput.off('keyup.searchDelay').on('keyup.searchDelay', function() {
+                clearTimeout(searchTimeout);
+                const searchTerm = this.value;
+                searchTimeout = setTimeout(() => {
+                    table.search(searchTerm).draw();
+                }, 500);
+            });
+            
+            // Load initial data
+            loadChannels();
+            loadStats();
+        }
     });
-
-    $('[data-toggle="tooltip"]').tooltip();
-
+    
+    // ==================== HELPER FUNCTIONS ====================
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    function updateSelectionInfo() {
+        const count = selectedIds.size;
+        if (count > 0) {
+            $('#selectionInfo').fadeIn();
+            $('#selectedCount').text(count);
+        } else {
+            $('#selectionInfo').fadeOut();
+        }
+    }
+    
+    function showToast(message, type = 'success') {
+        if ($('#toast-container').length === 0) {
+            $('body').append('<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>');
+        }
+        
+        const bgClass = type === 'success' ? 'bg-success' : (type === 'error' ? 'bg-danger' : 'bg-info');
+        const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
+        
+        const toastId = 'toast_' + Date.now();
+        const toast = $(`
+            <div id="${toastId}" class="toast" role="alert" data-delay="3000">
+                <div class="toast-header ${bgClass} text-white">
+                    <i class="fas ${icon} mr-2"></i>
+                    <strong class="mr-auto">${type === 'success' ? 'Sukses' : (type === 'error' ? 'Error' : 'Info')}</strong>
+                    <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast">&times;</button>
+                </div>
+                <div class="toast-body">
+                    ${escapeHtml(message)}
+                </div>
+            </div>
+        `);
+        
+        $('#toast-container').append(toast);
+        toast.toast('show');
+        toast.on('hidden.bs.toast', () => toast.remove());
+        setTimeout(() => toast.toast('hide'), 3000);
+    }
+    
+    function showLoading() {
+        $('#loadingOverlay').fadeIn(200);
+    }
+    
+    function hideLoading() {
+        $('#loadingOverlay').fadeOut(200);
+    }
+    
+    function bulkDelete() {
+        const ids = Array.from(selectedIds);
+        
+        if (ids.length === 0) {
+            showToast("Pilih minimal 1 artis", "error");
+            return;
+        }
+        
+        $('#bulkDeleteCount').text(ids.length);
+        $('#bulkDeleteModal').modal('show');
+    }
+    
+    function confirmBulkDelete() {
+        const ids = Array.from(selectedIds);
+        
+        showLoading();
+        
+        $.ajax({
+            url: "/artists/bulk-delete",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                ids: ids,
+                channel_id: selectedChannelId || null
+            }),
+            success: function(response) {
+                if (response.success) {
+                    showToast(response.message, 'success');
+                    table.ajax.reload(null, false);
+                    selectedIds.clear();
+                    updateSelectionInfo();
+                    $('#checkAll').prop('checked', false);
+                    loadStats();
+                } else {
+                    showToast(response.message || 'Gagal menghapus', 'error');
+                }
+            },
+            error: function(xhr) {
+                const message = xhr.responseJSON?.detail || xhr.responseJSON?.message || 'Terjadi kesalahan';
+                showToast(message, 'error');
+            },
+            complete: function() {
+                hideLoading();
+                $('#bulkDeleteModal').modal('hide');
+            }
+        });
+    }
+    
+    // ==================== CHECKBOX HANDLERS ====================
+    $(document).on('change', '.row-check', function() {
+        const id = $(this).val();
+        const $row = $(this).closest('tr');
+        
+        if (this.checked) {
+            selectedIds.add(id);
+            $row.addClass('table-active');
+        } else {
+            selectedIds.delete(id);
+            $row.removeClass('table-active');
+        }
+        
+        updateSelectionInfo();
+        
+        const totalChecked = $('.row-check:checked').length;
+        const totalCheckbox = $('.row-check').length;
+        $('#checkAll').prop('checked', totalChecked > 0 && totalChecked === totalCheckbox);
+        $('#checkAll').prop('indeterminate', totalChecked > 0 && totalChecked < totalCheckbox);
+    });
+    
+    $('#checkAll').on('click', function() {
+        const isChecked = this.checked;
+        
+        $('.row-check').each(function() {
+            const id = $(this).val();
+            $(this).prop('checked', isChecked);
+            
+            if (isChecked) {
+                selectedIds.add(id);
+                $(this).closest('tr').addClass('table-active');
+            } else {
+                selectedIds.delete(id);
+                $(this).closest('tr').removeClass('table-active');
+            }
+        });
+        
+        updateSelectionInfo();
+        $('#checkAll').prop('indeterminate', false);
+    });
+    
+    $('#btnClearSelection').on('click', function() {
+        $('#checkAll').prop('checked', false).trigger('click');
+        showToast("Pilihan dibatalkan", "info");
+    });
+    
+    // ==================== DELETE HANDLER ====================
+    $(document).on('click', '.delete-btn', function() {
+        const id = $(this).data('id');
+        
+        if (!confirm('Yakin ingin menghapus artis ini? Semua lagu dari artis ini juga akan terhapus!')) return;
+        
+        showLoading();
+        
+        const form = $('<form method="post" action="/artists/' + id + '/delete"></form>');
+        if (selectedChannelId) {
+            form.append(`<input type="hidden" name="channel_id" value="${selectedChannelId}">`);
+        }
+        $('body').append(form);
+        form.submit();
+        
+        setTimeout(() => hideLoading(), 1000);
+    });
+    
+    // ==================== BULK DELETE ====================
+    $('#btnBulkDelete').on('click', bulkDelete);
+    $('#confirmBulkDelete').on('click', confirmBulkDelete);
+    
+    // ==================== REFRESH ====================
+    $('#btnRefresh').on('click', function() {
+        table.ajax.reload();
+        loadStats();
+        showToast("Data berhasil di-refresh", "success");
+    });
+    
+    // ==================== KEYBOARD SHORTCUTS ====================
+    $(document).on('keydown', function(e) {
+        // Ctrl/Cmd + A
+        if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+            e.preventDefault();
+            $('#checkAll').click();
+        }
+        // Escape to clear selection
+        if (e.key === 'Escape') {
+            if (selectedIds.size > 0) {
+                $('#checkAll').prop('checked', false).trigger('click');
+                showToast("Pilihan dibatalkan", "info");
+            }
+        }
+    });
+    
+    // Double-click to edit
+    $(document).on('dblclick', '#artistsTable tbody tr', function() {
+        const editBtn = $(this).find('.btn-warning');
+        if (editBtn.length) {
+            window.location.href = editBtn.attr('href');
+        }
+    });
 });
 </script>
+
+<style>
+/* DataTables wrapper layout */
+.dataTables_wrapper {
+    overflow-x: auto;
+}
+
+.dataTables_length {
+    float: left;
+    margin-bottom: 1rem;
+}
+
+.dataTables_filter {
+    float: right;
+    margin-bottom: 1rem;
+}
+
+/* Responsive fix */
+@media (max-width: 768px) {
+    .dataTables_length,
+    .dataTables_filter {
+        float: none;
+        text-align: left;
+        width: 100%;
+    }
+    
+    .dataTables_filter input {
+        width: 100% !important;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Search input styling */
+.dataTables_filter input.form-control {
+    border-radius: 20px;
+    padding: 0.375rem 1rem;
+    border: 1px solid #d1d3e2;
+    width: 280px;
+}
+
+.dataTables_filter input.form-control:focus {
+    border-color: #4e73df;
+    box-shadow: 0 0 0 0.2rem rgba(78,115,223,0.25);
+}
+
+/* Table styling */
+#artistsTable tbody tr:hover {
+    background-color: rgba(0,123,255,0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.table-active {
+    background-color: rgba(0,123,255,0.1) !important;
+}
+
+.row-check {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+#checkAll {
+    cursor: pointer;
+}
+
+.badge {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 20px;
+}
+
+.btn-group-sm > .btn {
+    padding: 0.25rem 0.6rem;
+}
+
+.border-left-primary { border-left: 4px solid #4e73df; }
+.border-left-success { border-left: 4px solid #1cc88a; }
+.border-left-info { border-left: 4px solid #36b9cc; }
+
+.dropdown-menu {
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fc;
+    transform: translateX(5px);
+}
+
+.toast {
+    border-radius: 10px;
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .btn-group {
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+    
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+</style>
 {% endblock %}

@@ -1,96 +1,306 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1 class="h3 mb-3 text-gray-800">Channel Management</h1>
 
-<div class="mb-3">
-  <a href="/channel/create" class="btn btn-success">
-    <i class="fas fa-plus"></i> Tambah Channel
-  </a>
-</div>
+<div class="container-fluid px-4">
+    
+    <!-- ========================================================== -->
+    <!-- HEADER                                                      -->
+    <!-- ========================================================== -->
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-broadcast-tower me-2"></i>
+                Channel Management
+            </h1>
+            <small class="text-muted">
+                Kelola channel untuk sistem
+            </small>
+        </div>
+        <a href="/channel/create" class="btn btn-success">
+            <i class="fas fa-plus me-1"></i>
+            Tambah Channel
+        </a>
+    </div>
 
-<div class="card shadow mb-4">
-  <div class="card-body table-responsive">
+    <!-- ========================================================== -->
+    <!-- STATISTICS CARDS                                            -->
+    <!-- ========================================================== -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-left-primary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-primary text-uppercase">Total Channel</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">{{ channels|length }}</div>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-broadcast-tower fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <table class="table table-bordered table-hover" id="channelsTable" width="100%" cellspacing="0">
-      <thead class="thead-light">
-        <tr>
-          <th>ID</th>
-          <th>Nama Variabel</th>
-          <th>Alias</th>
-          <th>Nilai</th>
-          <th>Keterangan</th>
-          <th>Status</th>
-          <th width="150">Aksi</th>
-        </tr>
-      </thead>
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-success text-uppercase">Aktif</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ channels|selectattr('is_active', 'equalto', true)|list|length }}
+                            </div>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-      <tbody>
-        {% for c in channels %}
-        <tr>
-          <td>{{ c.id }}</td>
-          <td>{{ c.nama_variabel }}</td>
-          <td>{{ c.alias or '-' }}</td>
-          <td>{{ c.nilai }}</td>
-          <td>{{ c.keterangan or '-' }}</td>
+        <div class="col-md-4 col-sm-6">
+            <div class="card border-left-secondary shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-xs fw-bold text-secondary text-uppercase">Nonaktif</div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">
+                                {{ channels|rejectattr('is_active', 'equalto', true)|list|length }}
+                            </div>
+                        </div>
+                        <div class="text-secondary">
+                            <i class="fas fa-times-circle fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-          <td>
-            {% if c.is_active %}
-            <span class="badge badge-success">Aktif</span>
+    <!-- ========================================================== -->
+    <!-- TABLE                                                      -->
+    <!-- ========================================================== -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="mb-0 fw-bold text-primary">
+                    <i class="fas fa-list me-2"></i>
+                    Daftar Channel
+                </h6>
+                <span class="text-muted small">
+                    Total: <strong>{{ channels|length }}</strong> channel
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body table-responsive">
+            {% if channels %}
+            <table class="table table-hover table-striped align-middle" id="channelsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th width="60">ID</th>
+                        <th>Nama Variabel</th>
+                        <th>Alias</th>
+                        <th>Nilai</th>
+                        <th>Keterangan</th>
+                        <th width="100">Status</th>
+                        <th width="180" class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in channels %}
+                    <tr>
+                        <td class="fw-bold">{{ c.id }}</td>
+                        <td>
+                            <span class="fw-medium">{{ c.nama_variabel }}</span>
+                        </td>
+                        <td>
+                            {% if c.alias %}
+                            <span class="badge bg-secondary text-white">{{ c.alias }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <code class="bg-light px-2 py-1 rounded">{{ c.nilai }}</code>
+                        </td>
+                        <td>
+                            {% if c.keterangan %}
+                            {{ c.keterangan }}
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if c.is_active %}
+                            <span class="badge bg-success text-white">
+                                <i class="fas fa-check-circle me-1"></i>Aktif
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">
+                                <i class="fas fa-times-circle me-1"></i>Nonaktif
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center">
+                                {% if not c.is_active %}
+                                <form action="/channel/set_active" method="post" class="d-inline">
+                                    <input type="hidden" name="channel_id" value="{{ c.id }}">
+                                    <button type="submit" class="btn btn-outline-success btn-sm" title="Set Aktif">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+
+                                <a href="/channel/edit/{{ c.id }}" class="btn btn-outline-warning btn-sm" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+
+                                <form action="/channel/delete/{{ c.id }}" method="post" class="d-inline"
+                                      onsubmit="return confirm('Yakin ingin menghapus channel ini?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% else %}
-            <span class="badge badge-secondary">Nonaktif</span>
+            <!-- EMPTY STATE -->
+            <div class="text-center py-5">
+                <i class="fas fa-broadcast-tower fa-4x text-muted d-block mb-3"></i>
+                <h5 class="text-muted">Belum ada channel</h5>
+                <p class="text-muted mb-3">Mulai dengan menambahkan channel pertama Anda</p>
+                <a href="/channel/create" class="btn btn-success">
+                    <i class="fas fa-plus me-1"></i>
+                    Tambah Channel Pertama
+                </a>
+            </div>
             {% endif %}
-          </td>
+        </div>
 
-          <td>
+        <!-- FOOTER -->
+        {% if channels %}
+        <div class="card-footer">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <span class="text-muted small">
+                    Menampilkan <strong>{{ channels|length }}</strong> channel
+                </span>
+                <div>
+                    <button class="btn btn-outline-secondary btn-sm" id="btnRefresh">
+                        <i class="fas fa-sync-alt me-1"></i>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 
-            {% if not c.is_active %}
-            <form action="/channel/set_active" method="post" style="display:inline;">
-              <input type="hidden" name="channel_id" value="{{ c.id }}">
-              <button type="submit" class="btn btn-sm btn-primary" title="Set Aktif">
-                <i class="fas fa-check"></i>
-              </button>
-            </form>
-            {% endif %}
-
-            <a href="/channel/edit/{{ c.id }}" class="btn btn-sm btn-warning" title="Edit">
-              <i class="fas fa-pencil-alt"></i>
-            </a>
-
-            <form action="/channel/delete/{{ c.id }}" method="post" style="display:inline;"
-              onsubmit="return confirm('Yakin ingin menghapus channel ini?');">
-              <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                <i class="fas fa-trash"></i>
-              </button>
-            </form>
-
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-
-    </table>
-
-  </div>
 </div>
+
+<!-- ========================================================== -->
+<!-- STYLES                                                     -->
+<!-- ========================================================== -->
+<style>
+    .border-left-primary {
+        border-left: 4px solid #6366f1;
+    }
+    .border-left-success {
+        border-left: 4px solid #22c55e;
+    }
+    .border-left-secondary {
+        border-left: 4px solid #64748b;
+    }
+    .opacity-50 {
+        opacity: 0.5;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .table tr:hover {
+        cursor: default;
+    }
+    .gap-1 { gap: 0.25rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 1rem; }
+    .fw-medium {
+        font-weight: 500;
+    }
+    code {
+        font-size: 0.8rem;
+    }
+</style>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
-  $(document).ready(function () {
-    $('#channelsTable').DataTable({
-      "language": {
-        "search": "Cari:",
-        "lengthMenu": "Tampilkan _MENU_ entri",
-        "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-        "paginate": {
-          "first": "Awal",
-          "last": "Akhir",
-          "next": "Berikutnya",
-          "previous": "Sebelumnya"
+$(document).ready(function () {
+    
+    // ==========================================================
+    // DATATABLE
+    // ==========================================================
+    var table = $('#channelsTable').DataTable({
+        "language": {
+            "search": "Cari:",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "infoEmpty": "Tidak ada data",
+            "infoFiltered": "(difilter dari _MAX_ total entri)",
+            "paginate": {
+                "first": "Awal",
+                "last": "Akhir",
+                "next": "Berikutnya",
+                "previous": "Sebelumnya"
+            },
+            "zeroRecords": "Tidak ada data ditemukan",
         },
-        "zeroRecords": "Tidak ada data ditemukan",
-      }
+        "order": [[0, 'desc']],
+        "pageLength": 25,
+        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]]
     });
-  });
+    
+    // ==========================================================
+    // REFRESH
+    // ==========================================================
+    $('#btnRefresh').on('click', function() {
+        table.ajax.reload();
+        $(this).html('<i class="fas fa-spinner fa-spin me-1"></i> Loading...');
+        setTimeout(() => {
+            $(this).html('<i class="fas fa-sync-alt me-1"></i> Refresh');
+        }, 800);
+    });
+    
+    // ==========================================================
+    // DELETE CONFIRMATION WITH SWEETALERT
+    // ==========================================================
+    $('form[onsubmit*="confirm"]').on('submit', function(e) {
+        e.preventDefault();
+        const form = this;
+        Swal.fire({
+            title: 'Hapus Channel?',
+            text: 'Apakah Anda yakin ingin menghapus channel ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+    
+});
 </script>
 {% endblock %}

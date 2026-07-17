@@ -2,7 +2,7 @@ from typing import Any
 
 from psycopg2 import errors
 
-from db.connect import get_db_cursor, get_dict_cursor
+from app.core.database import get_db_cursor, get_dict_cursor
 
 
 class ChannelAdminRepository:

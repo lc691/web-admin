@@ -1,0 +1,30 @@
+[2026-07-10 10:27:51] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 51, in get_dict_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/repositories/files_repo.py", line 115, in list_all
+    cur.execute(query, tuple(params))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.UndefinedColumn: column f.created_at does not exist
+LINE 11:                 f.created_at,
+                         ^
+HINT:  Perhaps you meant to reference the column "s.created_at".
+
+[2026-07-10 10:30:48] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 51, in get_dict_cursor
+    yield cursor, conn
+  File "/opt/web-admin/app/repositories/files_repo.py", line 115, in list_all
+    ) -> List[Dict]:
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.UndefinedColumn: column f.created_at does not exist
+LINE 11:                 f.created_at,
+                         ^
+HINT:  Perhaps you meant to reference the column "s.created_at".
+

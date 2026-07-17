@@ -1,0 +1,589 @@
+{% extends "base.html" %}
+
+{% block title %}Kalender Portal Joki{% endblock %}
+
+{% block extra_styles %}
+<style>
+    /* ==========================================================
+       CALENDAR PAGE STYLES - ADMIN VERSION
+       ========================================================== */
+    
+    .calendar-container {
+        background: var(--tblr-bg-surface);
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 1.5rem;
+    }
+    
+    /* ==========================================================
+       CALENDAR HEADER
+       ========================================================== */
+    .calendar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .calendar-header .month-nav {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    
+    .calendar-header .month-nav .month-title {
+        font-size: 24px;
+        font-weight: 700;
+        min-width: 160px;
+        text-align: center;
+        color: var(--tblr-body-color);
+    }
+    
+    .calendar-header .month-nav .btn-nav {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--tblr-border-color);
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        color: var(--tblr-body-color);
+    }
+    
+    .calendar-header .month-nav .btn-nav:hover {
+        background: var(--tblr-primary);
+        color: white;
+        border-color: var(--tblr-primary);
+    }
+    
+    .calendar-header .month-nav .btn-nav i {
+        font-size: 18px;
+    }
+    
+    .calendar-header .calendar-actions {
+        display: flex;
+        gap: 8px;
+    }
+    
+    /* ==========================================================
+       LEGEND
+       ========================================================== */
+    .calendar-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 1.25rem;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--tblr-border-color);
+    }
+    
+    .calendar-legend .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--tblr-body-color);
+        cursor: pointer;
+        user-select: none;
+    }
+    
+    .calendar-legend .legend-item input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--tblr-primary);
+        cursor: pointer;
+    }
+    
+    .calendar-legend .legend-item .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+    }
+    
+    .calendar-legend .legend-item .legend-dot.pending {
+        background: #eab308;
+    }
+    
+    .calendar-legend .legend-item .legend-dot.upload {
+        background: #3b82f6;
+    }
+    
+    .calendar-legend .legend-item .legend-dot.revisi {
+        background: #ef4444;
+    }
+    
+    .calendar-legend .legend-item .legend-dot.selesai {
+        background: #22c55e;
+    }
+    
+    .calendar-legend .legend-item .legend-dot.holiday {
+        background: #ef4444;
+        opacity: 0.5;
+    }
+    
+    /* ==========================================================
+       CALENDAR GRID
+       ========================================================== */
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+    }
+    
+    .calendar-grid .day-header {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--tblr-muted);
+        padding: 10px 0;
+        border-bottom: 2px solid var(--tblr-border-color);
+    }
+    
+    .calendar-grid .day-cell {
+        aspect-ratio: 1;
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        background: var(--tblr-bg-surface);
+        color: var(--tblr-body-color);
+        position: relative;
+        min-height: 50px;
+    }
+    
+    .calendar-grid .day-cell:hover {
+        border-color: var(--tblr-primary);
+        transform: scale(1.02);
+        z-index: 1;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    .calendar-grid .day-cell.empty {
+        background: transparent;
+        border-color: transparent;
+        cursor: default;
+    }
+    
+    .calendar-grid .day-cell.empty:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    /* Status indicators - small dots at bottom */
+    .calendar-grid .day-cell .day-dots {
+        position: absolute;
+        bottom: 4px;
+        display: flex;
+        gap: 3px;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .calendar-grid .day-cell .day-dots .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: none;
+    }
+    
+    .calendar-grid .day-cell .day-dots .dot.show {
+        display: block;
+    }
+    
+    .calendar-grid .day-cell .day-dots .dot.pending {
+        background: #eab308;
+    }
+    
+    .calendar-grid .day-cell .day-dots .dot.upload {
+        background: #3b82f6;
+    }
+    
+    .calendar-grid .day-cell .day-dots .dot.revisi {
+        background: #ef4444;
+    }
+    
+    .calendar-grid .day-cell .day-dots .dot.selesai {
+        background: #22c55e;
+    }
+    
+    /* Holiday cell */
+    .calendar-grid .day-cell.is-holiday {
+        background: rgba(239, 68, 68, 0.06);
+        border-color: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+    }
+    
+    .calendar-grid .day-cell.is-holiday .day-number {
+        color: #ef4444;
+    }
+    
+    /* Today cell */
+    .calendar-grid .day-cell.is-today {
+        border-color: var(--tblr-primary);
+        background: rgba(99, 102, 241, 0.06);
+        font-weight: 700;
+    }
+    
+    .calendar-grid .day-cell.is-today .day-number {
+        color: var(--tblr-primary);
+    }
+    
+    /* ==========================================================
+       RESPONSIVE
+       ========================================================== */
+    @media (max-width: 768px) {
+        .calendar-container {
+            padding: 1rem;
+        }
+        
+        .calendar-header .month-nav .month-title {
+            font-size: 18px;
+            min-width: 120px;
+        }
+        
+        .calendar-grid .day-cell {
+            min-height: 40px;
+            font-size: 13px;
+        }
+        
+        .calendar-grid .day-header {
+            font-size: 12px;
+            padding: 6px 0;
+        }
+        
+        .calendar-legend {
+            gap: 10px;
+            font-size: 12px;
+        }
+        
+        .calendar-legend .legend-item {
+            font-size: 12px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .calendar-grid .day-cell {
+            min-height: 32px;
+            font-size: 11px;
+        }
+        
+        .calendar-grid .day-cell .day-dots .dot {
+            width: 4px;
+            height: 4px;
+        }
+        
+        .calendar-header .month-nav .month-title {
+            font-size: 14px;
+            min-width: 80px;
+        }
+        
+        .calendar-header .month-nav .btn-nav {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .calendar-legend .legend-item {
+            font-size: 10px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Portal Joki</div>
+            <h2 class="page-title">Kalender</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a href="{{ url_for('portal_joki_admin_holiday') }}" class="btn btn-outline-primary btn-sm">
+                    <i class="ti ti-calendar-plus me-1"></i> Kelola Libur
+                </a>
+                <a href="{{ url_for('portal_joki_admin_calendar') }}?today=1" class="btn btn-primary btn-sm">
+                    <i class="ti ti-calendar-today me-1"></i> Hari Ini
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     CALENDAR CONTAINER
+     ========================================================== -->
+<div class="calendar-container">
+
+    <!-- Calendar Header -->
+    <div class="calendar-header">
+        <div class="month-nav">
+            <button class="btn-nav" onclick="changeMonth(-1)" title="Bulan Sebelumnya">
+                <i class="ti ti-chevron-left"></i>
+            </button>
+            <span class="month-title" id="monthTitle">{{ month_name }} {{ year }}</span>
+            <button class="btn-nav" onclick="changeMonth(1)" title="Bulan Berikutnya">
+                <i class="ti ti-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="calendar-legend">
+        <label class="legend-item">
+            <input type="checkbox" checked onchange="filterStatus(this, 'pending')">
+            <span class="legend-dot pending"></span>
+            Pending
+        </label>
+        <label class="legend-item">
+            <input type="checkbox" checked onchange="filterStatus(this, 'upload')">
+            <span class="legend-dot upload"></span>
+            Upload
+        </label>
+        <label class="legend-item">
+            <input type="checkbox" checked onchange="filterStatus(this, 'revisi')">
+            <span class="legend-dot revisi"></span>
+            Revisi
+        </label>
+        <label class="legend-item">
+            <input type="checkbox" checked onchange="filterStatus(this, 'selesai')">
+            <span class="legend-dot selesai"></span>
+            Selesai
+        </label>
+        <label class="legend-item">
+            <input type="checkbox" checked onchange="filterHoliday(this)">
+            <span class="legend-dot holiday"></span>
+            Hari Libur
+        </label>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="calendar-grid" id="calendarGrid">
+        <!-- Day headers -->
+        <div class="day-header">Min</div>
+        <div class="day-header">Sen</div>
+        <div class="day-header">Sel</div>
+        <div class="day-header">Rab</div>
+        <div class="day-header">Kam</div>
+        <div class="day-header">Jum</div>
+        <div class="day-header">Sab</div>
+        
+        {% for week in calendar_data %}
+            {% for day in week %}
+                {% if day %}
+                    <div class="day-cell 
+                                {% if day.is_today %}is-today{% endif %}
+                                {% if day.is_holiday %}is-holiday{% endif %}"
+                         data-date="{{ day.date }}"
+                         data-pending="{{ day.pending }}"
+                         data-upload="{{ day.upload }}"
+                         data-revisi="{{ day.revisi }}"
+                         data-selesai="{{ day.selesai }}"
+                         data-holiday="{{ day.is_holiday|lower }}"
+                         onclick="showDayDetail('{{ day.date }}')"
+                         title="{{ day.date }} - Total: {{ day.total_tasks }} tugas">
+                        
+                        <span class="day-number">{{ day.day }}</span>
+                        
+                        <div class="day-dots">
+                            {% if day.pending > 0 %}
+                            <span class="dot pending show" data-status="pending"></span>
+                            {% endif %}
+                            {% if day.upload > 0 %}
+                            <span class="dot upload show" data-status="upload"></span>
+                            {% endif %}
+                            {% if day.revisi > 0 %}
+                            <span class="dot revisi show" data-status="revisi"></span>
+                            {% endif %}
+                            {% if day.selesai > 0 %}
+                            <span class="dot selesai show" data-status="selesai"></span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="day-cell empty"></div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ==========================================================
+     DAY DETAIL MODAL
+     ========================================================== -->
+<div class="modal fade" id="dayDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="ti ti-calendar-day me-2"></i>
+                    Detail Tugas - <span id="detailDate"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="dayDetailBody">
+                <div class="text-center py-4 text-muted">
+                    <i class="ti ti-loader" style="font-size: 24px; animation: spin 1s linear infinite;"></i>
+                    <p class="mt-2">Memuat data...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <a href="#" class="btn btn-primary" id="detailViewAllBtn">
+                    <i class="ti ti-eye me-1"></i> Lihat Semua
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // ==========================================================
+    // NAVIGATION
+    // ==========================================================
+    var currentYear = {{ year }};
+    var currentMonth = {{ month }};
+    
+    function changeMonth(delta) {
+        currentMonth += delta;
+        if (currentMonth > 12) {
+            currentMonth = 1;
+            currentYear += 1;
+        } else if (currentMonth < 1) {
+            currentMonth = 12;
+            currentYear -= 1;
+        }
+        window.location.href = '/admin/portal-joki/calendar?year=' + currentYear + '&month=' + currentMonth;
+    }
+    
+    // ==========================================================
+    // FILTER LEGEND
+    // ==========================================================
+    function filterStatus(checkbox, status) {
+        var cells = document.querySelectorAll('.day-cell');
+        var isChecked = checkbox.checked;
+        
+        cells.forEach(function(cell) {
+            if (cell.classList.contains('empty')) return;
+            
+            var hasStatus = parseInt(cell.dataset[status]) > 0;
+            
+            // If this status is the only one with dots, check if it should show
+            if (hasStatus) {
+                var dot = cell.querySelector('.dot[data-status="' + status + '"]');
+                if (dot) {
+                    dot.classList.toggle('show', isChecked);
+                }
+                
+                // Check if cell has any visible dots
+                var visibleDots = cell.querySelectorAll('.dot.show');
+                if (visibleDots.length === 0) {
+                    cell.style.opacity = '0.3';
+                } else {
+                    cell.style.opacity = '1';
+                }
+            }
+        });
+    }
+    
+    function filterHoliday(checkbox) {
+        var cells = document.querySelectorAll('.day-cell.is-holiday');
+        var isChecked = checkbox.checked;
+        
+        cells.forEach(function(cell) {
+            if (isChecked) {
+                cell.style.display = 'flex';
+            } else {
+                cell.style.display = 'none';
+            }
+        });
+    }
+    
+    // ==========================================================
+    // DAY DETAIL
+    // ==========================================================
+    function showDayDetail(date) {
+        var modal = new bootstrap.Modal(document.getElementById('dayDetailModal'));
+        document.getElementById('detailDate').textContent = date;
+        document.getElementById('dayDetailBody').innerHTML = 
+            '<div class="text-center py-4 text-muted">' +
+            '<i class="ti ti-loader" style="font-size: 24px; animation: spin 1s linear infinite;"></i>' +
+            '<p class="mt-2">Memuat data...</p>' +
+            '</div>';
+        
+        modal.show();
+        
+        fetch('/admin/portal-joki/calendar/day?date_str=' + date)
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                var html = '';
+                if (data.success && data.data && data.data.length > 0) {
+                    var statusMap = {0: 'Pending', 1: 'Upload', 2: 'Revisi', 3: 'Selesai'};
+                    var colorMap = {0: 'warning', 1: 'info', 2: 'danger', 3: 'success'};
+                    
+                    data.data.forEach(function(task) {
+                        var status = task.status || 0;
+                        html += 
+                            '<div class="d-flex align-items-center justify-content-between p-2 border rounded mb-2">' +
+                            '<div>' +
+                            '<strong>' + (task.joki_nama || task.nama || '-') + '</strong>' +
+                            ' <span class="badge bg-secondary">' + (task.kloter_nama || task.kloter || '-') + '</span>' +
+                            '<div class="text-muted small">Target: ' + (task.target_judul || 0) + ' judul</div>' +
+                            '</div>' +
+                            '<span class="badge bg-' + colorMap[status] + '">' + statusMap[status] + '</span>' +
+                            '</div>';
+                    });
+                } else {
+                    html = 
+                        '<div class="text-center py-4 text-muted">' +
+                        '<i class="ti ti-calendar-off" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>' +
+                        'Tidak ada tugas pada tanggal ini.' +
+                        '</div>';
+                }
+                document.getElementById('dayDetailBody').innerHTML = html;
+                
+                var btn = document.getElementById('detailViewAllBtn');
+                btn.href = '/admin/portal-joki/penugasan?date=' + date;
+            })
+            .catch(function(error) {
+                document.getElementById('dayDetailBody').innerHTML = 
+                    '<div class="text-center py-4 text-danger">' +
+                    '<i class="ti ti-alert-circle" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>' +
+                    'Gagal memuat data: ' + error.message +
+                    '</div>';
+            });
+    }
+    
+    // ==========================================================
+    // KEYBOARD NAVIGATION
+    // ==========================================================
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            changeMonth(-1);
+        } else if (e.key === 'ArrowRight') {
+            changeMonth(1);
+        }
+    });
+    
+    // ==========================================================
+    // CSS ANIMATION
+    // ==========================================================
+    var style = document.createElement('style');
+    style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+    document.head.appendChild(style);
+</script>
+{% endblock %}

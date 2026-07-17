@@ -1,0 +1,110 @@
+[2026-07-12 07:36:01] [INFO] [webhook] [REQ] path=/songs/youtube-generator public=True
+[2026-07-12 07:36:27] [INFO] [webhook] [REQ] path=/favicon.ico public=True
+[2026-07-12 08:35:44] [INFO] [webhook] [REQ] path=/sitemap.xml public=False
+[2026-07-12 08:58:53] [INFO] [webhook] [REQ] path=/songs/youtube-generator public=True
+[2026-07-12 09:31:14] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 09:31:21] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-12 09:31:21] [INFO] [webhook] [Dashboard] Loaded Users=6682 Shows=4460
+[2026-07-12 09:31:21] [INFO] [webhook] [REQ DONE] path=/ ms=139.99
+[2026-07-12 09:31:22] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-12 09:31:22] [INFO] [webhook] [Dashboard] Loaded Users=6682 Shows=4460
+[2026-07-12 09:31:22] [INFO] [webhook] [REQ DONE] path=/ ms=123.28
+[2026-07-12 09:31:22] [INFO] [webhook] [REQ] path=/static/css/base.css public=True
+[2026-07-12 09:31:22] [INFO] [webhook] [REQ] path=/static/tabler/icons/tabler-icons.min.css public=True
+[2026-07-12 09:31:22] [INFO] [webhook] [REQ] path=/static/css/components.css public=True
+[2026-07-12 09:31:22] [INFO] [webhook] [REQ] path=/static/tabler/css/tabler.min.css public=True
+[2026-07-12 09:31:22] [INFO] [webhook] [REQ] path=/static/fontawesome/css/all.min.css public=True
+[2026-07-12 09:31:22] [INFO] [webhook] [REQ] path=/static/js/charts.js public=True
+[2026-07-12 09:31:22] [INFO] [webhook] [REQ] path=/static/css/navbar.css public=True
+[2026-07-12 09:31:25] [INFO] [webhook] [REQ] path=/static/img/default-thumb.png public=True
+[2026-07-12 09:31:38] [INFO] [webhook] [REQ] path=/channel public=False
+[2026-07-12 09:31:38] [INFO] [webhook] [REQ DONE] path=/channel ms=1.81
+[2026-07-12 09:32:01] [INFO] [webhook] [REQ] path=/static/js/songs/songs.js public=True
+[2026-07-12 09:32:01] [INFO] [webhook] [REQ] path=/static/js/songs/filters.js public=True
+[2026-07-12 09:32:01] [INFO] [webhook] [REQ] path=/static/js/songs/statistics.js public=True
+[2026-07-12 09:32:01] [INFO] [webhook] [REQ] path=/static/js/songs/table.js public=True
+[2026-07-12 09:32:02] [INFO] [webhook] [REQ] path=/api/songs/statistics public=False
+[2026-07-12 09:32:02] [INFO] [webhook] [REQ DONE] path=/api/songs/statistics ms=53.08
+[2026-07-12 09:40:42] [INFO] [webhook] [REQ] path=/files/ public=False
+[2026-07-12 09:40:43] [INFO] [webhook] [REQ DONE] path=/files/ ms=184.48
+[2026-07-12 10:39:06] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 10:39:06] [INFO] [webhook] Login attempt: admin | IP: 104.22.66.189
+[2026-07-12 10:39:07] [INFO] [webhook] Login success: admin (remember=False)
+[2026-07-12 10:39:08] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-12 10:39:08] [INFO] [webhook] [Dashboard] Loaded Users=6685 Shows=4460
+[2026-07-12 10:39:08] [INFO] [webhook] [REQ DONE] path=/ ms=130.33
+[2026-07-12 10:39:15] [INFO] [webhook] [REQ] path=/shows public=False
+[2026-07-12 10:39:16] [INFO] [webhook] [REQ DONE] path=/shows ms=115.76
+[2026-07-12 11:02:01] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-12 11:55:03] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:55:05] [INFO] [webhook] [REQ] path=/wp-admin/css/colors/ public=False
+[2026-07-12 11:55:16] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:55:19] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:55:30] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:55:39] [INFO] [webhook] [REQ] path=/wp-admin/js/ public=False
+[2026-07-12 11:55:55] [INFO] [webhook] [REQ] path=/wp-admin/js/widgets/ public=False
+[2026-07-12 11:56:08] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:57:08] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:57:09] [INFO] [webhook] [REQ] path=/wp-includes/sitemaps/providers/ public=False
+[2026-07-12 11:57:12] [INFO] [webhook] [REQ] path=/wp-includes/IXR/ public=False
+[2026-07-12 11:57:13] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:57:15] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:57:19] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:57:20] [INFO] [webhook] [REQ] path=/wp-includes/pomo/ public=False
+[2026-07-12 11:57:21] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:57:22] [INFO] [webhook] [REQ] path=/wp-includes/blocks/ public=False
+[2026-07-12 11:57:22] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:57:27] [INFO] [webhook] [REQ] path=/wp-includes/js/codemirror/ public=False
+[2026-07-12 11:57:30] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:57:31] [INFO] [webhook] [REQ] path=/wp-includes/js/plupload/ public=False
+[2026-07-12 11:57:34] [INFO] [webhook] [REQ] path=/wp-includes/widgets/ public=False
+[2026-07-12 11:57:37] [INFO] [webhook] [REQ] path=/wp-content/ public=False
+[2026-07-12 11:57:39] [INFO] [webhook] [REQ] path=/wp-content/languages/ public=False
+[2026-07-12 11:58:17] [INFO] [webhook] [REQ] path=/wp-content/plugins/ public=False
+[2026-07-12 11:58:43] [INFO] [webhook] [REQ] path=/.well-known/ public=False
+[2026-07-12 11:58:44] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:58:45] [INFO] [webhook] [REQ] path=/uploads/ public=False
+[2026-07-12 11:58:47] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:59:00] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 11:59:37] [INFO] [webhook] [REQ] path=/.tmb/ public=False
+[2026-07-12 11:59:39] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 12:30:51] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-12 12:30:51] [INFO] [webhook] [REQ] path=/xmlrpc.php public=False
+[2026-07-12 13:35:57] [INFO] [webhook] [REQ] path=/wp-login.php public=False
+[2026-07-12 13:35:57] [INFO] [webhook] [REQ] path=/wp-admin/ public=False
+[2026-07-12 13:45:05] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-12 13:45:06] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 16:03:14] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-12 16:03:15] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 16:03:15] [INFO] [webhook] [REQ] path=/register public=True
+[2026-07-12 16:03:16] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 16:58:05] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 17:23:39] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-12 17:31:49] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-12 18:52:43] [INFO] [webhook] [REQ] path=/robots.txt public=False
+[2026-07-12 19:31:03] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-12 19:42:07] [INFO] [webhook] [REQ] path=/.env public=False
+[2026-07-12 20:00:13] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 20:00:15] [INFO] [webhook] [REQ] path=/login public=True
+[2026-07-12 20:00:15] [INFO] [webhook] Login attempt: admin | IP: 172.71.124.249
+[2026-07-12 20:00:15] [INFO] [webhook] Login success: admin (remember=False)
+[2026-07-12 20:00:15] [INFO] [webhook] [REQ] path=/ public=False
+[2026-07-12 20:00:16] [INFO] [webhook] [Dashboard] Loaded Users=6703 Shows=4464
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ DONE] path=/ ms=127.89
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/css/components.css public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/vendor/datatables/css/dataTables.dataTables.min.css public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/css/sidebar.css public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/css/layout.css public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/fontawesome/css/all.min.css public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/vendor/datatables/js/dataTables.min.js public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/bootstrap/js/bootstrap.bundle.min.js public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/js/charts.js public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/vendor/htmx/htmx.min.js public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/js/dashboard.js public=True
+[2026-07-12 20:00:16] [INFO] [webhook] [REQ] path=/static/js/sidebar.js public=True
+[2026-07-12 20:00:17] [INFO] [webhook] [REQ] path=/static/img/default-thumb.png public=True
+[2026-07-12 20:00:32] [INFO] [webhook] [REQ] path=/shows/edit/4658 public=False
+[2026-07-12 20:00:32] [INFO] [webhook] [REQ DONE] path=/shows/edit/4658 ms=160.29
+[2026-07-12 20:00:34] [INFO] [webhook] [REQ] path=/shows/edit/4660 public=False
+[2026-07-12 20:00:34] [INFO] [webhook] [REQ DONE] path=/shows/edit/4660 ms=153.13
+[2026-07-12 20:01:32] [INFO] [webhook] [REQ] path=/shows/edit/4658 public=False

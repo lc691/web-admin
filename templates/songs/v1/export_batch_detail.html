@@ -1,0 +1,463 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <div>
+        <h1 class="h3 text-gray-800 mb-2">
+            <i class="fas fa-file-export text-primary mr-2"></i>
+            Export Batch #{{ batch.id }}
+        </h1>
+        <div class="mt-1">
+            <span class="badge badge-secondary px-3 py-2">
+                <i class="fas fa-calendar-day mr-1"></i> Day {{ batch.day }}
+            </span>
+            <span class="badge badge-info ml-2 px-3 py-2">
+                <i class="fas fa-music mr-1"></i> {{ total_songs }} songs
+            </span>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center flex-wrap gap-2">
+        <a href="/songs/export/batches" class="btn btn-outline-secondary shadow-sm">
+            <i class="fas fa-arrow-left mr-1"></i> Kembali
+        </a>
+        
+        <form method="post" 
+              action="/songs/export/batches/{{ batch.id }}/delete" 
+              onsubmit="return confirm('Hapus batch #{{ batch.id }}?')" 
+              class="d-inline">
+            <button class="btn btn-danger shadow-sm" type="submit" data-toggle="tooltip" title="Hapus Batch">
+                <i class="fas fa-trash mr-1"></i> Hapus Batch
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4" id="statsCards">
+    <div class="col-md-3 col-sm-6">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <i class="fas fa-copy mr-1"></i> Duplicate
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ batch.duplicate_count }}x</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-copy fa-2x text-gray-300"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <i class="fas fa-bullseye mr-1"></i> Target Count
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ batch.target_count }}</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-bullseye fa-2x text-gray-300"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            <i class="fas fa-chart-line mr-1"></i> Max / Channel
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ batch.max_song_per_channel }}</div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-chart-line fa-2x text-gray-300"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card border-left-secondary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                            <i class="fas fa-clock mr-1"></i> Created
+                        </div>
+                        <div class="h6 mb-0 font-weight-bold text-gray-800">
+                            {{ batch.created_at.strftime("%Y-%m-%d %H:%M") }}
+                        </div>
+                    </div>
+                    <div class="col-auto"><i class="fas fa-calendar-alt fa-2x text-gray-300"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Songs Table -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-list-ul mr-2"></i>Daftar Lagu dalam Batch
+        </h6>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-bordered table-hover align-middle" id="songsTable" width="100%">
+            <thead class="thead-light">
+                <tr>
+                    <th width="70">#</th>
+                    <th>Judul Lagu</th>
+                    <th>Artis</th>
+                    <th>Channel</th>
+                    <th width="120">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                <tr>
+                    <td class="text-center">
+                        <span class="badge badge-secondary px-3 py-2">
+                            {{ song.order_index }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="font-weight-bold text-primary">{{ song.title }}</span>
+                    </td>
+                    <td>
+                        <i class="fas fa-user mr-1 text-muted"></i>
+                        {{ song.artist }}
+                    </td>
+                    <td>
+                        <span class="badge badge-dark px-3 py-2">
+                            <i class="fas fa-tv mr-1"></i>
+                            {{ song.channel }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if song.status == "Live" %}
+                        <span class="badge badge-success px-3 py-2">
+                            <i class="fas fa-play-circle mr-1"></i> Live
+                        </span>
+                        {% elif song.status == "Approved" %}
+                        <span class="badge badge-warning px-3 py-2">
+                            <i class="fas fa-check-circle mr-1"></i> Approved
+                        </span>
+                        {% elif song.status == "Take Down" %}
+                        <span class="badge badge-danger px-3 py-2">
+                            <i class="fas fa-ban mr-1"></i> Take Down
+                        </span>
+                        {% elif song.status == "Topic" %}
+                        <span class="badge badge-info px-3 py-2">
+                            <i class="fas fa-tag mr-1"></i> Topic
+                        </span>
+                        {% else %}
+                        <span class="badge badge-secondary px-3 py-2">
+                            <i class="fas fa-clock mr-1"></i> {{ song.status }}
+                        </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center py-5 text-muted">
+                        <i class="fas fa-inbox fa-3x mb-3 d-block text-muted"></i>
+                        Tidak ada lagu dalam batch ini
+                        <div class="mt-2">
+                            <a href="/songs" class="btn btn-primary btn-sm">
+                                <i class="fas fa-music mr-1"></i> Kelola Lagu
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function () {
+    // Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    // Add hover effect to table rows
+    $('#songsTable tbody tr').hover(
+        function() { $(this).css('cursor', 'pointer'); },
+        function() { $(this).css('cursor', 'auto'); }
+    );
+    
+    // Optional: Add keyboard shortcuts
+    $(document).on('keydown', function(e) {
+        // ESC to go back
+        if (e.key === 'Escape') {
+            window.location.href = '/songs/export/batches';
+        }
+    });
+    
+    // Add loading effect on delete form submit
+    $('form').on('submit', function() {
+        if ($(this).find('button[type="submit"]').hasClass('btn-danger')) {
+            $('#loadingOverlay').fadeIn(200);
+        }
+    });
+    
+    // Search functionality (if needed)
+    const searchInput = $('<input type="text" class="form-control form-control-sm" placeholder="🔍 Cari lagu, artis, channel..." style="border-radius: 20px; width: 280px;">');
+    searchInput.on('keyup', function() {
+        const value = $(this).val().toLowerCase();
+        $('#songsTable tbody tr').filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+    
+    // Add search box to card header if there are many songs
+    {% if songs|length > 10 %}
+    $('.card-header').append(`
+        <div class="float-right">
+            ${searchInput[0].outerHTML}
+        </div>
+    `);
+    {% endif %}
+});
+
+// Global loading hide after page loads
+$(window).on('load', function() {
+    $('#loadingOverlay').fadeOut(200);
+});
+</script>
+
+<style>
+/* Consistent with Songs page styles */
+.card {
+    border-radius: 0.35rem;
+}
+
+.card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.card-header .float-right {
+    float: right;
+}
+
+.card-header .font-weight-bold {
+    font-size: 1rem;
+}
+
+/* Statistics Cards */
+.card.border-left-primary {
+    border-left: 4px solid #4e73df;
+}
+
+.card.border-left-success {
+    border-left: 4px solid #1cc88a;
+}
+
+.card.border-left-info {
+    border-left: 4px solid #36b9cc;
+}
+
+.card.border-left-warning {
+    border-left: 4px solid #f6c23e;
+}
+
+.card.border-left-secondary {
+    border-left: 4px solid #858796;
+}
+
+.card .h5, .card .h6 {
+    font-weight: 700 !important;
+}
+
+.text-xs {
+    font-size: 0.7rem;
+}
+
+/* Table Styling */
+.table th {
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #4e73df;
+    border-bottom-width: 1px;
+}
+
+.table td {
+    vertical-align: middle;
+    font-size: 0.875rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(78, 115, 223, 0.05);
+    transition: all 0.2s ease;
+}
+
+/* Badge Styling */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 10rem;
+    font-weight: 600;
+}
+
+.badge-secondary {
+    background-color: #858796;
+}
+
+.badge-dark {
+    background-color: #5a5c69;
+}
+
+.badge-warning {
+    background-color: #f6c23e;
+    color: #1a1e2b;
+}
+
+.badge-success {
+    background-color: #1cc88a;
+}
+
+.badge-danger {
+    background-color: #e74a3b;
+}
+
+.badge-info {
+    background-color: #36b9cc;
+}
+
+/* Button Styling */
+.btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.2rem;
+}
+
+.btn-sm {
+    border-radius: 0.2rem;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+}
+
+/* Gap utility */
+.gap-2 {
+    gap: 0.5rem;
+}
+
+/* Loading Overlay */
+#loadingOverlay {
+    backdrop-filter: blur(3px);
+}
+
+/* Empty state */
+.text-muted i.fa-inbox {
+    opacity: 0.5;
+}
+
+/* Tooltip */
+.tooltip {
+    font-size: 0.75rem;
+}
+
+/* Form inline */
+form.d-inline {
+    display: inline-block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+    
+    .d-flex .btn,
+    .d-flex form {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+    
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .card-header .float-right {
+        float: none;
+        margin-top: 0.5rem;
+    }
+    
+    .card-header .float-right input {
+        width: 100% !important;
+    }
+    
+    .gap-2 {
+        margin-top: 0.5rem;
+    }
+    
+    .row.mb-4 {
+        margin-bottom: 1rem !important;
+    }
+    
+    .col-md-3 {
+        margin-bottom: 0.75rem;
+    }
+}
+
+/* Animation for badges on hover */
+.badge {
+    transition: all 0.2s ease;
+}
+
+.badge:hover {
+    transform: scale(1.02);
+}
+
+/* Card hover effect for stats */
+.card.border-left-primary,
+.card.border-left-success,
+.card.border-left-info,
+.card.border-left-warning,
+.card.border-left-secondary {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.border-left-primary:hover,
+.card.border-left-success:hover,
+.card.border-left-info:hover,
+.card.border-left-warning:hover,
+.card.border-left-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+</style>
+{% endblock %}

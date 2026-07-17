@@ -1,0 +1,26 @@
+[2026-06-19 22:18:05] [ERROR] [webhook] Error creating joki: name 'get_master_joki_by_id' is not defined
+Traceback (most recent call last):
+  File "/opt/web-admin/app/catatan/routes/joki.py", line 46, in create
+    master = get_master_joki_by_id(master_joki_id)
+NameError: name 'get_master_joki_by_id' is not defined. Did you mean: 'get_master_joki'?
+[2026-06-19 22:20:30] [ERROR] [webhook] Error creating joki: name 'get_joki_by_name' is not defined
+Traceback (most recent call last):
+  File "/opt/web-admin/app/catatan/routes/joki.py", line 57, in create
+    existing = get_joki_by_name(catatan_id, nama_joki)
+NameError: name 'get_joki_by_name' is not defined. Did you mean: 'get_joki_by_id'?
+[2026-06-19 22:34:52] [ERROR] [webhook] Error getting master joki: name 'get_all_master_joki' is not defined
+[2026-06-19 23:07:51] [ERROR] [webhook] ❌ Gagal koneksi ke database:
+Traceback (most recent call last):
+  File "/opt/web-admin/db/connect.py", line 21, in get_db_connection
+    yield conn
+  File "/opt/web-admin/db/connect.py", line 86, in get_clean_dict_cursor
+    yield cursor
+  File "/opt/web-admin/app/catatan/repository/joki_report_repository.py", line 14, in get_joki_report_by_month_with_absensi
+    cursor.execute("""
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.UndefinedColumn: column j.id does not exist
+LINE 8:                     WHERE d.joki_id = j.id
+                                              ^
+HINT:  Perhaps you meant to reference the column "d.id" or the column "c.id".
+

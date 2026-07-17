@@ -1,585 +1,521 @@
-<style>
-/* ================= BASE ================= */
-    .sidebar {
-        font-size: 14px;
-    }
-
-    .custom-sidebar {
-        background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
-    }
-
-    /* ================= BRAND ================= */
-    .sidebar-brand {
-        font-weight: 600;
-        letter-spacing: 0.5px;
-    }
-
-    /* ================= HEADING ================= */
-    .sidebar-heading {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        opacity: 0.75;
-        margin: 16px 14px 6px;
-    }
-
-    /* ================= NAV LINK ================= */
-    .sidebar .nav-link {
-        border-radius: 10px;
-        margin: 4px 12px;
-        padding: 10px 14px;
-        transition: background 0.2s ease, transform 0.15s ease;
-    }
-
-    .sidebar .nav-link:hover {
-        background: rgba(255, 255, 255, 0.08);
-        transform: translateX(2px);
-    }
-
-    /* Active main item */
-    .sidebar .nav-item.active > .nav-link {
-        background: rgba(255, 255, 255, 0.15);
-        font-weight: 600;
-        position: relative;
-    }
-
-    /* Active indicator */
-    .sidebar .nav-item.active > .nav-link::before {
-        content: "";
-        position: absolute;
-        left: -6px;
-        top: 8px;
-        bottom: 8px;
-        width: 4px;
-        border-radius: 4px;
-        background: #3b82f6;
-    }
-
-    /* ================= COLLAPSE ================= */
-    .sidebar .collapse-inner {
-        background: rgba(255, 255, 255, 0.06);
-        border-radius: 12px;
-        margin: 6px 12px;
-        padding: 6px 0;
-    }
-
-    .sidebar .collapse-item {
-        display: block;
-        padding: 8px 18px;
-        border-radius: 8px;
-        color: #e5e7eb !important;
-        transition: background 0.2s ease;
-    }
-
-    .sidebar .collapse-item:hover {
-        background: rgba(255, 255, 255, 0.08);
-        color: #fff !important;
-    }
-
-    .sidebar .collapse-item.active {
-        background: rgba(255, 255, 255, 0.12);
-        font-weight: 600;
-        color: #fff !important;
-    }
-
-    /* ================= ICON ================= */
-    .sidebar .nav-link i {
-        width: 20px;
-        text-align: center;
-    }
-
-    /* ================= DIVIDER ================= */
-    .sidebar-divider {
-        margin: 18px 0;
-        opacity: 0.2;
-    }
-
-    /* Sidebar collapsed mode */
-    .sidebar.toggled {
-        width: 90px !important;
-    }
-
-    .sidebar.toggled .sidebar-brand-text,
-    .sidebar.toggled .nav-link span,
-    .sidebar.toggled .collapse {
-        display: none;
-    }
-
-    .sidebar.toggled .nav-link {
-        text-align: center;
-    }
-
-    .sidebar-toggled .sidebar {
-        width: 90px !important;
-    }
-</style>
-
+{# ===================================================== #}
+{# SIDEBAR - Adapted from CodingNepal                   #}
+{# All menus from original Tabler sidebar preserved     #}
+{# ===================================================== #}
 
 {% set path = request.url.path %}
 {% set query = request.query_params %}
 
-<ul class="navbar-nav sidebar sidebar-dark accordion custom-sidebar" id="accordionSidebar">
-
-    <!-- BRAND -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">Admin Panel</div>
-    </a>
-
-    <hr class="sidebar-divider my-0">
-
-    <!-- DASHBOARD -->
-    {% set dashboard_active = path == '/' %}
-    <li class="nav-item {% if dashboard_active %}active{% endif %}">
-        <a class="nav-link" href="/">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-    </li>
-
-    <hr class="sidebar-divider">
-
-    <!-- ================= SOUNDON ================= -->
-    <div class="sidebar-heading">SoundOn</div>
-
-    {% set soundon_active =
-        path.startswith('/channels')
-        or path.startswith('/artists')
-        or path.startswith('/songs')
-    %}
-
-    <li class="nav-item {% if soundon_active %}active{% endif %}">
-
-        <a class="nav-link {% if not soundon_active %}collapsed{% endif %}"
-        href="#"
-        data-toggle="collapse"
-        data-target="#menuSoundOn"
-        aria-expanded="{{ 'true' if soundon_active else 'false' }}">
-
-            <i class="fas fa-music fa-fw"></i>
-            <span>Music Management</span>
-
-        </a>
-
-        <div id="menuSoundOn"
-            class="collapse {% if soundon_active %}show{% endif %}"
-            data-parent="#accordionSidebar">
-
-            <div class="collapse-inner">
-
-                <!-- CHANNELS -->
-                <h6 class="collapse-header">
-                    <i class="fas fa-broadcast-tower mr-1"></i>
-                    Channels
-                </h6>
-
-                <a class="collapse-item {% if path == '/channels' %}active{% endif %}"
-                href="/channels">
-                    List Channel
-                </a>
-
-                <hr class="dropdown-divider">
-
-
-                <!-- ARTISTS -->
-                <h6 class="collapse-header">
-                    <i class="fas fa-user mr-1"></i>
-                    Artists
-                </h6>
-
-                <a class="collapse-item {% if path == '/artists' %}active{% endif %}"
-                href="/artists">
-                    List Artist
-                </a>
-
-                <hr class="dropdown-divider">
-
-
-                <!-- SONGS -->
-                <h6 class="collapse-header">
-                    <i class="fas fa-compact-disc mr-1"></i>
-                    Songs
-                </h6>
-
-                <a class="collapse-item {% if path == '/songs' %}active{% endif %}"
-                href="/songs">
-                    List Songs
-                </a>
-
-            </div>
-        </div>
-
-    </li>
-
-
-    <!-- ================= ADMIN ================= -->
-    <div class="sidebar-heading">Admin Tools</div>
-
-    {% set admin_active =
-        path.startswith('/admin')
-        or path.startswith('/admins')
-    %}
-
-    <li class="nav-item {% if admin_active %}active{% endif %}">
-        <a class="nav-link {% if not admin_active %}collapsed{% endif %}"
-        href="#"
-        data-toggle="collapse"
-        data-target="#menuAdmin"
-        aria-expanded="{{ 'true' if admin_active else 'false' }}">
-
-            <i class="fas fa-user-shield fa-fw"></i>
-            <span>Admin Management</span>
-        </a>
-
-        <div id="menuAdmin"
-            class="collapse {% if admin_active %}show{% endif %}"
-            data-parent="#accordionSidebar">
-
-            <div class="collapse-inner">
-
-                <!-- ADMIN -->
-                <a class="collapse-item {% if path == '/admins' %}active{% endif %}"
-                href="/admins">
-                    List Admin
-                </a>
-
-                <a class="collapse-item {% if path == '/admin/add' %}active{% endif %}"
-                href="/admin/add">
-                    Tambah Admin
-                </a>
-
-                <hr class="dropdown-divider">
-
-                <h6 class="collapse-header">
-                    <i class="fas fa-lock text-danger mr-1"></i>
-                    Analytics
-                </h6>
-                
-
-                <!-- ANALYTICS -->
-                <a class="collapse-item {% if path.startswith('/admins/retention') %}active{% endif %}"
-                href="/admins/retention">
-                    <i class="fas fa-chart-line mr-2"></i>
-                    Retention
-                </a>
-
-            </div>
-        </div>
-    </li>
-
-    {# ================= SECURITY ================= #}
-    <div class="sidebar-heading">Security</div>
-
-    {% set security_active = path.startswith('/trusted_ips') %}
-
-    <li class="nav-item {% if security_active %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuSecurity"
-            aria-expanded="{{ 'true' if security_active else 'false' }}">
-            <i class="fas fa-shield-alt fa-fw"></i>
-            <span>Security</span>
-        </a>
-
-        <div id="menuSecurity" class="collapse {% if security_active %}show{% endif %}" data-parent="#accordionSidebar">
-            <div class="collapse-inner">
-
-                <h6 class="collapse-header">
-                    <i class="fas fa-lock text-danger mr-1"></i>
-                    Access Control
-                </h6>
-
-                <a class="collapse-item {% if path == '/trusted_ips' %}active{% endif %}" href="/trusted_ips">
-                    🌐 Trusted IPs
-                </a>
-
-                <a class="collapse-item {% if path == '/trusted_ips/new' %}active{% endif %}" href="/trusted_ips/new">
-                    ➕ Add Trusted IP
-                </a>
-
-            </div>
-        </div>
-    </li>
-
-    <!-- ================= USERS ================= -->
-    <div class="sidebar-heading">User Tools</div>
-
-    {% set user_active = path.startswith('/users') %}
-    {% set filter = query.get('filter') %}
-
-    <li class="nav-item {% if user_active %}active{% endif %}">
-        <a class="nav-link {% if not user_active %}collapsed{% endif %}"
-           href="#"
-           data-toggle="collapse"
-           data-target="#menuUsers"
-           aria-expanded="{{ 'true' if user_active else 'false' }}">
-
-            <i class="fas fa-users fa-fw"></i>
-            <span>User Management</span>
-        </a>
-
-        <div id="menuUsers"
-             class="collapse {% if user_active %}show{% endif %}"
-             data-parent="#accordionSidebar">
-
-            <div class="collapse-inner">
-                <a class="collapse-item {% if not filter %}active{% endif %}" href="/users">
-                    Semua Pengguna
-                </a>
-                <a class="collapse-item {% if filter == 'vip' %}active{% endif %}" href="/users?filter=vip">
-                    Pengguna VIP
-                </a>
-                <a class="collapse-item {% if filter == 'nonvip' %}active{% endif %}" href="/users?filter=nonvip">
-                    Non-VIP
-                </a>
-                <a class="collapse-item {% if filter == 'trial' %}active{% endif %}" href="/users?filter=trial">
-                    Trial
-                </a>
-                <a class="collapse-item {% if filter == 'affiliate' %}active{% endif %}" href="/users?filter=affiliate">
-                    Referral
-                </a>
-            </div>
-        </div>
-    </li>
-
-
-    {# ================= VIP MANAGEMENT ================= #}
-
-    {% set path = request.url.path %}
-
-    <div class="sidebar-heading">VIP Management</div>
-
-    {% set vip_active = path.startswith('/vip_packages')
-    or path.startswith('/vip_vouchers')
-    or path.startswith('/vip_logs')
-    or path.startswith('/donation_logs')
-    %}
-
-    <li class="nav-item {% if vip_active %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuVip"
-            aria-expanded="{{ 'true' if vip_active else 'false' }}">
-            <i class="fas fa-crown fa-fw"></i>
-            <span>VIP System</span>
-        </a>
-
-        <div id="menuVip" class="collapse {% if vip_active %}show{% endif %}" data-parent="#accordionSidebar">
-
-            <div class="collapse-inner">
-
-                <h6 class="collapse-header">
-                    <i class="fas fa-star text-warning mr-1"></i>
-                    VIP Controls
-                </h6>
-
-                <!-- VIP Logs -->
-                <a class="collapse-item {% if path.startswith('/vip_logs') %}active{% endif %}" href="/vip_logs">
-                    <i class="fas fa-history text-success mr-2"></i>
-                    Aktivasi Logs
-                </a>
-
-                <!-- Donations Logs -->
-                <a class="collapse-item {% if path.startswith('/donation_logs') %}active{% endif %}"
-                    href="/donation_logs">
-                    <i class="fas fa-hand-holding-heart text-success mr-2"></i>
-                    Donation Logs
-                </a>
-
-                <!-- VIP Packages -->
-                <a class="collapse-item {% if path.startswith('/vip_packages') %}active{% endif %}"
-                    href="/vip_packages">
-                    <i class="fas fa-box text-danger mr-2"></i>
-                    VIP Packages
-                </a>
-
-                <!-- VIP Vouchers -->
-                <a class="collapse-item {% if path.startswith('/vip_vouchers') %}active{% endif %}"
-                    href="/vip_vouchers">
-                    <i class="fas fa-ticket-alt text-info mr-2"></i>
-                    VIP Vouchers
-                </a>
-
-            </div>
-        </div>
-    </li>
-
-
-    {# ================= AFFILIATE MANAGEMENT ================= #}
-    <div class="sidebar-heading">
-        Affiliate Management
+<aside class="sidebar {% if sidebar_collapsed %}collapsed{% endif %}" id="mainSidebar">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+        <img 
+            src="{{ url_for('static', path='img/logo.png') }}" 
+            alt="DramaStream" 
+            class="header-logo"
+        />
+        <button class="sidebar-toggle" aria-label="Toggle Sidebar">
+            <span class="material-symbols-rounded">chevron_left</span>
+        </button>
     </div>
 
-    {% set affiliate_active = request.url.path.startswith('/referrals')
-    or request.url.path.startswith('/affiliate') %}
+    <!-- Sidebar Content -->
+    <div class="sidebar-content">
+        <!-- Search Form -->
+        <form class="search-form" action="#" method="get">
+            <span class="material-symbols-rounded">search</span>
+            <input 
+                type="search" 
+                placeholder="Search..." 
+                aria-label="Search"
+                required
+            />
+        </form>
 
-    <li class="nav-item {% if affiliate_active %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuAffiliate"
-            aria-expanded="{{ 'true' if affiliate_active else 'false' }}" aria-controls="menuAffiliate">
-            <i class="fas fa-handshake fa-fw"></i>
-            <span>Affiliate System</span>
-        </a>
+        <!-- Menu List -->
+        <ul class="menu-list">
 
-        <div id="menuAffiliate" class="collapse {% if affiliate_active %}show{% endif %}"
-            data-parent="#accordionSidebar">
-            <div class="collapse-inner">
-
-                {# ================= REFERRALS ================= #}
-                <h6 class="collapse-header"><i class="fas fa-link text-primary mr-1"></i> Referrals</h6>
-
-                <a class="collapse-item {% if request.url.path == '/referrals' %}active{% endif %}" href="/referrals">
-                    🔗 Semua Referral
+            <!-- ====================================================== -->
+            <!-- DASHBOARD                                             -->
+            <!-- ====================================================== -->
+            <li class="menu-item">
+                <a href="/" class="menu-link {% if path == '/' %}active{% endif %}">
+                    <span class="material-symbols-rounded">dashboard</span>
+                    <span class="menu-label">Dashboard</span>
                 </a>
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/users') 
-                                       or request.url.path.startswith('/referrals/user/') %}active{% endif %}"
-                    href="/referrals/users">
-                    👤 Referral by User
+            </li>
+
+            <!-- ====================================================== -->
+            <!-- MUSIC MANAGEMENT                                      -->
+            <!-- ====================================================== -->
+            {% set soundon_active = path.startswith(('/channels', '/artists', '/songs', '/channel-blacklists')) %}
+
+            <li class="menu-item menu-item-has-children">
+                <a href="#" class="menu-link menu-dropdown-toggle {% if soundon_active %}active{% endif %}" data-target="#menuSoundOn">
+                    <span class="material-symbols-rounded">library_music</span>
+                    <span class="menu-label">Music Management</span>
+                    <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
                 </a>
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/referrers') 
-                                       or request.url.path.startswith('/referrals/referrer/') %}active{% endif %}"
-                    href="/referrals/referrers">
-                    🧑‍💼 Referral by Referrer
+                <ul class="sub-menu {% if soundon_active %}open{% endif %}" id="menuSoundOn">
+                    <li class="menu-item">
+                        <a href="/channels" class="menu-link sub-menu-link {% if path == '/channels' %}active{% endif %}">
+                            <span class="material-symbols-rounded">view_list</span>
+                            <span class="menu-label">List Channel</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/channel-blacklists" class="menu-link sub-menu-link {% if path == '/channel-blacklists' %}active{% endif %}">
+                            <span class="material-symbols-rounded">music_off</span>
+                            <span class="menu-label">Channel Blacklists</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/artists" class="menu-link sub-menu-link {% if path == '/artists' %}active{% endif %}">
+                            <span class="material-symbols-rounded">person</span>
+                            <span class="menu-label">List Artist</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/songs" class="menu-link sub-menu-link {% if path == '/songs' %}active{% endif %}">
+                            <span class="material-symbols-rounded">queue_music</span>
+                            <span class="menu-label">List Songs</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
+            <!-- ====================================================== -->
+            <!-- PORTAL JOKI - MENU                                    -->
+            <!-- ====================================================== -->
+            {% set portal_joki_active = path.startswith('/admin/portal-joki') %}
+
+            <li class="menu-item menu-item-has-children">
+                <a href="#" class="menu-link menu-dropdown-toggle {% if portal_joki_active %}active{% endif %}" data-target="#menuPortalJoki">
+                    <span class="material-symbols-rounded">dashboard</span>
+                    <span class="menu-label">Portal Joki</span>
+                    <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
                 </a>
-                <a class="collapse-item {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}"
-                    href="/referrals/logs">
-                    📜 Referral Logs
+                <ul class="sub-menu {% if portal_joki_active %}open{% endif %}" id="menuPortalJoki">
+                    
+                    <!-- Dashboard -->
+                    <li class="menu-item">
+                        <a href="/admin/portal-joki/dashboard" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/dashboard') %}active{% endif %}">
+                            <span class="material-symbols-rounded">speed</span>
+                            <span class="menu-label">Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <!-- Kalender -->
+                    <li class="menu-item">
+                        <a href="/admin/portal-joki/calendar" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/calendar') %}active{% endif %}">
+                            <span class="material-symbols-rounded">calendar_month</span>
+                            <span class="menu-label">Kalender</span>
+                        </a>
+                    </li>
+                    
+                    <!-- Hari Libur -->
+                    <li class="menu-item">
+
+                        <a href="/admin/portal-joki/holiday" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/holiday') %}active{% endif %}">
+                            <span class="material-symbols-rounded">celebration</span>
+                            <span class="menu-label">Hari Libur</span>
+                        </a>
+                    </li>
+                    
+                    <!-- Penugasan -->
+                    <li class="menu-item">
+                        <a href="/admin/portal-joki/penugasan" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/penugasan') %}active{% endif %}">
+                            <span class="material-symbols-rounded">assignment</span>
+                            <span class="menu-label">Penugasan</span>
+                        </a>
+                    </li>
+                    
+                    <!-- Review -->
+                    <li class="menu-item">
+                        <a href="/admin/portal-joki/review" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/review') %}active{% endif %}">
+                            <span class="material-symbols-rounded">rate_review</span>
+                            <span class="menu-label">Review</span>
+                        </a>
+                    </li>
+                    
+                    <!-- Laporan -->
+                    <li class="menu-item">
+                        <a href="/admin/portal-joki/laporan" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/laporan') %}active{% endif %}">
+                            <span class="material-symbols-rounded">description</span>
+                            <span class="menu-label">Laporan</span>
+                        </a>
+                    </li>
+                    
+                    <!-- ====================================================== -->
+                    <!-- REKAP CATATAN (Sub Menu)                              -->
+                    <!-- ====================================================== -->
+                    {% set catatan_active = path.startswith(('/admin/portal-joki/joki', '/admin/portal-joki/kloter', '/admin/portal-joki/catatan', '/admin/portal-joki/rekap', '/admin/portal-joki/laporan/dashboard')) %}
+                    
+                    <li class="menu-item menu-item-has-children">
+                        <a href="#" class="menu-link menu-dropdown-toggle {% if catatan_active %}active{% endif %}" data-target="#menuCatatan">
+                            <span class="material-symbols-rounded">edit_note</span>
+                            <span class="menu-label">Rekap Catatan</span>
+                            <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
+                        </a>
+                        <ul class="sub-menu {% if catatan_active %}open{% endif %}" id="menuCatatan">
+                            <li class="menu-item">
+                                <a href="/admin/portal-joki/joki" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/joki') %}active{% endif %}">
+                                    <span class="material-symbols-rounded">assignment_ind</span>
+                                    <span class="menu-label">Master Joki</span>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/admin/portal-joki/kloter" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/kloter') %}active{% endif %}">
+                                    <span class="material-symbols-rounded">layers</span>
+                                    <span class="menu-label">Master Kloter</span>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/admin/portal-joki/catatan" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/catatan') %}active{% endif %}">
+                                    <span class="material-symbols-rounded">edit_note</span>
+                                    <span class="menu-label">Catatan Harian</span>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/admin/portal-joki/rekap" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/rekap') %}active{% endif %}">
+                                    <span class="material-symbols-rounded">bar_chart</span>
+                                    <span class="menu-label">Rekap Harian</span>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="/admin/portal-joki/laporan/dashboard" class="menu-link sub-menu-link {% if path.startswith('/admin/portal-joki/laporan/dashboard') %}active{% endif %}">
+                                    <span class="material-symbols-rounded">speed</span>
+                                    <span class="menu-label">Dashboard Laporan</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+            </li>
+
+            <!-- ====================================================== -->
+            <!-- FILES & SHOWS                                         -->
+            <!-- ====================================================== -->
+            {% set files_active = path.startswith(('/files', '/show_files', '/shows', '/platform')) %}
+
+            <li class="menu-item menu-item-has-children">
+                <a href="#" class="menu-link menu-dropdown-toggle {% if files_active %}active{% endif %}" data-target="#menuFiles">
+                    <span class="material-symbols-rounded">folder</span>
+                    <span class="menu-label">Files & Shows</span>
+                    <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
                 </a>
+                <ul class="sub-menu {% if files_active %}open{% endif %}" id="menuFiles">
+                    <li class="menu-item">
+                        <a href="/files" class="menu-link sub-menu-link {% if path.startswith('/files') %}active{% endif %}">
+                            <span class="material-symbols-rounded">insert_drive_file</span>
+                            <span class="menu-label">Daftar Files</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/show_files" class="menu-link sub-menu-link {% if path.startswith('/show_files') %}active{% endif %}">
+                            <span class="material-symbols-rounded">video_library</span>
+                            <span class="menu-label">Show Files</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/shows" class="menu-link sub-menu-link {% if path.startswith('/shows') %}active{% endif %}">
+                            <span class="material-symbols-rounded">tv</span>
+                            <span class="menu-label">Daftar Shows</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/platform" class="menu-link sub-menu-link {% if path.startswith('/platform') %}active{% endif %}">
+                            <span class="material-symbols-rounded">settings_ethernet</span>
+                            <span class="menu-label">Daftar Platform</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                <hr class="dropdown-divider">
+            <!-- ====================================================== -->
+            <!-- SECURITY                                              -->
+            <!-- ====================================================== -->
+            {% set security_active = path.startswith('/trusted_ips') %}
 
-                {# ================= AFFILIATE ACTIVITY ================= #}
-                <h6 class="collapse-header"><i class="fas fa-exchange-alt text-info mr-1"></i> Affiliate Activity
-                </h6>
-
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}"
-                    href="/affiliate/leaderboard">
-                    🏆 Leaderboard
+            <li class="menu-item menu-item-has-children">
+                <a href="#" class="menu-link menu-dropdown-toggle {% if security_active %}active{% endif %}" data-target="#menuSecurity">
+                    <span class="material-symbols-rounded">lock</span>
+                    <span class="menu-label">Security</span>
+                    <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
                 </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/payouts') %}active{% endif %}"
-                    href="/affiliate/payouts">
-                    📦 Payout Batch
+                <ul class="sub-menu {% if security_active %}open{% endif %}" id="menuSecurity">
+                    <li class="menu-item">
+                        <a href="/trusted_ips" class="menu-link sub-menu-link {% if path == '/trusted_ips' %}active{% endif %}">
+                            <span class="material-symbols-rounded">public</span>
+                            <span class="menu-label">Trusted IPs</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/trusted_ips/new" class="menu-link sub-menu-link {% if path == '/trusted_ips/new' %}active{% endif %}">
+                            <span class="material-symbols-rounded">add_circle</span>
+                            <span class="menu-label">Add Trusted IP</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- ====================================================== -->
+            <!-- ADMIN MANAGEMENT                                      -->
+            <!-- ====================================================== -->
+            {% set admin_active = path.startswith('/admins') %}
+
+            <li class="menu-item menu-item-has-children">
+                <a href="#" class="menu-link menu-dropdown-toggle {% if admin_active %}active{% endif %}" data-target="#menuAdmin">
+                    <span class="material-symbols-rounded">admin_panel_settings</span>
+                    <span class="menu-label">Admin Management</span>
+                    <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
                 </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}"
-                    href="/affiliate/transactions">
-                    💸 Transactions
+                <ul class="sub-menu {% if admin_active %}open{% endif %}" id="menuAdmin">
+                    <li class="menu-item">
+                        <a href="/admins" class="menu-link sub-menu-link {% if path == '/admins' %}active{% endif %}">
+                            <span class="material-symbols-rounded">people</span>
+                            <span class="menu-label">List Admin</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/admins/add" class="menu-link sub-menu-link {% if path == '/admins/add' %}active{% endif %}">
+                            <span class="material-symbols-rounded">person_add</span>
+                            <span class="menu-label">Tambah Admin</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/admins/retention" class="menu-link sub-menu-link {% if path.startswith('/admins/retention') %}active{% endif %}">
+                            <span class="material-symbols-rounded">trending_up</span>
+                            <span class="menu-label">Retention</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- ====================================================== -->
+            <!-- USER MANAGEMENT                                       -->
+            <!-- ====================================================== -->
+            {% set user_active = path.startswith('/users') %}
+            {% set filter = query.get('filter') %}
+
+            <li class="menu-item menu-item-has-children">
+                <a href="#" class="menu-link menu-dropdown-toggle {% if user_active %}active{% endif %}" data-target="#menuUsers">
+                    <span class="material-symbols-rounded">group</span>
+                    <span class="menu-label">User Management</span>
+                    <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
                 </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}"
-                    href="/affiliate/commission-logs">
-                    🪙 Commission Logs
+                <ul class="sub-menu {% if user_active %}open{% endif %}" id="menuUsers">
+                    <li class="menu-item">
+                        <a href="/users" class="menu-link sub-menu-link {% if not filter %}active{% endif %}">
+                            <span class="material-symbols-rounded">database</span>
+                            <span class="menu-label">Semua Pengguna</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/users?filter=vip" class="menu-link sub-menu-link {% if filter == 'vip' %}active{% endif %}">
+                            <span class="material-symbols-rounded">star</span>
+                            <span class="menu-label">Pengguna VIP</span>
+                            <span class="badge vip-badge">VIP</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/users?filter=nonvip" class="menu-link sub-menu-link {% if filter == 'nonvip' %}active{% endif %}">
+                            <span class="material-symbols-rounded">person</span>
+                            <span class="menu-label">Non-VIP</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/users?filter=trial" class="menu-link sub-menu-link {% if filter == 'trial' %}active{% endif %}">
+                            <span class="material-symbols-rounded">science</span>
+                            <span class="menu-label">Trial</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/users?filter=affiliate" class="menu-link sub-menu-link {% if filter == 'affiliate' %}active{% endif %}">
+                            <span class="material-symbols-rounded">handshake</span>
+                            <span class="menu-label">Referral</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- ====================================================== -->
+            <!-- VIP SYSTEM                                            -->
+            <!-- ====================================================== -->
+            {% set vip_active = path.startswith(('/vip_packages', '/vip_vouchers', '/vip_logs', '/donation_logs')) %}
+
+            <li class="menu-item menu-item-has-children">
+                <a href="#" class="menu-link menu-dropdown-toggle {% if vip_active %}active{% endif %}" data-target="#menuVip">
+                    <span class="material-symbols-rounded">crown</span>
+                    <span class="menu-label">VIP System</span>
+                    <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
                 </a>
+                <ul class="sub-menu {% if vip_active %}open{% endif %}" id="menuVip">
+                    <li class="menu-item">
+                        <a href="/vip_logs" class="menu-link sub-menu-link {% if path.startswith('/vip_logs') %}active{% endif %}">
+                            <span class="material-symbols-rounded">history</span>
+                            <span class="menu-label">Aktivasi Logs</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/donation_logs" class="menu-link sub-menu-link {% if path.startswith('/donation_logs') %}active{% endif %}">
+                            <span class="material-symbols-rounded">volunteer_activism</span>
+                            <span class="menu-label">Donation Logs</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/vip_packages" class="menu-link sub-menu-link {% if path.startswith('/vip_packages') %}active{% endif %}">
+                            <span class="material-symbols-rounded">inventory</span>
+                            <span class="menu-label">VIP Packages</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/vip_vouchers" class="menu-link sub-menu-link {% if path.startswith('/vip_vouchers') %}active{% endif %}">
+                            <span class="material-symbols-rounded">confirmation_number</span>
+                            <span class="menu-label">VIP Vouchers</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                <hr class="dropdown-divider">
+            <!-- ====================================================== -->
+            <!-- AFFILIATE SYSTEM                                      -->
+            <!-- ====================================================== -->
+            {% set affiliate_active = path.startswith(('/referrals', '/affiliate')) %}
 
-                {# ================= FINANCE ================= #}
-                <h6 class="collapse-header"><i class="fas fa-wallet text-warning mr-1"></i> Finance</h6>
-
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}"
-                    href="/affiliate/withdraw-requests">
-                    💵 Withdraw Requests
+            <li class="menu-item menu-item-has-children">
+                <a href="#" class="menu-link menu-dropdown-toggle {% if affiliate_active %}active{% endif %}" data-target="#menuAffiliate">
+                    <span class="material-symbols-rounded">handshake</span>
+                    <span class="menu-label">Affiliate System</span>
+                    <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
                 </a>
+                <ul class="sub-menu {% if affiliate_active %}open{% endif %}" id="menuAffiliate">
+                    <li class="menu-item">
+                        <a href="/referrals" class="menu-link sub-menu-link {% if request.url.path == '/referrals' %}active{% endif %}">
+                            <span class="material-symbols-rounded">link</span>
+                            <span class="menu-label">Semua Referral</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/referrals/users" class="menu-link sub-menu-link {% if request.url.path.startswith('/referrals/users') or request.url.path.startswith('/referrals/user/') %}active{% endif %}">
+                            <span class="material-symbols-rounded">person_search</span>
+                            <span class="menu-label">Referral by User</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/referrals/referrers" class="menu-link sub-menu-link {% if request.url.path.startswith('/referrals/referrers') or request.url.path.startswith('/referrals/referrer/') %}active{% endif %}">
+                            <span class="material-symbols-rounded">assignment_ind</span>
+                            <span class="menu-label">Referral by Referrer</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/referrals/logs" class="menu-link sub-menu-link {% if request.url.path.startswith('/referrals/logs') %}active{% endif %}">
+                            <span class="material-symbols-rounded">receipt_long</span>
+                            <span class="menu-label">Referral Logs</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/affiliate/leaderboard" class="menu-link sub-menu-link {% if request.url.path.startswith('/affiliate/leaderboard') %}active{% endif %}">
+                            <span class="material-symbols-rounded">emoji_events</span>
+                            <span class="menu-label">Leaderboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/affiliate/payouts" class="menu-link sub-menu-link {% if request.url.path.startswith('/affiliate/payouts') %}active{% endif %}">
+                            <span class="material-symbols-rounded">payments</span>
+                            <span class="menu-label">Payout Batch</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/affiliate/transactions" class="menu-link sub-menu-link {% if request.url.path.startswith('/affiliate/transactions') %}active{% endif %}">
+                            <span class="material-symbols-rounded">currency_exchange</span>
+                            <span class="menu-label">Transactions</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/affiliate/commission-logs" class="menu-link sub-menu-link {% if request.url.path.startswith('/affiliate/commission-logs') %}active{% endif %}">
+                            <span class="material-symbols-rounded">pie_chart</span>
+                            <span class="menu-label">Commission Logs</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/affiliate/withdraw-requests" class="menu-link sub-menu-link {% if request.url.path.startswith('/affiliate/withdraw-requests') %}active{% endif %}">
+                            <span class="material-symbols-rounded">request_quote</span>
+                            <span class="menu-label">Withdraw Requests</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/affiliate/abuse-logs" class="menu-link sub-menu-link {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}">
+                            <span class="material-symbols-rounded">warning</span>
+                            <span class="menu-label">Abuse Logs</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/affiliate/admin-actions" class="menu-link sub-menu-link {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}">
+                            <span class="material-symbols-rounded">assignment</span>
+                            <span class="menu-label">Admin Actions</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/affiliate/admin-audit-logs" class="menu-link sub-menu-link {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}">
+                            <span class="material-symbols-rounded">audit</span>
+                            <span class="menu-label">Admin Audit Logs</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                <hr class="dropdown-divider">
+            <!-- ====================================================== -->
+            <!-- CHANNEL MANAGEMENT                                    -->
+            <!-- ====================================================== -->
+            {% set channel_active = path.startswith(('/channel', '/required-channels')) %}
 
-                {# ================= MONITORING ================= #}
-                <h6 class="collapse-header"><i class="fas fa-shield-alt text-danger mr-1"></i> Monitoring & Security
-                </h6>
-
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/abuse-logs') %}active{% endif %}"
-                    href="/affiliate/abuse-logs">
-                    🚨 Abuse Logs
+            <li class="menu-item menu-item-has-children">
+                <a href="#" class="menu-link menu-dropdown-toggle {% if channel_active %}active{% endif %}" data-target="#menuChannel">
+                    <span class="material-symbols-rounded">satellite</span>
+                    <span class="menu-label">Channel Management</span>
+                    <span class="menu-dropdown-icon material-symbols-rounded">expand_more</span>
                 </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-actions') %}active{% endif %}"
-                    href="/affiliate/admin-actions">
-                    🛠️ Admin Actions
+                <ul class="sub-menu {% if channel_active %}open{% endif %}" id="menuChannel">
+                    <li class="menu-item">
+                        <a href="/channel" class="menu-link sub-menu-link {% if path.startswith('/channel') %}active{% endif %}">
+                            <span class="material-symbols-rounded">list_alt</span>
+                            <span class="menu-label">Daftar Channel</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="/required-channels" class="menu-link sub-menu-link {% if path.startswith('/required-channels') %}active{% endif %}">
+                            <span class="material-symbols-rounded">error_outline</span>
+                            <span class="menu-label">Required Channels</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- ====================================================== -->
+            <!-- LOGOUT (Bottom)                                       -->
+            <!-- ====================================================== -->
+            <li class="menu-item" style="margin-top: auto; border-top: 1px solid var(--color-border-hr); padding-top: 10px;">
+                <a href="/logout" class="menu-link menu-link-logout">
+                    <span class="material-symbols-rounded">logout</span>
+                    <span class="menu-label">Logout</span>
                 </a>
-                <a class="collapse-item {% if request.url.path.startswith('/affiliate/admin-audit-logs') %}active{% endif %}"
-                    href="/affiliate/admin-audit-logs">
-                    🛡️ Admin Audit Logs
-                </a>
+            </li>
 
-            </div>
-        </div>
-    </li>
-
-    <!-- ================= FILES ================= -->
-    <div class="sidebar-heading">File Management</div>
-
-    {% set files_active =
-        path.startswith('/files')
-        or path.startswith('/show_files')
-        or path.startswith('/shows')
-        or path.startswith('/platform')
-    %}
-
-    <li class="nav-item {% if files_active %}active{% endif %}">
-        <a class="nav-link {% if not files_active %}collapsed{% endif %}"
-           href="#"
-           data-toggle="collapse"
-           data-target="#menuFiles"
-           aria-expanded="{{ 'true' if files_active else 'false' }}">
-
-            <i class="fas fa-folder-open fa-fw"></i>
-            <span>Files & Shows</span>
-        </a>
-
-        <div id="menuFiles"
-             class="collapse {% if files_active %}show{% endif %}"
-             data-parent="#accordionSidebar">
-
-            <div class="collapse-inner">
-                <a class="collapse-item {% if path.startswith('/files') %}active{% endif %}" href="/files">
-                    Daftar Files
-                </a>
-                <a class="collapse-item {% if path.startswith('/show_files') %}active{% endif %}" href="/show_files">
-                    Show Files
-                </a>
-                <a class="collapse-item {% if path.startswith('/shows') %}active{% endif %}" href="/shows">
-                    Daftar Shows
-                </a>
-                <a class="collapse-item {% if path.startswith('/platform') %}active{% endif %}" href="/platform">
-                    Daftar Platform
-                </a>
-            </div>
-        </div>
-    </li>
-
-    <!-- ================= CHANNEL ================= -->
-    <div class="sidebar-heading">Channel Management</div>
-
-    {% set channel_active =
-        path.startswith('/channel')
-        or path.startswith('/required-channels')
-    %}
-
-    <li class="nav-item {% if channel_active %}active{% endif %}">
-        <a class="nav-link {% if not channel_active %}collapsed{% endif %}"
-           href="#"
-           data-toggle="collapse"
-           data-target="#menuChannel"
-           aria-expanded="{{ 'true' if channel_active else 'false' }}">
-
-            <i class="fas fa-broadcast-tower fa-fw"></i>
-            <span>Channel Management</span>
-        </a>
-
-        <div id="menuChannel"
-             class="collapse {% if channel_active %}show{% endif %}"
-             data-parent="#accordionSidebar">
-
-            <div class="collapse-inner">
-                <a class="collapse-item {% if path.startswith('/channel') %}active{% endif %}" href="/channel">
-                    Daftar Channel
-                </a>
-                <a class="collapse-item {% if path.startswith('/required-channels') %}active{% endif %}" href="/required-channels">
-                    Required Channels
-                </a>
-            </div>
-        </div>
-    </li>
-
-    <hr class="sidebar-divider d-none d-md-block">
-
-    <!-- TOGGLE -->
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </ul>
     </div>
 
-</ul>
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+        <button class="theme-toggle" id="themeToggle">
+            <div class="theme-label">
+                <span class="theme-icon material-symbols-rounded">dark_mode</span>
+                <span class="theme-text">Dark Mode</span>
+            </div>
+            <div class="theme-toggle-track">
+                <div class="theme-toggle-indicator"></div>
+            </div>
+        </button>
+    </div>
+</aside>

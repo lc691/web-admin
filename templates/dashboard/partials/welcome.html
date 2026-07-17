@@ -1,0 +1,38 @@
+<div class="welcome-section">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h1 class="welcome-title">
+                <i class="fas fa-chart-line me-2"></i>
+                Dashboard
+            </h1>
+            <p class="welcome-subtitle mt-1">
+                <i class="fas fa-calendar-alt me-1"></i>
+                <span id="liveDate"></span>
+                <span class="mx-2">•</span>
+                <i class="fas fa-sync-alt me-1"></i>
+                Terakhir diperbarui: <span id="lastUpdate">baru saja</span>
+            </p>
+        </div>
+        <div class="d-flex gap-2 align-items-center flex-wrap">
+            <!-- Revenue Today -->
+            <div class="text-end me-3">
+                <div class="small text-white-50">Pendapatan Hari Ini</div>
+                <div class="h5 mb-0 text-white">
+                    <i class="fas fa-rupiah-sign"></i> 
+                    {{ "{:,.0f}".format(stats.revenue_today or 0).replace(',', '.') }}
+                </div>
+            </div>
+            <div class="vr bg-white-50 d-none d-md-block"></div>
+            <div class="text-end me-3 d-none d-md-block">
+                <div class="small text-white-50">Bulan Ini</div>
+                <div class="h5 mb-0 text-white">
+                    <i class="fas fa-rupiah-sign"></i> 
+                    {{ "{:,.0f}".format(stats.revenue_month or 0).replace(',', '.') }}
+                </div>
+            </div>
+            
+            <!-- Quick Action Buttons -->
+            {% include "dashboard/components/quick_actions.html" %}
+        </div>
+    </div>
+</div>

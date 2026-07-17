@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <div>
+        <h1 class="h3 text-gray-800 mb-2">
+            <i class="fas fa-file-export text-primary mr-2"></i>
+            Export Batches
+        </h1>
+        <p class="text-muted small mb-0">
+            Histori export TXT songs
+        </p>
+    </div>
+
+    <div class="d-flex align-items-center flex-wrap gap-2">
+        <!-- CLEAR BATCH -->
+        <form method="post" action="/songs/export/batches/clear" 
+              onsubmit="return confirm('⚠️ RESET semua batch export?\n\nTindakan ini tidak dapat dibatalkan!')" 
+              class="d-inline">
+            <input type="hidden" name="confirm" value="RESET">
+            <button class="btn btn-danger shadow-sm" type="submit" data-toggle="tooltip" title="Hapus semua batch export">
+                <i class="fas fa-trash-alt mr-1"></i> Clear Batches
+            </button>
+        </form>
+
+        <!-- CLEAR USAGE -->
+        <form method="post" action="/songs/usage/clear" 
+              onsubmit="return confirm('⚠️ RESET semua song usage?\n\nTindakan ini tidak dapat dibatalkan!')" 
+              class="d-inline">
+            <input type="hidden" name="confirm" value="RESET">
+            <button class="btn btn-warning shadow-sm" type="submit" data-toggle="tooltip" title="Reset semua usage data">
+                <i class="fas fa-sync-alt mr-1"></i> Reset Usage
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Batches Table Card -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+            <i class="fas fa-history mr-2"></i>Daftar Export Batch
+        </h6>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table class="table table-bordered table-hover align-middle" id="batchesTable" width="100%">
+            <thead class="thead-light">
+                <tr>
+                    <th width="70">ID</th>
+                    <th width="100">Day</th>
+                    <th width="120">Total Songs</th>
+                    <th width="120">Duplicate</th>
+                    <th width="140">Max / Channel</th>
+                    <th width="140">Excluded</th>
+                    <th width="180">Created</th>
+                    <th width="130" class="text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for batch in batches %}
+                <tr>
+                    <td>
+                        <span class="font-weight-bold text-primary">#{{ batch.id }}</span>
+                    </td>
+                    <td>
+                        <span class="badge badge-secondary px-3 py-2">
+                            <i class="fas fa-calendar-day mr-1"></i> Day {{ batch.day }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="font-weight-semibold">{{ batch.total_songs }}</span>
+                    </td>
+                    <td>
+                        {% if batch.duplicate_count > 0 %}
+                        <span class="badge badge-warning">
+                            <i class="fas fa-copy mr-1"></i> {{ batch.duplicate_count }}x
+                        </span>
+                        {% else %}
+                        <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ batch.max_song_per_channel }}
+                    </td>
+                    <td>
+                        {% if batch.excluded_channels %}
+                        <span class="badge badge-danger">
+                            <i class="fas fa-ban mr-1"></i> {{ batch.excluded_channels|length }} excluded
+                        </span>
+                        {% else %}
+                        <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <small class="text-muted">
+                            <i class="far fa-clock mr-1"></i>
+                            {{ batch.created_at.strftime("%Y-%m-%d %H:%M") }}
+                        </small>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="/songs/export/batches/{{ batch.id }}" 
+                               class="btn btn-primary" 
+                               data-toggle="tooltip" 
+                               title="Detail Batch">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <form method="post" 
+                                  action="/songs/export/batches/{{ batch.id }}/delete" 
+                                  onsubmit="return confirm('Hapus batch ini?')" 
+                                  class="d-inline">
+                                <button class="btn btn-danger" 
+                                        type="submit" 
+                                        data-toggle="tooltip" 
+                                        title="Hapus Batch">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8" class="text-center py-5 text-muted">
+                        <i class="fas fa-inbox fa-3x mb-3 d-block text-muted"></i>
+                        Belum ada export batch
+                        <div class="mt-2">
+                            <a href="/songs" class="btn btn-primary btn-sm">
+                                <i class="fas fa-music mr-1"></i> Kelola Lagu
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- PAGINATION -->
+{% if total_pages > 1 %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% for p in range(1, total_pages + 1) %}
+        <li class="page-item {% if p == page %}active{% endif %}">
+            <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
+{% endif %}
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(function () {
+    // Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    // Add loading effect on form submits
+    $('form').on('submit', function() {
+        if ($(this).data('submit-prevented')) return false;
+        if ($(this).find('button[type="submit"]').hasClass('btn-danger') || 
+            $(this).find('button[type="submit"]').hasClass('btn-warning')) {
+            // Show loading overlay for destructive actions
+            $('#loadingOverlay').fadeIn(200);
+        }
+    });
+    
+    // Add hover effect to table rows
+    $('#batchesTable tbody tr').hover(
+        function() { $(this).css('cursor', 'pointer'); },
+        function() { $(this).css('cursor', 'auto'); }
+    );
+    
+    // Double-click to view batch detail
+    $(document).on('dblclick', '#batchesTable tbody tr', function() {
+        const detailBtn = $(this).find('.btn-primary');
+        if (detailBtn.length) {
+            window.location.href = detailBtn.attr('href');
+        }
+    });
+    
+    // Refresh button functionality (optional)
+    if ($('#btnRefresh').length) {
+        $('#btnRefresh').on('click', function() {
+            location.reload();
+        });
+    }
+});
+
+// Global loading hide after page loads
+$(window).on('load', function() {
+    $('#loadingOverlay').fadeOut(200);
+});
+</script>
+
+<style>
+/* Consistent with Songs page styles */
+.dataTables_wrapper {
+    overflow-x: auto;
+}
+
+.card {
+    border-radius: 0.35rem;
+}
+
+.card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.card-header .font-weight-bold {
+    font-size: 1rem;
+}
+
+.table th {
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #4e73df;
+    border-bottom-width: 1px;
+}
+
+.table td {
+    vertical-align: middle;
+    font-size: 0.875rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(78, 115, 223, 0.05);
+    transition: all 0.2s ease;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 10rem;
+    font-weight: 600;
+}
+
+.badge-secondary {
+    background-color: #858796;
+}
+
+.badge-warning {
+    background-color: #f6c23e;
+    color: #1a1e2b;
+}
+
+.badge-danger {
+    background-color: #e74a3b;
+}
+
+.btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.2rem;
+}
+
+.btn-sm {
+    border-radius: 0.2rem;
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+.pagination .page-link {
+    border-radius: 0.35rem;
+    margin: 0 2px;
+    color: #4e73df;
+    border: 1px solid #dddfeb;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.875rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #4e73df;
+    border-color: #4e73df;
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: #eaecf4;
+    border-color: #dddfeb;
+    transform: translateY(-1px);
+    transition: all 0.2s;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .d-flex {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+    
+    .d-flex .btn,
+    .d-flex form {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+    
+    .btn-group-sm > .btn {
+        padding: 0.2rem 0.4rem;
+    }
+    
+    .gap-2 {
+        margin-top: 0.5rem;
+    }
+}
+
+/* Loading overlay animation */
+#loadingOverlay {
+    backdrop-filter: blur(3px);
+}
+
+/* Empty state styling */
+.text-muted i.fa-inbox {
+    opacity: 0.5;
+}
+
+/* Tooltip styling */
+.tooltip {
+    font-size: 0.75rem;
+}
+
+/* Form button consistency */
+form.d-inline {
+    display: inline-block;
+}
+
+/* Badge animations */
+.badge {
+    transition: all 0.2s ease;
+}
+
+.badge:hover {
+    transform: scale(1.02);
+}
+</style>
+{% endblock %}

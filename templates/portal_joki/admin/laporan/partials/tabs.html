@@ -1,0 +1,38 @@
+<div class="view-tabs mb-3">
+    <div class="nav nav-pills">
+
+        <!-- ===================================================== -->
+        <!-- BULANAN -->
+        <!-- ===================================================== -->
+        <a
+            class="nav-link {% if view == 'bulanan' %}active{% endif %}"
+            href="{{ url_for('portal_joki_admin_laporan') }}?view=bulanan&tahun={{ tahun }}&bulan={{ bulan }}"
+        >
+            <i class="ti ti-calendar-month me-1"></i>
+            Bulanan
+        </a>
+
+        <!-- ===================================================== -->
+        <!-- HARIAN -->
+        <!-- ===================================================== -->
+        <a
+            class="nav-link {% if view == 'harian' %}active{% endif %}"
+            href="{{ url_for('portal_joki_admin_laporan') }}?view=harian&tanggal={{ tanggal or generated_at.strftime('%Y-%m-%d') }}"
+        >
+            <i class="ti ti-calendar-day me-1"></i>
+            Harian
+        </a>
+
+        <!-- ===================================================== -->
+        <!-- STATISTIK -->
+        <!-- ===================================================== -->
+        <a
+            class="nav-link {% if view == 'statistik' %}active{% endif %}"
+            href="{{ url_for('portal_joki_admin_laporan') }}?view=statistik&tahun={{ tahun }}&bulan={{ bulan }}"
+        >
+            <i class="ti ti-chart-bar me-1"></i>
+            Statistik
+        </a>
+
+    </div>
+</div>

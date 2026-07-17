@@ -1,39 +1,738 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="h3 mb-2 text-gray-800">Edit VIP Log</h1>
 
-<div class="card shadow mb-4">
-  <div class="card-body">
-    <form method="post">
-      <div class="form-group">
-        <label for="target_user_id">User ID</label>
-        <input type="number" class="form-control" id="target_user_id" name="target_user_id" value="{{ log.target_user_id }}" required>
-      </div>
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+        --warning-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+        --success-gradient: linear-gradient(135deg, #10b981, #059669);
+        --danger-gradient: linear-gradient(135deg, #ef4444, #dc2626);
+        --info-gradient: linear-gradient(135deg, #0ea5e9, #0284c7);
+        --border-color: #e2e8f0;
+        --bg-card: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+    }
 
-      <div class="form-group">
-        <label for="paket">Paket</label>
-        <input type="text" class="form-control" id="paket" name="paket" value="{{ log.paket }}">
-      </div>
+    /* Page Container */
+    .page-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
 
-      <div class="form-group">
-        <label for="durasi_hari">Durasi (hari)</label>
-        <input type="number" class="form-control" id="durasi_hari" name="durasi_hari" value="{{ log.durasi_hari }}">
-      </div>
+    /* Page Header */
+    .page-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding: 25px 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
 
-      <div class="form-group">
-        <label for="expired_baru">Expired Baru</label>
-        <input type="datetime-local" class="form-control" id="expired_baru" name="expired_baru"
-          value="{{ log.expired_baru|replace(' ', 'T') }}">
-      </div>
+    .page-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        background: var(--warning-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-      <div class="form-group">
-        <label for="keterangan">Keterangan</label>
-        <textarea class="form-control" id="keterangan" name="keterangan">{{ log.keterangan or '' }}</textarea>
-      </div>
+    .page-title i {
+        background: none;
+        -webkit-text-fill-color: #f59e0b;
+        font-size: 1.75rem;
+    }
 
-      <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-      <a href="/vip_logs" class="btn btn-secondary">Batal</a>
-    </form>
-  </div>
+    .page-subtitle {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Card Styles */
+    .custom-card {
+        background: var(--bg-card);
+        border-radius: 24px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .custom-card:hover {
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header-custom {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        padding: 20px 28px;
+        border-bottom: none;
+    }
+
+    .card-header-custom h6 {
+        color: white;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1rem;
+    }
+
+    .card-header-custom h6 i {
+        color: #f59e0b;
+        font-size: 1.25rem;
+    }
+
+    .card-header-custom h6 .badge {
+        background: rgba(245, 158, 11, 0.2);
+        color: #fbbf24;
+        padding: 4px 12px;
+        border-radius: 30px;
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+
+    /* Form Styles */
+    .form-container {
+        padding: 32px 28px;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.875rem;
+    }
+
+    .form-label i {
+        color: #f59e0b;
+        font-size: 1rem;
+    }
+
+    .form-label .required {
+        color: #ef4444;
+        font-size: 0.75rem;
+    }
+
+    .form-control {
+        border-radius: 16px;
+        padding: 12px 16px;
+        border: 1.5px solid var(--border-color);
+        transition: all 0.2s ease;
+        font-size: 0.9375rem;
+        background: var(--bg-card);
+        color: var(--text-main);
+    }
+
+    .form-control:hover {
+        border-color: #cbd5e1;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    input[type="number"].form-control {
+        -moz-appearance: textfield;
+    }
+
+    input[type="number"].form-control::-webkit-inner-spin-button,
+    input[type="number"].form-control::-webkit-outer-spin-button {
+        opacity: 0.5;
+    }
+
+    /* Help Text */
+    .form-text {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .form-text i {
+        font-size: 0.7rem;
+    }
+
+    /* Info Card */
+    .info-card {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 28px;
+        border-left: 4px solid #f59e0b;
+    }
+
+    .info-card-title {
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: #92400e;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-card-content {
+        font-size: 0.8rem;
+        color: #78350f;
+        line-height: 1.5;
+    }
+
+    /* Duration Preview */
+    .duration-preview {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-top: 12px;
+        display: none;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid var(--border-color);
+    }
+
+    .duration-preview.show {
+        display: flex;
+    }
+
+    .duration-preview-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+    }
+
+    .duration-preview-content {
+        flex: 1;
+    }
+
+    .duration-preview-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .duration-preview-value {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #0f172a;
+    }
+
+    /* Expiry Preview */
+    .expiry-preview {
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-top: 12px;
+        display: none;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .expiry-preview.show {
+        display: flex;
+    }
+
+    .expiry-preview-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+    }
+
+    /* Button Styles */
+    .btn-save, .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 28px;
+        border-radius: 40px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-save {
+        background: var(--warning-gradient);
+        color: white;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-save:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .btn-cancel {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1.5px solid var(--border-color);
+    }
+
+    .btn-cancel:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+        transform: translateX(-2px);
+    }
+
+    /* Action Buttons Container */
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 16px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 24px 20px;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column-reverse;
+            gap: 12px;
+        }
+        
+        .btn-save, .btn-cancel {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .card-header-custom {
+            padding: 16px 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .custom-card {
+        animation: fadeInUp 0.4s ease-out;
+    }
+</style>
+
+<div class="page-container">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div>
+            <div class="page-title">
+                <i class="fas fa-edit"></i>
+                Edit VIP Log
+            </div>
+            <div class="page-subtitle">
+                <i class="fas fa-crown"></i>
+                Ubah data riwayat aktivasi VIP user
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="custom-card">
+        <div class="card-header-custom">
+            <h6>
+                <i class="fas fa-pencil-alt"></i>
+                Form Edit VIP Log
+                <span class="badge">ID: {{ log.id }}</span>
+            </h6>
+        </div>
+
+        <div class="form-container">
+            <form method="post" id="editVipLogForm">
+                <!-- Info Card -->
+                <div class="info-card">
+                    <div class="info-card-title">
+                        <i class="fas fa-info-circle"></i>
+                        Informasi Penting
+                    </div>
+                    <div class="info-card-content">
+                        <i class="fas fa-lock me-1"></i>
+                        Edit data VIP log akan mempengaruhi riwayat user. Pastikan data yang dimasukkan sudah benar.
+                    </div>
+                </div>
+
+                <!-- User ID -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user-id"></i>
+                        User ID
+                        <span class="required">*</span>
+                    </label>
+                    <input type="number" 
+                           class="form-control" 
+                           id="target_user_id" 
+                           name="target_user_id" 
+                           value="{{ log.target_user_id }}" 
+                           required>
+                    <div class="form-text">
+                        <i class="fas fa-info-circle"></i>
+                        ID Telegram user yang menerima VIP
+                    </div>
+                </div>
+
+                <!-- Paket -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-gem"></i>
+                        Paket VIP
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="paket" 
+                           name="paket" 
+                           value="{{ log.paket }}"
+                           placeholder="Contoh: Premium 30 Hari">
+                    <div class="form-text">
+                        <i class="fas fa-tag"></i>
+                        Nama paket VIP yang diaktifkan
+                    </div>
+                </div>
+
+                <!-- Durasi Hari -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar-week"></i>
+                        Durasi (Hari)
+                    </label>
+                    <input type="number" 
+                           class="form-control" 
+                           id="durasi_hari" 
+                           name="durasi_hari" 
+                           value="{{ log.durasi_hari }}"
+                           placeholder="Contoh: 30"
+                           min="1"
+                           max="365">
+                    <div class="form-text">
+                        <i class="fas fa-lightbulb"></i>
+                        Masukkan durasi dalam hitungan hari (1-365)
+                    </div>
+                    <div id="durationPreview" class="duration-preview">
+                        <div class="duration-preview-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="duration-preview-content">
+                            <div class="duration-preview-label">Durasi yang dipilih</div>
+                            <div class="duration-preview-value" id="previewDuration">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expired Baru - FIXED: Handle datetime object correctly -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar-times"></i>
+                        Tanggal Berakhir (Expired)
+                    </label>
+                    <input type="datetime-local" 
+                           class="form-control" 
+                           id="expired_baru" 
+                           name="expired_baru"
+                           {% if log.expired_baru %}
+                               {% if log.expired_baru is string %}
+                                   value="{{ log.expired_baru[:16] if log.expired_baru|length >= 16 else log.expired_baru.replace(' ', 'T')[:16] }}"
+                               {% else %}
+                                   value="{{ log.expired_baru.strftime('%Y-%m-%dT%H:%M') }}"
+                               {% endif %}
+                           {% endif %}>
+                    <div class="form-text">
+                        <i class="fas fa-info-circle"></i>
+                        Format: YYYY-MM-DD HH:MM:SS
+                    </div>
+                    <div id="expiryPreview" class="expiry-preview">
+                        <div class="expiry-preview-icon">
+                            <i class="fas fa-hourglass-end"></i>
+                        </div>
+                        <div class="duration-preview-content">
+                            <div class="duration-preview-label">Tanggal berakhir</div>
+                            <div class="duration-preview-value" id="previewExpiry">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keterangan -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-align-left"></i>
+                        Keterangan
+                    </label>
+                    <textarea class="form-control" 
+                              id="keterangan" 
+                              name="keterangan"
+                              rows="4"
+                              placeholder="Contoh: Aktivasi VIP via Admin / Perpanjangan otomatis">{{ log.keterangan or '' }}</textarea>
+                    <div class="form-text">
+                        <i class="fas fa-edit"></i>
+                        Catatan tambahan tentang transaksi VIP ini
+                    </div>
+                    <div class="form-text" style="text-align: right; margin-top: 4px;">
+                        <i class="fas fa-hashtag"></i> <span id="charCount">0</span> / 500 karakter
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="/vip_logs" class="btn-cancel">
+                        <i class="fas fa-arrow-left"></i>
+                        Kembali
+                    </a>
+                    <button type="submit" class="btn-save" id="submitBtn">
+                        <i class="fas fa-save"></i>
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).ready(function() {
+        const durasiInput = document.getElementById('durasi_hari');
+        const durasiPreview = document.getElementById('durationPreview');
+        const previewDuration = document.getElementById('previewDuration');
+        
+        const expiredInput = document.getElementById('expired_baru');
+        const expiryPreview = document.getElementById('expiryPreview');
+        const previewExpiry = document.getElementById('previewExpiry');
+        
+        const keteranganInput = document.getElementById('keterangan');
+        const charCountSpan = document.getElementById('charCount');
+        const form = document.getElementById('editVipLogForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Store original values for change detection
+        const originalValues = {
+            target_user_id: document.getElementById('target_user_id').value,
+            paket: document.getElementById('paket').value,
+            durasi_hari: durasiInput ? durasiInput.value : '',
+            expired_baru: expiredInput ? expiredInput.value : '',
+            keterangan: keteranganInput ? keteranganInput.value : ''
+        };
+        
+        let formChanged = false;
+        
+        // Duration preview
+        if (durasiInput) {
+            function updateDurationPreview() {
+                const days = durasiInput.value;
+                if (days && days > 0) {
+                    let displayText = '';
+                    if (days == 1) {
+                        displayText = days + ' hari';
+                    } else if (days >= 30) {
+                        const months = Math.floor(days / 30);
+                        const remainingDays = days % 30;
+                        if (months > 0) {
+                            displayText = months + ' bulan';
+                            if (remainingDays > 0) displayText += ' ' + remainingDays + ' hari';
+                        } else {
+                            displayText = days + ' hari';
+                        }
+                    } else {
+                        displayText = days + ' hari';
+                    }
+                    previewDuration.textContent = displayText;
+                    durasiPreview.classList.add('show');
+                } else {
+                    durasiPreview.classList.remove('show');
+                }
+            }
+            durasiInput.addEventListener('input', updateDurationPreview);
+            updateDurationPreview();
+        }
+        
+        // Expiry preview
+        if (expiredInput) {
+            function updateExpiryPreview() {
+                const expiryValue = expiredInput.value;
+                if (expiryValue) {
+                    try {
+                        const formattedDate = new Date(expiryValue).toLocaleString('id-ID', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                        previewExpiry.textContent = formattedDate;
+                        expiryPreview.classList.add('show');
+                    } catch(e) {
+                        previewExpiry.textContent = expiryValue;
+                        expiryPreview.classList.add('show');
+                    }
+                } else {
+                    expiryPreview.classList.remove('show');
+                }
+            }
+            expiredInput.addEventListener('change', updateExpiryPreview);
+            updateExpiryPreview();
+        }
+        
+        // Character counter for keterangan
+        if (keteranganInput && charCountSpan) {
+            function updateCharCount() {
+                const length = keteranganInput.value.length;
+                const maxLength = 500;
+                charCountSpan.textContent = length;
+                
+                if (length > maxLength - 50) {
+                    charCountSpan.style.color = '#f59e0b';
+                } else if (length > maxLength - 100) {
+                    charCountSpan.style.color = '#64748b';
+                } else {
+                    charCountSpan.style.color = '#94a3b8';
+                }
+                
+                if (length > maxLength) {
+                    charCountSpan.style.color = '#ef4444';
+                    keteranganInput.style.borderColor = '#ef4444';
+                } else {
+                    keteranganInput.style.borderColor = '';
+                }
+            }
+            keteranganInput.addEventListener('input', updateCharCount);
+            updateCharCount();
+        }
+        
+        // Check for form changes
+        function checkFormChanges() {
+            const currentValues = {
+                target_user_id: document.getElementById('target_user_id').value,
+                paket: document.getElementById('paket').value,
+                durasi_hari: durasiInput ? durasiInput.value : '',
+                expired_baru: expiredInput ? expiredInput.value : '',
+                keterangan: keteranganInput ? keteranganInput.value : ''
+            };
+            
+            formChanged = (
+                currentValues.target_user_id !== originalValues.target_user_id ||
+                currentValues.paket !== originalValues.paket ||
+                currentValues.durasi_hari !== originalValues.durasi_hari ||
+                currentValues.expired_baru !== originalValues.expired_baru ||
+                currentValues.keterangan !== originalValues.keterangan
+            );
+        }
+        
+        const formInputs = document.querySelectorAll('#editVipLogForm input, #editVipLogForm textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('input', checkFormChanges);
+            input.addEventListener('change', checkFormChanges);
+        });
+        
+        // Warn before leaving
+        window.addEventListener('beforeunload', function(e) {
+            if (formChanged) {
+                e.preventDefault();
+                e.returnValue = 'Anda belum menyimpan perubahan. Yakin ingin keluar?';
+                return e.returnValue;
+            }
+        });
+        
+        // Form submission with confirmation
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const durasiValue = durasiInput ? durasiInput.value : null;
+                if (durasiValue && (durasiValue < 1 || durasiValue > 365)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Durasi Tidak Valid',
+                        text: 'Durasi harus antara 1-365 hari',
+                        confirmButtonColor: '#f59e0b'
+                    });
+                    return;
+                }
+                
+                Swal.fire({
+                    title: 'Konfirmasi Update',
+                    text: 'Apakah Anda yakin ingin menyimpan perubahan data VIP Log ini?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#f59e0b',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: '<i class="fas fa-save"></i> Ya, Simpan!',
+                    cancelButtonText: '<i class="fas fa-times"></i> Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+                        submitBtn.disabled = true;
+                        form.submit();
+                    }
+                });
+            });
+        }
+        
+        // Animation
+        $('.custom-card').css('animation', 'fadeInUp 0.4s ease-out');
+    });
+</script>
 {% endblock %}

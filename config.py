@@ -7,7 +7,7 @@ from typing import Any, Callable
 
 from dotenv import load_dotenv
 
-from configs.logging_setup import log  # import harus di atas (fix E402)
+from app.utils.logger import log  # import harus di atas (fix E402)
 
 # =====================
 # ENV LOADING

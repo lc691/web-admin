@@ -1,0 +1,518 @@
+{% extends "base.html" %}
+
+{% block title %}Laporan{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .filter-section {
+        background: var(--tblr-bg-surface-hover);
+        border-radius: var(--tblr-border-radius);
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--tblr-border-color);
+    }
+    
+    .filter-section .form-control,
+    .filter-section .form-select {
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 6px 12px;
+        font-size: 14px;
+        background: var(--tblr-bg-surface);
+        color: var(--tblr-body-color);
+    }
+    
+    .filter-section .form-control:focus,
+    .filter-section .form-select:focus {
+        border-color: var(--tblr-primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    
+    .stat-card {
+        background: var(--tblr-bg-surface);
+        border-radius: var(--tblr-border-radius);
+        border: 1px solid var(--tblr-border-color);
+        padding: 1rem;
+        text-align: center;
+        transition: all 0.2s ease;
+        height: 100%;
+    }
+    
+    .stat-card:hover {
+        border-color: var(--tblr-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .stat-card .stat-number {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    
+    .stat-card .stat-label {
+        font-size: 13px;
+        color: var(--tblr-muted);
+        font-weight: 500;
+        margin-top: 2px;
+    }
+    
+    .stat-card .stat-number.primary { color: #6366f1; }
+    .stat-card .stat-number.success { color: #22c55e; }
+    .stat-card .stat-number.warning { color: #eab308; }
+    .stat-card .stat-number.danger { color: #ef4444; }
+    .stat-card .stat-number.info { color: #3b82f6; }
+    .stat-card .stat-number.purple { color: #a855f7; }
+    
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    .table-hover tbody tr {
+        cursor: pointer;
+        transition: background 0.15s ease;
+    }
+    
+    .table-hover tbody tr:hover {
+        background: var(--tblr-bg-surface-hover);
+    }
+    
+    .status-badge {
+        font-size: 12px;
+        padding: 3px 10px;
+        border-radius: 20px;
+    }
+    
+    .view-tabs .nav-link {
+        color: var(--tblr-body-color);
+        border-radius: var(--tblr-border-radius);
+        padding: 8px 16px;
+        font-weight: 500;
+    }
+    
+    .view-tabs .nav-link.active {
+        background: var(--tblr-primary);
+        color: white;
+    }
+    
+    .view-tabs .nav-link:hover:not(.active) {
+        background: var(--tblr-bg-surface-hover);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--tblr-muted);
+    }
+    
+    .empty-state i {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 12px;
+        opacity: 0.3;
+    }
+    
+    @media (max-width: 768px) {
+        .stat-card .stat-number {
+            font-size: 22px;
+        }
+        
+        .filter-section .row {
+            gap: 8px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Portal Joki</div>
+            <h2 class="page-title">Laporan</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <button class="btn btn-outline-secondary btn-sm" onclick="window.print()">
+                    <i class="ti ti-printer me-1"></i> Print
+                </button>
+                <a href="{{ url_for('portal_joki_admin_laporan_export') }}?start_date={{ tanggal if tanggal else (tahun ~ '-' ~ bulan ~ '-01') }}&end_date={{ tanggal if tanggal else (tahun ~ '-' ~ bulan ~ '-' ~ (bulanan_stats.days_in_month|default(28))) }}" 
+                   class="btn btn-primary btn-sm">
+                    <i class="ti ti-download me-1"></i> Export
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     FILTER SECTION
+     ========================================================== -->
+<div class="filter-section">
+    <form method="GET" action="{{ url_for('portal_joki_admin_laporan') }}" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label small text-muted">View</label>
+            <select name="view" class="form-select">
+                <option value="bulanan" {% if view == 'bulanan' %}selected{% endif %}>Bulanan</option>
+                <option value="harian" {% if view == 'harian' %}selected{% endif %}>Harian</option>
+                <option value="statistik" {% if view == 'statistik' %}selected{% endif %}>Statistik</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small text-muted">Tahun</label>
+            <select name="tahun" class="form-select">
+                {% for y in range(now.year, now.year - 5, -1) %}
+                <option value="{{ y }}" {% if tahun == y %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small text-muted">Bulan</label>
+            <select name="bulan" class="form-select">
+                {% for m in range(1, 13) %}
+                <option value="{{ m }}" {% if bulan == m %}selected{% endif %}>
+                    {{ get_month_name(m) }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small text-muted">Tanggal</label>
+            <input type="date" name="tanggal" class="form-control" value="{{ tanggal or '' }}">
+        </div>
+        <div class="col-md-2">
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="ti ti-search me-1"></i> Tampilkan
+                </button>
+                <a href="{{ url_for('portal_joki_admin_laporan') }}" class="btn btn-outline-secondary">
+                    <i class="ti ti-x"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- ==========================================================
+     VIEW TABS
+     ========================================================== -->
+<div class="view-tabs mb-3">
+    <div class="nav nav-pills">
+        <a class="nav-link {% if view == 'bulanan' %}active{% endif %}" 
+           href="{{ url_for('portal_joki_admin_laporan') }}?view=bulanan&tahun={{ tahun }}&bulan={{ bulan }}">
+            <i class="ti ti-calendar-month me-1"></i> Bulanan
+        </a>
+        <a class="nav-link {% if view == 'harian' %}active{% endif %}" 
+           href="{{ url_for('portal_joki_admin_laporan') }}?view=harian&tanggal={{ tanggal or generated_at.strftime('%Y-%m-%d') }}">
+            <i class="ti ti-calendar-day me-1"></i> Harian
+        </a>
+        <a class="nav-link {% if view == 'statistik' %}active{% endif %}" 
+           href="{{ url_for('portal_joki_admin_laporan') }}?view=statistik">
+            <i class="ti ti-chart-bar me-1"></i> Statistik
+        </a>
+    </div>
+</div>
+
+<!-- ==========================================================
+     STATISTIK VIEW
+     ========================================================== -->
+{% if view == 'statistik' %}
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number primary">{{ statistik.total|default(0) }}</div>
+            <div class="stat-label">Total Penugasan</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number success">{{ statistik.selesai|default(0) }}</div>
+            <div class="stat-label">Selesai</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number warning">{{ statistik.pending|default(0) }}</div>
+            <div class="stat-label">Pending</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number danger">{{ statistik.revisi|default(0) }}</div>
+            <div class="stat-label">Revisi</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Ringkasan Statistik</h3>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Total Target</span>
+                    <span class="fw-bold">{{ statistik.total_target|default(0) }}</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Completion Rate</span>
+                    <span class="fw-bold">
+                        {% set total = statistik.total|default(0) %}
+                        {% set selesai = statistik.selesai|default(0) %}
+                        {{ (selesai / total * 100)|round(2) if total > 0 else 0 }}%
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Pending Rate</span>
+                    <span class="fw-bold">
+                        {% set total = statistik.total|default(0) %}
+                        {% set pending = statistik.pending|default(0) %}
+                        {{ (pending / total * 100)|round(2) if total > 0 else 0 }}%
+                    </span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted">Revisi Rate</span>
+                    <span class="fw-bold">
+                        {% set total = statistik.total|default(0) %}
+                        {% set revisi = statistik.revisi|default(0) %}
+                        {{ (revisi / total * 100)|round(2) if total > 0 else 0 }}%
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- ==========================================================
+     BULANAN VIEW
+     ========================================================== -->
+{% if view == 'bulanan' %}
+<!-- Bulanan Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number primary">{{ bulanan_stats.total_joki|default(0) }}</div>
+            <div class="stat-label">Total Joki</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number info">{{ bulanan_stats.total_penugasan|default(0) }}</div>
+            <div class="stat-label">Total Penugasan</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number success">{{ bulanan_stats.selesai|default(0) }}</div>
+            <div class="stat-label">Selesai</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number purple">{{ bulanan_stats.completion_rate|default(0) }}%</div>
+            <div class="stat-label">Completion Rate</div>
+        </div>
+    </div>
+</div>
+
+<!-- Bulanan Table -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            Laporan Bulanan {{ month_name }} {{ tahun }}
+            <span class="badge bg-primary ms-2">{{ bulanan|length }}</span>
+        </h3>
+    </div>
+    <div class="card-body p-0">
+        {% if bulanan %}
+        <div class="table-responsive">
+            <table class="table table-hover table-vcenter">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Joki</th>
+                        <th class="text-center">Total</th>
+                        <th class="text-center">Selesai</th>
+                        <th class="text-center">Pending</th>
+                        <th class="text-center">Revisi</th>
+                        <th class="text-center">Target</th>
+                        <th class="text-center">Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in bulanan %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <div>
+                                <div class="fw-bold">{{ item.nama|default('-') }}</div>
+                                <div class="text-muted small">{{ item.kode|default('-') }}</div>
+                            </div>
+                        </td>
+                        <td class="text-center">{{ item.total_penugasan|default(0) }}</td>
+                        <td class="text-center">{{ item.selesai|default(0) }}</td>
+                        <td class="text-center">{{ item.pending|default(0) }}</td>
+                        <td class="text-center">{{ item.revisi|default(0) }}</td>
+                        <td class="text-center">{{ item.total_target|default(0) }}</td>
+                        <td class="text-center">
+                            {% set total = item.total_penugasan|default(0) %}
+                            {% set selesai = item.selesai|default(0) %}
+                            {% set rate = (selesai / total * 100)|round(2) if total > 0 else 0 %}
+                            <span class="badge {% if rate >= 75 %}bg-success{% elif rate >= 50 %}bg-warning{% else %}bg-danger{% endif %}">
+                                {{ rate }}%
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="ti ti-calendar-off"></i>
+            <h5>Tidak Ada Data</h5>
+            <p>Belum ada penugasan pada bulan {{ month_name }} {{ tahun }}.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- ==========================================================
+     HARIAN VIEW
+     ========================================================== -->
+{% if view == 'harian' %}
+<!-- Harian Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number info">{{ harian_stats.total|default(0) }}</div>
+            <div class="stat-label">Total Tugas</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number success">{{ harian_stats.selesai|default(0) }}</div>
+            <div class="stat-label">Selesai</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number warning">{{ harian_stats.pending|default(0) }}</div>
+            <div class="stat-label">Pending</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-card">
+            <div class="stat-number purple">{{ harian_stats.completion_rate|default(0) }}%</div>
+            <div class="stat-label">Completion Rate</div>
+        </div>
+    </div>
+</div>
+
+<!-- Harian Table -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            Laporan Harian {{ tanggal }}
+            <span class="badge bg-primary ms-2">{{ harian|length }}</span>
+        </h3>
+    </div>
+    <div class="card-body p-0">
+        {% if harian %}
+        <div class="table-responsive">
+            <table class="table table-hover table-vcenter">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Joki</th>
+                        <th>Kloter</th>
+                        <th>Absen</th>
+                        <th>Target</th>
+                        <th>Status</th>
+                        <th>File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in harian %}
+                    <tr onclick="window.location.href='{{ url_for('portal_joki_admin_penugasan_detail', penugasan_id=item.id) }}'">
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <div>
+                                <div class="fw-bold">{{ item.joki_nama|default(item.nama)|default('-') }}</div>
+                                <div class="text-muted small">{{ item.joki_kode|default(item.kode)|default('-') }}</div>
+                            </div>
+                        </td>
+                        <td>{{ item.kloter_nama|default(item.kloter)|default('-') }}</td>
+                        <td>{{ item.absen_awal|default('-') }} - {{ item.absen_akhir|default('-') }}</td>
+                        <td>{{ item.target_judul|default(0) }}</td>
+                        <td>
+                            <span class="badge status-badge bg-{{ get_status_color(item.status|default(0)) }}">
+                                {{ get_status_label(item.status|default(0)) }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if item.file_path %}
+                            <i class="ti ti-check text-success"></i>
+                            {% else %}
+                            <i class="ti ti-x text-danger"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="ti ti-calendar-off"></i>
+            <h5>Tidak Ada Data</h5>
+            <p>Belum ada penugasan pada tanggal {{ tanggal }}.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ==========================================================
+        // Auto submit filter on enter
+        // ==========================================================
+        document.querySelectorAll('.filter-section input, .filter-section select').forEach(function(el) {
+            el.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    this.closest('form').submit();
+                }
+            });
+        });
+        
+        // ==========================================================
+        // Print function
+        // ==========================================================
+        window.print = function() {
+            window.print();
+        };
+        
+        // ==========================================================
+        // Show error message
+        // ==========================================================
+        var urlParams = new URLSearchParams(window.location.search);
+        var error = urlParams.get('error');
+        
+        if (error) {
+            Swal.fire('Error', error, 'error');
+            var newUrl = window.location.pathname + window.location.search.replace(/[?&]error=[^&]*/, '');
+            window.history.replaceState({}, document.title, newUrl);
+        }
+    });
+</script>
+{% endblock %}

@@ -1,5 +1,5 @@
-from configs.logging_setup import log
-from db.connect import get_db_cursor, get_dict_cursor
+from app.utils.logger import log
+from app.core.database import get_db_cursor, get_dict_cursor
 
 
 def get_admin_actions(
