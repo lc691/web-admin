@@ -275,15 +275,7 @@ class PortalJokiCalendarRepository:
         *,
         tanggal: date,
     ) -> List[Dict[str, Any]]:
-        """
-        Mendapatkan detail penugasan untuk tanggal tertentu (admin view).
-        
-        Args:
-            tanggal: Tanggal yang dicari
-            
-        Returns:
-            List[dict]: Detail penugasan per joki dan kloter
-        """
+
         with get_clean_dict_cursor() as cur:
             cur.execute(
                 """
@@ -293,8 +285,10 @@ class PortalJokiCalendarRepository:
                     j.kode AS joki_kode,
                     k.nama AS kloter_nama
                 FROM portal_joki_penugasan p
-                JOIN joki j ON j.id = p.joki_id
-                JOIN kloter k ON k.id = p.kloter_id
+                JOIN joki j
+                    ON j.id = p.joki_id
+                JOIN kloter k
+                    ON k.id = p.kloter_id
                 WHERE p.tanggal = %s
                 ORDER BY
                     k.nama,
@@ -303,9 +297,15 @@ class PortalJokiCalendarRepository:
                 """,
                 (tanggal,),
             )
-            result = cur.fetchall()
-            log.debug(f"Admin day data: tanggal={tanggal}, rows={len(result)}")
-            return result
+
+            rows = [dict(row) for row in cur.fetchall()]
+
+            for row in rows:
+                for key, value in row.items():
+                    if hasattr(value, "isoformat"):
+                        row[key] = value.isoformat()
+
+            return rows
 
     # ==========================================================
     # ADMIN - MONTH DETAIL

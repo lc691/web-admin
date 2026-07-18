@@ -153,9 +153,20 @@ class PortalJokiListService:
             )
             
             # Add status labels
-            status_map = {0: "Pending", 1: "Upload", 2: "Revisi", 3: "Selesai"}
             for item in data:
-                item["status_label"] = status_map.get(item.get("status", 0), "Unknown")
+                try:
+                    # Pastikan item adalah dict
+                    if isinstance(item, dict):
+                        status = item.get("status", 0)
+                        item["status_label"] = PortalJokiPenugasanRepository.get_status_label(status)
+                        item["status_color"] = PortalJokiPenugasanRepository.get_status_color(status)
+                    else:
+                        log.warning(f"Item is not dict: {item}")
+                except Exception as e:
+                    log.error(f"Error adding status label: {e}")
+                    if isinstance(item, dict):
+                        item["status_label"] = "Unknown"
+                        item["status_color"] = "secondary"
             
             # Get total count
             total = PortalJokiPenugasanRepository.count(
@@ -199,9 +210,21 @@ class PortalJokiListService:
         try:
             data = PortalJokiPenugasanRepository.get_by_date(tanggal, joki_id)
             
-            status_map = {0: "Pending", 1: "Upload", 2: "Revisi", 3: "Selesai"}
+            # Add status labels
             for item in data:
-                item["status_label"] = status_map.get(item.get("status", 0), "Unknown")
+                try:
+                    # Pastikan item adalah dict
+                    if isinstance(item, dict):
+                        status = item.get("status", 0)
+                        item["status_label"] = PortalJokiPenugasanRepository.get_status_label(status)
+                        item["status_color"] = PortalJokiPenugasanRepository.get_status_color(status)
+                    else:
+                        log.warning(f"Item is not dict: {item}")
+                except Exception as e:
+                    log.error(f"Error adding status label: {e}")
+                    if isinstance(item, dict):
+                        item["status_label"] = "Unknown"
+                        item["status_color"] = "secondary"
             
             log.debug(f"List by date: {len(data)} rows")
             
@@ -237,9 +260,21 @@ class PortalJokiListService:
         try:
             data = PortalJokiPenugasanRepository.get_by_joki(joki_id, limit, offset)
             
-            status_map = {0: "Pending", 1: "Upload", 2: "Revisi", 3: "Selesai"}
+            # Add status labels
             for item in data:
-                item["status_label"] = status_map.get(item.get("status", 0), "Unknown")
+                try:
+                    # Pastikan item adalah dict
+                    if isinstance(item, dict):
+                        status = item.get("status", 0)
+                        item["status_label"] = PortalJokiPenugasanRepository.get_status_label(status)
+                        item["status_color"] = PortalJokiPenugasanRepository.get_status_color(status)
+                    else:
+                        log.warning(f"Item is not dict: {item}")
+                except Exception as e:
+                    log.error(f"Error adding status label: {e}")
+                    if isinstance(item, dict):
+                        item["status_label"] = "Unknown"
+                        item["status_color"] = "secondary"
             
             total = PortalJokiPenugasanRepository.count(joki_id=joki_id)
             
@@ -277,9 +312,21 @@ class PortalJokiListService:
         try:
             data = PortalJokiPenugasanRepository.get_by_joki_date(joki_id, tanggal)
             
-            status_map = {0: "Pending", 1: "Upload", 2: "Revisi", 3: "Selesai"}
+            # Add status labels
             for item in data:
-                item["status_label"] = status_map.get(item.get("status", 0), "Unknown")
+                try:
+                    # Pastikan item adalah dict
+                    if isinstance(item, dict):
+                        status = item.get("status", 0)
+                        item["status_label"] = PortalJokiPenugasanRepository.get_status_label(status)
+                        item["status_color"] = PortalJokiPenugasanRepository.get_status_color(status)
+                    else:
+                        log.warning(f"Item is not dict: {item}")
+                except Exception as e:
+                    log.error(f"Error adding status label: {e}")
+                    if isinstance(item, dict):
+                        item["status_label"] = "Unknown"
+                        item["status_color"] = "secondary"
             
             log.debug(f"List by joki date: {len(data)} rows")
             
@@ -313,9 +360,21 @@ class PortalJokiListService:
         try:
             data = PortalJokiPenugasanRepository.get_by_kloter(kloter_id, tanggal)
             
-            status_map = {0: "Pending", 1: "Upload", 2: "Revisi", 3: "Selesai"}
+            # Add status labels
             for item in data:
-                item["status_label"] = status_map.get(item.get("status", 0), "Unknown")
+                try:
+                    # Pastikan item adalah dict
+                    if isinstance(item, dict):
+                        status = item.get("status", 0)
+                        item["status_label"] = PortalJokiPenugasanRepository.get_status_label(status)
+                        item["status_color"] = PortalJokiPenugasanRepository.get_status_color(status)
+                    else:
+                        log.warning(f"Item is not dict: {item}")
+                except Exception as e:
+                    log.error(f"Error adding status label: {e}")
+                    if isinstance(item, dict):
+                        item["status_label"] = "Unknown"
+                        item["status_color"] = "secondary"
             
             log.debug(f"List by kloter: {len(data)} rows")
             
@@ -353,9 +412,21 @@ class PortalJokiListService:
         try:
             data = PortalJokiPenugasanRepository.get_by_status(status, tanggal)
             
-            status_map = {0: "Pending", 1: "Upload", 2: "Revisi", 3: "Selesai"}
+            # Add status labels
             for item in data:
-                item["status_label"] = status_map.get(item.get("status", 0), "Unknown")
+                try:
+                    # Pastikan item adalah dict
+                    if isinstance(item, dict):
+                        status = item.get("status", 0)
+                        item["status_label"] = PortalJokiPenugasanRepository.get_status_label(status)
+                        item["status_color"] = PortalJokiPenugasanRepository.get_status_color(status)
+                    else:
+                        log.warning(f"Item is not dict: {item}")
+                except Exception as e:
+                    log.error(f"Error adding status label: {e}")
+                    if isinstance(item, dict):
+                        item["status_label"] = "Unknown"
+                        item["status_color"] = "secondary"
             
             total = PortalJokiPenugasanRepository.count(status=status)
             
@@ -405,9 +476,21 @@ class PortalJokiListService:
                 end_date=end_date,
             )
             
-            status_map = {0: "Pending", 1: "Upload", 2: "Revisi", 3: "Selesai"}
+            # Add status labels
             for item in data:
-                item["status_label"] = status_map.get(item.get("status", 0), "Unknown")
+                try:
+                    # Pastikan item adalah dict
+                    if isinstance(item, dict):
+                        status = item.get("status", 0)
+                        item["status_label"] = PortalJokiPenugasanRepository.get_status_label(status)
+                        item["status_color"] = PortalJokiPenugasanRepository.get_status_color(status)
+                    else:
+                        log.warning(f"Item is not dict: {item}")
+                except Exception as e:
+                    log.error(f"Error adding status label: {e}")
+                    if isinstance(item, dict):
+                        item["status_label"] = "Unknown"
+                        item["status_color"] = "secondary"
             
             total = PortalJokiPenugasanRepository.count(
                 joki_id=joki_id,

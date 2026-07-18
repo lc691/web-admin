@@ -1,0 +1,207 @@
+<!-- ==========================================================
+     DAY DETAIL MODAL - RAPIH & RATA KIRI
+     ========================================================== -->
+<div class="modal fade" id="dayDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- ========== HEADER ========== -->
+            <div class="modal-header border-0 pb-0">
+                <div class="d-flex align-items-start flex-column w-100">
+                    <!-- Baris 1: Judul + Badge Tugas + Tombol Close -->
+                    <div class="d-flex align-items-center justify-content-between w-100">
+                        <h5 class="modal-title fw-semibold mb-0">
+                            <i class="ti ti-calendar-clock"></i>
+                            Detail Tugas
+                        </h5>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
+                                <i class="ti ti-clipboard-list me-1"></i>
+                                <span id="detailTotalCount">1</span> Tugas
+                            </span>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                    </div>
+
+                    <!-- Baris 2: Tanggal (rata kiri) -->
+                    <div id="detailDate" class="small text-muted mt-1">
+                        Jumat, 17 Juli 2026
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== BODY ========== -->
+            <div class="modal-body pt-3">
+
+                <!-- Loading -->
+                <div id="detailLoading" class="text-center py-4 text-muted d-none">
+                    <i class="ti ti-loader fs-1" style="animation: spin 1s linear infinite;"></i>
+                    <p class="mt-2">Memuat data...</p>
+                </div>
+
+                <!-- Content -->
+                <div id="detailContent">
+
+                    <!-- ===== STATISTIK KARTU ===== -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-3">
+                            <div class="card bg-light border-0 text-center py-2">
+                                <div class="fs-5 fw-bold text-warning">1</div>
+                                <div class="small text-muted">Pending</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card bg-light border-0 text-center py-2">
+                                <div class="fs-5 fw-bold text-info">0</div>
+                                <div class="small text-muted">Upload</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card bg-light border-0 text-center py-2">
+                                <div class="fs-5 fw-bold text-danger">0</div>
+                                <div class="small text-muted">Revisi</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card bg-light border-0 text-center py-2">
+                                <div class="fs-5 fw-bold text-success">0</div>
+                                <div class="small text-muted">Selesai</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PROGRESS BAR ===== -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between small fw-semibold">
+                            <span>Progress</span>
+                            <span>0%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-primary" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- ===== TABEL TUGAS ===== -->
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 10%;">NO</th>
+                                    <th style="width: 30%;">JOKI</th>
+                                    <th style="width: 25%;">KLOTER</th>
+                                    <th style="width: 25%;">STATUS</th>
+                                    <th style="width: 10%;" class="text-center">ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td><span class="fw-semibold">Adryan IRX</span></td>
+                                    <td><span class="badge bg-secondary">Kloter 1</span></td>
+                                    <td><span class="badge bg-warning text-dark">⏳ Pending</span></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="ti ti-edit"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="emptyState" class="text-center py-5 d-none">
+                        <i class="ti ti-inbox fs-1 text-muted"></i>
+                        <p class="text-muted mt-2">Belum ada tugas untuk hari ini</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ========== FOOTER ========== -->
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                    <i class="ti ti-x me-1"></i> Tutup
+                </button>
+                <a href="#" class="btn btn-outline-primary" id="detailViewAllBtn">
+                    <i class="ti ti-eye me-1"></i> Lihat Semua
+                </a>
+                <button type="button" class="btn btn-primary" id="detailExportBtn">
+                    <i class="ti ti-download me-1"></i> Export
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ==========================================================
+     STYLE TAMBAHAN
+     ========================================================== -->
+<style>
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .modal-dialog-scrollable .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        padding: 1.25rem 1.5rem 0.5rem 1.5rem;
+    }
+
+    .modal-body {
+        padding: 0.5rem 1.5rem 1rem 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 0.5rem 1.5rem 1.25rem 1.5rem;
+    }
+
+    .modal-content {
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    }
+
+    .table th {
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: #6c757d;
+        border-bottom-width: 1px;
+    }
+
+    .table td {
+        vertical-align: middle;
+        font-size: 0.95rem;
+        padding: 0.6rem 0.75rem;
+    }
+
+    .badge.rounded-pill {
+        font-weight: 500;
+    }
+
+    .btn {
+        font-weight: 500;
+        font-size: 0.875rem;
+        border-radius: 8px;
+        padding: 0.4rem 1.1rem;
+    }
+
+    .card.bg-light {
+        background-color: #f8f9fa !important;
+        border-radius: 12px;
+    }
+
+    /* Progress bar */
+    .progress {
+        border-radius: 10px;
+        background-color: #e9ecef;
+    }
+</style>

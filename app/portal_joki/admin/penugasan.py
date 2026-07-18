@@ -46,6 +46,7 @@ router = APIRouter(
     tags=["Portal Joki Admin"],
 )
 
+
 # ==========================================================
 # HELPER FUNCTIONS
 # ==========================================================
@@ -153,7 +154,6 @@ async def penugasan_list(
             },
         )
 
-
 # ==========================================================
 # CREATE PENUGASAN PAGE
 # ==========================================================
@@ -228,6 +228,10 @@ async def penugasan_detail(
                     "title": "Detail Penugasan",
                     "error": result.message,
                     "admin": admin,
+                    "penugasan": None,
+                    "related": {},
+                    "get_status_label": get_status_label,
+                    "get_status_color": get_status_color,
                 },
             )
 
@@ -254,9 +258,12 @@ async def penugasan_detail(
                 "title": "Detail Penugasan",
                 "error": str(e),
                 "admin": admin,
+                "penugasan": None,
+                "related": {},
+                "get_status_label": get_status_label,
+                "get_status_color": get_status_color,
             },
         )
-
 # ==========================================================
 # EDIT PENUGASAN PAGE
 # ==========================================================

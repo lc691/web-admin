@@ -1,0 +1,2625 @@
+[2026-07-17 09:30:26] [ERROR] [soundon] Failed to load penugasan page
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 124, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 6, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/filter.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/filter.html", line 21, in top-level template code
+    value="{{ filters.q }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'filters' is undefined
+[2026-07-17 09:30:26] [ERROR] [soundon] Unhandled exception: 'filters' is undefined
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 124, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 6, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/filter.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/filter.html", line 21, in top-level template code
+    value="{{ filters.q }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'filters' is undefined
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 159, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 6, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/filter.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/filter.html", line 21, in top-level template code
+    value="{{ filters.q }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'filters' is undefined
+[2026-07-17 09:31:24] [ERROR] [soundon] Failed to load penugasan page
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 124, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 6, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/filter.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/filter.html", line 21, in top-level template code
+    value="{{ filters.q }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'filters' is undefined
+[2026-07-17 09:31:24] [ERROR] [soundon] Unhandled exception: 'filters' is undefined
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 124, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 6, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/filter.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/filter.html", line 21, in top-level template code
+    value="{{ filters.q }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'filters' is undefined
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 159, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 6, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/filter.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/filter.html", line 21, in top-level template code
+    value="{{ filters.q }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'filters' is undefined
+[2026-07-17 09:34:42] [ERROR] [soundon] Failed to load penugasan page
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 125, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 7, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/table.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/table.html", line 1, in top-level template code
+    {% from "components/status_badge.html" import status_badge %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'components/status_badge.html' not found in search path: 'templates'
+[2026-07-17 09:34:42] [ERROR] [soundon] Unhandled exception: 'filters' is undefined
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 125, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 7, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/table.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/table.html", line 1, in top-level template code
+    {% from "components/status_badge.html" import status_badge %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'components/status_badge.html' not found in search path: 'templates'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 160, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 6, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/filter.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/filter.html", line 21, in top-level template code
+    value="{{ filters.q }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'filters' is undefined
+[2026-07-17 10:16:27] [ERROR] [soundon] Failed to load penugasan page
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 196, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/modal_delete.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/modal_delete.html", line 19, in top-level template code
+    action="{{ url_for('portal_joki_admin_penugasan_delete_post', penugasan_id=penugasan.id) }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 127, in url_for
+    return request.url_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/requests.py", line 188, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 660, in url_path_for
+    return route.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 277, in url_path_for
+    path, remaining_params = replace_params(self.path_format, self.param_convertors, path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 114, in replace_params
+    value = convertor.to_string(value)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/convertors.py", line 29, in to_string
+    assert value, "Must not be empty"
+AssertionError: Must not be empty
+[2026-07-17 10:16:27] [ERROR] [soundon] Unhandled exception: Must not be empty
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 196, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/modal_delete.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/modal_delete.html", line 19, in top-level template code
+    action="{{ url_for('portal_joki_admin_penugasan_delete_post', penugasan_id=penugasan.id) }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 127, in url_for
+    return request.url_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/requests.py", line 188, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 660, in url_path_for
+    return route.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 277, in url_path_for
+    path, remaining_params = replace_params(self.path_format, self.param_convertors, path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 114, in replace_params
+    value = convertor.to_string(value)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/convertors.py", line 29, in to_string
+    assert value, "Must not be empty"
+AssertionError: Must not be empty
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 256, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/modal_delete.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/modal_delete.html", line 19, in top-level template code
+    action="{{ url_for('portal_joki_admin_penugasan_delete_post', penugasan_id=penugasan.id) }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 127, in url_for
+    return request.url_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/requests.py", line 188, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 660, in url_path_for
+    return route.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 277, in url_path_for
+    path, remaining_params = replace_params(self.path_format, self.param_convertors, path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 114, in replace_params
+    value = convertor.to_string(value)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/convertors.py", line 29, in to_string
+    assert value, "Must not be empty"
+AssertionError: Must not be empty
+[2026-07-17 10:17:32] [ERROR] [soundon] Failed to load penugasan page
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 196, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/modal_delete.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/modal_delete.html", line 19, in top-level template code
+    action="{{ url_for('portal_joki_admin_penugasan_delete_post', penugasan_id=penugasan.id) }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 127, in url_for
+    return request.url_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/requests.py", line 188, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 660, in url_path_for
+    return route.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 277, in url_path_for
+    path, remaining_params = replace_params(self.path_format, self.param_convertors, path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 114, in replace_params
+    value = convertor.to_string(value)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/convertors.py", line 29, in to_string
+    assert value, "Must not be empty"
+AssertionError: Must not be empty
+[2026-07-17 10:17:32] [ERROR] [soundon] Unhandled exception: Must not be empty
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 196, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/modal_delete.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/modal_delete.html", line 19, in top-level template code
+    action="{{ url_for('portal_joki_admin_penugasan_delete_post', penugasan_id=penugasan.id) }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 127, in url_for
+    return request.url_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/requests.py", line 188, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 660, in url_path_for
+    return route.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 277, in url_path_for
+    path, remaining_params = replace_params(self.path_format, self.param_convertors, path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 114, in replace_params
+    value = convertor.to_string(value)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/convertors.py", line 29, in to_string
+    assert value, "Must not be empty"
+AssertionError: Must not be empty
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/penugasan/page.py", line 256, in page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/penugasan/partials/modal_delete.html" %}
+  File "templates/portal_joki/admin/penugasan/partials/modal_delete.html", line 19, in top-level template code
+    action="{{ url_for('portal_joki_admin_penugasan_delete_post', penugasan_id=penugasan.id) }}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 127, in url_for
+    return request.url_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/requests.py", line 188, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 660, in url_path_for
+    return route.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 277, in url_path_for
+    path, remaining_params = replace_params(self.path_format, self.param_convertors, path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 114, in replace_params
+    value = convertor.to_string(value)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/convertors.py", line 29, in to_string
+    assert value, "Must not be empty"
+AssertionError: Must not be empty
+[2026-07-17 11:25:34] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-17 11:25:34] [ERROR] [soundon] Unhandled exception: 'penugasan' is undefined
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/penugasan.py", line 218, in penugasan_detail
+    result = PortalJokiDetailService.execute(
+  File "/opt/web-admin/app/portal_joki/services/penugasan/detail.py", line 208, in execute
+    penugasan["status_label"] = status_map.get(penugasan.get("status", 0), "Unknown")
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 176, in __setitem__
+    x = self._index[x]
+KeyError: 'status_label'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/penugasan.py", line 250, in penugasan_detail
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/penugasan_detail.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/penugasan_detail.html", line 199, in block 'content'
+    <a href="{{ url_for('portal_joki_admin_penugasan_edit', penugasan_id=penugasan.id) }}" class="btn btn-primary btn-sm">
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'penugasan' is undefined
+[2026-07-17 11:32:12] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-17 11:32:35] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-17 11:32:37] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 11:32:58] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 11:35:07] [ERROR] [soundon] Failed to get day detail: Object of type date is not JSON serializable
+[2026-07-17 11:41:23] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 11:52:32] [ERROR] [soundon] Failed to load admin dashboard: 'psycopg2.extras.DictRow object' has no attribute 'total_tasks'
+[2026-07-17 11:52:53] [ERROR] [soundon] Failed to load admin dashboard: 'psycopg2.extras.DictRow object' has no attribute 'total_tasks'
+[2026-07-17 11:53:31] [ERROR] [soundon] Failed to load admin dashboard: 'psycopg2.extras.DictRow object' has no attribute 'total_tasks'
+[2026-07-17 11:53:41] [ERROR] [soundon] Failed to get day detail: Object of type date is not JSON serializable
+[2026-07-17 11:54:18] [ERROR] [soundon] Failed to load admin dashboard: 'psycopg2.extras.DictRow object' has no attribute 'total_tasks'
+[2026-07-17 11:55:02] [ERROR] [soundon] Failed to load admin dashboard: 'psycopg2.extras.DictRow object' has no attribute 'total_tasks'
+[2026-07-17 11:57:06] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 12:07:40] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 12:24:23] [ERROR] [soundon] Failed to load admin dashboard: No route exists for name "portal_joki_admin_uploads" and params "".
+[2026-07-17 12:24:23] [ERROR] [soundon] Unhandled exception: No route exists for name "portal_joki_admin_uploads" and params "".
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard.py", line 85, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard.html", line 749, in block 'content'
+    <a href="{{ url_for('portal_joki_admin_uploads') }}" class="btn btn-sm btn-outline-primary">
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 127, in url_for
+    return request.url_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/requests.py", line 188, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 663, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "portal_joki_admin_uploads" and params "".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard.py", line 111, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard.html", line 749, in block 'content'
+    <a href="{{ url_for('portal_joki_admin_uploads') }}" class="btn btn-sm btn-outline-primary">
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 127, in url_for
+    return request.url_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/requests.py", line 188, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 663, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "portal_joki_admin_uploads" and params "".
+[2026-07-17 12:25:13] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 13:08:20] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 13:25:09] [ERROR] [soundon] Failed to load admin dashboard: 'portal_joki/layouts/admin.html' not found in search path: 'templates'
+[2026-07-17 13:25:09] [ERROR] [soundon] Unhandled exception: 'portal_joki/layouts/admin.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 56, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "portal_joki/layouts/admin.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'portal_joki/layouts/admin.html' not found in search path: 'templates'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 80, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "portal_joki/layouts/admin.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'portal_joki/layouts/admin.html' not found in search path: 'templates'
+[2026-07-17 13:27:29] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 14:10:05] [ERROR] [soundon] Failed to load admin dashboard: No filter named 'number_format'.
+[2026-07-17 14:10:05] [ERROR] [soundon] Unhandled exception: No filter named 'number_format'.
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 56, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 56, in block 'content'
+    {% include "portal_joki/admin/dashboard/_statistics.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_statistics.html", line 15, in template
+    <div class="stat-number">{{ stats.total_tasks|default(0)|number_format }}</div>
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 80, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 56, in block 'content'
+    {% include "portal_joki/admin/dashboard/_statistics.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_statistics.html", line 15, in template
+    <div class="stat-number">{{ stats.total_tasks|default(0)|number_format }}</div>
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+[2026-07-17 14:11:21] [ERROR] [soundon] Failed to load admin dashboard: No filter named 'number_format'.
+[2026-07-17 14:11:21] [ERROR] [soundon] Unhandled exception: No filter named 'number_format'.
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 56, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 65, in block 'content'
+    {% include "portal_joki/admin/dashboard/_today.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_today.html", line 46, in template
+    Target: <strong>{{ task.target_judul|default(0)|number_format }}</strong> judul
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 80, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 65, in block 'content'
+    {% include "portal_joki/admin/dashboard/_today.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_today.html", line 46, in template
+    Target: <strong>{{ task.target_judul|default(0)|number_format }}</strong> judul
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+[2026-07-17 14:13:02] [ERROR] [soundon] Failed to load admin dashboard: No filter named 'format_datetime'.
+[2026-07-17 14:13:02] [ERROR] [soundon] Unhandled exception: No filter named 'format_datetime'.
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 56, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 75, in block 'content'
+    {% include "portal_joki/admin/dashboard/_uploads.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_uploads.html", line 51, in template
+    {{ upload.tanggal|format_datetime }}
+jinja2.exceptions.TemplateAssertionError: No filter named 'format_datetime'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 80, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 75, in block 'content'
+    {% include "portal_joki/admin/dashboard/_uploads.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_uploads.html", line 51, in template
+    {{ upload.tanggal|format_datetime }}
+jinja2.exceptions.TemplateAssertionError: No filter named 'format_datetime'.
+[2026-07-17 14:13:48] [ERROR] [soundon] Failed to load admin dashboard: No filter named 'number_format'.
+[2026-07-17 14:13:48] [ERROR] [soundon] Unhandled exception: No filter named 'number_format'.
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 56, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 82, in block 'content'
+    {% include "portal_joki/admin/dashboard/_top_joki.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_top_joki.html", line 100, in template
+    {{ joki.total|default(0)|number_format }}
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 80, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 82, in block 'content'
+    {% include "portal_joki/admin/dashboard/_top_joki.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_top_joki.html", line 100, in template
+    {{ joki.total|default(0)|number_format }}
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+[2026-07-17 14:13:50] [ERROR] [soundon] Failed to load admin dashboard: No filter named 'number_format'.
+[2026-07-17 14:13:50] [ERROR] [soundon] Unhandled exception: No filter named 'number_format'.
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 56, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 82, in block 'content'
+    {% include "portal_joki/admin/dashboard/_top_joki.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_top_joki.html", line 100, in template
+    {{ joki.total|default(0)|number_format }}
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 80, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 82, in block 'content'
+    {% include "portal_joki/admin/dashboard/_top_joki.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_top_joki.html", line 100, in template
+    {{ joki.total|default(0)|number_format }}
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+[2026-07-17 14:15:25] [ERROR] [soundon] Failed to load admin dashboard: No filter named 'format_datetime'.
+[2026-07-17 14:15:25] [ERROR] [soundon] Unhandled exception: No filter named 'format_datetime'.
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 56, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 85, in block 'content'
+    {% include "portal_joki/admin/dashboard/_latest_review.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_latest_review.html", line 63, in template
+    {{ review.tanggal|format_datetime }}
+jinja2.exceptions.TemplateAssertionError: No filter named 'format_datetime'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 80, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 85, in block 'content'
+    {% include "portal_joki/admin/dashboard/_latest_review.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_latest_review.html", line 63, in template
+    {{ review.tanggal|format_datetime }}
+jinja2.exceptions.TemplateAssertionError: No filter named 'format_datetime'.
+[2026-07-17 14:34:03] [ERROR] [soundon] Failed to load admin dashboard: No filter named 'number_format'.
+[2026-07-17 14:34:04] [ERROR] [soundon] Unhandled exception: No filter named 'number_format'.
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 56, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 63, in block 'content'
+    {% include "portal_joki/admin/dashboard/_progress.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_progress.html", line 22, in template
+    <svg viewBox="0 0 100 100" role="img" aria-label="Progress: {{ progress.persen|default(0)|number_format(1) }}%">
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 80, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 63, in block 'content'
+    {% include "portal_joki/admin/dashboard/_progress.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/_progress.html", line 22, in template
+    <svg viewBox="0 0 100 100" role="img" aria-label="Progress: {{ progress.persen|default(0)|number_format(1) }}%">
+jinja2.exceptions.TemplateAssertionError: No filter named 'number_format'.
+[2026-07-17 14:47:27] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 15:18:26] [ERROR] [soundon] Failed to load admin dashboard: 'portal_joki/admin/index.html' not found in search path: 'templates'
+[2026-07-17 15:18:26] [ERROR] [soundon] Unhandled exception: 'portal_joki/admin/index.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 62, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'portal_joki/admin/index.html' not found in search path: 'templates'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 85, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'portal_joki/admin/index.html' not found in search path: 'templates'
+[2026-07-17 15:19:17] [ERROR] [soundon] Failed to load admin dashboard: 'builtin_function_or_method object' has no attribute 'strftime'
+[2026-07-17 15:19:17] [ERROR] [soundon] Unhandled exception: 'builtin_function_or_method object' has no attribute 'strftime'
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 62, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 745, in block 'content'
+    {{ now.strftime('%B %Y') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'builtin_function_or_method object' has no attribute 'strftime'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 85, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 745, in block 'content'
+    {{ now.strftime('%B %Y') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'builtin_function_or_method object' has no attribute 'strftime'
+[2026-07-17 15:20:32] [ERROR] [soundon] Failed to load admin dashboard: 'builtin_function_or_method object' has no attribute 'strftime'
+[2026-07-17 15:20:32] [ERROR] [soundon] Unhandled exception: 'builtin_function_or_method object' has no attribute 'strftime'
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 62, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 745, in block 'content'
+    {{ now.strftime('%B %Y') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'builtin_function_or_method object' has no attribute 'strftime'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 85, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/dashboard/index.html", line 745, in block 'content'
+    {{ now.strftime('%B %Y') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'builtin_function_or_method object' has no attribute 'strftime'
+[2026-07-17 15:30:51] [ERROR] [soundon] Failed to load admin dashboard: 'portal_joki/admin/dashboard.html' not found in search path: 'templates'
+[2026-07-17 15:30:51] [ERROR] [soundon] Unhandled exception: 'portal_joki/admin/dashboard.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 61, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'portal_joki/admin/dashboard.html' not found in search path: 'templates'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 85, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'portal_joki/admin/dashboard.html' not found in search path: 'templates'
+[2026-07-17 15:37:32] [ERROR] [soundon] Failed to load admin dashboard: block 'scripts' defined twice
+[2026-07-17 15:37:32] [ERROR] [soundon] Unhandled exception: block 'scripts' defined twice
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 61, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1026, in template
+    {% block scripts %}
+jinja2.exceptions.TemplateAssertionError: block 'scripts' defined twice
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/dashboard/page.py", line 85, in dashboard
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/dashboard/index.html", line 1026, in template
+    {% block scripts %}
+jinja2.exceptions.TemplateAssertionError: block 'scripts' defined twice
+[2026-07-17 15:38:38] [ERROR] [soundon] Failed to load admin dashboard: 'None' has no attribute 'total'
+[2026-07-17 15:39:35] [ERROR] [soundon] Failed to load admin dashboard: 'None' has no attribute 'total'
+[2026-07-17 15:40:47] [ERROR] [soundon] Failed to load admin dashboard: 'None' has no attribute 'total'
+[2026-07-17 15:42:48] [ERROR] [soundon] Failed to get day detail: Object of type date is not JSON serializable
+[2026-07-17 15:49:16] [ERROR] [soundon] Failed to get day detail: Object of type date is not JSON serializable
+[2026-07-17 16:05:49] [ERROR] [soundon] Failed to get day detail: Object of type date is not JSON serializable
+[2026-07-17 16:06:58] [ERROR] [soundon] Failed to get day detail: Object of type date is not JSON serializable
+[2026-07-17 16:09:11] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 16:15:28] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 16:16:06] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 16:16:11] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 16:16:20] [ERROR] [soundon] Failed to list penugasan: 'status_label'
+[2026-07-17 16:22:58] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-17 16:25:45] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-17 16:26:23] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-17 16:26:28] [ERROR] [soundon] Failed to load edit penugasan page: 'status_label'
+[2026-07-17 20:18:00] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-17 21:58:16] [ERROR] [soundon] Failed to load admin calendar page
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 59, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/calendar/_header.html" %}
+  File "templates/portal_joki/admin/calendar/_header.html", line 68, in top-level template code
+    {{ date(tahun, m, 1).strftime('%B') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'date' is undefined
+[2026-07-17 21:58:16] [ERROR] [soundon] Unhandled exception: 'date' is undefined
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 59, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/calendar/_header.html" %}
+  File "templates/portal_joki/admin/calendar/_header.html", line 68, in top-level template code
+    {{ date(tahun, m, 1).strftime('%B') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'date' is undefined
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 78, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/calendar/_header.html" %}
+  File "templates/portal_joki/admin/calendar/_header.html", line 68, in top-level template code
+    {{ date(tahun, m, 1).strftime('%B') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'date' is undefined
+[2026-07-17 22:04:34] [ERROR] [soundon] Failed to load admin calendar page: year=2026 month=7 error='date' is undefined
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 68, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/calendar/_header.html" %}
+  File "templates/portal_joki/admin/calendar/_header.html", line 68, in top-level template code
+    {{ date(tahun, m, 1).strftime('%B') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'date' is undefined
+[2026-07-17 22:04:34] [ERROR] [soundon] Unhandled exception: 'date' is undefined
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 68, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/calendar/_header.html" %}
+  File "templates/portal_joki/admin/calendar/_header.html", line 68, in top-level template code
+    {{ date(tahun, m, 1).strftime('%B') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'date' is undefined
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 102, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 18, in block 'content'
+    {% include "portal_joki/admin/calendar/_header.html" %}
+  File "templates/portal_joki/admin/calendar/_header.html", line 68, in top-level template code
+    {{ date(tahun, m, 1).strftime('%B') }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+jinja2.exceptions.UndefinedError: 'date' is undefined
+[2026-07-17 22:05:39] [ERROR] [soundon] Failed to load admin calendar page: year=2026 month=7 error=Object of type date is not JSON serializable
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 68, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 43, in block 'content'
+    {{ calendar_data|tojson|safe }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/filters.py", line 1721, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 669, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 22:05:39] [ERROR] [soundon] Unhandled exception: No route exists for name "portal_joki_admin_penugasan_detail" and params "".
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 68, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 43, in block 'content'
+    {{ calendar_data|tojson|safe }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/filters.py", line 1721, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 669, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 284, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 102, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 133, in top-level template code
+    {% block scripts %}{% endblock %}
+  File "templates/portal_joki/admin/calendar/index.html", line 56, in block 'scripts'
+    {% include "portal_joki/admin/calendar/_scripts.html" %}
+  File "templates/portal_joki/admin/calendar/_scripts.html", line 324, in top-level template code
+    <a href="{{ url_for("portal_joki_admin_penugasan_detail")|default("/admin/portal-joki/penugasan") }}/${task.id}"
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 127, in url_for
+    return request.url_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/requests.py", line 188, in url_for
+    url_path = url_path_provider.url_path_for(name, **path_params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 663, in url_path_for
+    raise NoMatchFound(name, path_params)
+starlette.routing.NoMatchFound: No route exists for name "portal_joki_admin_penugasan_detail" and params "".
+[2026-07-17 22:08:24] [ERROR] [soundon] Failed to load admin calendar page: year=2026 month=7 error=Object of type date is not JSON serializable
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 68, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 43, in block 'content'
+    {{ calendar_data|tojson|safe }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/filters.py", line 1721, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 669, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 22:08:43] [ERROR] [soundon] Failed to load admin calendar page: year=2026 month=7 error=Object of type date is not JSON serializable
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 68, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 43, in block 'content'
+    {{ calendar_data|tojson|safe }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/filters.py", line 1721, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 669, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 22:09:02] [ERROR] [soundon] Failed to load admin calendar page: year=2026 month=7 error=Object of type date is not JSON serializable
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 68, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 43, in block 'content'
+    {{ calendar_data|tojson|safe }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/filters.py", line 1721, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 669, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 22:09:06] [ERROR] [soundon] Failed to load admin calendar page: year=2026 month=7 error=Object of type date is not JSON serializable
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 68, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 43, in block 'content'
+    {{ calendar_data|tojson|safe }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/filters.py", line 1721, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 669, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 22:10:15] [ERROR] [soundon] Failed to load admin calendar page: year=2026 month=7 error=Object of type date is not JSON serializable
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 68, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 43, in block 'content'
+    {{ calendar_data|tojson|safe }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/filters.py", line 1721, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 669, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 22:13:12] [ERROR] [soundon] Failed to load admin calendar page: year=2026 month=7 error=Object of type date is not JSON serializable
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 81, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 43, in block 'content'
+    {{ calendar_data|tojson|safe }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/filters.py", line 1721, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 669, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 22:13:28] [ERROR] [soundon] Failed to load admin calendar page: year=2026 month=7 error=Object of type date is not JSON serializable
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/page.py", line 81, in calendar_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/portal_joki/admin/calendar/index.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 95, in top-level template code
+    {% block content %}
+  File "templates/portal_joki/admin/calendar/index.html", line 43, in block 'content'
+    {{ calendar_data|tojson|safe }}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/filters.py", line 1721, in do_tojson
+    return htmlsafe_json_dumps(value, dumps=dumps, **kwargs)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/utils.py", line 669, in htmlsafe_json_dumps
+    dumps(obj, **kwargs)
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 22:17:43] [ERROR] [soundon] Failed to load admin calendar day: 2026-07-17 error=Object of type date is not JSON serializable
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/day.py", line 44, in day_detail
+    return JSONResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 189, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 46, in __init__
+    self.body = self.render(content)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 192, in render
+    return json.dumps(
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 23:41:07] [ERROR] [soundon] Failed to get admin calendar day
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/day.py", line 52, in day_detail
+    return JSONResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 189, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 46, in __init__
+    self.body = self.render(content)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 192, in render
+    return json.dumps(
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 23:45:21] [ERROR] [soundon] Failed to get admin calendar day
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/day.py", line 52, in day_detail
+    return JSONResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 189, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 46, in __init__
+    self.body = self.render(content)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 192, in render
+    return json.dumps(
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-17 23:45:38] [ERROR] [soundon] Failed to get admin calendar day
+Traceback (most recent call last):
+  File "/opt/web-admin/app/portal_joki/admin/calendar/day.py", line 52, in day_detail
+    return JSONResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 189, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 46, in __init__
+    self.body = self.render(content)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/responses.py", line 192, in render
+    return json.dumps(
+  File "/usr/lib/python3.10/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.10/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.10/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/usr/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type date is not JSON serializable
+[2026-07-18 00:32:24] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-18 00:32:34] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-18 00:38:27] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-18 00:38:54] [ERROR] [soundon] Failed to load penugasan detail: 'status_label'
+[2026-07-18 00:45:40] [ERROR] [soundon] Failed to load penugasan detail: No filter named 'nl2br' found.
+[2026-07-18 00:46:03] [ERROR] [soundon] Failed to load penugasan detail: No filter named 'nl2br' found.
+[2026-07-18 00:53:25] [ERROR] [soundon] Failed to load penugasan detail: No filter named 'nl2br' found.
+[2026-07-18 00:53:28] [ERROR] [soundon] Failed to load penugasan detail: No filter named 'nl2br' found.

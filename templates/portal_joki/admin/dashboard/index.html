@@ -405,6 +405,117 @@
         max-height: 320px;
         overflow-y: auto;
     }
+
+    /* ==========================================================
+   MINI CALENDAR
+   ========================================================== */
+.mini-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.mini-day-header {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--tblr-muted);
+    padding: 4px 0;
+    text-transform: uppercase;
+}
+
+.mini-day-cell {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 2px;
+    position: relative;
+    background: var(--tblr-bg-surface);
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    min-height: 36px;
+}
+
+.mini-day-cell:hover:not(.empty) {
+    border-color: var(--tblr-primary);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.mini-day-cell.empty {
+    background: transparent;
+    border-color: transparent;
+}
+
+.mini-day-cell .mini-day-number {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--tblr-body-color);
+}
+
+.mini-day-cell .mini-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--tblr-primary);
+    margin-top: 1px;
+    display: block;
+}
+
+.mini-day-cell .mini-holiday-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ef4444;
+}
+
+.mini-day-cell.mini-today {
+    border-color: var(--tblr-primary);
+    background: rgba(99, 102, 241, 0.08);
+}
+
+.mini-day-cell.mini-today .mini-day-number {
+    color: var(--tblr-primary);
+    font-weight: 700;
+}
+
+.mini-day-cell.has-task .mini-day-number {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .mini-day-cell {
+        min-height: 30px;
+        font-size: 11px;
+    }
+    
+    .mini-day-cell .mini-day-number {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mini-day-cell {
+        min-height: 24px;
+        font-size: 10px;
+        border-radius: 4px;
+    }
+    
+    .mini-day-cell .mini-day-number {
+        font-size: 10px;
+    }
+    
+    .mini-day-header {
+        font-size: 9px;
+    }
+}
 </style>
 {% endblock %}
 
@@ -568,7 +679,7 @@
                 <h3 class="card-title">
                     <i class="ti ti-calendar-event me-2"></i>
                     Tugas Hari Ini
-                    <span class="badge bg-primary ms-2">{{ today|length }}</span>
+                    <span class="badge bg-primary text-white ms-2">{{ today|length }}</span>
                 </h3>
                 <div class="card-actions">
                     <a href="{{ url_for('portal_joki_admin_penugasan') }}" class="btn btn-sm btn-outline-primary">
@@ -583,7 +694,7 @@
                         <div class="task-info">
                             <div class="task-title">
                                 <span class="fw-bold">{{ task.joki_nama|default(task.nama)|default('-') }}</span>
-                                <span class="badge bg-secondary">{{ task.kloter_nama|default(task.kloter)|default('-') }}</span>
+                                <span class="badge bg-secondary text-white">{{ task.kloter_nama|default(task.kloter)|default('-') }}</span>
                                 <span class="text-muted" style="font-weight: 400; font-size: 13px;">
                                     Absen {{ task.absen_awal|default('-') }}-{{ task.absen_akhir|default('-') }}
                                 </span>
@@ -591,7 +702,7 @@
                             <div class="task-meta">
                                 <span>Target: {{ task.target_judul|default(0) }} judul</span>
                                 {% if task.deadline %}
-                                <span>Deadline: {{ task.deadline }}</span>
+                                <span>Deadline: {{ task.deadline.strftime('%Y-%m-%d') if task.deadline is not string else task.deadline }}</span>
                                 {% endif %}
                             </div>
                         </div>
@@ -622,48 +733,53 @@
 </div>
 
 <!-- ==========================================================
-     CALENDAR & RECENT UPLOADS
+     MINI CALENDAR & RECENT UPLOADS
      ========================================================== -->
 <div class="row g-3 mb-4">
-    <!-- Calendar -->
-    <div class="col-md-7">
+    <!-- Mini Calendar -->
+    <div class="col-md-5">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="ti ti-calendar me-2"></i>
-                    Kalender Bulan Ini
+                    {{ now.strftime('%B %Y') }}
                 </h3>
+                <div class="card-actions">
+                    <a href="{{ url_for('portal_joki_admin_calendar') }}" class="btn btn-sm btn-outline-primary">
+                        <i class="ti ti-arrow-right me-1"></i> Lihat Semua
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 {% if calendar %}
-                <div class="calendar-grid">
+                <div class="mini-calendar-grid">
+                    <!-- Day headers -->
                     {% for day in ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'] %}
-                    <div class="day-header">{{ day }}</div>
+                    <div class="mini-day-header">{{ day }}</div>
                     {% endfor %}
                     
+                    <!-- Calendar cells -->
                     {% for day in calendar %}
-                    <div class="day-cell {% if day.total > 0 %}has-tasks{% endif %} {% if day.is_holiday %}is-holiday{% endif %}"
-                         title="{{ day.tanggal }} - {{ day.total }} tugas">
-                        <div class="day-number">{{ day.tanggal }}</div>
-                        {% if day.total > 0 %}
-                        <div class="day-count">{{ day.total }}</div>
-                        <div class="status-dots">
-                            {% if day.pending > 0 %}<span class="dot pending"></span>{% endif %}
-                            {% if day.upload > 0 %}<span class="dot upload"></span>{% endif %}
-                            {% if day.revisi > 0 %}<span class="dot revisi"></span>{% endif %}
-                            {% if day.selesai > 0 %}<span class="dot selesai"></span>{% endif %}
+                        {% if day %}
+                        <div class="mini-day-cell {% if day.is_today %}mini-today{% endif %} {% if day.total > 0 %}has-task{% endif %}"
+                            title="{{ day.tanggal }} - {{ day.total }} tugas">
+                            <span class="mini-day-number">{{ day.day }}</span>  <!-- ← Ganti ke day.day -->
+                            {% if day.total > 0 %}
+                            <span class="mini-dot"></span>
+                            {% endif %}
+                            {% if day.is_holiday %}
+                            <span class="mini-holiday-dot"></span>
+                            {% endif %}
                         </div>
+                        {% else %}
+                        <div class="mini-day-cell empty"></div>
                         {% endif %}
-                        {% if day.is_holiday %}
-                        <div class="holiday-badge">H</div>
-                        {% endif %}
-                    </div>
                     {% endfor %}
                 </div>
                 {% else %}
-                <div class="text-center py-4 text-muted">
-                    <i class="ti ti-calendar-off" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
-                    Tidak ada data kalender.
+                <div class="text-center py-3 text-muted">
+                    <i class="ti ti-calendar-off" style="font-size: 24px; display: block; margin-bottom: 4px;"></i>
+                    <small>Tidak ada data</small>
                 </div>
                 {% endif %}
             </div>
@@ -671,7 +787,7 @@
     </div>
     
     <!-- Recent Uploads -->
-    <div class="col-md-5">
+    <div class="col-md-7">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
@@ -679,15 +795,14 @@
                     Upload Terbaru
                 </h3>
                 <div class="card-actions">
-                    <a href="{{ url_for('portal_joki_admin_penugasan') }}"
-                    class="btn btn-sm btn-outline-primary">
-                        Lihat Semua
+                    <a href="{{ url_for('portal_joki_admin_penugasan') }}" class="btn btn-sm btn-outline-primary">
+                        <i class="ti ti-arrow-right me-1"></i> Lihat Semua
                     </a>
                 </div>
             </div>
             <div class="card-body scrollable-body">
                 {% if recent_uploads %}
-                    {% for upload in recent_uploads[:10] %}
+                    {% for upload in recent_uploads[:5] %}
                     <div class="upload-card mb-2">
                         <div class="upload-icon">
                             <i class="ti ti-file-image"></i>
@@ -706,9 +821,9 @@
                     </div>
                     {% endfor %}
                     
-                    {% if recent_uploads|length > 10 %}
+                    {% if recent_uploads|length > 5 %}
                     <div class="text-center mt-2">
-                        <small class="text-muted">+ {{ recent_uploads|length - 10 }} upload lainnya</small>
+                        <small class="text-muted">+ {{ recent_uploads|length - 5 }} upload lainnya</small>
                     </div>
                     {% endif %}
                 {% else %}
@@ -721,6 +836,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- ==========================================================
      TOP JOKI & LATEST REVIEW
@@ -761,7 +877,7 @@
                                 <td class="text-center">{{ joki.total|default(0) }}</td>
                                 <td class="text-center">{{ joki.selesai|default(0) }}</td>
                                 <td class="text-center">
-                                    <span class="badge {% if joki.persen|default(0) >= 75 %}bg-success{% elif joki.persen|default(0) >= 50 %}bg-warning{% else %}bg-danger text-white{% endif %}">
+                                    <span class="badge {% if joki.persen|default(0) >= 75 %}bg-success{% elif joki.persen|default(0) >= 50 %}bg-warning text-white{% else %}bg-danger text-white{% endif %}">
                                         {{ joki.persen|default(0) }}%
                                     </span>
                                 </td>
@@ -801,7 +917,7 @@
                         <div class="task-info">
                             <div class="task-title">
                                 <span class="fw-bold">{{ review.joki_nama|default(review.nama)|default('-') }}</span>
-                                <span class="badge bg-secondary">{{ review.kloter_nama|default(review.kloter)|default('-') }}</span>
+                                <span class="badge bg-secondary text-white">{{ review.kloter_nama|default(review.kloter)|default('-') }}</span>
                             </div>
                             <div class="task-meta">
                                 <span>{{ review.tanggal }}</span>

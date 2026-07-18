@@ -1,0 +1,328 @@
+<!-- ==========================================================
+     CALENDAR CONTAINER
+     ========================================================== -->
+<div class="calendar-container">
+
+    <!-- ==========================================================
+         CALENDAR HEADER
+         ========================================================== -->
+    <div class="calendar-header">
+
+        <div class="month-nav">
+            <button
+                class="btn-nav"
+                onclick="changeMonth(-1)"
+                title="Bulan Sebelumnya">
+                <i class="ti ti-chevron-left"></i>
+            </button>
+
+            <span
+                class="month-title"
+                id="monthTitle">
+                {{ month_name }} {{ year }}
+            </span>
+
+            <button
+                class="btn-nav"
+                onclick="changeMonth(1)"
+                title="Bulan Berikutnya">
+                <i class="ti ti-chevron-right"></i>
+            </button>
+        </div>
+
+        <div class="month-stats">
+            <span class="stat-item">
+                <i class="ti ti-clipboard-list"></i>
+                {{ stats.total_tasks|default(0) }} Tugas
+            </span>
+
+            <span class="stat-item">
+                <i class="ti ti-check"></i>
+                {{ stats.completion|default(0) }}%
+            </span>
+        </div>
+
+    </div>
+
+    {% include "portal_joki/admin/calendar/_legend.html" %}
+
+    <!-- ==========================================================
+         CALENDAR GRID
+         ========================================================== -->
+    <div
+        class="calendar-grid"
+        id="calendarGrid">
+
+        <!-- Header -->
+        <div class="day-header">Min</div>
+        <div class="day-header">Sen</div>
+        <div class="day-header">Sel</div>
+        <div class="day-header">Rab</div>
+        <div class="day-header">Kam</div>
+        <div class="day-header">Jum</div>
+        <div class="day-header">Sab</div>
+
+        <!-- Calendar -->
+        {% for week in calendar_data %}
+            {% for day in week %}
+
+                {% if not day.is_padding %}
+
+                <div
+                    class="day-cell
+                        {% if day.is_today %}is-today{% endif %}
+                        {% if day.is_holiday %}is-holiday{% endif %}
+                        {{ day.heat_class|default('heat-none') }}
+                        priority-{{ day.priority|default('empty') }}"
+
+                    data-date="{{ day.tanggal }}"
+                    data-total="{{ day.total_tasks|default(0) }}"
+                    data-pending="{{ day.pending|default(0) }}"
+                    data-upload="{{ day.upload|default(0) }}"
+                    data-revisi="{{ day.revisi|default(0) }}"
+                    data-selesai="{{ day.selesai|default(0) }}"
+                    data-holiday="{{ day.is_holiday|default(false)|lower }}"
+                    data-progress="{{ day.progress|default(0) }}"
+
+                    onclick="showDayDetail('{{ day.tanggal }}')"
+                    title="{{ day.tooltip|default('') }}">
+
+                    <!-- ===================================== -->
+                    <!-- DAY NUMBER -->
+                    <!-- ===================================== -->
+                    <div class="calendar-top">
+
+                        <span class="day-number {% if day.is_today %}today{% endif %}">
+                            {{ day.day }}
+                        </span>
+
+                        {% if day.is_today %}
+                            <span class="badge bg-primary badge-sm">
+                                Hari Ini
+                            </span>
+
+                        {% elif day.is_holiday %}
+                            <span class="badge bg-danger-lt text-danger badge-sm">
+                                Libur
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ===================================== -->
+                    <!-- BODY -->
+                    <!-- ===================================== -->
+                    <div class="calendar-body">
+
+                        {% set total = day.total_tasks|default(0) %}
+
+                        {% if total > 0 %}
+
+                            <div class="calendar-total">
+                                <i class="ti ti-clipboard-list"></i>
+                                {{ total }} Tugas
+                            </div>
+
+                            {% if day.pending|default(0) > 0 %}
+                            <div class="calendar-item pending">
+                                <span>
+                                    <i class="ti ti-clock"></i>
+                                    Pending
+                                </span>
+                                <strong>{{ day.pending }}</strong>
+                            </div>
+                            {% endif %}
+
+                            {% if day.upload|default(0) > 0 %}
+                            <div class="calendar-item upload">
+                                <span>
+                                    <i class="ti ti-upload"></i>
+                                    Upload
+                                </span>
+                                <strong>{{ day.upload }}</strong>
+                            </div>
+                            {% endif %}
+
+                            {% if day.revisi|default(0) > 0 %}
+                            <div class="calendar-item revisi">
+                                <span>
+                                    <i class="ti ti-refresh"></i>
+                                    Revisi
+                                </span>
+                                <strong>{{ day.revisi }}</strong>
+                            </div>
+                            {% endif %}
+
+                            {% if day.selesai|default(0) > 0 %}
+                            <div class="calendar-item selesai">
+                                <span>
+                                    <i class="ti ti-check"></i>
+                                    Selesai
+                                </span>
+                                <strong>{{ day.selesai }}</strong>
+                            </div>
+                            {% endif %}
+
+                            <div class="calendar-summary">
+                                {{ day.summary_html|safe }}
+                            </div>
+
+                        {% else %}
+
+                            <div class="calendar-empty">
+                                <i class="ti ti-calendar-off"></i>
+                                <span>Tidak ada tugas</span>
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                                        <!-- ===================================== -->
+                    <!-- PROGRESS BAR -->
+                    <!-- ===================================== -->
+                    <div class="calendar-footer">
+
+                        {% set total = day.total_tasks|default(0) %}
+                        {% set progress = day.progress|default(0) %}
+
+                        {% if total > 0 %}
+                        <div class="progress progress-xs">
+                            <div
+                                class="progress-bar
+                                    {% if progress >= 80 %}
+                                        bg-success
+                                    {% elif progress >= 50 %}
+                                        bg-warning
+                                    {% else %}
+                                        bg-danger
+                                    {% endif %}"
+                                style="width: {{ progress }}%;"
+                                role="progressbar"
+                                aria-valuenow="{{ progress }}"
+                                aria-valuemin="0"
+                                aria-valuemax="100">
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Status Dots -->
+                        <div class="calendar-status">
+
+                            {% if day.pending|default(0) > 0 %}
+                                <span
+                                    class="status-dot bg-warning"
+                                    title="Pending">
+                                </span>
+                            {% endif %}
+
+                            {% if day.upload|default(0) > 0 %}
+                                <span
+                                    class="status-dot bg-info"
+                                    title="Upload">
+                                </span>
+                            {% endif %}
+
+                            {% if day.revisi|default(0) > 0 %}
+                                <span
+                                    class="status-dot bg-danger"
+                                    title="Revisi">
+                                </span>
+                            {% endif %}
+
+                            {% if day.selesai|default(0) > 0 %}
+                                <span
+                                    class="status-dot bg-success"
+                                    title="Selesai">
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% else %}
+
+                <div class="day-cell empty"></div>
+
+                {% endif %}
+
+            {% endfor %}
+        {% endfor %}
+
+    </div>
+
+    <!-- ==========================================================
+         STATISTICS FOOTER
+         ========================================================== -->
+    <div class="calendar-footer-stats">
+
+        <div class="stat-group">
+
+            <div class="stat-item">
+                <span class="stat-label">
+                    Total Hari
+                </span>
+                <span class="stat-value">
+                    {{ stats.total_days|default(0) }}
+                </span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">
+                    Hari Aktif
+                </span>
+                <span class="stat-value">
+                    {{ stats.active_day|default(0) }}
+                </span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">
+                    Hari Libur
+                </span>
+                <span class="stat-value">
+                    {{ stats.holiday|default(0) }}
+                </span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">
+                    Rata-rata Tugas
+                </span>
+                <span class="stat-value">
+                    {{ stats.avg_task|default(0) }}
+                </span>
+            </div>
+
+        </div>
+
+        <div class="stat-group">
+
+            <div class="stat-item">
+                <span class="stat-label">
+                    Workload
+                </span>
+
+                <span class="stat-value badge bg-{{ stats.workload|default('secondary') }}">
+                    {{ stats.workload|default('None')|title }}
+                </span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">
+                    Completion
+                </span>
+
+                <span class="stat-value text-{{ stats.completion_color|default('secondary') }}">
+                    {{ stats.completion|default(0) }}%
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

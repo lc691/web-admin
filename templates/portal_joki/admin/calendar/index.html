@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Kalender Portal Joki - {{ month_name }} {{ year }}
+{% endblock %}
+
+{% block extra_styles %}
+    {% include "portal_joki/admin/calendar/_styles.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            {% include "portal_joki/admin/calendar/_header.html" %}
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+
+            <div class="card">
+                <div class="card-body">
+
+                    {% include "portal_joki/admin/calendar/_calendar.html" %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% include "portal_joki/admin/calendar/_modal.html" %}
+{% endblock %}
+
+{% block scripts %}
+    {% include "portal_joki/admin/calendar/_scripts.html" %}
+{% endblock %}

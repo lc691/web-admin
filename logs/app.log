@@ -1,16 +1,956 @@
-[2026-07-17 07:21:19] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
-[2026-07-17 07:27:54] [WARNING] [soundon] [AUTH] No token found for path=/.env
-[2026-07-17 08:42:34] [INFO] [soundon] [REQ DONE] path=/admin/portal-joki/penugasan ms=2.88 status=307
-[2026-07-17 08:42:59] [INFO] [soundon] Admin penugasan list: page=1, limit=20, status=None
-[2026-07-17 08:42:59] [INFO] [soundon] List all penugasan: limit=20, offset=0, status=None, joki_id=None
-[2026-07-17 08:42:59] [INFO] [soundon] [REQ DONE] path=/admin/portal-joki/penugasan/ ms=139.23 status=200
-[2026-07-17 08:45:57] [INFO] [soundon] [REQ DONE] path=/admin/portal-joki/laporan ms=2.36 status=307
-[2026-07-17 08:47:35] [INFO] [soundon] Admin laporan page: tahun=None, bulan=None, tanggal=2026-07-17, view=harian
-[2026-07-17 08:47:35] [INFO] [soundon] Get statistik: period=None
-[2026-07-17 08:47:35] [INFO] [soundon] Get laporan bulanan: tahun=2026, bulan=7
-[2026-07-17 08:47:35] [INFO] [soundon] Get laporan harian: tanggal=2026-07-17
-[2026-07-17 08:47:35] [INFO] [soundon] [REQ DONE] path=/admin/portal-joki/laporan/ ms=185.95 status=200
-[2026-07-17 08:47:41] [INFO] [soundon] Admin laporan page: tahun=2026, bulan=7, tanggal=None, view=bulanan
-[2026-07-17 08:47:41] [INFO] [soundon] Get statistik: period=None
-[2026-07-17 08:47:42] [INFO] [soundon] Get laporan bulanan: tahun=2026, bulan=7
-[2026-07-17 08:47:42] [INFO] [soundon] [REQ DONE] path=/admin/portal-joki/laporan/ ms=163.73 status=200
+[2026-07-18 07:22:48] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-18 07:22:49] [WARNING] [soundon] [AUTH] No token found for path=/.env.production
+[2026-07-18 07:22:50] [WARNING] [soundon] [AUTH] No token found for path=/.aws/credentials
+[2026-07-18 07:22:51] [WARNING] [soundon] [AUTH] No token found for path=/.aws/credentials
+[2026-07-18 07:37:02] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-18 07:41:58] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 07:41:59] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 07:41:59] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 07:42:01] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 07:42:01] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 07:42:01] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 07:42:01] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 07:42:01] [INFO] [soundon] Mode debug: False
+[2026-07-18 07:42:01] [INFO] [soundon] Environment: production
+[2026-07-18 07:42:01] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 07:42:01] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 07:42:01] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 07:42:01] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 07:42:01] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 07:42:01] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 07:42:01] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 07:42:01] [INFO] [soundon] Mode debug: False
+[2026-07-18 07:42:01] [INFO] [soundon] Environment: production
+[2026-07-18 07:42:01] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 07:42:01] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 07:42:01] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 07:42:05] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 07:42:05] [ERROR] [soundon] Unhandled exception: '_GeneratorContextManager' object has no attribute 'throw'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/concurrency.py", line 27, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+TypeError: '_GeneratorContextManager' object is not an iterator
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 375, in app
+    solved_result = await solve_dependencies(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/dependencies/utils.py", line 661, in solve_dependencies
+    solved = await _solve_generator(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/dependencies/utils.py", line 575, in _solve_generator
+    return await stack.enter_async_context(cm)
+  File "/usr/lib/python3.10/contextlib.py", line 619, in enter_async_context
+    result = await _cm_type.__aenter__(cm)
+  File "/usr/lib/python3.10/contextlib.py", line 199, in __aenter__
+    return await anext(self.gen)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/concurrency.py", line 30, in contextmanager_in_threadpool
+    await anyio.to_thread.run_sync(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+AttributeError: '_GeneratorContextManager' object has no attribute 'throw'
+[2026-07-18 07:46:42] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 07:46:42] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 07:46:43] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 07:46:43] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 07:46:45] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 07:46:45] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 07:46:45] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 07:46:45] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 07:46:45] [INFO] [soundon] Mode debug: False
+[2026-07-18 07:46:45] [INFO] [soundon] Environment: production
+[2026-07-18 07:46:45] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 07:46:45] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 07:46:45] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 07:46:45] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 07:46:45] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 07:46:45] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 07:46:45] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 07:46:45] [INFO] [soundon] Mode debug: False
+[2026-07-18 07:46:45] [INFO] [soundon] Environment: production
+[2026-07-18 07:46:45] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 07:46:45] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 07:46:45] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 07:46:50] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 07:46:50] [INFO] [soundon] [REQ DONE] path=/channels ms=161.62 status=200
+[2026-07-18 07:46:55] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 07:46:56] [INFO] [soundon] [REQ DONE] path=/songs ms=290.11 status=200
+[2026-07-18 07:46:58] [INFO] [soundon] [REQ DONE] path=/channels ms=81.82 status=200
+[2026-07-18 07:47:00] [INFO] [soundon] [REQ DONE] path=/channels/32 ms=98.44 status=200
+[2026-07-18 07:47:00] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('path', 'song_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'data'}]
+[2026-07-18 07:47:00] [INFO] [soundon] [REQ DONE] path=/songs/data ms=4.87 status=422
+[2026-07-18 07:52:26] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-18 07:58:46] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('path', 'song_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'data'}]
+[2026-07-18 07:58:46] [INFO] [soundon] [REQ DONE] path=/songs/data ms=9.41 status=422
+[2026-07-18 08:16:06] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 08:16:06] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 08:16:12] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 08:16:12] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 08:16:14] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 08:16:14] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 08:16:14] [INFO] [soundon] Mode debug: False
+[2026-07-18 08:16:14] [INFO] [soundon] Environment: production
+[2026-07-18 08:16:14] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 08:16:14] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 08:16:14] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 08:16:14] [INFO] [soundon] Mode debug: False
+[2026-07-18 08:16:14] [INFO] [soundon] Environment: production
+[2026-07-18 08:16:14] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 08:16:14] [INFO] [soundon] [REQ DONE] path=/channels/32 ms=156.9 status=200
+[2026-07-18 08:16:14] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 08:16:15] [INFO] [soundon] [REQ DONE] path=/data ms=2.95 status=404
+[2026-07-18 08:16:27] [INFO] [soundon] [REQ DONE] path=/channels ms=207.78 status=200
+[2026-07-18 08:16:28] [INFO] [soundon] [REQ DONE] path=/channels ms=65.83 status=200
+[2026-07-18 08:16:32] [INFO] [soundon] [REQ DONE] path=/channels/31 ms=74.03 status=200
+[2026-07-18 08:16:33] [INFO] [soundon] [REQ DONE] path=/data ms=2.6 status=404
+[2026-07-18 08:17:59] [INFO] [soundon] [REQ DONE] path=/channels/31 ms=59.62 status=200
+[2026-07-18 08:18:00] [INFO] [soundon] [REQ DONE] path=/data ms=1.96 status=404
+[2026-07-18 08:18:41] [WARNING] [soundon] [AUTH] No token found for path=/songs/data
+[2026-07-18 08:21:55] [WARNING] [soundon] [AUTH] No token found for path=/songs/data
+[2026-07-18 08:21:55] [WARNING] [soundon] [AUTH] No token found for path=/songs/data
+[2026-07-18 08:21:55] [WARNING] [soundon] [AUTH] No token found for path=/songs/data
+[2026-07-18 08:22:26] [WARNING] [soundon] [AUTH] No token found for path=/songs/data
+[2026-07-18 08:22:55] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 08:22:55] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 08:22:56] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 08:22:56] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 08:22:58] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 08:22:58] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 08:22:58] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 08:22:58] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 08:22:58] [INFO] [soundon] Mode debug: False
+[2026-07-18 08:22:58] [INFO] [soundon] Environment: production
+[2026-07-18 08:22:58] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 08:22:58] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 08:22:58] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 08:22:58] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 08:22:58] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 08:22:58] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 08:22:58] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 08:22:58] [INFO] [soundon] Mode debug: False
+[2026-07-18 08:22:58] [INFO] [soundon] Environment: production
+[2026-07-18 08:22:58] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 08:22:58] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 08:22:58] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 08:22:59] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 08:23:00] [INFO] [soundon] [REQ DONE] path=/channels ms=185.08 status=200
+[2026-07-18 08:23:00] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 08:23:02] [INFO] [soundon] [REQ DONE] path=/channels ms=242.37 status=200
+[2026-07-18 08:23:04] [INFO] [soundon] [REQ DONE] path=/channels/32 ms=99.19 status=200
+[2026-07-18 08:23:05] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('path', 'song_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'data'}]
+[2026-07-18 08:23:05] [INFO] [soundon] [REQ DONE] path=/songs/data ms=3.32 status=422
+[2026-07-18 08:26:05] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 08:26:05] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 08:26:07] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 08:26:07] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 08:26:09] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 08:26:09] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 08:26:09] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 08:26:09] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 08:26:09] [INFO] [soundon] Mode debug: False
+[2026-07-18 08:26:09] [INFO] [soundon] Environment: production
+[2026-07-18 08:26:09] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 08:26:09] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 08:26:09] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 08:26:09] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 08:26:09] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 08:26:09] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 08:26:09] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 08:26:09] [INFO] [soundon] Mode debug: False
+[2026-07-18 08:26:09] [INFO] [soundon] Environment: production
+[2026-07-18 08:26:09] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 08:26:09] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 08:26:09] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 08:26:11] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 08:26:12] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 08:26:14] [INFO] [soundon] [REQ DONE] path=/channels ms=173.49 status=200
+[2026-07-18 08:26:16] [INFO] [soundon] [REQ DONE] path=/channels/32 ms=162.0 status=200
+[2026-07-18 08:26:17] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=35.16 status=200
+[2026-07-18 08:26:22] [INFO] [soundon] [REQ DONE] path=/channels/32 ms=42.8 status=200
+[2026-07-18 08:26:23] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=38.41 status=200
+[2026-07-18 08:26:31] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=69.45 status=200
+[2026-07-18 08:26:32] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=48.74 status=200
+[2026-07-18 08:26:36] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=37.57 status=200
+[2026-07-18 08:26:42] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=30.33 status=200
+[2026-07-18 08:26:43] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=31.38 status=200
+[2026-07-18 08:26:45] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=38.96 status=200
+[2026-07-18 08:27:06] [INFO] [soundon] [REQ DONE] path=/songs ms=243.07 status=200
+[2026-07-18 08:27:11] [INFO] [soundon] [REQ DONE] path=/channels ms=59.09 status=200
+[2026-07-18 08:32:04] [INFO] [soundon] [Dashboard] Loaded Users=6908 Shows=4480
+[2026-07-18 08:32:04] [INFO] [soundon] [REQ DONE] path=/ ms=361.56 status=200
+[2026-07-18 08:32:04] [INFO] [soundon] [Dashboard] Loaded Users=6908 Shows=4480
+[2026-07-18 08:32:04] [INFO] [soundon] [REQ DONE] path=/ ms=271.82 status=200
+[2026-07-18 08:32:05] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=18.69 status=200
+[2026-07-18 08:42:32] [WARNING] [soundon] [AUTH] No token found for path=/api/songs/data
+[2026-07-18 08:43:15] [WARNING] [soundon] [AUTH] No token found for path=/api/songs/data
+[2026-07-18 08:43:15] [WARNING] [soundon] [AUTH] No token found for path=/api/songs/statistics
+[2026-07-18 08:58:18] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 08:58:18] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 08:58:20] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 08:58:20] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 08:58:21] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 08:58:21] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 08:58:21] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 08:58:21] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 08:58:21] [INFO] [soundon] Mode debug: False
+[2026-07-18 08:58:21] [INFO] [soundon] Environment: production
+[2026-07-18 08:58:21] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 08:58:21] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 08:58:21] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 08:58:21] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 08:58:21] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 08:58:21] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 08:58:21] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 08:58:21] [INFO] [soundon] Mode debug: False
+[2026-07-18 08:58:21] [INFO] [soundon] Environment: production
+[2026-07-18 08:58:21] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 08:58:22] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 08:58:22] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 08:58:51] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 08:58:51] [INFO] [soundon] [REQ DONE] path=/channels ms=142.07 status=200
+[2026-07-18 08:58:51] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 08:58:54] [INFO] [soundon] [REQ DONE] path=/songs ms=332.57 status=200
+[2026-07-18 08:59:00] [INFO] [soundon] [REQ DONE] path=/songs ms=144.99 status=200
+[2026-07-18 08:59:00] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.13 status=200
+[2026-07-18 08:59:00] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 08:59:00] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 08:59:00] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=40.01 status=422
+[2026-07-18 08:59:27] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 08:59:27] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 08:59:27] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=34.67 status=422
+[2026-07-18 09:00:01] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=61.8 status=200
+[2026-07-18 09:00:25] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:00:25] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:00:27] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:00:27] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:00:29] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:00:29] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:00:29] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:00:29] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:00:29] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:00:29] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:00:29] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:00:29] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:00:29] [INFO] [soundon] Environment: production
+[2026-07-18 09:00:29] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:00:29] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:00:29] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:00:29] [INFO] [soundon] Environment: production
+[2026-07-18 09:00:29] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:00:29] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:00:29] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:00:29] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:00:29] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:00:39] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:00:40] [INFO] [soundon] [REQ DONE] path=/songs ms=348.56 status=200
+[2026-07-18 09:00:40] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:00:40] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=37.27 status=200
+[2026-07-18 09:00:41] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:00:41] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:00:41] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=52.44 status=422
+[2026-07-18 09:01:12] [INFO] [soundon] [REQ DONE] path=/songs ms=282.32 status=200
+[2026-07-18 09:01:13] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:01:13] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.09 status=200
+[2026-07-18 09:01:13] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:01:13] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=32.52 status=422
+[2026-07-18 09:02:13] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.54 status=200
+[2026-07-18 09:03:13] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=29.8 status=200
+[2026-07-18 09:04:13] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=40.84 status=200
+[2026-07-18 09:05:13] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=44.51 status=200
+[2026-07-18 09:06:13] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=27.78 status=200
+[2026-07-18 09:07:13] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=49.35 status=200
+[2026-07-18 09:07:17] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:07:17] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:07:18] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:07:18] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:07:20] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:07:20] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:07:20] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:07:20] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:07:20] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:07:20] [INFO] [soundon] Environment: production
+[2026-07-18 09:07:20] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:07:20] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:07:20] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:07:20] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:07:20] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:07:20] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:07:20] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:07:20] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:07:20] [INFO] [soundon] Environment: production
+[2026-07-18 09:07:20] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:07:20] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:07:20] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:07:36] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:07:36] [INFO] [soundon] [REQ DONE] path=/songs ms=281.11 status=200
+[2026-07-18 09:07:36] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:07:37] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('path', 'song_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'filters'}]
+[2026-07-18 09:07:37] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=3.53 status=422
+[2026-07-18 09:07:37] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:07:37] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=43.3 status=200
+[2026-07-18 09:07:37] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:07:37] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=40.41 status=422
+[2026-07-18 09:07:56] [INFO] [soundon] [REQ DONE] path=/songs ms=140.9 status=200
+[2026-07-18 09:07:56] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('path', 'song_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'filters'}]
+[2026-07-18 09:07:56] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=2.78 status=422
+[2026-07-18 09:07:57] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:07:57] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:07:57] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=47.65 status=422
+[2026-07-18 09:07:57] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=43.35 status=200
+[2026-07-18 09:08:57] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=42.46 status=200
+[2026-07-18 09:09:57] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=50.59 status=200
+[2026-07-18 09:10:12] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:10:12] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:10:14] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:10:14] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:10:15] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:10:15] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:10:15] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:10:15] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:10:15] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:10:15] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:10:15] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:10:15] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:10:15] [INFO] [soundon] Environment: production
+[2026-07-18 09:10:15] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:10:15] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:10:15] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:10:15] [INFO] [soundon] Environment: production
+[2026-07-18 09:10:15] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:10:15] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:10:15] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:10:15] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:10:15] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:10:19] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:10:19] [INFO] [soundon] [REQ DONE] path=/songs ms=280.81 status=200
+[2026-07-18 09:10:20] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:10:20] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:10:20] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:10:20] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=69.49 status=422
+[2026-07-18 09:10:20] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=102.69 status=200
+[2026-07-18 09:10:20] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=175.47 status=200
+[2026-07-18 09:10:35] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:10:35] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:10:35] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=28.16 status=422
+[2026-07-18 09:10:48] [INFO] [soundon] [REQ DONE] path=/songs ms=131.79 status=200
+[2026-07-18 09:10:49] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=41.52 status=200
+[2026-07-18 09:10:49] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:10:49] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:10:49] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=69.71 status=422
+[2026-07-18 09:10:49] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=210.97 status=200
+[2026-07-18 09:11:49] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.45 status=200
+[2026-07-18 09:12:49] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=59.81 status=200
+[2026-07-18 09:13:00] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:13:00] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:13:02] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:13:02] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:13:04] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:13:04] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:13:04] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:13:04] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:13:04] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:13:04] [INFO] [soundon] Environment: production
+[2026-07-18 09:13:04] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:13:04] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:13:04] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:13:04] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:13:04] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:13:04] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:13:04] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:13:04] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:13:04] [INFO] [soundon] Environment: production
+[2026-07-18 09:13:04] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:13:04] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:13:04] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:13:13] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:13:14] [INFO] [soundon] [REQ DONE] path=/songs ms=303.76 status=200
+[2026-07-18 09:13:14] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:13:15] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=53.04 status=200
+[2026-07-18 09:13:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=48.64 status=200
+[2026-07-18 09:13:15] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=153.81 status=200
+[2026-07-18 09:13:30] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=29.49 status=200
+[2026-07-18 09:13:30] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=31.79 status=200
+[2026-07-18 09:13:43] [INFO] [soundon] [REQ DONE] path=/api/songs/usage ms=28.81 status=200
+[2026-07-18 09:13:43] [INFO] [soundon] [REQ DONE] path=/api/songs/usage/day/15 ms=104.39 status=200
+[2026-07-18 09:13:53] [INFO] [soundon] [REQ DONE] path=/api/songs/usage/day/14 ms=89.07 status=200
+[2026-07-18 09:13:55] [INFO] [soundon] [REQ DONE] path=/api/songs/usage/day/13 ms=99.68 status=200
+[2026-07-18 09:13:56] [INFO] [soundon] [REQ DONE] path=/api/songs/usage/day/15 ms=90.43 status=200
+[2026-07-18 09:14:00] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=26.74 status=200
+[2026-07-18 09:14:00] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=34.39 status=200
+[2026-07-18 09:14:03] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=37.21 status=200
+[2026-07-18 09:14:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=35.97 status=200
+[2026-07-18 09:14:35] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=30.03 status=200
+[2026-07-18 09:14:40] [INFO] [soundon] [REQ DONE] path=/api/songs/export/day/18 ms=2004.91 status=200
+[2026-07-18 09:14:41] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=31.15 status=200
+[2026-07-18 09:14:41] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=28.03 status=200
+[2026-07-18 09:15:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.77 status=200
+[2026-07-18 09:16:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=29.63 status=200
+[2026-07-18 09:16:47] [INFO] [soundon] [REQ DONE] path=/api/songs/usage ms=31.52 status=200
+[2026-07-18 09:16:47] [INFO] [soundon] [REQ DONE] path=/api/songs/usage/day/18 ms=81.17 status=200
+[2026-07-18 09:17:01] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=51.08 status=200
+[2026-07-18 09:17:02] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=44.23 status=200
+[2026-07-18 09:17:04] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=34.0 status=200
+[2026-07-18 09:17:07] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=46.28 status=200
+[2026-07-18 09:17:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=32.12 status=200
+[2026-07-18 09:18:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=31.35 status=200
+[2026-07-18 09:19:14] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=52.7 status=200
+[2026-07-18 09:19:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=31.44 status=200
+[2026-07-18 09:19:16] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=39.65 status=200
+[2026-07-18 09:19:18] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=34.85 status=200
+[2026-07-18 09:19:20] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=34.78 status=200
+[2026-07-18 09:20:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.63 status=200
+[2026-07-18 09:21:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=29.58 status=200
+[2026-07-18 09:21:16] [INFO] [soundon] [REQ DONE] path=/api/songs/647 ms=27.75 status=200
+[2026-07-18 09:22:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.67 status=200
+[2026-07-18 09:23:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.71 status=200
+[2026-07-18 09:24:16] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.65 status=200
+[2026-07-18 09:25:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.13 status=200
+[2026-07-18 09:26:13] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:26:13] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:26:15] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:26:15] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:26:16] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:26:16] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:26:16] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:26:16] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:26:16] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:26:16] [INFO] [soundon] Environment: production
+[2026-07-18 09:26:16] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:26:16] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:26:16] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:26:16] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:26:16] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:26:16] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:26:16] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:26:16] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=36.04 status=200
+[2026-07-18 09:26:16] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:26:16] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:26:16] [INFO] [soundon] Environment: production
+[2026-07-18 09:26:16] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:26:16] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:26:16] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:26:23] [INFO] [soundon] [REQ DONE] path=/songs ms=317.5 status=200
+[2026-07-18 09:26:23] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:26:24] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=52.38 status=200
+[2026-07-18 09:26:24] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=44.35 status=200
+[2026-07-18 09:26:24] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=114.41 status=200
+[2026-07-18 09:26:34] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=36.84 status=200
+[2026-07-18 09:26:35] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=44.76 status=200
+[2026-07-18 09:26:45] [INFO] [soundon] [REQ DONE] path=/api/songs/channels ms=48.17 status=200
+[2026-07-18 09:26:45] [INFO] [soundon] [REQ DONE] path=/api/songs/artists ms=74.14 status=200
+[2026-07-18 09:27:03] [INFO] [soundon] [REQ DONE] path=/api/songs/channels ms=61.91 status=200
+[2026-07-18 09:27:03] [INFO] [soundon] [REQ DONE] path=/api/songs/artists ms=68.91 status=200
+[2026-07-18 09:27:24] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.55 status=200
+[2026-07-18 09:28:24] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.19 status=200
+[2026-07-18 09:29:20] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:29:20] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-18 09:29:23] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:29:23] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 09:29:26] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:29:26] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:29:26] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:29:26] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:29:26] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:29:26] [INFO] [soundon] Environment: production
+[2026-07-18 09:29:26] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:29:26] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:29:26] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:29:26] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:29:26] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=40.82 status=200
+[2026-07-18 09:29:26] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 09:29:26] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 09:29:26] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 09:29:26] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 09:29:26] [INFO] [soundon] Mode debug: False
+[2026-07-18 09:29:26] [INFO] [soundon] Environment: production
+[2026-07-18 09:29:26] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 09:29:26] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 09:29:26] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 09:29:32] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 09:29:32] [INFO] [soundon] [REQ DONE] path=/songs ms=266.46 status=200
+[2026-07-18 09:29:33] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=47.9 status=200
+[2026-07-18 09:29:33] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=66.28 status=200
+[2026-07-18 09:29:33] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=163.99 status=200
+[2026-07-18 09:29:35] [INFO] [soundon] [REQ DONE] path=/api/songs/channels ms=82.6 status=200
+[2026-07-18 09:29:35] [INFO] [soundon] [REQ DONE] path=/api/songs/artists ms=170.32 status=200
+[2026-07-18 09:30:16] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=40.39 status=200
+[2026-07-18 09:30:17] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=43.93 status=200
+[2026-07-18 09:30:28] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=34.66 status=200
+[2026-07-18 09:30:28] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=24.77 status=200
+[2026-07-18 09:30:33] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=28.71 status=200
+[2026-07-18 09:30:33] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=28.19 status=200
+[2026-07-18 09:30:33] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=32.31 status=200
+[2026-07-18 09:30:35] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=26.36 status=200
+[2026-07-18 09:30:35] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=29.79 status=200
+[2026-07-18 09:30:43] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=32.69 status=200
+[2026-07-18 09:30:45] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=48.44 status=200
+[2026-07-18 09:31:34] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.9 status=200
+[2026-07-18 09:32:34] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.17 status=200
+[2026-07-18 09:33:34] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.87 status=200
+[2026-07-18 09:34:34] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=27.31 status=200
+[2026-07-18 09:35:34] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=32.7 status=200
+[2026-07-18 09:35:36] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-18 09:36:35] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.52 status=200
+[2026-07-18 09:37:36] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=33.21 status=200
+[2026-07-18 09:38:37] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=45.09 status=200
+[2026-07-18 09:39:38] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=39.79 status=200
+[2026-07-18 09:40:38] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=25.65 status=200
+[2026-07-18 09:41:38] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.31 status=200
+[2026-07-18 09:42:38] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.57 status=200
+[2026-07-18 09:43:38] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.53 status=200
+[2026-07-18 09:44:38] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=25.51 status=200
+[2026-07-18 09:45:38] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.61 status=200
+[2026-07-18 09:45:46] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-18 09:46:38] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=36.85 status=200
+[2026-07-18 09:47:38] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.58 status=200
+[2026-07-18 11:32:55] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-18 12:03:56] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-18 12:37:16] [WARNING] [soundon] [AUTH] No token found for path=/songs/youtube-generator
+[2026-07-18 13:38:20] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-18 14:06:21] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-18 14:36:02] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-18 14:36:02] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-18 15:13:04] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-18 15:34:20] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-18 15:34:56] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-18 15:53:11] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-18 16:42:54] [WARNING] [soundon] [AUTH] No token found for path=/admin
+[2026-07-18 16:56:24] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-18 16:56:24] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-18 17:28:32] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-18 17:30:05] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-18 17:40:26] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-18 19:40:19] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-18 19:40:20] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-18 19:40:48] [WARNING] [soundon] [AUTH] No token found for path=/wp-login.php
+[2026-07-18 19:43:37] [WARNING] [soundon] [AUTH] No token found for path=/bless.php
+[2026-07-18 19:43:38] [WARNING] [soundon] [AUTH] No token found for path=/O-Simple.php
+[2026-07-18 19:43:38] [WARNING] [soundon] [AUTH] No token found for path=/lock360.php
+[2026-07-18 19:43:38] [WARNING] [soundon] [AUTH] No token found for path=/zwso.php
+[2026-07-18 19:43:39] [WARNING] [soundon] [AUTH] No token found for path=/chosen.php
+[2026-07-18 19:43:39] [WARNING] [soundon] [AUTH] No token found for path=/about.php
+[2026-07-18 19:43:39] [WARNING] [soundon] [AUTH] No token found for path=/admin.php
+[2026-07-18 19:43:40] [WARNING] [soundon] [AUTH] No token found for path=/mah.php
+[2026-07-18 19:43:40] [WARNING] [soundon] [AUTH] No token found for path=/.wp/wso.php
+[2026-07-18 19:43:40] [WARNING] [soundon] [AUTH] No token found for path=/core.php
+[2026-07-18 19:43:41] [WARNING] [soundon] [AUTH] No token found for path=/robots.php
+[2026-07-18 19:43:41] [WARNING] [soundon] [AUTH] No token found for path=/inputs.php
+[2026-07-18 19:43:42] [WARNING] [soundon] [AUTH] No token found for path=/mini.php
+[2026-07-18 19:43:42] [WARNING] [soundon] [AUTH] No token found for path=/goods.php
+[2026-07-18 19:43:42] [WARNING] [soundon] [AUTH] No token found for path=/file5.php
+[2026-07-18 19:43:43] [WARNING] [soundon] [AUTH] No token found for path=/ahax.php
+[2026-07-18 19:43:43] [WARNING] [soundon] [AUTH] No token found for path=/f35.php
+[2026-07-18 19:43:44] [WARNING] [soundon] [AUTH] No token found for path=/simple.php
+[2026-07-18 19:43:44] [WARNING] [soundon] [AUTH] No token found for path=/amax.php
+[2026-07-18 19:43:45] [WARNING] [soundon] [AUTH] No token found for path=/update/f35.php
+[2026-07-18 19:43:45] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/hello.php
+[2026-07-18 19:43:45] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/maint/bootstrap.php
+[2026-07-18 19:43:46] [WARNING] [soundon] [AUTH] No token found for path=/themes/zMousse/otuz1.php
+[2026-07-18 19:43:46] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/edit-wolf.php
+[2026-07-18 19:43:46] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/ubh/up.php
+[2026-07-18 19:43:47] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/images/bootstrap.php
+[2026-07-18 19:43:48] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/seoplugins/db.php
+[2026-07-18 19:43:48] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/pridmag/db.php
+[2026-07-18 19:43:49] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/linkpreview/db.php
+[2026-07-18 19:43:49] [WARNING] [soundon] [AUTH] No token found for path=/admin/uploads/bn_1_1754420677.phtml
+[2026-07-18 19:43:50] [WARNING] [soundon] [AUTH] No token found for path=/modules/mod_simplefileuploadv1.3/elements/udd.php
+[2026-07-18 19:43:50] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/pwnd/pwnd.php
+[2026-07-18 19:43:50] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/pwnd-1/pwnd.php
+[2026-07-18 19:43:51] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/midnight/admin.php
+[2026-07-18 19:43:51] [WARNING] [soundon] [AUTH] No token found for path=/vendor/phpunit/phpunit/src/Util/PHP/kill.php
+[2026-07-18 19:43:51] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/style-engine/worksec.php
+[2026-07-18 19:43:52] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/images/wp-conflg.php
+[2026-07-18 19:43:53] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/core-plugin/include.php
+[2026-07-18 19:43:53] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/envato-css.php
+[2026-07-18 19:43:53] [WARNING] [soundon] [AUTH] No token found for path=/classwithtostring.php
+[2026-07-18 19:43:54] [WARNING] [soundon] [AUTH] No token found for path=/uploads/94056-upload.phtml
+[2026-07-18 19:43:54] [WARNING] [soundon] [AUTH] No token found for path=/index/function.php
+[2026-07-18 19:43:54] [WARNING] [soundon] [AUTH] No token found for path=/tinyfilemanager.php
+[2026-07-18 19:43:55] [WARNING] [soundon] [AUTH] No token found for path=/.well-known/pki-validation/moon.php
+[2026-07-18 19:43:55] [WARNING] [soundon] [AUTH] No token found for path=/file.php
+[2026-07-18 19:43:56] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/index.php
+[2026-07-18 19:43:56] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/upgrade/item.php
+[2026-07-18 19:43:57] [WARNING] [soundon] [AUTH] No token found for path=/buy.php
+[2026-07-18 19:43:57] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/languages/wp-conflg.php
+[2026-07-18 19:43:58] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/classwithtostring.php
+[2026-07-18 19:43:58] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/elementor/wp-wjvngrh.php
+[2026-07-18 19:43:58] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/IXR/fix.php7
+[2026-07-18 19:43:59] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/widgets/dyqvcfqv.php
+[2026-07-18 19:43:59] [WARNING] [soundon] [AUTH] No token found for path=/admin/function.php
+[2026-07-18 19:43:59] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/images/smilies/about.php
+[2026-07-18 19:44:00] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/crop/admin.php
+[2026-07-18 19:44:00] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/PHPMailer/wp-conflg.php
+[2026-07-18 19:44:01] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/PHPMailer/admin.php
+[2026-07-18 19:44:01] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/widgets/wp-login.php
+[2026-07-18 19:44:01] [WARNING] [soundon] [AUTH] No token found for path=/files/index.php
+[2026-07-18 19:44:02] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/PHPMailer/options.php
+[2026-07-18 19:44:02] [WARNING] [soundon] [AUTH] No token found for path=/inc.php
+[2026-07-18 19:44:03] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/index.php
+[2026-07-18 19:44:03] [WARNING] [soundon] [AUTH] No token found for path=/filemanager.php
+[2026-07-18 19:44:03] [WARNING] [soundon] [AUTH] No token found for path=/cgi-bin/bypass.php
+[2026-07-18 19:44:04] [WARNING] [soundon] [AUTH] No token found for path=/.well-known/pki-validation/admin.php
+[2026-07-18 19:44:04] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/IXR/admin.php
+[2026-07-18 19:44:04] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/js/index.php
+[2026-07-18 19:44:05] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/jquery/jquery.php
+[2026-07-18 19:44:05] [WARNING] [soundon] [AUTH] No token found for path=/function.php
+[2026-07-18 19:44:06] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/block-supports/autoload_classmap.php
+[2026-07-18 19:44:06] [WARNING] [soundon] [AUTH] No token found for path=/wp-signup.php
+[2026-07-18 19:44:07] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/network/network.php
+[2026-07-18 19:44:17] [WARNING] [soundon] [AUTH] No token found for path=/update/
+[2026-07-18 19:44:19] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/
+[2026-07-18 19:44:19] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/maint/
+[2026-07-18 19:44:19] [WARNING] [soundon] [AUTH] No token found for path=/themes/zMousse/
+[2026-07-18 19:44:20] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/ubh/
+[2026-07-18 19:44:20] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/images/
+[2026-07-18 19:44:21] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/seoplugins/
+[2026-07-18 19:44:21] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/pridmag/
+[2026-07-18 19:44:21] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/linkpreview/
+[2026-07-18 19:44:22] [WARNING] [soundon] [AUTH] No token found for path=/modules/mod_simplefileuploadv1.3/elements/
+[2026-07-18 19:44:22] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/pwnd/
+[2026-07-18 19:44:22] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/pwnd-1/
+[2026-07-18 19:44:23] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/midnight/
+[2026-07-18 19:44:23] [WARNING] [soundon] [AUTH] No token found for path=/vendor/phpunit/phpunit/src/Util/PHP/
+[2026-07-18 19:44:24] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/style-engine/
+[2026-07-18 19:44:24] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/core-plugin/
+[2026-07-18 19:44:24] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/
+[2026-07-18 19:44:26] [WARNING] [soundon] [AUTH] No token found for path=/.well-known/pki-validation/
+[2026-07-18 19:44:26] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/
+[2026-07-18 19:44:27] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/upgrade/
+[2026-07-18 19:44:27] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/languages/
+[2026-07-18 19:44:27] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/
+[2026-07-18 19:44:28] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/elementor/
+[2026-07-18 19:44:28] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/IXR/
+[2026-07-18 19:44:28] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/widgets/
+[2026-07-18 19:44:29] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/images/smilies/
+[2026-07-18 19:44:29] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/crop/
+[2026-07-18 19:44:29] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/PHPMailer/
+[2026-07-18 19:44:30] [WARNING] [soundon] [AUTH] No token found for path=/cgi-bin/
+[2026-07-18 19:44:30] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/js/
+[2026-07-18 19:44:31] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/jquery/
+[2026-07-18 19:44:31] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/block-supports/
+[2026-07-18 19:44:31] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/network/
+[2026-07-18 19:44:32] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/
+[2026-07-18 19:44:32] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/table/int/tmpl/
+[2026-07-18 19:44:33] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/
+[2026-07-18 19:44:33] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/customize/
+[2026-07-18 19:44:33] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/SimplePie/
+[2026-07-18 19:44:34] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/theme-compat/
+[2026-07-18 19:44:34] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Requests/
+[2026-07-18 19:44:34] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/ID3/
+[2026-07-18 19:44:35] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/x/
+[2026-07-18 19:44:35] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/assets/
+[2026-07-18 19:44:35] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/fonts/
+[2026-07-18 19:44:36] [WARNING] [soundon] [AUTH] No token found for path=/autoload_classmap/
+[2026-07-18 19:44:36] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/tflow/
+[2026-07-18 19:44:36] [WARNING] [soundon] [AUTH] No token found for path=/templates/beez3/
+[2026-07-18 19:44:37] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/blue/
+[2026-07-18 19:44:37] [WARNING] [soundon] [AUTH] No token found for path=/components/com_jea/views/form/tmpl/
+[2026-07-18 19:44:38] [WARNING] [soundon] [AUTH] No token found for path=/templates/beez/
+[2026-07-18 19:44:38] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/light/
+[2026-07-18 19:44:39] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/uploads/
+[2026-07-18 19:44:39] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/rest-api/
+[2026-07-18 19:44:41] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/user/
+[2026-07-18 19:44:41] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/
+[2026-07-18 19:44:42] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/rest-api/endpoints/
+[2026-07-18 19:44:42] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/wp-theme-editor/
+[2026-07-18 19:44:43] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/up/
+[2026-07-18 19:44:43] [WARNING] [soundon] [AUTH] No token found for path=/fonts/
+[2026-07-18 19:44:44] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/includes/
+[2026-07-18 19:44:44] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/ocean/
+[2026-07-18 19:44:44] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/dummyyummy/
+[2026-07-18 19:44:45] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/pomo/
+[2026-07-18 19:44:45] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/twentytwentythree/patterns/
+[2026-07-18 19:44:45] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/sunrise/
+[2026-07-18 19:44:46] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/block-patterns/
+[2026-07-18 19:44:46] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/certificates/
+[2026-07-18 19:44:46] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/cache/
+[2026-07-18 19:44:47] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/js/widgets/
+[2026-07-18 19:44:47] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/random_compat/
+[2026-07-18 19:44:48] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/WordPressCore/
+[2026-07-18 19:44:48] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/images/media/
+[2026-07-18 19:44:49] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/css/
+[2026-07-18 19:44:49] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/phpadmin/
+[2026-07-18 19:44:50] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/seoo/
+[2026-07-18 19:44:50] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/view-more/
+[2026-07-18 19:44:50] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/
+[2026-07-18 19:44:51] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/seotheme/
+[2026-07-18 19:44:51] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/images/
+[2026-07-18 19:44:51] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/ioxi/
+[2026-07-18 19:44:52] [WARNING] [soundon] [AUTH] No token found for path=/blog/wp-content/
+[2026-07-18 19:44:52] [WARNING] [soundon] [AUTH] No token found for path=/.well-known/acme-challenge/
+[2026-07-18 19:44:52] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/astra/inc/
+[2026-07-18 19:44:53] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/ccx/
+[2026-07-18 19:44:53] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/css/dist/edit-widgets/
+[2026-07-18 19:44:53] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Requests/src/Exception/Http/
+[2026-07-18 19:44:54] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Text/Diff/Renderer/
+[2026-07-18 19:44:54] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Text/Diff/
+[2026-07-18 19:44:54] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/tinymce/skins/lightgray/img/
+[2026-07-18 19:44:55] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/twentytwentytwo/assets/fonts/
+[2026-07-18 19:44:55] [WARNING] [soundon] [AUTH] No token found for path=/blog/wp-includes/
+[2026-07-18 19:44:55] [WARNING] [soundon] [AUTH] No token found for path=/blog/wp-admin/
+[2026-07-18 19:44:56] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/twentyfive/
+[2026-07-18 19:44:56] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/
+[2026-07-18 19:44:56] [WARNING] [soundon] [AUTH] No token found for path=/.bod/.ll/
+[2026-07-18 19:44:57] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/twentytwentytwo/
+[2026-07-18 19:44:57] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/html-api/
+[2026-07-18 19:44:57] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/sitemaps/providers/
+[2026-07-18 19:44:58] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Text/Diff/Engine/
+[2026-07-18 19:44:58] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/coffee/
+[2026-07-18 19:44:59] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/calendar/
+[2026-07-18 19:44:59] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/fix/
+[2026-07-18 19:44:59] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/twentytwentyfour/
+[2026-07-18 19:45:00] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/bk/
+[2026-07-18 19:45:00] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/ALFA_DATA/alfacgiapi/
+[2026-07-18 19:45:00] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/uploads/2023/05/
+[2026-07-18 19:45:01] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/hello-element/
+[2026-07-18 19:45:01] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Text/
+[2026-07-18 19:45:01] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/sitemaps/
+[2026-07-18 19:45:02] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/sodium_compat/
+[2026-07-18 19:45:02] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/dist/
+[2026-07-18 19:45:03] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/sodium_compat/src/
+[2026-07-18 19:45:03] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/erinyani/
+[2026-07-18 19:45:03] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/SimplePie/Parse/
+[2026-07-18 19:45:04] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/sky-pro/
+[2026-07-18 19:45:04] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/SimplePie/Cache/
+[2026-07-18 19:45:04] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/tinymce/plugins/fullscreen/
+[2026-07-18 19:45:05] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/languages/themes/
+[2026-07-18 19:45:05] [WARNING] [soundon] [AUTH] No token found for path=/admin/controller/extension/extension/
+[2026-07-18 19:45:05] [WARNING] [soundon] [AUTH] No token found for path=/img/
+[2026-07-18 19:45:06] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/interactivity-api/
+[2026-07-18 19:45:06] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/l10n/
+[2026-07-18 19:45:06] [WARNING] [soundon] [AUTH] No token found for path=/tinyfilemanager/
+[2026-07-18 19:45:07] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/tinymce/utils/
+[2026-07-18 19:45:07] [WARNING] [soundon] [AUTH] No token found for path=/components/com_newsfeeds/models/
+[2026-07-18 19:45:07] [WARNING] [soundon] [AUTH] No token found for path=/.trash7309/
+[2026-07-18 19:45:08] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/revslider/includes/external/page/
+[2026-07-18 19:45:08] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/ioxi/ioxi/
+[2026-07-18 19:45:08] [WARNING] [soundon] [AUTH] No token found for path=/modules/
+[2026-07-18 19:45:09] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/codemirror/
+[2026-07-18 19:45:09] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/tinymce/langs/
+[2026-07-18 19:45:09] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/modern/
+[2026-07-18 19:45:10] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/group/
+[2026-07-18 19:45:10] [WARNING] [soundon] [AUTH] No token found for path=/plugins/
+[2026-07-18 19:45:10] [WARNING] [soundon] [AUTH] No token found for path=/wordpress/wp-content/uploads/
+[2026-07-18 19:45:11] [WARNING] [soundon] [AUTH] No token found for path=/upload/
+[2026-07-18 19:45:11] [WARNING] [soundon] [AUTH] No token found for path=/wordpress/wp-includes/
+[2026-07-18 19:45:11] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/css/dist/
+[2026-07-18 19:45:12] [WARNING] [soundon] [AUTH] No token found for path=/ALFA_DATA/alfacgiapi/
+[2026-07-18 19:45:12] [WARNING] [soundon] [AUTH] No token found for path=/.tmb/
+[2026-07-18 19:45:12] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/assets/wp-includes/assets/
+[2026-07-18 19:45:13] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/file/
+[2026-07-18 19:45:13] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/mu-plugins/
+[2026-07-18 19:45:13] [WARNING] [soundon] [AUTH] No token found for path=/blog/
+[2026-07-18 19:45:14] [WARNING] [soundon] [AUTH] No token found for path=/include/
+[2026-07-18 19:45:14] [WARNING] [soundon] [AUTH] No token found for path=/file/
+[2026-07-18 19:45:14] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/twentytwentyfour/patterns/
+[2026-07-18 19:45:15] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/wp-pridmag/
+[2026-07-18 19:45:15] [WARNING] [soundon] [AUTH] No token found for path=/templates/beez5/
+[2026-07-18 19:45:16] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/js/file/
+[2026-07-18 19:45:16] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/id3/
+[2026-07-18 19:45:17] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/imgareaselect/
+[2026-07-18 19:45:17] [WARNING] [soundon] [AUTH] No token found for path=/upload/bilder/
+[2026-07-18 19:45:17] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Requests/Text/
+[2026-07-18 19:45:18] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/sodium_compat/lib/
+[2026-07-18 19:45:18] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/jcrop/
+[2026-07-18 19:45:18] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/uploads/2021/
+[2026-07-18 19:45:19] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/block-bindings/
+[2026-07-18 19:45:20] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Requests/Auth/
+[2026-07-18 19:45:20] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Requests/library/
+[2026-07-18 19:45:20] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/classic-editor/
+[2026-07-18 19:45:21] [WARNING] [soundon] [AUTH] No token found for path=/wordpress/wp-admin/includes/
+[2026-07-18 19:45:21] [WARNING] [soundon] [AUTH] No token found for path=/backup/
+[2026-07-18 19:45:21] [WARNING] [soundon] [AUTH] No token found for path=/files/shares/
+[2026-07-18 19:45:22] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/xt/
+[2026-07-18 19:45:22] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/content-management/
+[2026-07-18 19:45:22] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/Avada/licensing/
+[2026-07-18 19:45:23] [WARNING] [soundon] [AUTH] No token found for path=/Requests/Utility/
+[2026-07-18 19:45:24] [WARNING] [soundon] [AUTH] No token found for path=/themes/travelscape/
+[2026-07-18 19:45:24] [WARNING] [soundon] [AUTH] No token found for path=/themes/twentyseventeen/page/
+[2026-07-18 19:45:24] [WARNING] [soundon] [AUTH] No token found for path=/rest-api/fields/
+[2026-07-18 19:45:25] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/Requests/Utility/
+[2026-07-18 19:45:25] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/tunnelforms/
+[2026-07-18 19:45:25] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/languages/plugins/
+[2026-07-18 19:45:26] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/tinymce/skins/
+[2026-07-18 19:45:26] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/tinymce/utils/ 
+[2026-07-18 19:45:27] [WARNING] [soundon] [AUTH] No token found for path=/themes/seotheme/
+[2026-07-18 19:45:27] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/jquery/ui/
+[2026-07-18 19:45:28] [WARNING] [soundon] [AUTH] No token found for path=/Requests/Exception/
+[2026-07-18 19:45:28] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/tinymce/themes/
+[2026-07-18 19:45:29] [WARNING] [soundon] [AUTH] No token found for path=/wp-json/wp/v2/give_forms/
+[2026-07-18 19:45:29] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/ultimate-member/
+[2026-07-18 19:45:29] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/tinymce/themes/inlite/
+[2026-07-18 19:45:29] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/travelscape/
+[2026-07-18 19:45:30] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/plupload/
+[2026-07-18 19:45:30] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/rest-api/fields/
+[2026-07-18 19:45:30] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/images/wlw/
+[2026-07-18 19:45:31] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/code/
+[2026-07-18 19:45:31] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/archives/
+[2026-07-18 19:45:31] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/css/dist/components/
+[2026-07-18 19:45:32] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/js-support-ticket/
+[2026-07-18 19:45:32] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/easy-themes-manager/
+[2026-07-18 19:45:32] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/settings/
+[2026-07-18 19:45:33] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/pullquote/
+[2026-07-18 19:45:33] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/shell/
+[2026-07-18 19:45:33] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/images/html-api/
+[2026-07-18 19:45:34] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/comments-pagination-numbers/
+[2026-07-18 19:45:34] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/user/interactivity-api/
+[2026-07-18 19:45:35] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/yanierin/
+[2026-07-18 19:45:36] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/hideo/
+[2026-07-18 19:45:36] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/profile-builder/
+[2026-07-18 19:45:36] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/plugin/
+[2026-07-18 19:45:36] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/network/cache/
+[2026-07-18 19:45:37] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/details/
+[2026-07-18 19:45:37] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/post-terms/
+[2026-07-18 19:45:38] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/theme-compat/network/
+[2026-07-18 19:45:38] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/dist/development/
+[2026-07-18 19:45:38] [WARNING] [soundon] [AUTH] No token found for path=/management/assets/assets/css/
+[2026-07-18 19:45:39] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/sodium_compat/namespaced/Core/
+[2026-07-18 19:45:39] [WARNING] [soundon] [AUTH] No token found for path=/wordpress/wp-includes/blocks/accordion/
+[2026-07-18 19:45:40] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/uploads/2024/
+[2026-07-18 19:45:40] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/Avada/includes/
+[2026-07-18 19:45:41] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/uploads/fusion-forms/
+[2026-07-18 19:45:41] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/Avada/includes/lib/inc/
+[2026-07-18 19:45:41] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/jupiter/framework/
+[2026-07-18 19:45:42] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/blocks/site-title/
+[2026-07-18 19:45:42] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/plugins/jupiterx-core/
+[2026-07-18 19:45:42] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/Avada/shortcodes/
+[2026-07-18 19:45:43] [WARNING] [soundon] [AUTH] No token found for path=/wp-json/bricks/v1/render_element/
+[2026-07-18 19:45:43] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/bricks/includes/
+[2026-07-18 19:45:43] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/service-finder/inc/
+[2026-07-18 19:45:44] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/tinymce/plugins/compat3x/css/
+[2026-07-18 19:45:44] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/themes/service-finder/admin/
+[2026-07-18 19:45:44] [WARNING] [soundon] [AUTH] No token found for path=/wp-json/
+[2026-07-18 19:45:45] [WARNING] [soundon] [AUTH] No token found for path=/wp-json/wp/v2/
+[2026-07-18 19:45:45] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/uploads/2025/
+[2026-07-18 19:45:45] [WARNING] [soundon] [AUTH] No token found for path=/wp-content/uploads/2026/
+[2026-07-18 19:45:46] [WARNING] [soundon] [AUTH] No token found for path=/wordpress/wp-admin/includes/wp-admin/js/
+[2026-07-18 20:03:42] [INFO] [soundon] Login attempt: admin | IP: 162.158.108.86
+[2026-07-18 20:03:42] [INFO] [soundon] Login success: admin | IP: 162.158.108.86 | Remember: False
+[2026-07-18 20:03:42] [INFO] [soundon] [Dashboard] Loaded Users=6915 Shows=4480
+[2026-07-18 20:03:43] [INFO] [soundon] [REQ DONE] path=/ ms=357.55 status=200
+[2026-07-18 20:03:59] [INFO] [soundon] [REQ DONE] path=/songs ms=149.27 status=200
+[2026-07-18 20:04:00] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=43.75 status=200
+[2026-07-18 20:04:00] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=93.09 status=200
+[2026-07-18 20:04:00] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=157.58 status=200
+[2026-07-18 20:04:03] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=40.01 status=200
+[2026-07-18 20:04:05] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=42.71 status=200
+[2026-07-18 20:04:05] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=36.67 status=200
+[2026-07-18 20:04:06] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=39.49 status=200
+[2026-07-18 20:04:07] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=40.23 status=200
+[2026-07-18 20:04:07] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=35.42 status=200
+[2026-07-18 20:04:19] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=33.07 status=200
+[2026-07-18 20:04:22] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=30.15 status=200
+[2026-07-18 20:04:24] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=35.16 status=200
+[2026-07-18 20:04:25] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=40.37 status=200
+[2026-07-18 20:04:26] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=38.02 status=200
+[2026-07-18 20:04:27] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=56.5 status=200
+[2026-07-18 20:04:27] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=31.53 status=200
+[2026-07-18 20:04:28] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=31.35 status=200
+[2026-07-18 20:04:37] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=35.92 status=200
+[2026-07-18 20:04:39] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=40.15 status=200
+[2026-07-18 20:04:40] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=37.43 status=200
+[2026-07-18 20:05:00] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.75 status=200
+[2026-07-18 20:05:43] [INFO] [soundon] [REQ DONE] path=/artists ms=21.46 status=200
+[2026-07-18 20:05:43] [INFO] [soundon] [REQ DONE] path=/artists/data ms=45.79 status=200
+[2026-07-18 20:05:43] [INFO] [soundon] [REQ DONE] path=/channels/list ms=34.21 status=200
+[2026-07-18 20:05:43] [INFO] [soundon] [REQ DONE] path=/artists/stats ms=30.11 status=200
+[2026-07-18 20:05:46] [INFO] [soundon] [REQ DONE] path=/channels ms=61.13 status=200
+[2026-07-18 20:05:51] [INFO] [soundon] [REQ DONE] path=/channels/24 ms=84.83 status=200
+[2026-07-18 20:05:52] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=37.03 status=200
+[2026-07-18 20:06:15] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=31.48 status=200
+[2026-07-18 20:06:20] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=36.14 status=200
+[2026-07-18 20:06:24] [INFO] [soundon] [REQ DONE] path=/songs/bulk-update ms=2.48 status=405
+[2026-07-18 20:06:29] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=33.74 status=200
+[2026-07-18 20:06:35] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=44.82 status=200
+[2026-07-18 20:56:28] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-18 20:56:29] [INFO] [soundon] ✅ Registered 31 routers
+[2026-07-18 20:56:29] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-18 20:56:29] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-18 20:56:29] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-18 20:56:29] [INFO] [soundon] Mode debug: False
+[2026-07-18 20:56:29] [INFO] [soundon] Environment: production
+[2026-07-18 20:56:29] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-18 20:56:29] [INFO] [soundon] ✅ Database connection test successful
+[2026-07-18 20:56:29] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-18 21:02:00] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-18 21:16:06] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-18 21:16:06] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-18 21:16:06] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/css/buttons.css
+[2026-07-18 21:16:06] [WARNING] [soundon] [AUTH] No token found for path=/media/system/js/core.js
+[2026-07-18 21:17:56] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-18 21:40:05] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-18 22:00:02] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-18 23:06:08] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-18 23:13:09] [INFO] [soundon] [Dashboard] Loaded Users=6919 Shows=4480
+[2026-07-18 23:13:09] [INFO] [soundon] [REQ DONE] path=/ ms=209.46 status=200
+[2026-07-18 23:13:10] [INFO] [soundon] [Dashboard] Loaded Users=6919 Shows=4480
+[2026-07-18 23:13:10] [INFO] [soundon] [REQ DONE] path=/ ms=190.44 status=200
+[2026-07-18 23:13:37] [INFO] [soundon] [REQ DONE] path=/channels ms=146.36 status=200
+[2026-07-18 23:13:40] [INFO] [soundon] [REQ DONE] path=/channels/32 ms=78.32 status=200
+[2026-07-18 23:13:41] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=36.54 status=200
+[2026-07-18 23:13:51] [INFO] [soundon] [REQ DONE] path=/channels/31 ms=42.66 status=200
+[2026-07-18 23:13:52] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=36.56 status=200
+[2026-07-18 23:14:20] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=41.92 status=200
+[2026-07-18 23:14:21] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=38.71 status=200
+[2026-07-18 23:14:30] [INFO] [soundon] [REQ DONE] path=/songs/bulk-update ms=3.53 status=405

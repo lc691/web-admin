@@ -1,314 +1,154 @@
-class SongAPI {
-    constructor(baseURL = "/songs") {
-        this.baseURL = baseURL;
-    }
+// static/js/songs/api.js
 
-    buildURL(path = "", params = {}) {
-        const url = new URL(
-            this.baseURL + path,
-            window.location.origin
-        );
-
-        Object.entries(params).forEach(([key, value]) => {
-            if (
-                value !== null &&
-                value !== undefined &&
-                value !== ""
-            ) {
-                if (Array.isArray(value)) {
-                    value.forEach(v =>
-                        url.searchParams.append(key, v)
-                    );
-                } else {
-                    url.searchParams.append(key, value);
-                }
+const SongsAPI = {
+    baseUrl: '/api/songs',
+    
+    async request(endpoint, options = {}) {
+        const url = `${this.baseUrl}${endpoint}`;
+        const response = await fetch(url, {
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
             }
         });
-
-        return url.toString();
-    }
-
-    async request(
-        method,
-        path = "",
-        {
-            params = {},
-            body = null,
-            headers = {},
-        } = {},
-    ) {
-        const options = {
-            method,
-            credentials: "same-origin",
-            headers: {
-                ...headers,
-            },
-        };
-
-        if (body instanceof FormData) {
-            options.body = body;
-        } else if (body !== null) {
-            options.headers["Content-Type"] = "application/json";
-            options.body = JSON.stringify(body);
+        
+        if (response.status === 401) {
+            window.location.href = '/login';
+            throw new Error('Unauthorized');
         }
-
-        const response = await fetch(
-            this.buildURL(path, params),
-            options,
-        );
-
-        const contentType =
-            response.headers.get("content-type") || "";
-
-        let data;
-
-        if (contentType.includes("application/json")) {
-            data = await response.json();
-        } else {
-            data = await response.text();
-        }
-
+        
         if (!response.ok) {
-            throw new Error(
-                data?.detail ||
-                data?.message ||
-                response.statusText
-            );
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.detail || error.message || 'API Error');
         }
-
-        return data;
-    }
-
-    /* =======================================================
-       LIST
-    ======================================================= */
-
-    list(params) {
-        return this.request("GET", "", {
-            params,
-        });
-    }
-
-    /* =======================================================
-       DETAIL
-    ======================================================= */
-
-    detail(id) {
-        return this.request(
-            "GET",
-            `/${id}`,
-        );
-    }
-
-    /* =======================================================
-       CREATE
-    ======================================================= */
-
-    create(data) {
-        return this.request(
-            "POST",
-            "",
-            {
-                body: data,
-            },
-        );
-    }
-
-    /* =======================================================
-       UPDATE
-    ======================================================= */
-
-    update(id, data) {
-        return this.request(
-            "PUT",
-            `/${id}`,
-            {
-                body: data,
-            },
-        );
-    }
-
-    /* =======================================================
-       DELETE
-    ======================================================= */
-
-    delete(id) {
-        return this.request(
-            "DELETE",
-            `/${id}`,
-        );
-    }
-
-    /* =======================================================
-       STATISTICS
-    ======================================================= */
-
+        
+        return response.json();
+    },
+    
+    // Data & Statistics
+    getData(params) {
+        const query = new URLSearchParams(params).toString();
+        return this.request(`/data?${query}`);
+    },
+    
     getStatistics() {
-        return this.request(
-            "GET",
-            "/statistics",
-        );
+        return this.request('/statistics');
+    },
+    
+    // CRUD
+    getSong(id) {
+        return this.request(`/${id}`);
+    },
+    
+    create(data) {
+        return this.request('', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    },
+    
+    update(id, data) {
+        return this.request(`/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    },
+    
+    delete(id) {
+        return this.request(`/${id}`, {
+            method: 'DELETE'
+        });
+    },
+    
+    // Bulk Operations
+    bulkUpdateStatus(songIds, status) {
+        return this.request('/bulk/status', {
+            method: 'PATCH',
+            body: JSON.stringify({ song_ids: songIds, status })
+        });
+    },
+    
+    bulkUpdateArtist(songIds, artistId) {
+        return this.request('/bulk/artist', {
+            method: 'PATCH',
+            body: JSON.stringify({ song_ids: songIds, artist_id: artistId })
+        });
+    },
+    
+    bulkUpdateReleaseDate(songIds, releaseDate) {
+        return this.request('/bulk/release-date', {
+            method: 'PATCH',
+            body: JSON.stringify({ song_ids: songIds, release_date: releaseDate })
+        });
+    },
+    
+    bulkDelete(songIds) {
+        return this.request('/bulk', {
+            method: 'DELETE',
+            body: JSON.stringify({ song_ids: songIds })
+        });
+    },
+    
+    // Import & Export
+    importSongs(songs) {
+        return this.request('/import', {
+            method: 'POST',
+            body: JSON.stringify(songs)
+        });
+    },
+    
+    exportPlaylist(day, mode, params = {}) {
+        const query = new URLSearchParams({
+            mode: mode,
+            target: params.target || 160,
+            duplicate: params.duplicate || 2,
+            channel_limit: params.channel_limit || 2,
+            ...params
+        }).toString();
+        window.location.href = `${this.baseUrl}/export/day/${day}?${query}`;
+    },
+    
+    getExportStatus(mode) {
+        return this.request(`/export/status?mode=${mode}`);
+    },
+    
+    exportExists(day, mode) {
+        return this.request(`/export/exists?day=${day}&mode=${mode}`);
+    },
+    
+    // Usage
+    getUsageBatches(mode = 'normal') {
+        return this.request(`/usage?mode=${mode}`);
+    },
+    
+    getUsageDetail(day, mode = 'normal') {
+        return this.request(`/usage/day/${day}?mode=${mode}`);
+    },
+    
+    deleteUsageBatch(day, mode = 'normal') {
+        return this.request(`/usage/day/${day}?mode=${mode}`, {
+            method: 'DELETE'
+        });
+    },
+    
+    resetUsage(mode = 'normal') {
+        return this.request(`/usage?mode=${mode}`, {
+            method: 'DELETE'
+        });
+    },
+    
+    // Filters
+    getFilters() {
+        return this.request('/filters');
+    },
+    
+    getChannels() {
+        return this.request('/channels');
+    },
+    
+    getArtists(channelId) {
+        const query = channelId ? `?channel_id=${channelId}` : '';
+        return this.request(`/artists${query}`);
     }
-
-    /* =======================================================
-       IMPORT
-    ======================================================= */
-
-    import(data) {
-        return this.request(
-            "POST",
-            "/import",
-            {
-                body: data,
-            },
-        );
-    }
-
-    /* =======================================================
-       BULK
-    ======================================================= */
-
-    bulkStatus(song_ids, status) {
-        return this.request(
-            "PATCH",
-            "/bulk/status",
-            {
-                params: {
-                    status,
-                },
-                body: song_ids,
-            },
-        );
-    }
-
-    bulkArtist(song_ids, artist_id) {
-        return this.request(
-            "PATCH",
-            "/bulk/artist",
-            {
-                params: {
-                    artist_id,
-                },
-                body: song_ids,
-            },
-        );
-    }
-
-    bulkRelease(song_ids, release_date) {
-        return this.request(
-            "PATCH",
-            "/bulk/release-date",
-            {
-                params: {
-                    release_date,
-                },
-                body: song_ids,
-            },
-        );
-    }
-
-    bulkDelete(song_ids) {
-        return this.request(
-            "DELETE",
-            "/bulk",
-            {
-                body: song_ids,
-            },
-        );
-    }
-
-    /* =======================================================
-       EXPORT
-    ======================================================= */
-
-    exportStatus(mode = "normal") {
-        return this.request(
-            "GET",
-            "/export/status",
-            {
-                params: {
-                    mode,
-                },
-            },
-        );
-    }
-
-    exportPlaylist(
-        day,
-        {
-            mode = "normal",
-            target = 160,
-            duplicate = 2,
-            channel_limit = 2,
-            excluded_channels = [],
-        } = {},
-    ) {
-        return this.request(
-            "GET",
-            `/export/day/${day}`,
-            {
-                params: {
-                    mode,
-                    target,
-                    duplicate,
-                    channel_limit,
-                    excluded_channels,
-                },
-            },
-        );
-    }
-
-    /* =======================================================
-       USAGE
-    ======================================================= */
-
-    usageBatches(mode = "normal") {
-        return this.request(
-            "GET",
-            "/usage",
-            {
-                params: {
-                    mode,
-                },
-            },
-        );
-    }
-
-    usage(day, mode = "normal") {
-        return this.request(
-            "GET",
-            `/usage/day/${day}`,
-            {
-                params: {
-                    mode,
-                },
-            },
-        );
-    }
-
-    deleteUsage(day, mode = "normal") {
-        return this.request(
-            "DELETE",
-            `/usage/day/${day}`,
-            {
-                params: {
-                    mode,
-                },
-            },
-        );
-    }
-
-    resetUsage(mode = "normal") {
-        return this.request(
-            "DELETE",
-            "/usage",
-            {
-                params: {
-                    mode,
-                },
-            },
-        );
-    }
-}
-
-window.SongAPI = new SongAPI();
+};

@@ -5,7 +5,7 @@ Service untuk membuat penugasan baru.
 """
 
 from typing import Optional, Dict, Any
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from app.portal_joki.repositories.auth.auth_repo import PortalJokiAuthRepository
 from app.portal_joki.repositories.penugasan.penugasan_repo import (
@@ -180,8 +180,8 @@ class PortalJokiCreateService:
         if target_judul <= 0:
             return CreatePenugasanResult.error("Target judul harus lebih dari 0.")
         
-        if target_judul > 50:
-            return CreatePenugasanResult.error("Target judul maksimal 50.")
+        if target_judul > 200:
+            return CreatePenugasanResult.error("Target judul maksimal 200.")
 
         # ==========================================================
         # 5. VALIDASI INSTRUKSI
@@ -207,7 +207,7 @@ class PortalJokiCreateService:
                 )
             
             # Deadline max 30 days ahead
-            max_deadline = tanggal + date.timedelta(days=30)
+            max_deadline = tanggal + timedelta(days=30)
             if deadline > max_deadline:
                 return CreatePenugasanResult.error(
                     "Deadline maksimal 30 hari dari tanggal penugasan."

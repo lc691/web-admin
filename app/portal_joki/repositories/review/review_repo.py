@@ -222,6 +222,19 @@ class PortalJokiReviewRepository:
             return result
 
     @staticmethod
+    def get_latest_review(penugasan_id: int) -> Optional[Dict[str, Any]]:
+        """
+        Mendapatkan review terbaru untuk penugasan (alias get_by_penugasan).
+        
+        Args:
+            penugasan_id: ID penugasan
+            
+        Returns:
+            dict: Review terbaru atau None
+        """
+        return PortalJokiReviewRepository.get_by_penugasan(penugasan_id)
+
+    @staticmethod
     def get_last(penugasan_id: int) -> Optional[Dict[str, Any]]:
         """
         Mendapatkan review terakhir untuk penugasan (alias get_by_penugasan).

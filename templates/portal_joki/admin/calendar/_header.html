@@ -1,0 +1,230 @@
+<!-- ==========================================================
+     PAGE HEADER
+     ========================================================== -->
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">
+                <i class="ti ti-calendar me-1"></i>
+                Portal Joki
+            </div>
+
+            <h2 class="page-title">
+                Kalender
+                <small class="text-muted ms-2">
+                    {{ month_name }} {{ year }}
+                </small>
+            </h2>
+
+            <div class="page-description text-muted">
+                <span class="me-3">
+                    <i class="ti ti-clipboard-list me-1"></i>
+                    {{ stats.total_tasks|default(0) }} Tugas
+                </span>
+
+                <span class="me-3">
+                    <i class="ti ti-check me-1"></i>
+                    {{ stats.completion|default(0) }}% Selesai
+                </span>
+
+                <span>
+                    <i class="ti ti-calendar-stats me-1"></i>
+                    {{ stats.active_day|default(0) }}/{{ stats.total_days|default(0) }} Hari Aktif
+                </span>
+            </div>
+        </div>
+
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+
+                <button class="btn btn-outline-secondary btn-sm"
+                        onclick="exportCalendar()"
+                        title="Export Kalender">
+                    <i class="ti ti-download me-1"></i>
+                    Export
+                </button>
+
+                <a href="{{ url_for('portal_joki_admin_holiday') }}?year={{ year }}&month={{ month }}"
+                   class="btn btn-outline-primary btn-sm">
+                    <i class="ti ti-calendar-plus me-1"></i>
+                    Kelola Libur
+                </a>
+
+                <a href="{{ url_for('portal_joki_admin_calendar') }}?today=1"
+                   class="btn btn-primary btn-sm">
+                    <i class="ti ti-calendar-today me-1"></i>
+                    Hari Ini
+                </a>
+
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                        <i class="ti ti-calendar-month me-1"></i>
+                        {{ month_name }}
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-end">
+
+                        {% set month_names = [
+                            'Januari',
+                            'Februari',
+                            'Maret',
+                            'April',
+                            'Mei',
+                            'Juni',
+                            'Juli',
+                            'Agustus',
+                            'September',
+                            'Oktober',
+                            'November',
+                            'Desember'
+                        ] %}
+
+                        {% for m in range(1, 13) %}
+                            <a class="dropdown-item {% if m == month %}active{% endif %}"
+                               href="{{ url_for('portal_joki_admin_calendar') }}?year={{ year }}&month={{ m }}">
+                                {{ month_names[m-1] }}
+                            </a>
+                        {% endfor %}
+
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item"
+                           href="{{ url_for('portal_joki_admin_calendar') }}?year={{ year-1 }}&month={{ month }}">
+                            <i class="ti ti-chevron-left me-1"></i>
+                            {{ year-1 }}
+                        </a>
+
+                        <a class="dropdown-item"
+                           href="{{ url_for('portal_joki_admin_calendar') }}?year={{ year+1 }}&month={{ month }}">
+                            {{ year+1 }}
+                            <i class="ti ti-chevron-right ms-1"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==========================================================
+     QUICK STATS ROW
+     ========================================================== -->
+<div class="row mt-3 mb-4">
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Total Tugas</div>
+                    <div class="ms-auto text-muted">
+                        <i class="ti ti-clipboard-list"></i>
+                    </div>
+                </div>
+
+                <div class="h1 mb-0">
+                    {{ stats.total_tasks|default(0) }}
+                </div>
+
+                <div class="text-muted mt-1">
+                    <span class="text-success">
+                        {{ stats.selesai|default(0) }} Selesai
+                    </span>
+
+                    <span class="mx-1">·</span>
+
+                    <span class="text-warning">
+                        {{ stats.pending|default(0) }} Pending
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Completion Rate</div>
+                    <div class="ms-auto text-muted">
+                        <i class="ti ti-percentage"></i>
+                    </div>
+                </div>
+
+                <div class="h1 mb-0 text-{{ stats.completion_color|default('secondary') }}">
+                    {{ stats.completion|default(0) }}%
+                </div>
+
+                <div class="progress progress-xs mt-2">
+                    <div class="progress-bar bg-{{ stats.completion_color|default('secondary') }}"
+                         style="width: {{ stats.completion|default(0) }}%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Hari Aktif</div>
+                    <div class="ms-auto text-muted">
+                        <i class="ti ti-calendar-check"></i>
+                    </div>
+                </div>
+
+                <div class="h1 mb-0">
+                    {{ stats.active_day|default(0) }}/{{ stats.total_days|default(0) }}
+                </div>
+
+                <div class="text-muted mt-1">
+                    <span class="text-danger">
+                        {{ stats.holiday|default(0) }} Libur
+                    </span>
+
+                    <span class="mx-1">·</span>
+
+                    <span class="text-warning">
+                        {{ stats.busy_day|default(0) }} Sibuk
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Workload</div>
+                    <div class="ms-auto text-muted">
+                        <i class="ti ti-gauge"></i>
+                    </div>
+                </div>
+
+                <div class="h1 mb-0">
+                    <span class="badge bg-{{ stats.workload|default('secondary') }} badge-lg">
+                        {{ stats.workload|default('None')|title }}
+                    </span>
+                </div>
+
+                <div class="text-muted mt-1">
+                    Rata-rata {{ stats.avg_task|default(0) }} tugas/hari
+
+                    {% if stats.busiest_day %}
+                        <span class="mx-1">·</span>
+
+                        <span title="Hari tersibuk">
+                            <i class="ti ti-clock"></i>
+                            {{ stats.busiest_day.tanggal }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

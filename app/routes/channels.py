@@ -5,8 +5,7 @@ from typing import Optional, List
 import re
 
 from app.templates import templates
-from app.core.database import get_dict_cursor, get_dict_cursor_dep
-
+from app.core.database import get_dict_cursor_dep, get_dict_cursor_dep_commit
 router = APIRouter()
 
 # =====================================================
@@ -19,7 +18,6 @@ VALID_STATUS = ["Review", "Approved", "Live", "Take Down", "Topic"]
 # =====================================================
 # HELPER FUNCTIONS
 # =====================================================
-
 
 def safe_commit(conn):
     """Commit database safely with rollback on error"""
@@ -47,7 +45,6 @@ def validate_channel_name(name: str) -> str:
 
 def validate_youtube_url(url: Optional[str]) -> Optional[str]:
     """Validate YouTube URL"""
-
     if not url:
         return None
 
@@ -68,10 +65,42 @@ def validate_youtube_url(url: Optional[str]) -> Optional[str]:
     raise HTTPException(status_code=400, detail="URL YouTube tidak valid")
 
 
+def get_channel_or_404(cursor, channel_id: int) -> dict:
+    """Get channel by ID or raise 404"""
+    cursor.execute(
+        """
+        SELECT id, name, youtube_url, created_at
+        FROM channels
+        WHERE id = %s
+        """,
+        (channel_id,),
+    )
+    channel = cursor.fetchone()
+    if not channel:
+        raise HTTPException(status_code=404, detail="Channel tidak ditemukan")
+    return channel
+
+
+def check_duplicate_channel(cursor, name: str, exclude_id: Optional[int] = None) -> bool:
+    """Check if channel name already exists"""
+    query = """
+        SELECT id
+        FROM channels
+        WHERE LOWER(name) = LOWER(%s)
+    """
+    params = [name]
+
+    if exclude_id is not None:
+        query += " AND id != %s"
+        params.append(exclude_id)
+
+    cursor.execute(query, params)
+    return cursor.fetchone() is not None
+
+
 # =====================================================
 # LIST CHANNELS
 # =====================================================
-
 
 @router.get("/channels", response_class=HTMLResponse, name="list_channels")
 def list_channels(
@@ -87,45 +116,16 @@ def list_channels(
             c.name,
             c.youtube_url,
             c.created_at,
-
             COUNT(DISTINCT a.id) AS total_artists,
             COUNT(s.id) AS total_songs,
-
-            COUNT(
-                CASE
-                    WHEN s.status = 'Live' THEN 1
-                END
-            ) AS live_songs,
-
-            COUNT(
-                CASE
-                    WHEN s.status = 'Approved' THEN 1
-                END
-            ) AS approved_songs,
-
-            COUNT(
-                CASE
-                    WHEN s.status = 'Review' THEN 1
-                END
-            ) AS review_songs,
-
-            COUNT(
-                CASE
-                    WHEN s.status = 'Take Down' THEN 1
-                END
-            ) AS takedown_songs,
-
-            COUNT(
-                CASE
-                    WHEN s.status = 'Topic' THEN 1
-                END
-            ) AS topic_songs
-
+            COUNT(CASE WHEN s.status = 'Live' THEN 1 END) AS live_songs,
+            COUNT(CASE WHEN s.status = 'Approved' THEN 1 END) AS approved_songs,
+            COUNT(CASE WHEN s.status = 'Review' THEN 1 END) AS review_songs,
+            COUNT(CASE WHEN s.status = 'Take Down' THEN 1 END) AS takedown_songs,
+            COUNT(CASE WHEN s.status = 'Topic' THEN 1 END) AS topic_songs
         FROM channels c
-        LEFT JOIN artists a
-            ON a.channel_id = c.id
-        LEFT JOIN songs s
-            ON s.artist_id = a.id
+        LEFT JOIN artists a ON a.channel_id = c.id
+        LEFT JOIN songs s ON s.artist_id = a.id
     """
 
     params = []
@@ -135,12 +135,7 @@ def list_channels(
         params.append(f"%{search}%")
 
     query += """
-        GROUP BY
-            c.id,
-            c.name,
-            c.youtube_url,
-            c.created_at
-
+        GROUP BY c.id, c.name, c.youtube_url, c.created_at
         ORDER BY c.created_at DESC
     """
 
@@ -148,9 +143,7 @@ def list_channels(
     channels = cursor.fetchall()
 
     total_artists = sum(ch.get("total_artists", 0) or 0 for ch in channels)
-
     total_songs = sum(ch.get("total_songs", 0) or 0 for ch in channels)
-
     total_live_songs = sum(ch.get("live_songs", 0) or 0 for ch in channels)
 
     return templates.TemplateResponse(
@@ -168,78 +161,50 @@ def list_channels(
 
 
 # =====================================================
-# FORM CREATE CHANNEL
+# CREATE CHANNEL
 # =====================================================
-
 
 @router.get("/channels/new", response_class=HTMLResponse)
 def new_channel_form(request: Request):
+    """Display create channel form"""
     return templates.TemplateResponse(
         "channels/form.html",
-        {
-            "request": request,
-            "channel": None,
-        },
+        {"request": request, "channel": None},
     )
-
-
-# =====================================================
-# CREATE CHANNEL
-# =====================================================
 
 
 @router.post("/channels/new")
 def create_channel(
     name: str = Form(...),
     youtube_url: Optional[str] = Form(None),
-    db=Depends(get_dict_cursor_dep),
+    db=Depends(get_dict_cursor_dep_commit),
 ):
+    """Create a new channel"""
     cursor, conn = db
 
     try:
         name = validate_channel_name(name)
         youtube_url = validate_youtube_url(youtube_url)
 
-        # duplicate check
-        cursor.execute(
-            """
-            SELECT id
-            FROM channels
-            WHERE LOWER(name) = LOWER(%s)
-            """,
-            (name,),
-        )
-
-        if cursor.fetchone():
+        if check_duplicate_channel(cursor, name):
             raise HTTPException(
                 status_code=400, detail="Channel dengan nama ini sudah ada"
             )
 
-        # insert
         cursor.execute(
             """
-            INSERT INTO channels (
-                name,
-                youtube_url,
-                created_at
-            )
-            VALUES (
-                %s,
-                %s,
-                CURRENT_TIMESTAMP
-            )
+            INSERT INTO channels (name, youtube_url, created_at)
+            VALUES (%s, %s, CURRENT_TIMESTAMP)
             RETURNING id
             """,
             (name, youtube_url),
         )
 
         new_channel_id = cursor.fetchone()["id"]
-
         safe_commit(conn)
 
     except HTTPException:
         raise
-
     except Exception as e:
         conn.rollback()
         raise HTTPException(
@@ -247,42 +212,31 @@ def create_channel(
         )
 
     return RedirectResponse(
-        url=f"/channels/{new_channel_id}", status_code=HTTP_302_FOUND
+        url=f"/channels/{new_channel_id}",
+        status_code=HTTP_302_FOUND
     )
 
+
 # =====================================================
-# GET OR CREATE CHANNEL
+# GET OR CREATE CHANNEL (Utility)
 # =====================================================
 
-def get_or_create_channel(
-    cursor,
-    channel_id=None,
-    new_channel: str = None,
-):
+def get_or_create_channel(cursor, channel_id: Optional[int] = None, new_channel: Optional[str] = None) -> dict:
     """
-    Return existing channel id
-    or create new channel automatically.
+    Get existing channel by ID or create new channel by name.
+    Used by other modules (artists, songs) for channel selection.
     """
-
-    # =========================================
-    # EXISTING CHANNEL
-    # =========================================
+    # Try to get existing channel by ID
     if channel_id:
-
         try:
             channel_id = int(channel_id)
         except (TypeError, ValueError):
             raise HTTPException(400, "Channel tidak valid")
 
         cursor.execute(
-            """
-            SELECT id, name
-            FROM channels
-            WHERE id = %s
-            """,
+            "SELECT id, name FROM channels WHERE id = %s",
             (channel_id,),
         )
-
         channel = cursor.fetchone()
 
         if not channel:
@@ -290,48 +244,31 @@ def get_or_create_channel(
 
         return channel
 
-    # =========================================
-    # CREATE NEW CHANNEL
-    # =========================================
+    # Try to create new channel by name
     if new_channel:
-
         new_channel = new_channel.strip()
 
         if not new_channel:
             raise HTTPException(400, "Nama channel baru kosong")
 
         if len(new_channel) > 255:
-            raise HTTPException(
-                400,
-                "Nama channel maksimal 255 karakter",
-            )
+            raise HTTPException(400, "Nama channel maksimal 255 karakter")
 
-        # cek existing
+        # Check if channel already exists
         cursor.execute(
-            """
-            SELECT id, name
-            FROM channels
-            WHERE LOWER(name) = LOWER(%s)
-            """,
+            "SELECT id, name FROM channels WHERE LOWER(name) = LOWER(%s)",
             (new_channel,),
         )
-
         existing = cursor.fetchone()
 
         if existing:
             return existing
 
-        # create new
+        # Create new channel
         cursor.execute(
             """
-            INSERT INTO channels (
-                name,
-                created_at
-            )
-            VALUES (
-                %s,
-                CURRENT_TIMESTAMP
-            )
+            INSERT INTO channels (name, created_at)
+            VALUES (%s, CURRENT_TIMESTAMP)
             RETURNING id, name
             """,
             (new_channel,),
@@ -339,53 +276,27 @@ def get_or_create_channel(
 
         return cursor.fetchone()
 
-    raise HTTPException(
-        400,
-        "Channel wajib dipilih atau dibuat baru",
-    )
+    raise HTTPException(400, "Channel wajib dipilih atau dibuat baru")
+
 
 # =====================================================
-# FORM EDIT CHANNEL
+# EDIT CHANNEL
 # =====================================================
-
 
 @router.get("/channels/{channel_id}/edit", response_class=HTMLResponse)
 def edit_channel_form(
     channel_id: int,
     request: Request,
-    db=Depends(get_dict_cursor_dep),
+    db=Depends(get_dict_cursor_dep_commit),
 ):
+    """Display edit channel form"""
     cursor, _ = db
-
-    cursor.execute(
-        """
-        SELECT
-            id,
-            name,
-            youtube_url
-        FROM channels
-        WHERE id = %s
-        """,
-        (channel_id,),
-    )
-
-    channel = cursor.fetchone()
-
-    if not channel:
-        raise HTTPException(status_code=404, detail="Channel tidak ditemukan")
+    channel = get_channel_or_404(cursor, channel_id)
 
     return templates.TemplateResponse(
         "channels/form.html",
-        {
-            "request": request,
-            "channel": channel,
-        },
+        {"request": request, "channel": channel},
     )
-
-
-# =====================================================
-# UPDATE CHANNEL
-# =====================================================
 
 
 @router.post("/channels/{channel_id}/edit")
@@ -395,28 +306,18 @@ def update_channel(
     youtube_url: Optional[str] = Form(None),
     db=Depends(get_dict_cursor_dep),
 ):
+    """Update existing channel"""
     cursor, conn = db
 
     try:
         name = validate_channel_name(name)
         youtube_url = validate_youtube_url(youtube_url)
 
-        cursor.execute("SELECT id FROM channels WHERE id = %s", (channel_id,))
+        # Check if channel exists
+        get_channel_or_404(cursor, channel_id)
 
-        if not cursor.fetchone():
-            raise HTTPException(status_code=404, detail="Channel tidak ditemukan")
-
-        cursor.execute(
-            """
-            SELECT id
-            FROM channels
-            WHERE LOWER(name) = LOWER(%s)
-            AND id != %s
-            """,
-            (name, channel_id),
-        )
-
-        if cursor.fetchone():
+        # Check duplicate name (exclude current channel)
+        if check_duplicate_channel(cursor, name, exclude_id=channel_id):
             raise HTTPException(
                 status_code=400, detail="Channel dengan nama ini sudah ada"
             )
@@ -424,9 +325,7 @@ def update_channel(
         cursor.execute(
             """
             UPDATE channels
-            SET
-                name = %s,
-                youtube_url = %s
+            SET name = %s, youtube_url = %s
             WHERE id = %s
             """,
             (name, youtube_url, channel_id),
@@ -436,71 +335,70 @@ def update_channel(
 
     except HTTPException:
         raise
-
     except Exception as e:
         conn.rollback()
         raise HTTPException(
             status_code=500, detail=f"Gagal mengupdate channel: {str(e)}"
         )
 
-    return RedirectResponse(url=f"/channels/{channel_id}", status_code=HTTP_302_FOUND)
+    return RedirectResponse(
+        url=f"/channels/{channel_id}",
+        status_code=HTTP_302_FOUND
+    )
 
 
 # =====================================================
 # CHANNEL DETAIL
 # =====================================================
+
 @router.get("/channels/{channel_id}", response_class=HTMLResponse)
-def channel_detail(channel_id: int, request: Request):
+def channel_detail(
+    channel_id: int,
+    request: Request,
+    db=Depends(get_dict_cursor_dep),
+):
+    """Display channel detail with artists and songs"""
+    cursor, _ = db
 
-    with get_dict_cursor() as (cursor, _):
+    # Get channel
+    channel = get_channel_or_404(cursor, channel_id)
 
-        # ===== Channel =====
-        cursor.execute(
-            "SELECT * FROM channels WHERE id=%s",
-            (channel_id,),
-        )
-        channel = cursor.fetchone()
+    # Get artists with song count
+    cursor.execute(
+        """
+        SELECT
+            a.id,
+            a.name,
+            COUNT(s.id) AS song_count
+        FROM artists a
+        LEFT JOIN songs s ON s.artist_id = a.id
+        WHERE a.channel_id = %s
+        GROUP BY a.id, a.name
+        ORDER BY a.name
+        """,
+        (channel_id,),
+    )
+    artists = cursor.fetchall()
 
-        if not channel:
-            raise HTTPException(404, "Channel tidak ditemukan")
-
-        # ===== Artists + Song Count =====
-        cursor.execute(
-            """
-            SELECT
-                a.id,
-                a.name,
-                COUNT(s.id) AS song_count
-            FROM artists a
-            LEFT JOIN songs s
-                ON s.artist_id = a.id
-            WHERE a.channel_id = %s
-            GROUP BY a.id, a.name
-            ORDER BY a.name
-            """,
-            (channel_id,),
-        )
-        artists = cursor.fetchall()
-
-        # ===== Songs =====
-        cursor.execute(
-            """
-            SELECT
-                s.id,
-                s.title,
-                s.status,
-                s.release_date,
-                s.created_at,
-                a.name AS artist_name
-            FROM songs s
-            JOIN artists a ON s.artist_id = a.id
-            WHERE a.channel_id=%s
-            ORDER BY s.created_at DESC
-            LIMIT 200
-            """,
-            (channel_id,),
-        )
-        songs = cursor.fetchall()
+    # Get recent songs
+    cursor.execute(
+        """
+        SELECT
+            s.id,
+            s.title,
+            s.status,
+            s.release_date,
+            s.created_at,
+            a.name AS artist_name
+        FROM songs s
+        JOIN artists a ON s.artist_id = a.id
+        WHERE a.channel_id = %s
+        ORDER BY s.created_at DESC
+        LIMIT 200
+        """,
+        (channel_id,),
+    )
+    songs = cursor.fetchall()
 
     return templates.TemplateResponse(
         "channels/details.html",
@@ -516,55 +414,40 @@ def channel_detail(channel_id: int, request: Request):
 # =====================================================
 # DELETE CHANNEL
 # =====================================================
+
 @router.post("/channels/{channel_id}/delete")
 def delete_channel(
     channel_id: int,
     request: Request,
     db=Depends(get_dict_cursor_dep),
 ):
+    """Delete a channel and all its related data"""
     cursor, conn = db
 
     try:
-        cursor.execute(
-            """
-            SELECT id
-            FROM channels
-            WHERE id = %s
-            """,
-            (channel_id,),
-        )
+        # Check if channel exists
+        get_channel_or_404(cursor, channel_id)
 
-        if not cursor.fetchone():
-            raise HTTPException(status_code=404, detail="Channel tidak ditemukan")
-
-        # delete songs
+        # Delete all songs from this channel's artists
         cursor.execute(
             """
             DELETE FROM songs
             WHERE artist_id IN (
-                SELECT id
-                FROM artists
-                WHERE channel_id = %s
+                SELECT id FROM artists WHERE channel_id = %s
             )
             """,
             (channel_id,),
         )
 
-        # delete artists
+        # Delete all artists from this channel
         cursor.execute(
-            """
-            DELETE FROM artists
-            WHERE channel_id = %s
-            """,
+            "DELETE FROM artists WHERE channel_id = %s",
             (channel_id,),
         )
 
-        # delete channel
+        # Delete the channel
         cursor.execute(
-            """
-            DELETE FROM channels
-            WHERE id = %s
-            """,
+            "DELETE FROM channels WHERE id = %s",
             (channel_id,),
         )
 
@@ -572,7 +455,6 @@ def delete_channel(
 
     except HTTPException:
         raise
-
     except Exception as e:
         conn.rollback()
         raise HTTPException(
@@ -580,50 +462,48 @@ def delete_channel(
         )
 
     return RedirectResponse(
-        url=request.url_for("list_channels"), status_code=HTTP_302_FOUND
+        url=request.url_for("list_channels"),
+        status_code=HTTP_302_FOUND
     )
 
 
 # =====================================================
 # BULK DELETE CHANNELS
 # =====================================================
+
 @router.post("/channels/bulk-delete")
 def bulk_delete_channels(
     request: Request,
     channel_ids: List[int] = Form(...),
     db=Depends(get_dict_cursor_dep),
 ):
+    """Delete multiple channels at once"""
     cursor, conn = db
 
     if not channel_ids:
         raise HTTPException(status_code=400, detail="Tidak ada channel yang dipilih")
 
     try:
+        # Delete songs from selected channels
         cursor.execute(
             """
             DELETE FROM songs
             WHERE artist_id IN (
-                SELECT id
-                FROM artists
-                WHERE channel_id = ANY(%s)
+                SELECT id FROM artists WHERE channel_id = ANY(%s)
             )
             """,
             (channel_ids,),
         )
 
+        # Delete artists from selected channels
         cursor.execute(
-            """
-            DELETE FROM artists
-            WHERE channel_id = ANY(%s)
-            """,
+            "DELETE FROM artists WHERE channel_id = ANY(%s)",
             (channel_ids,),
         )
 
+        # Delete selected channels
         cursor.execute(
-            """
-            DELETE FROM channels
-            WHERE id = ANY(%s)
-            """,
+            "DELETE FROM channels WHERE id = ANY(%s)",
             (channel_ids,),
         )
 
@@ -631,29 +511,31 @@ def bulk_delete_channels(
 
     except Exception as e:
         conn.rollback()
-        raise HTTPException(status_code=500, detail=f"Gagal bulk delete: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Gagal bulk delete: {str(e)}"
+        )
 
     return RedirectResponse(
-        url=request.url_for("list_channels"), status_code=HTTP_302_FOUND
+        url=request.url_for("list_channels"),
+        status_code=HTTP_302_FOUND
     )
 
 
 # =====================================================
-# API SEARCH CHANNELS
+# API ENDPOINTS
 # =====================================================
+
 @router.get("/channels/api/search")
 def search_channels_api(
     q: str = Query(..., min_length=1),
     db=Depends(get_dict_cursor_dep),
 ):
+    """API endpoint for searching channels"""
     cursor, _ = db
 
     cursor.execute(
         """
-        SELECT
-            id,
-            name,
-            youtube_url
+        SELECT id, name, youtube_url
         FROM channels
         WHERE name ILIKE %s
         ORDER BY name
@@ -664,16 +546,18 @@ def search_channels_api(
 
     channels = cursor.fetchall()
 
-    return JSONResponse({"success": True, "data": channels, "total": len(channels)})
+    return JSONResponse({
+        "success": True,
+        "data": channels,
+        "total": len(channels)
+    })
 
 
-# =====================================================
-# API STATS
-# =====================================================
 @router.get("/channels/api/stats")
 def channel_stats_api(
     db=Depends(get_dict_cursor_dep),
 ):
+    """API endpoint for channel statistics"""
     cursor, _ = db
 
     cursor.execute("""
@@ -681,26 +565,16 @@ def channel_stats_api(
             COUNT(*) AS total_channels,
             COUNT(DISTINCT a.id) AS total_artists,
             COUNT(s.id) AS total_songs,
-
-            COUNT(
-                CASE
-                    WHEN s.status = 'Live' THEN 1
-                END
-            ) AS live_songs,
-
-            COUNT(
-                CASE
-                    WHEN s.status = 'Approved' THEN 1
-                END
-            ) AS approved_songs
-
+            COUNT(CASE WHEN s.status = 'Live' THEN 1 END) AS live_songs,
+            COUNT(CASE WHEN s.status = 'Approved' THEN 1 END) AS approved_songs
         FROM channels c
-        LEFT JOIN artists a
-            ON a.channel_id = c.id
-        LEFT JOIN songs s
-            ON s.artist_id = a.id
-        """)
+        LEFT JOIN artists a ON a.channel_id = c.id
+        LEFT JOIN songs s ON s.artist_id = a.id
+    """)
 
     stats = cursor.fetchone()
 
-    return JSONResponse({"success": True, "data": stats})
+    return JSONResponse({
+        "success": True,
+        "data": stats
+    })

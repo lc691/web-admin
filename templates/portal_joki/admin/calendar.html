@@ -385,18 +385,19 @@
                     <div class="day-cell 
                                 {% if day.is_today %}is-today{% endif %}
                                 {% if day.is_holiday %}is-holiday{% endif %}"
-                         data-date="{{ day.date }}"
-                         data-pending="{{ day.pending }}"
-                         data-upload="{{ day.upload }}"
-                         data-revisi="{{ day.revisi }}"
-                         data-selesai="{{ day.selesai }}"
-                         data-holiday="{{ day.is_holiday|lower }}"
-                         onclick="showDayDetail('{{ day.date }}')"
-                         title="{{ day.date }} - Total: {{ day.total_tasks }} tugas">
+                        data-date="{{ day.date }}"
+                        data-pending="{{ day.pending }}"
+                        data-upload="{{ day.upload }}"
+                        data-revisi="{{ day.revisi }}"
+                        data-selesai="{{ day.selesai }}"
+                        data-holiday="{{ day.is_holiday|lower }}"
+                        onclick="showDayDetail('{{ day.date }}')"
+                        title="{{ day.date }} - Total: {{ day.total_tasks|default(day.total|default(0)) }} tugas">
                         
                         <span class="day-number">{{ day.day }}</span>
                         
                         <div class="day-dots">
+                            
                             {% if day.pending > 0 %}
                             <span class="dot pending show" data-status="pending"></span>
                             {% endif %}

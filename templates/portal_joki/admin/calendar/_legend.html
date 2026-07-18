@@ -1,0 +1,202 @@
+<!-- ==========================================================
+     LEGEND & FILTERS
+     ========================================================== -->
+<div class="calendar-legend">
+    <div class="legend-group">
+        <span class="legend-label">Status:</span>
+        
+        <label class="legend-item" title="Tampilkan tugas Pending">
+            <span class="legend-dot pending">
+                <i class="ti ti-clock"></i>
+            </span>
+            <span class="legend-text">Pending</span>
+            <span class="legend-count" id="count-pending">0</span>
+        </label>
+
+        <label class="legend-item" title="Tampilkan tugas Upload">
+            <span class="legend-dot upload">
+                <i class="ti ti-upload"></i>
+            </span>
+            <span class="legend-text">Upload</span>
+            <span class="legend-count" id="count-upload">0</span>
+        </label>
+
+        <label class="legend-item" title="Tampilkan tugas Revisi">
+            <span class="legend-dot revisi">
+                <i class="ti ti-refresh"></i>
+            </span>
+            <span class="legend-text">Revisi</span>
+            <span class="legend-count" id="count-revisi">0</span>
+        </label>
+
+        <label class="legend-item" title="Tampilkan tugas Selesai">
+            <span class="legend-dot selesai">
+                <i class="ti ti-check"></i>
+            </span>
+            <span class="legend-text">Selesai</span>
+            <span class="legend-count" id="count-selesai">0</span>
+        </label>
+    </div>
+
+    <div class="legend-divider"></div>
+
+    <div class="legend-group">
+        <label class="legend-item" title="Hari libur">
+            <span class="legend-dot holiday">
+                <i class="ti ti-calendar-off"></i>
+            </span>
+            <span class="legend-text">Hari Libur</span>
+            <span class="legend-count" id="count-holiday">0</span>
+        </label>
+
+        <label class="legend-item" title="Hari dengan tugas">
+            <span class="legend-dot has-task">
+                <i class="ti ti-clipboard-list"></i>
+            </span>
+            <span class="legend-text">Ada Tugas</span>
+            <span class="legend-count" id="count-has-task">0</span>
+        </label>
+    </div>
+</div>
+
+<!-- ==========================================================
+     LEGEND STYLES
+     ========================================================== -->
+<style>
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--tblr-bg-surface);
+    border-radius: var(--tblr-border-radius);
+    margin-bottom: 1rem;
+    border: 1px solid var(--tblr-border-color);
+}
+
+.legend-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--tblr-text-muted);
+    margin-right: 0.25rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--tblr-border-radius);
+    user-select: none;
+}
+
+.legend-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.legend-dot.pending { background: var(--tblr-warning); }
+.legend-dot.upload { background: var(--tblr-info); }
+.legend-dot.revisi { background: var(--tblr-danger); }
+.legend-dot.selesai { background: var(--tblr-success); }
+.legend-dot.holiday { background: var(--tblr-danger); opacity: 0.7; }
+.legend-dot.has-task { background: var(--tblr-primary); opacity: 0.7; }
+
+.legend-text {
+    color: var(--tblr-body-color);
+}
+
+.legend-count {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--tblr-text-muted);
+    background: var(--tblr-bg-surface-secondary);
+    padding: 0.05rem 0.4rem;
+    border-radius: 1rem;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.legend-divider {
+    width: 1px;
+    height: 2rem;
+    background: var(--tblr-border-color);
+}
+
+@media (max-width: 768px) {
+    .calendar-legend {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    .legend-group {
+        justify-content: center;
+    }
+    .legend-divider {
+        display: none;
+    }
+}
+</style>
+
+<!-- ==========================================================
+     JAVASCRIPT - HANYA UPDATE COUNTS (TANPA FILTER)
+     ========================================================== -->
+<script>
+// Update legend counts saja, tanpa filter
+function updateLegendCounts() {
+    const counts = {
+        pending: 0,
+        upload: 0,
+        revisi: 0,
+        selesai: 0,
+        holiday: 0,
+        'has-task': 0
+    };
+    
+    document.querySelectorAll('.day-cell:not(.empty)').forEach(cell => {
+        const total = parseInt(cell.dataset.total || 0);
+        const pending = parseInt(cell.dataset.pending || 0);
+        const upload = parseInt(cell.dataset.upload || 0);
+        const revisi = parseInt(cell.dataset.revisi || 0);
+        const selesai = parseInt(cell.dataset.selesai || 0);
+        const isHoliday = cell.dataset.holiday === 'true';
+        const hasTask = total > 0;
+        
+        if (pending > 0) counts.pending++;
+        if (upload > 0) counts.upload++;
+        if (revisi > 0) counts.revisi++;
+        if (selesai > 0) counts.selesai++;
+        if (isHoliday) counts.holiday++;
+        if (hasTask) counts['has-task']++;
+    });
+    
+    document.getElementById('count-pending').textContent = counts.pending;
+    document.getElementById('count-upload').textContent = counts.upload;
+    document.getElementById('count-revisi').textContent = counts.revisi;
+    document.getElementById('count-selesai').textContent = counts.selesai;
+    document.getElementById('count-holiday').textContent = counts.holiday;
+    document.getElementById('count-has-task').textContent = counts['has-task'];
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateLegendCounts();
+});
+</script>

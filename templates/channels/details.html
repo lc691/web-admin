@@ -316,7 +316,7 @@ $(function () {
         orderCellsTop: true,
 
         ajax: {
-            url: "/songs/data",
+            url: "/api/songs/data",
             type: "GET",
             data: function (d) {
                 d.status = $('.filter-btn.active').data('status');

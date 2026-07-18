@@ -89,30 +89,43 @@ def get_dict_cursor(commit: bool = False):
                 raise
 
 
-@contextmanager
-def get_dict_cursor_dep(commit: bool = False):
+# ================================
+# FASTAPI DEPENDENCIES (BARU)
+# ================================
+
+def get_dict_cursor_dep():
     """
-    [DEPRECATED] Mendapatkan DictCursor - legacy function.
-    Gunakan get_dict_cursor() sebagai gantinya.
+    FASTAPI DEPENDENCY - Untuk operasi READ (tanpa commit otomatis)
+    Digunakan di endpoint GET / search / list / detail
     
-    Args:
-        commit: Jika True, auto-commit setelah selesai
-        
     Yields:
         Tuple[DictCursor, connection]: DictCursor dan koneksi database
     """
-    # Redirect ke get_dict_cursor untuk kompatibilitas
-    with get_dict_cursor(commit) as (cursor, conn):
+    with get_dict_cursor(commit=False) as (cursor, conn):
         yield cursor, conn
 
+
+def get_dict_cursor_dep_commit():
+    """
+    FASTAPI DEPENDENCY - Untuk operasi WRITE (dengan commit otomatis)
+    Digunakan di endpoint POST / PUT / DELETE
+    
+    Yields:
+        Tuple[DictCursor, connection]: DictCursor dan koneksi database
+    """
+    with get_dict_cursor(commit=True) as (cursor, conn):
+        yield cursor, conn
+
+
+# ================================
+# LEGACY FUNCTIONS (DEPRECATED)
+# ================================
 
 @contextmanager
 def get_autocommit_cursor():
     """
-    Cursor untuk operasi cepat (insert/update/delete) tanpa commit manual.
-    
-    Yields:
-        cursor: Cursor dengan autocommit=True
+    [DEPRECATED] Cursor untuk operasi cepat tanpa commit manual.
+    Gunakan get_dict_cursor_dep_commit() untuk FastAPI.
     """
     with get_db_connection() as conn:
         conn.autocommit = True
@@ -127,13 +140,8 @@ def get_autocommit_cursor():
 @contextmanager
 def get_clean_dict_cursor(commit: bool = False):
     """
-    Mendapatkan DictCursor dengan rollback otomatis jika error.
-    
-    Args:
-        commit: Jika True, auto-commit setelah selesai
-        
-    Yields:
-        DictCursor: DictCursor untuk operasi database
+    [DEPRECATED] Mendapatkan DictCursor dengan rollback otomatis.
+    Gunakan get_dict_cursor_dep() atau get_dict_cursor_dep_commit().
     """
     with get_db_connection() as conn:
         with conn.cursor(cursor_factory=DictCursor) as cursor:
@@ -151,6 +159,7 @@ def get_clean_dict_cursor(commit: bool = False):
 # ================================
 # FUNGSI BANTUAN
 # ================================
+
 def execute_query(query: str, params: tuple = None, fetch_one: bool = False) -> Any:
     """
     Eksekusi query dan return hasil.
@@ -197,6 +206,7 @@ def execute_transaction(queries: list) -> bool:
 # ================================
 # TEST CONNECTION
 # ================================
+
 def test_connection() -> bool:
     """
     Test koneksi database.

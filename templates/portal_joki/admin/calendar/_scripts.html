@@ -1,0 +1,329 @@
+<script>
+// ==========================================================
+// CALENDAR SCRIPT
+// ==========================================================
+
+const state = {
+    year: {{ year }},
+    month: {{ month }},
+};
+
+// ==========================================================
+// NAVIGASI BULAN
+// ==========================================================
+
+function changeMonth(delta) {
+
+    let month = state.month + delta;
+    let year = state.year;
+
+    if (month > 12) {
+        month = 1;
+        year++;
+    } else if (month < 1) {
+        month = 12;
+        year--;
+    }
+
+    window.location.href =
+    `/admin/portal-joki/calendar?year=${year}&month=${month}`;
+}
+
+// ==========================================================
+// KEYBOARD
+// ==========================================================
+
+document.addEventListener("keydown", function (e) {
+
+    if (e.key === "ArrowLeft") {
+        changeMonth(-1);
+    }
+
+    if (e.key === "ArrowRight") {
+        changeMonth(1);
+    }
+
+});
+
+console.log("✅ Calendar initialized");
+
+</script>
+
+<!-- ==========================================================
+     JAVASCRIPT FOR DAY DETAIL
+     ========================================================== -->
+<script>
+// Store current detail data
+let currentDetailData = null;
+let currentDetailDate = null;
+
+// Show day detail
+function showDayDetail(date) {
+    const modal = new bootstrap.Modal(document.getElementById('dayDetailModal'));
+    const loading = document.getElementById('detailLoading');
+    const content = document.getElementById('detailContent');
+    
+    // Show loading
+    loading.style.display = 'block';
+    content.style.display = 'none';
+    
+    // Update date
+    document.getElementById('detailDate').textContent = formatDate(date);
+    currentDetailDate = date;
+    
+    // Show modal
+    modal.show();
+    
+    // Fetch data
+    fetch(`/admin/portal-joki/calendar/day?date_str=${date}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                currentDetailData = data;
+                renderDayDetail(data);
+            } else {
+                showError('Gagal memuat data: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error loading day detail:', error);
+            showError('Terjadi kesalahan saat memuat data');
+        })
+        .finally(() => {
+            loading.style.display = 'none';
+            content.style.display = 'block';
+        });
+}
+
+// Render day detail
+function renderDayDetail(data) {
+    const content = document.getElementById('detailContent');
+
+    const tasks = data.data || [];
+    const stats = data.stats || {};
+    const date = data.tanggal || currentDetailDate;
+    
+    // Update badges
+    document.getElementById('detailTotalCount').textContent = stats.total || tasks.length;
+    document.getElementById("detailViewAllBtn").href =
+        `/admin/portal-joki/penugasan?tanggal=${date}`;
+    
+    if (tasks.length === 0) {
+        content.innerHTML = `
+            <div class="text-center py-5">
+                <i class="ti ti-calendar-off" style="font-size: 3rem; color: var(--tblr-text-muted);"></i>
+                <h5 class="mt-3">Tidak Ada Tugas</h5>
+                <p class="text-muted">Tidak ada penugasan pada tanggal ini.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Build HTML
+    let html = `
+        <!-- Stats Summary -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3 col-6">
+                <div class="card bg-warning-lt">
+                    <div class="card-body p-2 text-center">
+                        <div class="h4 mb-0">${stats.pending || 0}</div>
+                        <div class="text-muted small">Pending</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card bg-info-lt">
+                    <div class="card-body p-2 text-center">
+                        <div class="h4 mb-0">${stats.upload || 0}</div>
+                        <div class="text-muted small">Upload</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card bg-danger-lt">
+                    <div class="card-body p-2 text-center">
+                        <div class="h4 mb-0">${stats.revisi || 0}</div>
+                        <div class="text-muted small">Revisi</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card bg-success-lt">
+                    <div class="card-body p-2 text-center">
+                        <div class="h4 mb-0">${stats.selesai || 0}</div>
+                        <div class="text-muted small">Selesai</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress -->
+        <div class="mb-4">
+            <div class="d-flex justify-content-between mb-1">
+                <span class="small text-muted">Progress</span>
+                <span class="small fw-bold">${stats.progress || 0}%</span>
+            </div>
+            <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-${stats.progress >= 80 ? 'success' : stats.progress >= 50 ? 'warning' : 'danger'}" 
+                     style="width: ${stats.progress || 0}%"></div>
+            </div>
+        </div>
+        
+        <!-- Task List -->
+        <div class="table-responsive">
+            <table class="table table-sm table-vcenter card-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Joki</th>
+                        <th>Kloter</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    tasks.forEach((task, index) => {
+        const statusMap = {
+            0: { label: 'Pending', class: 'warning', icon: 'ti ti-clock' },
+            1: { label: 'Upload', class: 'info', icon: 'ti ti-upload' },
+            2: { label: 'Revisi', class: 'danger', icon: 'ti ti-refresh' },
+            3: { label: 'Selesai', class: 'success', icon: 'ti ti-check' }
+        };
+        const status = statusMap[task.status] || statusMap[0];
+        
+        html += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <span class="avatar avatar-xs me-2" style="background: ${getColor(task.joki_id)}">
+                            ${task.joki_nama ? task.joki_nama.charAt(0).toUpperCase() : '?'}
+                        </span>
+                        <div>
+                            <div class="fw-semibold">${task.joki_nama || '-'}</div>
+                            <div class="small text-muted">${task.joki_kode || '-'}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge bg-secondary text-white">${task.kloter_nama || '-'}</span>
+                </td>
+                <td>
+                    <span class="badge bg-${status.class}-lt text-${status.class}">
+                        <i class="${status.icon} me-1"></i>
+                        ${status.label}
+                    </span>
+                </td>
+                <td>
+                    <a
+                        href="/admin/portal-joki/penugasan/${task.id}"
+                        class="btn btn-sm btn-outline-primary"
+                        title="Lihat Detail">
+
+                        <i class="ti ti-eye"></i>
+
+                    </a>
+                </td>
+            </tr>
+        `;
+    });
+    
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    content.innerHTML = html;
+}
+
+// Show error
+function showError(message) {
+    const content = document.getElementById('detailContent');
+    content.innerHTML = `
+        <div class="text-center py-5">
+            <i class="ti ti-alert-circle" style="font-size: 3rem; color: var(--tblr-danger);"></i>
+            <h5 class="mt-3 text-danger">Error</h5>
+            <p class="text-muted">${message}</p>
+            <button class="btn btn-outline-danger btn-sm" onclick="showDayDetail('${currentDetailDate}')">
+                <i class="ti ti-refresh me-1"></i>
+                Coba Lagi
+            </button>
+        </div>
+    `;
+}
+
+// Format date
+function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+}
+
+// Get color for avatar
+function getColor(id) {
+    const colors = [
+        '#457b9d', '#e63946', '#2a9d8f', '#f4a261', '#e76f51',
+        '#6d597a', '#b5838d', '#4a4e69', '#1e6091', '#52b788'
+    ];
+    return colors[(id || 0) % colors.length];
+}
+
+// Export day detail
+function exportDayDetail() {
+    if (!currentDetailData) return;
+    
+    const date = currentDetailDate;
+    const tasks = currentDetailData.data || [];
+    
+    // Create CSV
+    let csv = 'No,Joki,Kloter,Status\n';
+    tasks.forEach((task, index) => {
+        const statusMap = {0: 'Pending', 1: 'Upload', 2: 'Revisi', 3: 'Selesai'};
+        csv += `${index + 1},${task.joki_nama || ''},${task.kloter_nama || ''},${statusMap[task.status] || 'Unknown'}\n`;
+    });
+    
+    // Download
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tugas_${date}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Close modal on escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('dayDetailModal'));
+            if (modal) modal.hide();
+        }
+    });
+});
+</script>
+
+
+<style>
+
+@keyframes spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+</style>
