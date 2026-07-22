@@ -3,17 +3,14 @@ Songs Page
 ==========
 
 HTML routes untuk feature Songs.
-
-Page hanya bertanggung jawab merender template.
-Seluruh data disiapkan oleh Presenter.
 """
 
 from __future__ import annotations
 
-from fastapi import APIRouter
-from fastapi import Request
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse
 
+from app.music.services.songs import service
 from app.templates import templates
 
 from .presenter import (
@@ -23,28 +20,18 @@ from .presenter import (
     build_index_context,
 )
 
-router = APIRouter(
-    tags=[
-        "Songs Pages",
-    ],
-)
+router = APIRouter(tags=["Songs Pages"])
+
 
 # ==========================================================
 # INDEX
 # ==========================================================
 
-
 @router.get(
     "/songs",
     response_class=HTMLResponse,
 )
-async def index(
-    request: Request,
-):
-    """
-    Songs page.
-    """
-
+async def index(request: Request):
     context = build_index_context()
 
     return templates.TemplateResponse(
@@ -56,23 +43,35 @@ async def index(
         },
     )
 
+# ==========================================================
+# YOUTUBE GENERATOR
+# ==========================================================
+
+@router.get(
+    "/songs/youtube-generator",
+    response_class=HTMLResponse,
+)
+async def youtube_generator(
+    request: Request,
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="songs/generate.html",
+        context={
+            "request": request,
+        },
+    )
+
 
 # ==========================================================
 # CREATE
 # ==========================================================
 
-
 @router.get(
-    "/songs/create",
+    "/songs/new",
     response_class=HTMLResponse,
 )
-async def create(
-    request: Request,
-):
-    """
-    Create song form.
-    """
-
+async def create(request: Request):
     context = build_form_context()
 
     return templates.TemplateResponse(
@@ -89,7 +88,6 @@ async def create(
 # EDIT
 # ==========================================================
 
-
 @router.get(
     "/songs/{song_id}/edit",
     response_class=HTMLResponse,
@@ -98,16 +96,9 @@ async def edit(
     request: Request,
     song_id: int,
 ):
-    """
-    Edit song form.
-    """
+    song = service.get_song(song_id)
 
-    from app.music.repositories.songs.songs import get_song
-
-    song = get_song(song_id)
-
-    context = build_form_context()
-    context["song"] = song
+    context = build_detail_context(song)
 
     return templates.TemplateResponse(
         request=request,
@@ -118,28 +109,10 @@ async def edit(
         },
     )
 
-# ==========================================================
-# YOUTUBE GENERATOR
-# ==========================================================
-
-@router.get(
-    "/songs/youtube-generator",
-    response_class=HTMLResponse,
-)
-def youtube_generator_page(
-    request: Request,
-):
-    return templates.TemplateResponse(
-        "songs/generate.html",
-        {
-            "request": request,
-        },
-    )
 
 # ==========================================================
 # DETAIL
 # ==========================================================
-
 
 @router.get(
     "/songs/{song_id}",
@@ -149,15 +122,9 @@ async def detail(
     request: Request,
     song_id: int,
 ):
-    """
-    Song detail page.
-    """
+    song = service.get_song(song_id)
 
-    from app.music.repositories.songs.songs import get_song
-
-    song = get_song(song_id)
-
-    context = build_detail_context(song)
+    context = build_form_context(song)
 
     return templates.TemplateResponse(
         request=request,
@@ -169,10 +136,11 @@ async def detail(
     )
 
 
+
+
 # ==========================================================
 # DASHBOARD
 # ==========================================================
-
 
 @router.get(
     "/songs/dashboard",
@@ -181,19 +149,13 @@ async def detail(
 async def dashboard(
     request: Request,
 ):
-    """
-    Songs dashboard.
-    """
-
     context = build_dashboard_context()
 
     return templates.TemplateResponse(
         request=request,
-        name="songs/components/stats.html",
+        name="songs/dashboard.html",
         context={
             "request": request,
             **context,
         },
     )
-
-

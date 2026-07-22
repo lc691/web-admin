@@ -1,514 +1,110 @@
 {% extends "base.html" %}
+
+{% block title %}{{ channel.name }} - Channel Details{% endblock %}
+
 {% block content %}
-
-<!-- ================= HEADER ================= -->
-<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-    <h1 class="h4 font-weight-bold mb-2">
-        Channel: <span class="text-primary">{{ channel.name }}</span>
-    </h1>
-</div>
-
-<!-- ================= CHANNEL STATS CARDS ================= -->
-<div class="row mb-4">
-    <!-- Total Songs Card -->
-    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-        <div class="card bg-primary text-white h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Total Songs</h6>
-                        <h2 class="mb-0">{{ songs|length }}</h2>
+<div class="page-wrapper">
+    <!-- Page Header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        <i class="ti ti-brand-youtube me-1"></i>
+                        Channel Details
                     </div>
-                    <i class="fas fa-music fa-2x opacity-50"></i>
+                    <h2 class="page-title">
+                        {{ channel.name }}
+                    </h2>
+                    <div class="text-secondary mt-1">
+                        <i class="ti ti-id me-1"></i>
+                        ID: #{{ channel.id }}
+                        {% if channel.youtube_url %}
+                        <span class="mx-2">|</span>
+                        <a href="{{ channel.youtube_url }}" target="_blank" class="text-secondary text-decoration-none">
+                            <i class="ti ti-brand-youtube text-danger me-1"></i>
+                            YouTube Channel
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="/channels/{{ channel.id }}/edit" class="btn btn-warning">
+                            <i class="ti ti-edit me-1"></i>
+                            Edit
+                        </a>
+                        <a href="/channels" class="btn btn-outline-secondary">
+                            <i class="ti ti-arrow-left me-1"></i>
+                            Kembali
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Live Songs Card -->
-    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-        <div class="card bg-success text-white h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Live</h6>
-                        <h2 class="mb-0">{{ songs|selectattr('status', 'equalto', 'Live')|list|length }}</h2>
-                    </div>
-                    <i class="fas fa-play-circle fa-2x opacity-50"></i>
-                </div>
-                <small class="text-white-50 mt-2 d-block">
-                    <i class="fas fa-percent"></i> 
-                    {{ "%.1f"|format(songs|selectattr('status', 'equalto', 'Live')|list|length / songs|length * 100 if songs|length > 0 else 0) }}%
-                </small>
-            </div>
-        </div>
-    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <!-- Stats Cards -->
+            {% include "channels/partials/detail_stats.html" %}
 
-    <!-- Approved Songs Card -->
-    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-        <div class="card bg-warning text-dark h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Approved</h6>
-                        <h2 class="mb-0">{{ songs|selectattr('status', 'equalto', 'Approved')|list|length }}</h2>
-                    </div>
-                    <i class="fas fa-check-circle fa-2x opacity-50"></i>
-                </div>
-                <small class="text-muted mt-2 d-block">
-                    <i class="fas fa-clock"></i> Waiting for Live
-                </small>
-            </div>
-        </div>
-    </div>
-
-    <!-- Review Songs Card -->
-    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-        <div class="card bg-secondary text-white h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Review</h6>
-                        <h2 class="mb-0">{{ songs|selectattr('status', 'equalto', 'Review')|list|length }}</h2>
-                    </div>
-                    <i class="fas fa-edit fa-2x opacity-50"></i>
-                </div>
-                <small class="text-white-50 mt-2 d-block">
-                    <i class="fas fa-hourglass-half"></i> Needs Approval
-                </small>
-            </div>
-        </div>
-    </div>
-
-    <!-- Take Down Songs Card -->
-    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-        <div class="card bg-danger text-white h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Take Down</h6>
-                        <h2 class="mb-0">{{ songs|selectattr('status', 'equalto', 'Take Down')|list|length }}</h2>
-                    </div>
-                    <i class="fas fa-trash-alt fa-2x opacity-50"></i>
-                </div>
-                <small class="text-white-50 mt-2 d-block">
-                    <i class="fas fa-exclamation-triangle"></i> Removed Content
-                </small>
-            </div>
-        </div>
-    </div>
-
-    <!-- Topic Songs Card -->
-    <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-        <div class="card bg-info text-white h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="mb-0">Topic</h6>
-                        <h2 class="mb-0">{{ songs|selectattr('status', 'equalto', 'Topic')|list|length }}</h2>
-                    </div>
-                    <i class="fas fa-tag fa-2x opacity-50"></i>
-                </div>
-                <small class="text-white-50 mt-2 d-block">
-                    <i class="fas fa-hashtag"></i> Categorized
-                </small>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Artists Summary Row -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body py-2">
-                <div class="d-flex justify-content-between align-items-center flex-wrap">
-                    <div>
-                        <span class="badge badge-primary px-3 py-2 mr-2">
-                            <i class="fas fa-user mr-1"></i>{{ artists|length }} Artists
-                        </span>
-                        <span class="badge badge-info px-3 py-2">
-                            <i class="fas fa-music mr-1"></i>{{ songs|length }} Total Songs
-                        </span>
-                    </div>
-                    <div>
-                        <span class="text-muted small">
-                            <i class="fas fa-chart-line"></i> 
+            <!-- Summary Bar -->
+            <div class="card mb-4">
+                <div class="card-body py-2">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <div>
+                            <span class="badge bg-primary-lt px-3 py-2 me-2">
+                                <i class="ti ti-users me-1"></i>
+                                {{ artists|length }} Artis
+                            </span>
+                            <span class="badge bg-info-lt px-3 py-2">
+                                <i class="ti ti-music me-1"></i>
+                                {{ songs|length }} Total Lagu
+                            </span>
+                        </div>
+                        <div class="text-secondary small">
+                            <i class="ti ti-chart-line me-1"></i>
                             Live Rate: {{ "%.1f"|format(songs|selectattr('status', 'equalto', 'Live')|list|length / songs|length * 100 if songs|length > 0 else 0) }}% | 
                             Completion: {{ "%.1f"|format((songs|selectattr('status', 'equalto', 'Live')|list|length + songs|selectattr('status', 'equalto', 'Approved')|list|length) / songs|length * 100 if songs|length > 0 else 0) }}%
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row g-3">
-
-    <!-- ================= ARTISTS ================= -->
-    <div class="col-lg-4">
-
-        <div class="card mb-4">
-
-            <div class="card-header bg-white d-flex justify-content-between">
-                <strong><i class="fas fa-user mr-2"></i>Artists</strong>
-                <span class="badge badge-primary">{{ artists|length }}</span>
-            </div>
-
-            <div class="card-body p-0" style="max-height:420px; overflow-y:auto;">
-                <ul class="list-group list-group-flush">
-                    {% for artist in artists %}
-                    <li class="list-group-item artist-item d-flex justify-content-between align-items-center">
-                        {{ artist.name }}
-                        <span class="badge badge-secondary badge-pill">
-                            {{ songs|selectattr('artist_name', 'equalto', artist.name)|list|length }}
-                        </span>
-                    </li>
-                    {% else %}
-                    <li class="list-group-item text-center text-muted py-4">
-                        Belum ada artist
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- ================= SONGS ================= -->
-    <div class="col-lg-8">
-
-        <div class="card mb-4">
-
-            <!-- HEADER -->
-            <div class="card-header bg-white">
-
-                <div class="d-flex flex-wrap justify-content-between align-items-center">
-
-                    <!-- LEFT -->
-                    <div class="d-flex flex-wrap align-items-center mb-2">
-
-                        <input type="text" id="searchBox"
-                            class="form-control form-control-sm mr-2 mb-2"
-                            placeholder="🔍 Cari..."
-                            style="min-width:220px;">
-
-                        <div class="btn-group btn-group-sm mb-2">
-                            <button class="btn btn-dark filter-btn active" data-status="">All</button>
-                            <button class="btn btn-outline-secondary filter-btn" data-status="Review">Review</button>
-                            <button class="btn btn-outline-warning filter-btn" data-status="Approved">Approved</button>
-                            <button class="btn btn-outline-success filter-btn" data-status="Live">Live</button>
-                            <button class="btn btn-outline-danger filter-btn" data-status="Take Down">Take Down</button>
-                            <button class="btn btn-outline-info filter-btn" data-status="Topic">Topic</button>
                         </div>
-
                     </div>
-
-                    <!-- RIGHT -->
-                    <div class="d-flex flex-wrap align-items-center mb-2">
-
-                        <span class="btn btn-outline-danger btn-sm mr-2" id="selectedCount">0 selected</span>
-
-                        <button class="btn btn-outline-warning btn-sm mr-2" onclick="bulkAction('Approved')">
-                            ✔ Approve
-                        </button>
-
-                        <button class="btn btn-outline-success btn-sm mr-2" onclick="bulkAction('Live')">
-                            🚀 Live
-                        </button>
-
-                        <button class="btn btn-outline-secondary btn-sm mr-2" onclick="bulkAction('Review')">
-                            📆 Review
-                        </button>
-
-                        <button class="btn btn-outline-danger btn-sm mr-2" onclick="bulkAction('Take Down')">
-                            🗑 Take Down
-                        </button>
-
-                        <button class="btn btn-outline-info btn-sm mr-2" onclick="bulkAction('Topic')">
-                            📝 Topic
-                        </button>
-
-                        <a href="/songs/import" class="btn btn-success btn-sm mr-2">
-                            <i class="fas fa-file-import"></i> Import
-                        </a>
-
-                        <button form="exportForm" type="submit" class="btn btn-primary btn-sm">
-                            <i class="fas fa-file-export"></i> Export
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- TABLE -->
-            <div class="container-fluid px-4">
-                <div class="table-responsive">
-                    <form id="exportForm" method="post" action="/songs/export-txt">
-
-                     <table id="songsTable" class="table table-hover align-middle w-100">
-                        <thead class="thead-light">
-                            <tr class="text-center">
-                                <th width="40"><input type="checkbox" id="checkAll"></th>
-                                <th>ID</th>
-                                <th>Artist</th>
-                                <th>Title</th>
-                                <th>Status</th>
-                                <th>Release</th>
-                            </tr>
-                        </thead>
-                     </table>
-
-                    </form>
                 </div>
             </div>
 
+            <div class="row g-3">
+                <!-- Artists List -->
+                {% include "channels/partials/detail_artists.html" %}
+
+                <!-- Songs Table -->
+                {% include "channels/partials/detail_table.html" %}
+            </div>
         </div>
-
     </div>
-
 </div>
 
-<!-- Add CSS for card hover effect -->
-<style>
-.card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    cursor: pointer;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-.opacity-50 {
-    opacity: 0.7;
-}
-
-.artist-item {
-    transition: background-color 0.2s;
-}
-
-.artist-item:hover {
-    background-color: #f8f9fa;
-}
-</style>
-
+<!-- Toast Notification -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    <div id="bulkToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header" id="bulkToastHeader">
+            <i class="ti ti-info-circle me-2" id="bulkToastIcon"></i>
+            <strong class="me-auto" id="bulkToastTitle">Info</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body" id="bulkToastMessage">
+            Processing...
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
-<script>
-$(function () {
+{{ super() }}
+    {% include "channels/partials/datatable.html" %}
+    {% include "channels/scripts/channels_config.html" %}
+    {% include "channels/scripts/detail_bulk_actions.html" %}
+    {% include "channels/scripts/detail_filters.html" %}
+    {% include "channels/scripts/detail_datatable.html" %}
+    {% include "channels/scripts/detail_main.html" %}
 
-    // 🔥 GLOBAL STATE (multi-page selection)
-    const selectedIds = new Set();
-
-    // 🔥 CHANNEL ID dari backend
-    const CHANNEL_ID = "{{ channel.id }}";
-
-    const table = $('#songsTable').DataTable({
-        processing: true,
-        serverSide: true,
-        pageLength: 10,
-        order: [[1, "desc"]],
-        orderCellsTop: true,
-
-        ajax: {
-            url: "/api/songs/data",
-            type: "GET",
-            data: function (d) {
-                d.status = $('.filter-btn.active').data('status');
-                d.channel_id = CHANNEL_ID;
-
-                // Bisa juga force order dari client
-                if (!d.order || d.order.length === 0) {
-                    d.order = [{column: 1, dir: 'desc'}];
-                }
-            }
-
-
-        },
-
-        columns: [
-            {
-                data: "id",
-                orderable: false,
-                render: function (data) {
-                    return `<input type="checkbox" class="row-check" value="${data}">`;
-                }
-            },
-            { data: "id" },
-            { data: "artist_name" },
-            { data: "title" },
-            {
-                data: "status",
-                render: function (data) {
-                    if (data === "Live") return `<span class="badge badge-success">Live</span>`;
-                    if (data === "Approved") return `<span class="badge badge-warning">Approved</span>`;
-                    if (data === "Take Down") return `<span class="badge badge-danger">Take Down</span>`;
-                    if (data === "Topic") return `<span class="badge badge-info">Topic</span>`;
-                    return `<span class="badge badge-secondary">Review</span>`;
-                }
-            },
-            { data: "release_date" }
-        ],
-
-        // 🔥 restore checkbox saat redraw
-        drawCallback: function () {
-            $('.row-check').each(function () {
-                const id = $(this).val();
-                if (selectedIds.has(id)) {
-                    $(this).prop('checked', true);
-                }
-            });
-        }
-    });
-
-    // =========================
-    // 🔎 SEARCH (debounce)
-    // =========================
-    let delay;
-    $('#searchBox').on('keyup', function () {
-        clearTimeout(delay);
-        delay = setTimeout(() => {
-            table.search(this.value).draw();
-        }, 400);
-    });
-
-    // =========================
-    // 🎯 FILTER STATUS
-    // =========================
-    $('.filter-btn').on('click', function () {
-        $('.filter-btn').removeClass('active');
-        $(this).addClass('active');
-        table.ajax.reload();
-    });
-
-    // =========================
-    // ✅ CHECKBOX SINGLE
-    // =========================
-    $(document).on('change', '.row-check', function () {
-        const id = $(this).val();
-
-        if (this.checked) {
-            selectedIds.add(id);
-        } else {
-            selectedIds.delete(id);
-        }
-
-        updateSelected();
-    });
-
-    // =========================
-    // ✅ CHECK ALL (page only)
-    // =========================
-    $('#checkAll').on('click', function () {
-        const checked = this.checked;
-
-        $('.row-check').each(function () {
-            const id = $(this).val();
-
-            $(this).prop('checked', checked);
-
-            if (checked) {
-                selectedIds.add(id);
-            } else {
-                selectedIds.delete(id);
-            }
-        });
-
-        updateSelected();
-    });
-
-    function updateSelected() {
-        $('#selectedCount').text(selectedIds.size + ' selected');
-    }
-
-    // =========================
-    // ✅ EXPORT
-    // =========================
-    $('#exportForm').on('submit', function (e) {
-
-        e.preventDefault();
-
-        const form = $(this);
-
-        // ❌ hapus input lama
-        form.find('input[name="song_ids"]').remove();
-
-        // ✅ inject dari selectedIds (GLOBAL)
-        selectedIds.forEach(id => {
-            form.append(`<input type="hidden" name="song_ids" value="${id}">`);
-        });
-
-        if (selectedIds.size === 0) {
-            alert("Pilih minimal 1 data");
-            return;
-        }
-
-        // submit ulang
-        form.off('submit').submit();
-    });
-
-    // =========================
-    // 🚀 BULK ACTION (FINAL)
-    // =========================
-    window.bulkAction = function (status) {
-
-        const ids = Array.from(selectedIds);
-
-        if (!ids.length) {
-            alert("Pilih minimal 1 data");
-            return;
-        }
-
-        if (!confirm("Ubah ke " + status + "?")) return;
-
-        $.ajax({
-            url: "/songs/bulk-update",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                ids: ids,
-                status: status,
-                channel_id: CHANNEL_ID
-            }),
-
-            beforeSend: function () {
-                $('button').prop('disabled', true);
-            },
-
-            success: function () {
-                table.ajax.reload(null, false); // 🔥 tetap di page
-                selectedIds.clear();
-                $('#checkAll').prop('checked', false);
-                updateSelected();
-            },
-
-            complete: function () {
-                $('button').prop('disabled', false);
-            }
-        });
-    };
-
-    // Add click handler for cards to filter by status
-    $('.card').on('click', function() {
-        const cardTitle = $(this).find('h6').text().toLowerCase();
-        let status = '';
-        
-        if (cardTitle === 'live') status = 'Live';
-        else if (cardTitle === 'approved') status = 'Approved';
-        else if (cardTitle === 'review') status = 'Review';
-        else if (cardTitle === 'take down') status = 'Take Down';
-        else if (cardTitle === 'topic') status = 'Topic';
-        
-        if (status) {
-            // Trigger filter button click
-            $(`.filter-btn[data-status="${status}"]`).click();
-        }
-    });
-});
-</script>
 {% endblock %}

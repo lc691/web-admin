@@ -1,0 +1,85 @@
+<script>
+    /**
+     * Main initialization for Channel Detail
+     */
+    (function() {
+        'use strict';
+
+        $(document).ready(function() {
+            // ==========================================
+            // Initialize Bulk Action Buttons
+            // ==========================================
+            $('.bulk-action-btn').on('click', function() {
+                const status = $(this).data('status');
+                if (typeof window.handleBulkAction === 'function') {
+                    window.handleBulkAction(status);
+                } else {
+                    console.error('handleBulkAction not available');
+                }
+            });
+
+            // ==========================================
+            // Initialize Export
+            // ==========================================
+            $('#exportForm').on('submit', function(e) {
+                if (typeof window.handleExport === 'function') {
+                    window.handleExport(e);
+                }
+            });
+
+            // ==========================================
+            // Initialize Tooltips
+            // ==========================================
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            }
+
+            // ==========================================
+            // Initialize Selected Count
+            // ==========================================
+            if (typeof window.updateSelectedCount === 'function') {
+                window.updateSelectedCount();
+            } else {
+                console.warn('updateSelectedCount not available');
+                // Fallback
+                const count = window.selectedIds ? window.selectedIds.size : 0;
+                $('#selectedCount').html(`<i class="ti ti-checkbox me-1"></i> ${count} dipilih`);
+                $('.bulk-action-btn').prop('disabled', true);
+            }
+
+            // ==========================================
+            // Keyboard Shortcuts
+            // ==========================================
+            $(document).on('keydown', function(e) {
+                // Ctrl+A: Select all
+                if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+                    const tag = e.target.tagName.toLowerCase();
+                    if (tag !== 'input' && tag !== 'textarea' && tag !== 'select') {
+                        e.preventDefault();
+                        $('#checkAll').click();
+                    }
+                }
+                
+                // Ctrl+F: Focus search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                    if (e.target.tagName.toLowerCase() !== 'input') {
+                        e.preventDefault();
+                        $('#searchBox').focus();
+                    }
+                }
+                
+                // Escape: Clear search
+                if (e.key === 'Escape') {
+                    if ($('#searchBox').is(':focus')) {
+                        $('#searchBox').val('').trigger('keyup');
+                        $('#searchBox').blur();
+                    }
+                }
+            });
+
+            console.log('✅ Channel detail page initialized');
+            console.log(`📊 Channel: ${CHANNEL_CONFIG.channelName} (ID: ${CHANNEL_CONFIG.channelId})`);
+            console.log(`📊 Total Songs: ${CHANNEL_CONFIG.totalSongs}, Total Artists: ${CHANNEL_CONFIG.totalArtists}`);
+        });
+    })();
+</script>

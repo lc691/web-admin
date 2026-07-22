@@ -1,0 +1,226 @@
+<div class="card p-3">
+    <!-- Card Header with Batch Actions -->
+    <div class="card-header">
+        <div class="d-flex align-items-center gap-3">
+            <div class="form-check">
+                <input
+                    id="check-all"
+                    class="form-check-input"
+                    type="checkbox"
+                >
+                <label class="form-check-label" for="check-all">
+                    Select All
+                </label>
+            </div>
+            
+            <div id="batchActions" class="d-none">
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-danger" id="batchDelete">
+                        <i class="ti ti-trash me-1"></i>
+                        Delete Selected
+                    </button>
+                    <button class="btn btn-sm btn-info" id="batchExport">
+                        <i class="ti ti-file-export me-1"></i>
+                        Export
+                    </button>
+                </div>
+                <span class="text-muted ms-2" id="selectedCount">0 selected</span>
+            </div>
+        </div>
+        
+        <div class="card-actions">
+            <span class="text-secondary small">
+                <i class="ti ti-database me-1"></i>
+                {{ channels|length }} channels
+            </span>
+            <button class="btn btn-sm btn-outline-secondary" id="refreshTable">
+                <i class="ti ti-refresh me-1"></i>
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table
+            id="channelsTable"
+            class="table table-hover table-striped align-middle"
+        >
+            <thead>
+                <tr>
+                    <th class="w-1 text-center">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="check-all-header"
+                        >
+                    </th>
+                    <th style="width:70px;">
+                        <span class="text-secondary small text-uppercase">ID</span>
+                    </th>
+                    <th>
+                        <span class="text-secondary small text-uppercase">Channel</span>
+                    </th>
+                    <th class="text-center" style="width:110px;">
+                        <span class="text-secondary small text-uppercase">Artists</span>
+                    </th>
+                    <th class="text-center" style="width:110px;">
+                        <span class="text-secondary small text-uppercase">Songs</span>
+                    </th>
+                    <th class="text-center" style="width:120px;">
+                        <span class="text-secondary small text-uppercase">Live Songs</span>
+                    </th>
+                    <th style="width:140px;">
+                        <span class="text-secondary small text-uppercase">Created</span>
+                    </th>
+                    <th class="text-end" style="width:140px;">
+                        <span class="text-secondary small text-uppercase">Actions</span>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for channel in channels %}
+                <tr>
+                    <td class="text-center">
+                        <input
+                            type="checkbox"
+                            class="form-check-input row-check"
+                            value="{{ channel.id }}"
+                        >
+                    </td>
+
+                    <td class="text-secondary">
+                        #{{ channel.id }}
+                    </td>
+
+                    <td>
+                        <div class="fw-semibold">
+                            <a
+                                href="/channels/{{ channel.id }}"
+                                class="text-reset text-decoration-none"
+                            >
+                                {{ channel.name }}
+                            </a>
+                        </div>
+
+                        {% if channel.youtube_url %}
+                            <div class="text-secondary small mt-1">
+                                <a
+                                    href="{{ channel.youtube_url }}"
+                                    target="_blank"
+                                    class="text-secondary text-decoration-none"
+                                >
+                                    <i class="ti ti-brand-youtube text-danger me-1"></i>
+                                    YouTube
+                                </a>
+                            </div>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-center">
+                        <span class="badge bg-azure-lt">
+                            <i class="ti ti-users me-1"></i>
+                            {{ channel.total_artists or 0 }}
+                        </span>
+                    </td>
+
+                    <td class="text-center">
+                        <span class="badge bg-green-lt">
+                            <i class="ti ti-music me-1"></i>
+                            {{ channel.total_songs or 0 }}
+                        </span>
+                    </td>
+
+                    <td class="text-center">
+                        <span class="badge bg-orange-lt">
+                            <i class="ti ti-player-play me-1"></i>
+                            {{ channel.live_songs or 0 }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {% if channel.created_at %}
+                            <div class="text-secondary small">
+                                <div>
+                                    <i class="ti ti-calendar me-1"></i>
+                                    {{ channel.created_at.strftime("%d %b %Y") }}
+                                </div>
+                                <div class="text-muted">
+                                    <i class="ti ti-clock me-1"></i>
+                                    {{ channel.created_at.strftime("%H:%M") }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="text-end">
+                        <div class="btn-list justify-content-end flex-nowrap">
+                            <a
+                                href="/channels/{{ channel.id }}"
+                                class="btn btn-icon btn-outline-info"
+                                data-bs-toggle="tooltip"
+                                title="View Details"
+                            >
+                                <i class="ti ti-eye"></i>
+                            </a>
+
+                            <a
+                                href="/channels/{{ channel.id }}/edit"
+                                class="btn btn-icon btn-outline-warning"
+                                data-bs-toggle="tooltip"
+                                title="Edit Channel"
+                            >
+                                <i class="ti ti-edit"></i>
+                            </a>
+
+                            <button
+                                type="button"
+                                class="btn btn-icon btn-outline-danger delete-single-btn"
+                                data-id="{{ channel.id }}"
+                                data-name="{{ channel.name }}"
+                                data-bs-toggle="tooltip"
+                                title="Delete Channel"
+                            >
+                                <i class="ti ti-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="8" class="text-center text-secondary py-5">
+                        <i class="ti ti-folder-off fs-1 d-block mb-2"></i>
+                        <div class="h4">No channels found</div>
+                        <p class="text-muted">Get started by creating your first channel</p>
+                        <div class="mt-2">
+                            <a href="/channels/new" class="btn btn-primary">
+                                <i class="ti ti-plus me-1"></i>
+                                Create Channel
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Card Footer with Pagination -->
+    <div class="card-footer d-flex align-items-center justify-content-between">
+        <div class="text-secondary small">
+            <i class="ti ti-list me-1"></i>
+            Showing <strong>{{ channels|length }}</strong> channels
+        </div>
+        <div class="d-flex gap-1">
+            <button class="btn btn-sm btn-outline-secondary" id="prevPage" disabled>
+                <i class="ti ti-chevron-left"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" id="nextPage">
+                <i class="ti ti-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>

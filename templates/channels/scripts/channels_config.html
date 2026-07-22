@@ -1,0 +1,23 @@
+<script>
+    // ==========================================
+    // Configuration
+    // ==========================================
+    const CHANNEL_CONFIG = {
+        channelId: "{{ channel.id }}",
+        channelName: "{{ channel.name }}",
+        channelUrl: "{{ channel.youtube_url or '' }}",
+        totalSongs: {{ songs|length }},
+        totalArtists: {{ artists|length }},
+        bulkUpdateUrl: '/api/songs/bulk-update',
+        exportUrl: '/api/songs/export-txt',
+        dataUrl: '/api/songs/data'
+    };
+
+    // ==========================================
+    // State
+    // ==========================================
+    window.selectedIds = new Set();
+    window.songsTable = null;
+
+    console.log('✅ Config loaded:', CHANNEL_CONFIG);
+</script>

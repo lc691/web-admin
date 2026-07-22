@@ -1,0 +1,49 @@
+<script>
+    /**
+     * Filter functionality for Channel Detail
+     */
+    (function() {
+        'use strict';
+
+        $(document).ready(function() {
+            // ==========================================
+            // Search
+            // ==========================================
+            let searchDelay;
+            $('#searchBox').on('keyup', function() {
+                clearTimeout(searchDelay);
+                searchDelay = setTimeout(() => {
+                    if (window.songsTable) {
+                        window.songsTable.search(this.value).draw();
+                    }
+                }, 400);
+            });
+
+            // ==========================================
+            // Status Filter
+            // ==========================================
+            $('.filter-btn').on('click', function() {
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+                if (window.songsTable) {
+                    window.songsTable.ajax.reload();
+                }
+            });
+
+            // ==========================================
+            // Stats Card Click Filter
+            // ==========================================
+            $('.stat-card').on('click', function() {
+                const status = $(this).data('status');
+                if (status) {
+                    const filterBtn = $(`.filter-btn[data-status="${status}"]`);
+                    if (filterBtn.length) {
+                        filterBtn.click();
+                    }
+                }
+            });
+
+            console.log('✅ Filters initialized');
+        });
+    })();
+</script>

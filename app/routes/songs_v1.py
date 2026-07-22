@@ -10,7 +10,7 @@ from starlette.status import HTTP_302_FOUND
 
 from app.templates import templates
 from app.core.database import get_dict_cursor, get_dict_cursor_dep
-from .channels import get_or_create_channel
+from ..music.channels.channels import get_or_create_channel
 from ..music.services.export.service import has_day_export
 from ..music.services.export.repository import get_export_information
 from ..music.services.export.types import ExportMode

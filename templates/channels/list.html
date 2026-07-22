@@ -1,339 +1,246 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap mb-4">
     <div>
-        <h1 class="h3 text-gray-800 mb-0">
-            <i class="fas fa-broadcast-tower text-primary mr-2"></i>
+        <h1 class="page-title">
+            <i class="fas fa-broadcast-tower text-primary me-2"></i>
             Channels
         </h1>
+        <div class="page-subtitle text-muted">
+            Manage your YouTube channels and their content
+        </div>
     </div>
 
     <div class="d-flex gap-2">
         <!-- Search Box -->
-        <div class="input-group" style="width: 250px;">
+        <div class="input-icon">
+            <span class="input-icon-addon">
+                <i class="fas fa-search"></i>
+            </span>
             <input
                 type="text"
                 id="searchInput"
                 class="form-control"
-                placeholder="Cari channel..."
+                placeholder="Search channels..."
+                style="width: 250px;"
             >
-            <div class="input-group-append">
-                <button
-                    class="btn btn-outline-secondary"
-                    id="clearSearch"
-                    type="button"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+            <span class="input-icon-addon cursor-pointer" id="clearSearch">
+                <i class="fas fa-times"></i>
+            </span>
         </div>
 
-        <a href="/channels/new" class="btn btn-primary shadow-sm">
-            <i class="fas fa-plus mr-1"></i>
-            Tambah Channel
+        <a href="/channels/new" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>
+            Add Channel
         </a>
     </div>
 </div>
 
-
 <!-- Statistics Cards -->
-<div class="row mb-4">
-
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="card border-left-primary shadow h-100 py-2">
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-sm-6">
+        <div class="card card-sm">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Total Channels
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{ total_channels }}
-                        </div>
-                    </div>
+                <div class="row align-items-center">
                     <div class="col-auto">
-                        <i class="fas fa-broadcast-tower fa-2x text-gray-300"></i>
+                        <span class="bg-primary text-white avatar">
+                            <i class="fas fa-broadcast-tower"></i>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="text-muted small text-uppercase">Total Channels</div>
+                        <div class="h3 mb-0">{{ total_channels }}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="card border-left-success shadow h-100 py-2">
+    <div class="col-md-3 col-sm-6">
+        <div class="card card-sm">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Total Artists
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{ total_artists }}
-                        </div>
-                    </div>
+                <div class="row align-items-center">
                     <div class="col-auto">
-                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                        <span class="bg-success text-white avatar">
+                            <i class="fas fa-users"></i>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="text-muted small text-uppercase">Total Artists</div>
+                        <div class="h3 mb-0">{{ total_artists }}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="card border-left-info shadow h-100 py-2">
+    <div class="col-md-3 col-sm-6">
+        <div class="card card-sm">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                            Total Songs
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{ total_songs }}
-                        </div>
-                    </div>
+                <div class="row align-items-center">
                     <div class="col-auto">
-                        <i class="fas fa-music fa-2x text-gray-300"></i>
+                        <span class="bg-info text-white avatar">
+                            <i class="fas fa-music"></i>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="text-muted small text-uppercase">Total Songs</div>
+                        <div class="h3 mb-0">{{ total_songs }}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="card border-left-warning shadow h-100 py-2">
+    <div class="col-md-3 col-sm-6">
+        <div class="card card-sm">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Live Songs
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{ total_live_songs }}
-                        </div>
-                    </div>
+                <div class="row align-items-center">
                     <div class="col-auto">
-                        <i class="fas fa-play-circle fa-2x text-gray-300"></i>
+                        <span class="bg-warning text-white avatar">
+                            <i class="fas fa-play-circle"></i>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="text-muted small text-uppercase">Live Songs</div>
+                        <div class="h3 mb-0">{{ total_live_songs }}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
-
 <!-- Table -->
-<div class="card shadow mb-4">
-
-    <div class="card-header py-3">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-            <h6 class="m-0 font-weight-bold text-primary">
-                <i class="fas fa-list mr-2"></i>
-                Daftar Channels
-            </h6>
-
-            <button
-                class="btn btn-outline-secondary btn-sm"
-                id="refreshTable"
-            >
-                <i class="fas fa-sync-alt"></i>
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 class="card-title">
+                <i class="fas fa-list me-2"></i>
+                Channel List
+            </h3>
+            <button class="btn btn-secondary btn-sm" id="refreshTable">
+                <i class="fas fa-sync-alt me-1"></i>
                 Refresh
             </button>
         </div>
     </div>
 
-    <div class="card-body">
-
-        <table
-            class="table table-bordered table-hover align-middle"
-            id="channelsTable"
-            width="100%"
-        >
-            <thead class="thead-light">
+    <div class="card-body table-responsive">
+        <table class="table table-vcenter table-bordered table-hover" id="channelsTable">
+            <thead>
                 <tr>
                     <th width="70">ID</th>
-                    <th>Nama Channel</th>
-                    <th width="100">Artists</th>
-                    <th width="100">Songs</th>
-                    <th width="80">Live</th>
-                    <th width="150">Dibuat</th>
-                    <th width="160" class="text-center">Aksi</th>
+                    <th>Channel Name</th>
+                    <th width="100" class="text-center">Artists</th>
+                    <th width="100" class="text-center">Songs</th>
+                    <th width="80" class="text-center">Live</th>
+                    <th width="150">Created</th>
+                    <th width="160" class="text-center">Actions</th>
                 </tr>
             </thead>
 
             <tbody>
                 {% for channel in channels %}
                 <tr>
-
-                    <td class="text-center">
-                        {{ channel.id }}
-                    </td>
+                    <td class="text-center text-muted">#{{ channel.id }}</td>
 
                     <td>
-                        <strong>
-                            <a
-                                href="/channels/{{ channel.id }}"
-                                class="text-decoration-none"
-                            >
-                                {{ channel.name }}
-                            </a>
-                        </strong>
-
-                        {% if channel.youtube_url %}
-                        <br>
-                        <small>
-                            <a
-                                href="{{ channel.youtube_url }}"
-                                target="_blank"
-                                class="text-muted"
-                            >
-                                <i class="fab fa-youtube"></i>
-                                YouTube
-                            </a>
-                        </small>
-                        {% endif %}
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <a href="/channels/{{ channel.id }}" class="text-reset text-decoration-none">
+                                    <strong>{{ channel.name }}</strong>
+                                </a>
+                                {% if channel.youtube_url %}
+                                <div class="small text-muted">
+                                    <a href="{{ channel.youtube_url }}" target="_blank" class="text-muted">
+                                        <i class="fab fa-youtube text-danger me-1"></i>
+                                        YouTube
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </td>
 
                     <td class="text-center">
-                        <span class="badge badge-info">
-                            {{ channel.total_artists or 0 }}
-                        </span>
+                        <span class="badge bg-info text-white">{{ channel.total_artists or 0 }}</span>
                     </td>
 
                     <td class="text-center">
-                        <span class="badge badge-success">
-                            {{ channel.total_songs or 0 }}
-                        </span>
+                        <span class="badge bg-success text-white">{{ channel.total_songs or 0 }}</span>
                     </td>
 
                     <td class="text-center">
-                        <span class="badge badge-warning">
-                            {{ channel.live_songs or 0 }}
-                        </span>
+                        <span class="badge bg-warning text-white">{{ channel.live_songs or 0 }}</span>
                     </td>
 
                     <td>
                         {% if channel.created_at %}
-                            <div class="small">
-                                <i class="far fa-calendar-alt mr-1"></i>
-                                {{ channel.created_at.strftime("%d %b %Y") }}
-                                <br>
-                                <i class="far fa-clock mr-1"></i>
-                                {{ channel.created_at.strftime("%H:%M") }}
-                            </div>
+                        <div class="small">
+                            <div><i class="far fa-calendar-alt me-1"></i> {{ channel.created_at.strftime("%d %b %Y") }}</div>
+                            <div class="text-muted"><i class="far fa-clock me-1"></i> {{ channel.created_at.strftime("%H:%M") }}</div>
+                        </div>
                         {% else %}
-                            <span class="text-muted">-</span>
+                        <span class="text-muted">-</span>
                         {% endif %}
                     </td>
 
                     <td class="text-center">
-                        <div class="btn-group btn-group-sm">
-
-                            <a
-                                href="/channels/{{ channel.id }}"
-                                class="btn btn-info"
-                                data-toggle="tooltip"
-                                title="Detail"
-                            >
+                        <div class="btn-group">
+                            <a href="/channels/{{ channel.id }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="View">
                                 <i class="fas fa-eye"></i>
                             </a>
-
-                            <a
-                                href="/channels/{{ channel.id }}/edit"
-                                class="btn btn-warning"
-                                data-toggle="tooltip"
-                                title="Edit"
-                            >
+                            <a href="/channels/{{ channel.id }}/edit" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Edit">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
-
-                            <button
-                                type="button"
-                                class="btn btn-danger delete-single-btn"
-                                data-id="{{ channel.id }}"
-                                data-name="{{ channel.name }}"
-                                data-toggle="tooltip"
-                                title="Hapus"
-                            >
+                            <button type="button" class="btn btn-sm btn-danger delete-single-btn" 
+                                    data-id="{{ channel.id }}" data-name="{{ channel.name }}"
+                                    data-bs-toggle="tooltip" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </button>
-
                         </div>
                     </td>
-
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
     </div>
 </div>
 
-
 <!-- Delete Modal -->
-<div
-    class="modal fade"
-    id="deleteModal"
-    tabindex="-1"
-    role="dialog"
->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-
             <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>
-                    Konfirmasi Hapus
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Confirm Delete
                 </h5>
-
-                <button
-                    type="button"
-                    class="close text-white"
-                    data-dismiss="modal"
-                >
-                    &times;
-                </button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
-                <p>Yakin ingin menghapus channel berikut?</p>
-
-                <div
-                    id="deleteInfo"
-                    class="alert alert-warning"
-                ></div>
-
-                <p class="text-danger small mb-0">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    Semua artist dan lagu dalam channel ini juga akan terhapus!
-                </p>
+                <p>Are you sure you want to delete this channel?</p>
+                <div id="deleteInfo" class="alert alert-warning"></div>
+                <div class="alert alert-danger">
+                    <i class="fas fa-info-circle me-1"></i>
+                    All artists and songs in this channel will also be deleted!
+                </div>
             </div>
 
             <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                >
-                    <i class="fas fa-times mr-1"></i>
-                    Batal
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>
+                    Cancel
                 </button>
-
-                <form
-                    method="post"
-                    id="deleteForm"
-                >
-                    <button
-                        type="submit"
-                        class="btn btn-danger"
-                    >
-                        <i class="fas fa-trash mr-1"></i>
-                        Ya, Hapus!
+                <form method="post" id="deleteForm">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>
+                        Yes, Delete!
                     </button>
                 </form>
-
             </div>
         </div>
     </div>
@@ -341,173 +248,72 @@
 
 {% endblock %}
 
-
 {% block scripts %}
 <script>
-$(document).ready(function () {
-
-    /*
-    =========================
-    DATATABLE
-    =========================
-    */
-
+$(document).ready(function() {
+    // Initialize DataTable
     const table = $("#channelsTable").DataTable({
         language: {
-            search: "Cari:",
-            searchPlaceholder: "Nama channel...",
-            lengthMenu: "Tampilkan _MENU_ entri",
-            info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
-            infoEmpty: "Tidak ada data",
-            infoFiltered: "(difilter dari _MAX_ total data)",
-            zeroRecords: "Tidak ada data ditemukan",
+            search: "Search:",
+            searchPlaceholder: "Search channels...",
+            lengthMenu: "Show _MENU_ entries",
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            infoEmpty: "No entries found",
+            infoFiltered: "(filtered from _MAX_ total entries)",
+            zeroRecords: "No matching records found",
             paginate: {
-                first: "« Awal",
-                last: "Akhir »",
+                first: "« First",
+                last: "Last »",
                 next: "›",
                 previous: "‹"
             }
         },
-
         pageLength: 10,
         lengthMenu: [5, 10, 25, 50, 100],
         order: [[0, "desc"]],
-
         columnDefs: [
-            {
-                orderable: false,
-                targets: [2, 3, 4, 6]
-            },
-            {
-                className: "text-center",
-                targets: [0, 2, 3, 4, 6]
-            }
+            { orderable: false, targets: [2, 3, 4, 6] },
+            { className: "text-center", targets: [0, 2, 3, 4, 6] }
         ]
     });
 
-
-    /*
-    =========================
-    SEARCH
-    =========================
-    */
-
+    // Search functionality
     const searchInput = $("#searchInput");
-
-    searchInput.on("keyup", function () {
+    searchInput.on("keyup", function() {
         table.search($(this).val()).draw();
     });
 
-    $("#clearSearch").on("click", function () {
+    $("#clearSearch").on("click", function() {
         searchInput.val("");
         table.search("").draw();
         searchInput.focus();
     });
 
-
-    /*
-    =========================
-    REFRESH
-    =========================
-    */
-
-    $("#refreshTable").on("click", function () {
+    // Refresh
+    $("#refreshTable").on("click", function() {
         location.reload();
     });
 
-
-    /*
-    =========================
-    DELETE MODAL
-    =========================
-    */
-
-    $(document).on("click", ".delete-single-btn", function () {
-
+    // Delete modal
+    $(document).on("click", ".delete-single-btn", function() {
         const id = $(this).data("id");
         const name = $(this).data("name");
-
-        $("#deleteInfo").html(`
-            <strong>${name}</strong> (ID: ${id})
-        `);
-
-        $("#deleteForm").attr(
-            "action",
-            `/channels/${id}/delete`
-        );
-
+        
+        $("#deleteInfo").html(`<strong>${name}</strong> (ID: ${id})`);
+        $("#deleteForm").attr("action", `/channels/${id}/delete`);
         $("#deleteModal").modal("show");
     });
 
+    // Tooltips
+    $('[data-bs-toggle="tooltip"]').tooltip();
 
-    /*
-    =========================
-    TOOLTIP
-    =========================
-    */
-
-    $('[data-toggle="tooltip"]').tooltip();
-
-
-    /*
-    =========================
-    CTRL + F SEARCH
-    =========================
-    */
-
-    $(document).on("keydown", function (e) {
+    // Ctrl+F search
+    $(document).on("keydown", function(e) {
         if ((e.ctrlKey || e.metaKey) && e.key === "f") {
             e.preventDefault();
             searchInput.focus();
         }
     });
-
 });
 </script>
-
-
-<style>
-.border-left-primary {
-    border-left: 4px solid #4e73df;
-}
-
-.border-left-success {
-    border-left: 4px solid #1cc88a;
-}
-
-.border-left-info {
-    border-left: 4px solid #36b9cc;
-}
-
-.border-left-warning {
-    border-left: 4px solid #f6c23e;
-}
-
-.text-decoration-none {
-    text-decoration: none;
-}
-
-.text-decoration-none:hover {
-    text-decoration: underline;
-}
-
-.gap-2 {
-    gap: 0.5rem;
-}
-
-.btn-group-sm > .btn {
-    padding: 0.25rem 0.5rem;
-}
-
-@media (max-width: 768px) {
-    .d-flex.justify-content-between {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .input-group {
-        width: 100% !important;
-    }
-}
-</style>
 {% endblock %}

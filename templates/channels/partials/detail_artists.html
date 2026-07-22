@@ -1,0 +1,30 @@
+<div class="col-lg-4">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="ti ti-users me-1"></i>
+                Artis
+            </h3>
+            <div class="card-actions">
+                <span class="badge bg-primary text-white">{{ artists|length }}</span>
+            </div>
+        </div>
+        <div class="card-body p-0" style="max-height:420px; overflow-y:auto;">
+            <div class="list-group list-group-flush">
+                {% for artist in artists %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ artist.name }}</span>
+                    <span class="badge bg-secondary text-white rounded-pill">
+                        {{ songs|selectattr('artist_name', 'equalto', artist.name)|list|length }}
+                    </span>
+                </div>
+                {% else %}
+                <div class="list-group-item text-center text-secondary py-4">
+                    <i class="ti ti-user-off fs-2 d-block mb-2"></i>
+                    Belum ada artis
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

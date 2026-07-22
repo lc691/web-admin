@@ -1,0 +1,59 @@
+[2026-07-20 08:44:22] [WARNING] [soundon] [AUTH] No token found for path=/songs/youtube-generator
+[2026-07-20 08:49:01] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-20 08:52:03] [WARNING] [soundon] [AUTH] No token found for path=/songs/youtube-generator
+[2026-07-20 08:52:06] [INFO] [soundon] [Dashboard] Loaded Users=6961 Shows=4480
+[2026-07-20 08:52:06] [INFO] [soundon] [REQ DONE] path=/ ms=146.49 status=200
+[2026-07-20 09:01:18] [INFO] [soundon] [Dashboard] Loaded Users=6961 Shows=4480
+[2026-07-20 09:01:18] [INFO] [soundon] [REQ DONE] path=/ ms=172.43 status=200
+[2026-07-20 09:01:22] [INFO] [soundon] [REQ DONE] path=/songs ms=140.54 status=200
+[2026-07-20 09:01:24] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=112.36 status=200
+[2026-07-20 09:01:25] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=32.74 status=200
+[2026-07-20 09:01:33] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=32.2 status=200
+[2026-07-20 09:02:00] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=27.41 status=200
+[2026-07-20 09:04:24] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.69 status=200
+[2026-07-20 09:08:25] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.72 status=200
+[2026-07-20 09:09:26] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.17 status=200
+[2026-07-20 09:12:29] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=23.77 status=200
+[2026-07-20 09:13:30] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.42 status=200
+[2026-07-20 09:14:31] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.11 status=200
+[2026-07-20 09:18:26] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=39.8 status=200
+[2026-07-20 09:21:29] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.98 status=200
+[2026-07-20 09:22:30] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=23.99 status=200
+[2026-07-20 09:25:33] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.57 status=200
+[2026-07-20 09:26:34] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=27.68 status=200
+[2026-07-20 09:28:29] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=29.87 status=200
+[2026-07-20 09:29:24] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=25.85 status=200
+[2026-07-20 09:34:29] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.08 status=200
+[2026-07-20 09:35:30] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=24.55 status=200
+[2026-07-20 09:37:32] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.77 status=200
+[2026-07-20 09:38:33] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=24.06 status=200
+[2026-07-20 09:40:35] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.93 status=200
+[2026-07-20 09:42:37] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=25.72 status=200
+[2026-07-20 09:44:39] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=29.16 status=200
+[2026-07-20 09:45:40] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=27.3 status=200
+[2026-07-20 09:46:41] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.24 status=200
+[2026-07-20 09:47:42] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=33.32 status=200
+[2026-07-20 09:48:43] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.8 status=200
+[2026-07-20 09:59:02] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-20 10:26:21] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-20 10:26:21] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-20 11:09:36] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/css/colors/blue/
+[2026-07-20 11:10:09] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/js/widgets/
+[2026-07-20 11:11:19] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/css/dist/
+[2026-07-20 11:11:45] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/sitemaps/providers/
+[2026-07-20 11:12:05] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/images/
+[2026-07-20 11:12:16] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/pomo/
+[2026-07-20 11:12:33] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/
+[2026-07-20 11:12:49] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/js/plupload/
+[2026-07-20 11:14:32] [WARNING] [soundon] [AUTH] No token found for path=/file/
+[2026-07-20 12:08:42] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-20 14:16:07] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-20 17:20:34] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-20 17:20:34] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-20 18:07:45] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-20 20:08:46] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-20 20:26:22] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-20 20:55:13] [INFO] [soundon] [REQ DONE] path=/channels/9 ms=63.83 status=200
+[2026-07-20 20:55:13] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=32.58 status=200
+[2026-07-20 21:11:42] [WARNING] [soundon] [AUTH] No token found for path=/wp-login.php
+[2026-07-20 21:15:43] [INFO] [soundon] 🛑 Mematikan SoundON Admin

@@ -1,0 +1,884 @@
+[2026-07-18 07:35:43] [ERROR] [soundon] Unhandled exception: '_GeneratorContextManager' object has no attribute 'throw'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/concurrency.py", line 27, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+TypeError: '_GeneratorContextManager' object is not an iterator
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 375, in app
+    solved_result = await solve_dependencies(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/dependencies/utils.py", line 661, in solve_dependencies
+    solved = await _solve_generator(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/dependencies/utils.py", line 575, in _solve_generator
+    return await stack.enter_async_context(cm)
+  File "/usr/lib/python3.10/contextlib.py", line 619, in enter_async_context
+    result = await _cm_type.__aenter__(cm)
+  File "/usr/lib/python3.10/contextlib.py", line 199, in __aenter__
+    return await anext(self.gen)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/concurrency.py", line 30, in contextmanager_in_threadpool
+    await anyio.to_thread.run_sync(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+AttributeError: '_GeneratorContextManager' object has no attribute 'throw'
+[2026-07-18 07:42:05] [ERROR] [soundon] Unhandled exception: '_GeneratorContextManager' object has no attribute 'throw'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/concurrency.py", line 27, in contextmanager_in_threadpool
+    yield await run_in_threadpool(cm.__enter__)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+TypeError: '_GeneratorContextManager' object is not an iterator
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 375, in app
+    solved_result = await solve_dependencies(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/dependencies/utils.py", line 661, in solve_dependencies
+    solved = await _solve_generator(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/dependencies/utils.py", line 575, in _solve_generator
+    return await stack.enter_async_context(cm)
+  File "/usr/lib/python3.10/contextlib.py", line 619, in enter_async_context
+    result = await _cm_type.__aenter__(cm)
+  File "/usr/lib/python3.10/contextlib.py", line 199, in __aenter__
+    return await anext(self.gen)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/concurrency.py", line 30, in contextmanager_in_threadpool
+    await anyio.to_thread.run_sync(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+AttributeError: '_GeneratorContextManager' object has no attribute 'throw'
+[2026-07-18 08:59:00] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 08:59:27] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:00:41] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:01:13] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:07:37] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:07:57] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:10:20] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:10:35] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-18 09:10:49] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-19 00:00:49] [ERROR] [soundon] ❌ Rollback terjadi: 'music/channels/list.html' not found in search path: 'templates'
+[2026-07-19 00:00:49] [ERROR] [soundon] Unhandled exception: 'music/channels/list.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 44, in list_channels
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'music/channels/list.html' not found in search path: 'templates'
+[2026-07-19 00:01:01] [ERROR] [soundon] ❌ Rollback terjadi: 'music/channels/list.html' not found in search path: 'templates'
+[2026-07-19 00:01:01] [ERROR] [soundon] Unhandled exception: 'music/channels/list.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 44, in list_channels
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'music/channels/list.html' not found in search path: 'templates'
+[2026-07-19 00:22:04] [ERROR] [soundon] Unhandled exception: 'music/channels/form.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 62, in create_channel_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'music/channels/form.html' not found in search path: 'templates'
+[2026-07-19 00:37:00] [ERROR] [soundon] ❌ Rollback terjadi: column s.youtube_url does not exist
+LINE 7:                     WHEN s.youtube_url IS NOT NULL
+                                 ^
+HINT:  Perhaps you meant to reference the column "c.youtube_url".
+
+[2026-07-19 00:37:00] [ERROR] [soundon] ❌ Gagal koneksi ke database: column s.youtube_url does not exist
+LINE 7:                     WHEN s.youtube_url IS NOT NULL
+                                 ^
+HINT:  Perhaps you meant to reference the column "c.youtube_url".
+
+[2026-07-19 00:37:00] [ERROR] [soundon] Unhandled exception: column s.youtube_url does not exist
+LINE 7:                     WHEN s.youtube_url IS NOT NULL
+                                 ^
+HINT:  Perhaps you meant to reference the column "c.youtube_url".
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 41, in list_channels
+    channels = service.filter(
+  File "/opt/web-admin/app/music/services/channels/service.py", line 91, in filter
+    return self.filter_repository.apply(
+  File "/opt/web-admin/app/music/repositories/channels/filter.py", line 113, in apply
+    self.cursor.execute(query, params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.UndefinedColumn: column s.youtube_url does not exist
+LINE 7:                     WHEN s.youtube_url IS NOT NULL
+                                 ^
+HINT:  Perhaps you meant to reference the column "c.youtube_url".
+
+[2026-07-19 00:37:02] [ERROR] [soundon] ❌ Rollback terjadi: column s.youtube_url does not exist
+LINE 7:                     WHEN s.youtube_url IS NOT NULL
+                                 ^
+HINT:  Perhaps you meant to reference the column "c.youtube_url".
+
+[2026-07-19 00:37:02] [ERROR] [soundon] ❌ Gagal koneksi ke database: column s.youtube_url does not exist
+LINE 7:                     WHEN s.youtube_url IS NOT NULL
+                                 ^
+HINT:  Perhaps you meant to reference the column "c.youtube_url".
+
+[2026-07-19 00:37:02] [ERROR] [soundon] Unhandled exception: column s.youtube_url does not exist
+LINE 7:                     WHEN s.youtube_url IS NOT NULL
+                                 ^
+HINT:  Perhaps you meant to reference the column "c.youtube_url".
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 41, in list_channels
+    channels = service.filter(
+  File "/opt/web-admin/app/music/services/channels/service.py", line 91, in filter
+    return self.filter_repository.apply(
+  File "/opt/web-admin/app/music/repositories/channels/filter.py", line 113, in apply
+    self.cursor.execute(query, params)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.UndefinedColumn: column s.youtube_url does not exist
+LINE 7:                     WHEN s.youtube_url IS NOT NULL
+                                 ^
+HINT:  Perhaps you meant to reference the column "c.youtube_url".
+
+[2026-07-19 01:14:59] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'year'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}, {'type': 'bool_parsing', 'loc': ('query', 'has_songs'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}]
+[2026-07-19 01:17:31] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'bool_parsing', 'loc': ('query', 'has_youtube'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}, {'type': 'bool_parsing', 'loc': ('query', 'has_artists'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}, {'type': 'bool_parsing', 'loc': ('query', 'has_songs'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}]
+[2026-07-19 01:21:25] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('path', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'export'}]
+[2026-07-19 01:23:32] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'year'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}, {'type': 'bool_parsing', 'loc': ('query', 'has_youtube'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}, {'type': 'bool_parsing', 'loc': ('query', 'has_artists'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}, {'type': 'bool_parsing', 'loc': ('query', 'has_songs'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}]
+[2026-07-19 01:27:44] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'bool_parsing', 'loc': ('query', 'has_songs'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}]
+[2026-07-19 01:28:01] [ERROR] [soundon] Unhandled exception: 'music/channels/form.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 80, in create_channel_page
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'music/channels/form.html' not found in search path: 'templates'
+[2026-07-19 01:29:27] [ERROR] [soundon] ❌ Rollback terjadi: 'details.html' not found in search path: 'templates'
+[2026-07-19 01:29:27] [ERROR] [soundon] Unhandled exception: 'details.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 108, in channel_detail
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 209, in TemplateResponse
+    template = self.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 132, in get_template
+    return self.env.get_template(name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'details.html' not found in search path: 'templates'
+[2026-07-19 01:31:44] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'bool_parsing', 'loc': ('query', 'has_youtube'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}, {'type': 'bool_parsing', 'loc': ('query', 'has_artists'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}, {'type': 'bool_parsing', 'loc': ('query', 'has_songs'), 'msg': 'Input should be a valid boolean, unable to interpret input', 'input': ''}]
+[2026-07-19 01:34:04] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('query', 'year'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-19 02:36:20] [ERROR] [soundon] ❌ Rollback terjadi: 'songs/scripts/channels_config.html' not found in search path: 'templates'
+[2026-07-19 02:36:20] [ERROR] [soundon] Unhandled exception: 'songs/scripts/channels_config.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 127, in channel_detail
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/channels/details.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 133, in top-level template code
+    {% block scripts %}{% endblock %}
+  File "templates/channels/details.html", line 104, in block 'scripts'
+    {% include "songs/scripts/channels_config.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'songs/scripts/channels_config.html' not found in search path: 'templates'
+[2026-07-19 02:37:21] [ERROR] [soundon] ❌ Rollback terjadi: 'songs/scripts/channels_config.html' not found in search path: 'templates'
+[2026-07-19 02:37:21] [ERROR] [soundon] Unhandled exception: 'songs/scripts/channels_config.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 127, in channel_detail
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/channels/details.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 133, in top-level template code
+    {% block scripts %}{% endblock %}
+  File "templates/channels/details.html", line 104, in block 'scripts'
+    {% include "songs/scripts/channels_config.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'songs/scripts/channels_config.html' not found in search path: 'templates'
+[2026-07-19 02:38:28] [ERROR] [soundon] ❌ Rollback terjadi: 'songs/scripts/detail_datatable.html' not found in search path: 'templates'
+[2026-07-19 02:38:28] [ERROR] [soundon] Unhandled exception: 'songs/scripts/detail_datatable.html' not found in search path: 'templates'
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/channels/page.py", line 127, in channel_detail
+    return templates.TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 210, in TemplateResponse
+    return _TemplateResponse(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/templating.py", line 41, in __init__
+    content = template.render(context)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/channels/details.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 133, in top-level template code
+    {% block scripts %}{% endblock %}
+  File "templates/channels/details.html", line 112, in block 'scripts'
+    {% include "songs/scripts/detail_datatable.html" %}
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/jinja2/loaders.py", line 209, in get_source
+    raise TemplateNotFound(
+jinja2.exceptions.TemplateNotFound: 'songs/scripts/detail_datatable.html' not found in search path: 'templates'
+[2026-07-19 03:07:19] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'missing', 'loc': ('query', 'status'), 'msg': 'Field required', 'input': None}, {'type': 'list_type', 'loc': ('body',), 'msg': 'Input should be a valid list', 'input': {'song_ids': ['369'], 'status': 'Review', 'channel_id': '24'}}]
+[2026-07-19 03:14:23] [ERROR] [soundon] ❌ Rollback terjadi: 500: Gagal update: 'coroutine' object has no attribute 'get'
+[2026-07-19 03:19:15] [ERROR] [soundon] ❌ Rollback terjadi: 500: Gagal update: 400: Tidak ada lagu yang dipilih
+[2026-07-19 03:21:26] [ERROR] [soundon] ❌ Rollback terjadi: 500: Gagal update: 400: Tidak ada lagu yang dipilih
+[2026-07-19 03:23:14] [ERROR] [soundon] ❌ Rollback terjadi: 500: Gagal update: 'coroutine' object has no attribute 'get'
+[2026-07-19 03:34:20] [ERROR] [soundon] ❌ Rollback terjadi: 500: Gagal update: 'coroutine' object has no attribute 'get'

@@ -1,0 +1,57 @@
+<script>
+    const channelsTable = $("#channelsTable").DataTable({
+        responsive: true,
+        autoWidth: false,
+        processing: false,
+        
+        pageLength: 10,
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, "All"]
+        ],
+        
+        order: [[1, "desc"]],  // Order by ID column (index 1)
+        
+        columnDefs: [
+            {
+                orderable: false,
+                targets: [0, 2, 3, 4, 5, 6, 7]  // Disable ordering on all columns except ID
+            },
+            {
+                searchable: false,
+                targets: [0, 3, 4, 5, 6, 7]  // Make checkbox, artists, songs, live, created, actions not searchable
+            },
+            {
+                className: "text-center",
+                targets: [0, 3, 4, 5, 7]
+            }
+        ],
+        
+        language: {
+            emptyTable: "No channels available.",
+            zeroRecords: "No matching channels found.",
+            search: "",
+            searchPlaceholder: "Search...",
+            lengthMenu: "Show _MENU_ entries",
+            info: "Showing _START_ to _END_ of _TOTAL_ channels",
+            infoEmpty: "No channels",
+            infoFiltered: "(filtered from _MAX_ total channels)",
+            paginate: {
+                previous: "‹ Prev",
+                next: "Next ›"
+            }
+        },
+        
+        // Custom rendering
+        drawCallback: function() {
+            // Re-initialize tooltips after table redraw
+            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+                new bootstrap.Tooltip(el);
+            });
+            
+            // Update batch actions after table redraw
+            updateBatchActions();
+            updateCheckAllState();
+        }
+    });
+</script>

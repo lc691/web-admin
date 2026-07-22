@@ -7,12 +7,15 @@ HTTP endpoints untuk feature Songs.
 
 from __future__ import annotations
 
+import random
+from datetime import datetime
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request
 from fastapi.responses import JSONResponse, Response
 
-from app.core.database import get_dict_cursor_dep
+from app.core.database import get_dict_cursor_dep, get_dict_cursor
+from app.music.constants import VALID_STATUS
 from app.music.repositories.export.types import ExportMode
 from app.music.repositories.songs.types import CreateSong, SongStatus, UpdateSong
 from app.music.services.export.service import export, status
@@ -20,9 +23,7 @@ from app.music.services.songs import service
 from app.music.services.songs.search import build_response
 from app.music.services.usage import service as usage_service
 from app.music.services.usage.types import UsageMode
-
-from .constants import VALID_STATUS
-
+from app.music.songs.schema import BulkUpdateStatusRequest
 router = APIRouter(
     prefix="/songs",
     tags=["Songs"],
@@ -178,18 +179,15 @@ def statistics():
 
 
 # ==========================================================
-# 4. FILTERS (STATIC) - TAMBAHKAN INI!
+# 4. FILTERS (STATIC)
 # ==========================================================
 
 @router.get("/filters")
 def get_filters(
     db=Depends(get_dict_cursor_dep),
 ):
-    """
-    Get all filters for Songs page.
-    """
+    """Get all filters for Songs page."""
     from app.music.repositories.songs.filters import get_song_filters
-    
     return get_song_filters()
 
 
@@ -197,11 +195,8 @@ def get_filters(
 def get_channels(
     db=Depends(get_dict_cursor_dep),
 ):
-    """
-    Get all channels for dropdown.
-    """
+    """Get all channels for dropdown."""
     from app.music.repositories.songs.channels import get_channel_options
-    
     return get_channel_options()
 
 
@@ -210,9 +205,7 @@ def get_artists(
     channel_id: Optional[int] = Query(None),
     db=Depends(get_dict_cursor_dep),
 ):
-    """
-    Get all artists, optionally filtered by channel.
-    """
+    """Get all artists, optionally filtered by channel."""
     from app.music.repositories.songs.artists import get_artist_options, get_artists_by_channel
     
     if channel_id:
@@ -236,20 +229,38 @@ def import_songs(
 # 6. BULK OPERATIONS (STATIC)
 # ==========================================================
 
-@router.patch("/bulk/status")
-def bulk_status(
-    song_ids: list[int],
-    status: SongStatus,
+
+
+@router.post("/bulk-update")
+def bulk_update_songs(
+    payload: BulkUpdateStatusRequest,
 ):
-    return {
-        "updated": service.bulk_update_song_status(
-            song_ids,
-            status,
+    try:
+        updated = service.bulk_update_song_status(
+            song_ids=payload.ids,
+            status=payload.status,
         )
-    }
+
+        return {
+            "success": True,
+            "message": f"Berhasil mengupdate {updated} lagu",
+            "updated_count": updated,
+        }
+
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e),
+        )
+
+    except Exception:
+        raise HTTPException(
+            status_code=500,
+            detail="Gagal melakukan bulk update.",
+        )
 
 @router.patch("/bulk/artist")
-def bulk_artist(
+def bulk_update_artist(
     song_ids: list[int],
     artist_id: int,
 ):
@@ -260,8 +271,9 @@ def bulk_artist(
         )
     }
 
+
 @router.patch("/bulk/release-date")
-def bulk_release_date(
+def bulk_update_release_date(
     song_ids: list[int],
     release_date: str | None = None,
 ):
@@ -272,8 +284,9 @@ def bulk_release_date(
         )
     }
 
+
 @router.delete("/bulk")
-def bulk_delete(
+def bulk_delete_songs(
     song_ids: list[int],
 ):
     return {
@@ -284,14 +297,70 @@ def bulk_delete(
 
 
 # ==========================================================
-# 7. EXPORT (STATIC + PATH PARAM)
+# 7. EXPORT (STATIC)
 # ==========================================================
+
+@router.post("/export-txt")
+def export_txt(
+    song_ids: list[int] = Form(...),
+    db=Depends(get_dict_cursor_dep),
+):
+    if not song_ids:
+        raise HTTPException(400, "Tidak ada lagu dipilih")
+
+    cursor, _ = db
+    
+    placeholders = ",".join(["%s"] * len(song_ids))
+    cursor.execute(
+        f"""
+        SELECT songs.id, songs.title, artists.name AS artist
+        FROM songs
+        JOIN artists ON songs.artist_id = artists.id
+        WHERE songs.id IN ({placeholders})
+        """,
+        tuple(song_ids),
+    )
+    songs = cursor.fetchall()
+
+    if not songs:
+        raise HTTPException(404, "Lagu tidak ditemukan")
+
+    # Shuffle and pair
+    random.shuffle(songs)
+    paired_songs = []
+    for song in songs:
+        paired_songs.extend([song, song])
+
+    lines = []
+    total = len(paired_songs)
+
+    for i, song in enumerate(paired_songs, start=1):
+        num = ((i - 1) % 10) + 1
+        title = song["title"].strip().lower()
+        artist = song["artist"].strip().lower()
+        query = f"{title} {artist}".replace(" ", "+")
+        yt_url = f"https://www.youtube.com/results?search_query={query}"
+        lines.append(f"{num}. 🇺🇲 Judul: {title} {artist}\n{yt_url}")
+
+        if i % 10 == 0 and i != total:
+            lines.append("=======================")
+
+    text = "\n\n".join(lines)
+    filename = datetime.now().strftime("%d-%m-%Y") + ".txt"
+
+    return Response(
+        content=text,
+        media_type="text/plain",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )
+
 
 @router.get("/export/status")
 def export_status(
     mode: ExportMode = "normal",
 ):
     return status(mode=mode)
+
 
 @router.get("/export/day/{day}")
 def export_playlist(
@@ -319,7 +388,7 @@ def export_playlist(
 
 
 # ==========================================================
-# 8. USAGE (STATIC + PATH PARAM)
+# 8. USAGE (STATIC)
 # ==========================================================
 
 @router.get("/usage")
@@ -327,6 +396,7 @@ def usage_batches(
     mode: UsageMode = "normal",
 ):
     return usage_service.usage_batches(mode=mode)
+
 
 @router.get("/usage/day/{day}")
 def usage(
@@ -338,6 +408,7 @@ def usage(
         raise HTTPException(status_code=404, detail="Export batch not found.")
     return result
 
+
 @router.delete("/usage/day/{day}")
 def delete_usage(
     day: int,
@@ -347,6 +418,7 @@ def delete_usage(
     if not deleted:
         raise HTTPException(status_code=404, detail="Export batch not found.")
     return {"deleted": True, "day": day, "mode": mode}
+
 
 @router.delete("/usage")
 def reset_usage(
@@ -381,12 +453,14 @@ def get_song(
         raise HTTPException(status_code=404, detail="Song not found.")
     return song
 
+
 @router.put("/{song_id}")
 def update_song(
     song_id: int,
     payload: UpdateSong,
 ):
     return service.update_song(song_id, payload)
+
 
 @router.delete("/{song_id}")
 def delete_song(

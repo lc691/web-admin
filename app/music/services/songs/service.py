@@ -42,6 +42,10 @@ from .importer import (
     import_songs,
 )
 
+from .detail import (
+    get_song as get_song_detail,
+)
+
 from .search import (
     search,
 )
@@ -100,6 +104,19 @@ def delete_song(
 
     return delete(song_id)
 
+# ==========================================================
+# DETAIL
+# ==========================================================
+
+
+def get_song(
+    song_id: int,
+) -> SongDetail | None:
+    """
+    Get single song.
+    """
+
+    return get_song_detail(song_id)
 
 # ==========================================================
 # SEARCH

@@ -105,7 +105,9 @@ def get_routers() -> list:
     # ================================
     # 7. SOUNDON / MUSIC
     # ================================
-    from app.routes import artists, channels
+    from app.music.channels.page import router as channels_page_router
+    from app.music.channels.router import router as channels_api_router
+    from app.music.artists import artists
     from app.music.songs.page import router as songs_page_router
     from app.music.songs.router import router as songs_api_router
     from app.routes.channel_blacklists import router as blacklist_router
@@ -162,7 +164,8 @@ def get_routers() -> list:
         
         # ===== SOUNDON =====
         (artists.router, None, ["soundon", "artists"]),
-        (channels.router, None, ["soundon", "channels"]),
+        (channels_page_router, None, ["soundon", "channels"]),
+        (channels_api_router, "/api", ["soundon", "channels"]),
         (songs_page_router, None, ["soundon", "songs"]),
         (songs_api_router, "/api", ["soundon", "songs"]),
         (blacklist_router, None, ["soundon", "blacklist"]),

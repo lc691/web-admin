@@ -1,0 +1,117 @@
+<div class="row row-deck row-cards mb-3">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Total Channels</div>
+                    <div class="ms-auto lh-1">
+                        <span class="badge bg-primary-lt">
+                            <i class="ti ti-brand-youtube me-1"></i>
+                            Active
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-baseline">
+                    <div class="h1 mb-0 me-2">{{ total_channels }}</div>
+                    {% if channel_growth %}
+                    <div class="text-success d-flex align-items-center">
+                        <i class="ti ti-trending-up me-1"></i>
+                        {{ channel_growth }}%
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="text-secondary mt-1">
+                    <i class="ti ti-calendar me-1"></i>
+                    Total YouTube Channels
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Artists</div>
+                    <div class="ms-auto lh-1">
+                        <span class="badge bg-success-lt">
+                            <i class="ti ti-users me-1"></i>
+                            Linked
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-baseline">
+                    <div class="h1 mb-0 me-2">{{ total_artists }}</div>
+                    {% if artist_growth %}
+                    <div class="text-success d-flex align-items-center">
+                        <i class="ti ti-trending-up me-1"></i>
+                        {{ artist_growth }}%
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="text-secondary mt-1">
+                    <i class="ti ti-user me-1"></i>
+                    Linked Artists
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Total Songs</div>
+                    <div class="ms-auto lh-1">
+                        <span class="badge bg-info-lt">
+                            <i class="ti ti-music me-1"></i>
+                            Library
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-baseline">
+                    <div class="h1 mb-0 me-2">{{ total_songs }}</div>
+                    {% if song_growth %}
+                    <div class="text-success d-flex align-items-center">
+                        <i class="ti ti-trending-up me-1"></i>
+                        {{ song_growth }}%
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="text-secondary mt-1">
+                    <i class="ti ti-database me-1"></i>
+                    Total Songs
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Live Songs</div>
+                    <div class="ms-auto lh-1">
+                        <span class="badge bg-orange-lt">
+                            <i class="ti ti-player-play me-1"></i>
+                            Published
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex align-items-baseline">
+                    <div class="h1 mb-0 me-2">{{ total_live_songs }}</div>
+                    {% if live_growth %}
+                    <div class="text-success d-flex align-items-center">
+                        <i class="ti ti-trending-up me-1"></i>
+                        {{ live_growth }}%
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="text-secondary mt-1">
+                    <i class="ti ti-circle-check me-1"></i>
+                    Published Songs
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

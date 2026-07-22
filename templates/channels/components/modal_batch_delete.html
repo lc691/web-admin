@@ -1,0 +1,32 @@
+<!-- Batch Delete Modal -->
+<div class="modal fade" id="batchDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="ti ti-alert-triangle me-2"></i>
+                    Batch Delete
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Hapus <strong id="batchDeleteCount">0</strong> channel terpilih?</p>
+                <div class="alert alert-warning">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Aksi tidak dapat dibatalkan. Semua artist dan lagu akan terhapus.
+                </div>
+                <div id="batchDeleteList" class="text-secondary small"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="ti ti-x me-1"></i>
+                    Batal
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmBatchDelete">
+                    <i class="ti ti-trash me-1"></i>
+                    Hapus Semua
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

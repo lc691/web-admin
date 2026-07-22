@@ -1,0 +1,177 @@
+<script>
+    /**
+     * Bulk Actions for Channel Detail
+     */
+    (function() {
+        'use strict';
+
+        // ==========================================
+        // Toast Functions - DEFINISI DI SINI!
+        // ==========================================
+        window.showToast = function(message, type = 'info', title = 'Info') {
+            const icons = {
+                success: 'ti ti-check-circle',
+                danger: 'ti ti-alert-circle',
+                warning: 'ti ti-alert-triangle',
+                info: 'ti ti-info-circle'
+            };
+            
+            const colors = {
+                success: 'bg-success text-white',
+                danger: 'bg-danger text-white',
+                warning: 'bg-warning text-dark',
+                info: 'bg-info text-white'
+            };
+
+            const $toast = $('#bulkToast');
+            if ($toast.length === 0) {
+                console.warn('Toast element not found, using alert');
+                alert(message);
+                return;
+            }
+
+            $('#bulkToastIcon').removeClass().addClass(`me-2 ${icons[type] || icons.info}`);
+            $('#bulkToastHeader').removeClass().addClass(`toast-header ${colors[type] || colors.info}`);
+            $('#bulkToastTitle').text(title);
+            $('#bulkToastMessage').text(message);
+
+            try {
+                const toast = new bootstrap.Toast($toast[0], { delay: 3000 });
+                toast.show();
+            } catch(e) {
+                console.warn('Toast error:', e);
+                alert(message);
+            }
+        };
+
+        // ==========================================
+        // Update Selected Count
+        // ==========================================
+        window.updateSelectedCount = function() {
+            const count = window.selectedIds ? window.selectedIds.size : 0;
+            const $selectedCount = $('#selectedCount');
+            if ($selectedCount.length) {
+                $selectedCount.html(`<i class="ti ti-checkbox me-1"></i> ${count} dipilih`);
+            }
+            
+            const $bulkButtons = $('.bulk-action-btn');
+            if ($bulkButtons.length) {
+                $bulkButtons.prop('disabled', count === 0);
+            }
+            
+            return count;
+        };
+
+        // ==========================================
+        // Get Selected IDs
+        // ==========================================
+        window.getSelectedIds = function() {
+            return window.selectedIds ? Array.from(window.selectedIds) : [];
+        };
+
+        // ==========================================
+        // Handle Bulk Action
+        // ==========================================
+        window.handleBulkAction = function(status) {
+            const ids = window.getSelectedIds();
+            
+            if (ids.length === 0) {
+                window.showToast('Pilih minimal 1 data!', 'warning', 'Peringatan');
+                return;
+            }
+
+            if (!confirm(`Ubah ${ids.length} lagu menjadi "${status}"?`)) {
+                return;
+            }
+
+            $('.bulk-action-btn').prop('disabled', true);
+            window.showToast(`Memproses ${ids.length} lagu...`, 'info', 'Proses');
+
+            $.ajax({
+                url: '/api/songs/bulk-update',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    ids: ids,
+                    status: status
+                }),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') || ''
+                },
+                success: function(response) {
+                    if (response?.success) {
+                        window.showToast(
+                            response.message || `Berhasil mengubah ${ids.length} lagu!`, 
+                            'success', 
+                            'Berhasil!'
+                        );
+                        window.selectedIds.clear();
+                        $('#checkAll').prop('checked', false);
+                        
+                        if (window.songsTable) {
+                            window.songsTable.ajax.reload();
+                        }
+                        window.updateSelectedCount();
+                    } else {
+                        window.showToast(
+                            response.message || 'Gagal mengubah status!', 
+                            'danger', 
+                            'Error'
+                        );
+                    }
+                },
+                error: function(xhr) {
+
+                    console.error(xhr);
+
+                    let message = "Terjadi kesalahan.";
+
+                    if (xhr.responseJSON?.detail) {
+                        message = xhr.responseJSON.detail;
+                    } else if (xhr.responseJSON?.message) {
+                        message = xhr.responseJSON.message;
+                    } else if (xhr.status === 400) {
+                        message = "Request tidak valid.";
+                    } else if (xhr.status === 500) {
+                        message = "Terjadi kesalahan pada server.";
+                    }
+
+                    window.showToast(
+                        message,
+                        "danger",
+                        "Error"
+                    );
+                },
+                complete: function() {
+                    $('.bulk-action-btn').prop('disabled', false);
+                }
+            });
+        };
+
+        // ==========================================
+        // Export
+        // ==========================================
+        window.handleExport = function(e) {
+            if (e) e.preventDefault();
+            
+            const form = $('#exportForm');
+            if (!form.length) return;
+            
+            form.find('input[name="song_ids"]').remove();
+
+            const ids = window.getSelectedIds();
+            if (ids.length === 0) {
+                window.showToast('Pilih minimal 1 data untuk di-export!', 'warning', 'Peringatan');
+                return;
+            }
+
+            ids.forEach(id => {
+                form.append(`<input type="hidden" name="song_ids" value="${id}">`);
+            });
+
+            form.off('submit').submit();
+        };
+
+        console.log('✅ Bulk actions loaded');
+    })();
+</script>

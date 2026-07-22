@@ -1,0 +1,117 @@
+<div class="row row-deck row-cards mb-4">
+    <div class="col-sm-6 col-lg-2">
+        <div class="card card-sm bg-primary text-white stat-card" data-status="all">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <div class="text-uppercase small fw-bold text-white-50">Total Lagu</div>
+                        <div class="h2 mb-0">{{ songs|length }}</div>
+                    </div>
+                    <div class="text-white-50">
+                        <i class="ti ti-music fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-2">
+        <div class="card card-sm bg-success text-white stat-card" data-status="Live">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <div class="text-uppercase small fw-bold text-white-50">Live</div>
+                        <div class="h2 mb-0">{{ songs|selectattr('status', 'equalto', 'Live')|list|length }}</div>
+                    </div>
+                    <div class="text-white-50">
+                        <i class="ti ti-player-play fs-1"></i>
+                    </div>
+                </div>
+                <div class="mt-1 small">
+                    <i class="ti ti-chart-bar me-1"></i>
+                    {{ "%.1f"|format(songs|selectattr('status', 'equalto', 'Live')|list|length / songs|length * 100 if songs|length > 0 else 0) }}%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-2">
+        <div class="card card-sm bg-warning text-dark stat-card" data-status="Approved">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <div class="text-uppercase small fw-bold text-muted">Approved</div>
+                        <div class="h2 mb-0">{{ songs|selectattr('status', 'equalto', 'Approved')|list|length }}</div>
+                    </div>
+                    <div class="text-muted">
+                        <i class="ti ti-check fs-1"></i>
+                    </div>
+                </div>
+                <div class="mt-1 small text-muted">
+                    <i class="ti ti-clock me-1"></i>
+                    Menunggu Live
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-2">
+        <div class="card card-sm bg-secondary text-white stat-card" data-status="Review">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <div class="text-uppercase small fw-bold text-white-50">Review</div>
+                        <div class="h2 mb-0">{{ songs|selectattr('status', 'equalto', 'Review')|list|length }}</div>
+                    </div>
+                    <div class="text-white-50">
+                        <i class="ti ti-edit fs-1"></i>
+                    </div>
+                </div>
+                <div class="mt-1 small text-white-50">
+                    <i class="ti ti-hourglass me-1"></i>
+                    Perlu Persetujuan
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-2">
+        <div class="card card-sm bg-danger text-white stat-card" data-status="Take Down">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <div class="text-uppercase small fw-bold text-white-50">Take Down</div>
+                        <div class="h2 mb-0">{{ songs|selectattr('status', 'equalto', 'Take Down')|list|length }}</div>
+                    </div>
+                    <div class="text-white-50">
+                        <i class="ti ti-trash fs-1"></i>
+                    </div>
+                </div>
+                <div class="mt-1 small text-white-50">
+                    <i class="ti ti-alert-triangle me-1"></i>
+                    Konten Dihapus
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-2">
+        <div class="card card-sm bg-info text-white stat-card" data-status="Topic">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <div class="text-uppercase small fw-bold text-white-50">Topic</div>
+                        <div class="h2 mb-0">{{ songs|selectattr('status', 'equalto', 'Topic')|list|length }}</div>
+                    </div>
+                    <div class="text-white-50">
+                        <i class="ti ti-tag fs-1"></i>
+                    </div>
+                </div>
+                <div class="mt-1 small text-white-50">
+                    <i class="ti ti-hash me-1"></i>
+                    Terkategorisasi
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

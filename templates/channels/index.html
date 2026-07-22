@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Channels{% endblock %}
+
+{# ========================================================== #}
+{# Extra CSS                                                   #}
+{# ========================================================== #}
+{% block extra_styles %}
+    {% include "channels/partials/head.html" %}
+{% endblock %}
+
+{# ========================================================== #}
+{# Content                                                     #}
+{# ========================================================== #}
+{% block content %}
+<div class="page-wrapper">
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        <i class="ti ti-brand-youtube me-1"></i>
+                        YouTube Management
+                    </div>
+                    <h2 class="page-title">Channels</h2>
+                    <div class="text-secondary mt-1">
+                        Manage your YouTube channels and their content
+                    </div>
+                </div>
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="/channels/export" class="btn btn-outline-secondary">
+                            <i class="ti ti-file-export me-1"></i>
+                            Export
+                        </a>
+                        <a href="/channels/new" class="btn btn-primary">
+                            <i class="ti ti-plus me-1"></i>
+                            Add Channel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl">
+            <!-- Stats -->
+            {% include "channels/components/stats.html" %}
+            
+            <!-- Filters -->
+
+            
+            <!-- Toolbar -->
+
+            
+            <!-- Table -->
+            {% include "channels/components/table.html" %}
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+{% include "channels/components/modal_delete.html" %}
+{% include "channels/components/modal_batch_delete.html" %}
+
+{% endblock %}
+
+{# ========================================================== #}
+{# Page Scripts                                                #}
+{# ========================================================== #}
+{% block scripts %}
+    {{ super() }}
+    {% include "channels/partials/scripts.html" %}
+{% endblock %}

@@ -1,0 +1,165 @@
+<script>
+    /**
+     * DataTable Configuration for Channel Detail
+     */
+    (function() {
+        'use strict';
+
+        $(document).ready(function() {
+            // Make sure functions exist before initializing
+            if (typeof window.updateSelectedCount !== 'function') {
+                console.warn('updateSelectedCount not available, defining fallback');
+                window.updateSelectedCount = function() {
+                    const count = window.selectedIds ? window.selectedIds.size : 0;
+                    $('#selectedCount').html(`<i class="ti ti-checkbox me-1"></i> ${count} dipilih`);
+                    return count;
+                };
+            }
+
+            if (typeof window.getSelectedIds !== 'function') {
+                console.warn('getSelectedIds not available, defining fallback');
+                window.getSelectedIds = function() {
+                    return window.selectedIds ? Array.from(window.selectedIds) : [];
+                };
+            }
+
+            // ==========================================
+            // Initialize DataTable
+            // ==========================================
+            const table = $('#songsTable').DataTable({
+                processing: true,
+                serverSide: true,
+                pageLength: 10,
+                order: [[1, "desc"]],
+                orderCellsTop: true,
+
+                ajax: {
+                    url: CHANNEL_CONFIG.dataUrl,
+                    type: "GET",
+                    data: function(d) {
+                        d.status = $('.filter-btn.active').data('status') || '';
+                        d.channel_id = CHANNEL_CONFIG.channelId;
+                    }
+                },
+
+                columns: [
+                    {
+                        data: "id",
+                        orderable: false,
+                        render: function(data) {
+                            const checked = window.selectedIds && window.selectedIds.has(data) ? 'checked' : '';
+                            return `<input type="checkbox" class="form-check-input row-check" value="${data}" ${checked}>`;
+                        }
+                    },
+                    { 
+                        data: "id",
+                        render: function(data) {
+                            return `<span class="text-secondary">${data}</span>`;
+                        }
+                    },
+                    { data: "artist_name" },
+                    { 
+                        data: "title",
+                        render: function(data) {
+                            return `<span class="fw-semibold">${data}</span>`;
+                        }
+                    },
+                    {
+                        data: "status",
+                        render: function(data) {
+                            const badges = {
+                                'Live': 'bg-success text-white',
+                                'Approved': 'bg-warning text-white',
+                                'Take Down': 'bg-danger text-white',
+                                'Topic': 'bg-info text-white'
+                            };
+                            const badgeClass = badges[data] || 'bg-secondary text-white';
+                            return `<span class="badge ${badgeClass}">${data}</span>`;
+                        }
+                    },
+                    { 
+                        data: "release_date",
+                        render: function(data) {
+                            return data || '-';
+                        }
+                    }
+                ],
+
+                drawCallback: function() {
+                    // Restore selections after table redraw
+                    if (window.selectedIds) {
+                        $('.row-check').each(function() {
+                            const id = $(this).val();
+                            if (window.selectedIds.has(id)) {
+                                $(this).prop('checked', true);
+                            }
+                        });
+                    }
+                    
+                    // Update selected count
+                    if (typeof window.updateSelectedCount === 'function') {
+                        window.updateSelectedCount();
+                    }
+                },
+
+                // Handle errors
+                error: function(xhr, error, thrown) {
+                    console.error('DataTable error:', error, thrown);
+                    window.showToast('Gagal memuat data lagu!', 'danger', 'Error');
+                }
+            });
+
+            // Store table reference globally
+            window.songsTable = table;
+
+            // ==========================================
+            // Checkbox Events
+            // ==========================================
+            $(document).on('change', '.row-check', function() {
+                const id = $(this).val();
+                if (!window.selectedIds) {
+                    window.selectedIds = new Set();
+                }
+                
+                if (this.checked) {
+                    window.selectedIds.add(id);
+                } else {
+                    window.selectedIds.delete(id);
+                }
+                
+                if (typeof window.updateSelectedCount === 'function') {
+                    window.updateSelectedCount();
+                }
+                
+                // Update check all state
+                const total = $('.row-check').length;
+                const checked = $('.row-check:checked').length;
+                $('#checkAll').prop('checked', checked === total);
+                $('#checkAll').prop('indeterminate', checked > 0 && checked < total);
+            });
+
+            $('#checkAll').on('click', function() {
+                const checked = this.checked;
+                if (!window.selectedIds) {
+                    window.selectedIds = new Set();
+                }
+                
+                $('.row-check').each(function() {
+                    const id = $(this).val();
+                    $(this).prop('checked', checked);
+                    if (checked) {
+                        window.selectedIds.add(id);
+                    } else {
+                        window.selectedIds.delete(id);
+                    }
+                });
+                
+                if (typeof window.updateSelectedCount === 'function') {
+                    window.updateSelectedCount();
+                }
+            });
+
+            console.log('✅ DataTable initialized');
+        });
+    })();
+</script>

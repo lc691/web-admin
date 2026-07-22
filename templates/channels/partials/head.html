@@ -1,0 +1,138 @@
+{# ========================================================== #}
+{# Channels Page Styles                                        #}
+{# ========================================================== #}
+
+<style>
+/* Badge variants */
+.bg-azure-lt {
+    background-color: rgba(0, 119, 204, 0.08) !important;
+    color: #0077cc !important;
+}
+
+.bg-green-lt {
+    background-color: rgba(44, 202, 106, 0.08) !important;
+    color: #2cca6a !important;
+}
+
+.bg-orange-lt {
+    background-color: rgba(251, 146, 60, 0.08) !important;
+    color: #fb923c !important;
+}
+
+/* Button list */
+.btn-list {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+.btn-icon {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Card header styles */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header .card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: #6c757d;
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Form label */
+.form-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: #6c757d;
+}
+
+/* Stats cards */
+.row-deck .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.row-deck .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+}
+
+.row-deck .card .h1 {
+    font-weight: 700;
+}
+
+/* Table styles */
+.table-vcenter td,
+.table-vcenter th {
+    vertical-align: middle;
+}
+
+.table thead th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: #6c757d;
+    border-bottom-width: 1px;
+}
+
+/* Gap utilities */
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.gap-3 {
+    gap: 1rem;
+}
+
+/* Search input */
+.input-icon .input-icon-addon:last-child {
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.input-icon .input-icon-addon:last-child:hover {
+    opacity: 0.7;
+}
+
+/* Empty state */
+.text-center.py-5 .fs-1 {
+    font-size: 3rem !important;
+    color: #d3d3d3;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .btn-list {
+        flex-wrap: nowrap;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+}
+</style>

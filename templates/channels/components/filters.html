@@ -1,0 +1,95 @@
+<div class="card mb-3">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="ti ti-filter me-1"></i>
+            Advanced Filters
+        </h3>
+        <div class="card-actions">
+            <button class="btn btn-sm btn-outline-secondary" id="resetFilters">
+                <i class="ti ti-refresh me-1"></i>
+                Reset All
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <form method="get" id="filterForm" autocomplete="off" action="{{ request.url.path }}">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label text-secondary small text-uppercase">
+                        <i class="ti ti-calendar me-1"></i>
+                        Year
+                    </label>
+                    <select id="yearFilter" name="year" class="form-select">
+                        <option value="">All Years</option>
+                        {% for item in years %}
+                            <option value="{{ item.year }}" {% if filters.year == item.year %}selected{% endif %}>
+                                {{ item.year }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-secondary small text-uppercase">
+                        <i class="ti ti-brand-youtube me-1"></i>
+                        YouTube URL
+                    </label>
+                    <select id="youtubeFilter" name="has_youtube" class="form-select">
+                        <option value="">All</option>
+                        <option value="true" {% if filters.has_youtube is true %}selected{% endif %}>
+                            Has YouTube
+                        </option>
+                        <option value="false" {% if filters.has_youtube is false %}selected{% endif %}>
+                            No YouTube
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-secondary small text-uppercase">
+                        <i class="ti ti-users me-1"></i>
+                        Artists
+                    </label>
+                    <select id="artistFilter" name="has_artists" class="form-select">
+                        <option value="">All</option>
+                        <option value="true" {% if filters.has_artists is true %}selected{% endif %}>
+                            Has Artists
+                        </option>
+                        <option value="false" {% if filters.has_artists is false %}selected{% endif %}>
+                            No Artists
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-secondary small text-uppercase">
+                        <i class="ti ti-music me-1"></i>
+                        Songs
+                    </label>
+                    <select id="songFilter" name="has_songs" class="form-select">
+                        <option value="">All</option>
+                        <option value="true" {% if filters.has_songs is true %}selected{% endif %}>
+                            Has Songs
+                        </option>
+                        <option value="false" {% if filters.has_songs is false %}selected{% endif %}>
+                            No Songs
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-12 d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="ti ti-filter me-1"></i>
+                        Apply Filters
+                    </button>
+                    <button type="button" id="resetFiltersBtn" class="btn btn-outline-secondary">
+                        <i class="ti ti-x me-1"></i>
+                        Reset
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
