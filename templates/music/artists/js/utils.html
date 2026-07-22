@@ -1,0 +1,109 @@
+<script>
+"use strict";
+
+/* ==========================================================
+ * Artist Utils
+ * ========================================================== */
+
+const ArtistUtils = (() => {
+
+    const API = "/api/artists";
+
+    let table = null;
+
+    function setTable(instance) {
+        table = instance;
+    }
+
+    function getTable() {
+        return table;
+    }
+
+    function reloadTable(resetPaging = false) {
+        if (table) {
+            table.ajax.reload(null, resetPaging);
+        }
+    }
+
+    function showSuccess(message) {
+
+        if (window.showToast) {
+            showToast(message, "success", "Berhasil");
+            return;
+        }
+
+        alert(message);
+    }
+
+    function showError(message) {
+
+        if (window.showToast) {
+            showToast(message, "danger", "Gagal");
+            return;
+        }
+
+        alert(message);
+    }
+
+    function showWarning(message) {
+
+        if (window.showToast) {
+            showToast(message, "warning", "Peringatan");
+            return;
+        }
+
+        alert(message);
+    }
+
+    async function request(url, options = {}) {
+
+        const response = await fetch(url, {
+            headers: {
+                "Content-Type": "application/json",
+                ...(options.headers || {})
+            },
+            ...options
+        });
+
+        let data = {};
+
+        try {
+            data = await response.json();
+        } catch (_) {}
+
+        if (!response.ok) {
+            throw new Error(
+                data.message ||
+                "Terjadi kesalahan."
+            );
+        }
+
+        return data;
+    }
+
+    function formatNumber(value) {
+
+        return Number(value || 0).toLocaleString("id-ID");
+
+    }
+
+    return {
+
+        API,
+
+        setTable,
+        getTable,
+        reloadTable,
+
+        request,
+
+        showSuccess,
+        showError,
+        showWarning,
+
+        formatNumber
+
+    };
+
+})();
+</script>

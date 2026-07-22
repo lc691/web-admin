@@ -1,0 +1,113 @@
+<div
+    class="modal modal-blur fade"
+    id="modal-delete"
+    tabindex="-1"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <!-- ===================================================== -->
+            <!-- HEADER -->
+            <!-- ===================================================== -->
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Hapus Artist
+
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close">
+
+                </button>
+
+            </div>
+
+            <!-- ===================================================== -->
+            <!-- BODY -->
+            <!-- ===================================================== -->
+
+            <div class="modal-body">
+
+                <div class="text-center">
+
+                    <span class="avatar avatar-xl bg-red-lt mb-3">
+
+                        <i class="ti ti-trash fs-1 text-danger"></i>
+
+                    </span>
+
+                    <h3>
+
+                        Yakin ingin menghapus artist ini?
+
+                    </h3>
+
+                    <p class="text-secondary mb-0">
+
+                        Artist
+
+                        <strong id="delete-artist-name">
+
+                            -
+
+                        </strong>
+
+                        akan dihapus secara permanen.
+
+                    </p>
+
+                    <p class="text-danger small mt-3 mb-0">
+
+                        Tindakan ini tidak dapat dibatalkan.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- ===================================================== -->
+            <!-- FOOTER -->
+            <!-- ===================================================== -->
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal">
+
+                    Batal
+
+                </button>
+
+                <button
+                    id="btn-confirm-delete"
+                    type="button"
+                    class="btn btn-danger">
+
+                    <i class="ti ti-trash me-1"></i>
+
+                    Hapus
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<input
+    type="hidden"
+    id="delete-artist-id">

@@ -1,0 +1,223 @@
+<script>
+"use strict";
+
+/* ==========================================================
+ * Artist DataTable
+ * ========================================================== */
+
+const ArtistTable = (() => {
+
+    let table = null;
+
+    function init() {
+
+        table = $("#artists-table").DataTable({
+
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            autoWidth: false,
+            pageLength: 25,
+            order: [[2, "asc"]],
+
+            ajax: {
+                url: "/api/artists/data",
+
+                data: function (d) {
+                    return {
+                        draw: d.draw,
+                        start: d.start,
+                        length: d.length,
+                        search: d.search.value,
+                        order_column: d.order[0].column,
+                        order_dir: d.order[0].dir,
+                        channel_id: $("#filter-channel").val()
+                    };
+                }
+            },
+
+            columns: [
+
+                // ==========================================
+                // CHECKBOX
+                // ==========================================
+
+                {
+                    data: "id",
+                    orderable: false,
+                    searchable: false,
+                    width: "30px",
+
+                    render(id) {
+
+                        return `
+                            <input
+                                class="form-check-input row-check"
+                                type="checkbox"
+                                value="${id}">
+                        `;
+
+                    }
+
+                },
+
+                // ==========================================
+                // NO
+                // ==========================================
+
+                {
+                    data: null,
+                    searchable: false,
+                    orderable: false,
+
+                    render(data, type, row, meta) {
+
+                        return meta.settings._iDisplayStart +
+                            meta.row +
+                            1;
+
+                    }
+
+                },
+
+                // ==========================================
+                // ARTIST
+                // ==========================================
+
+                {
+                    data: "name",
+
+                    render(data, type, row) {
+
+                        return `
+                            <div class="fw-semibold">
+                                ${data}
+                            </div>
+                        `;
+
+                    }
+
+                },
+
+                // ==========================================
+                // CHANNEL
+                // ==========================================
+
+                {
+                    data: "channel_name",
+
+                    defaultContent: "-"
+
+                },
+
+                // ==========================================
+                // SONG COUNT
+                // ==========================================
+
+                {
+                    data: "song_count",
+                    className: "text-center",
+
+                    render(value) {
+
+                        return `
+                            <span class="badge bg-blue-lt">
+                                ${ArtistUtils.formatNumber(value)}
+                            </span>
+                        `;
+
+                    }
+
+                },
+
+                // ==========================================
+                // CREATED
+                // ==========================================
+
+                {
+                    data: "created_at",
+
+                    render(value) {
+
+                        if (!value) return "-";
+
+                        return new Date(value)
+                            .toLocaleDateString("id-ID");
+
+                    }
+
+                },
+
+                // ==========================================
+                // ACTION
+                // ==========================================
+
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    className: "text-end",
+
+                    render(data, type, row) {
+
+                        return `
+
+                        <div class="btn-list justify-content-end">
+
+                            <a
+                                href="/artists/${row.id}"
+                                class="btn btn-sm btn-outline-primary">
+
+                                <i class="ti ti-eye"></i>
+
+                            </a>
+
+                            <a
+                                href="/artists/${row.id}/edit"
+                                class="btn btn-sm btn-outline-warning">
+
+                                <i class="ti ti-edit"></i>
+
+                            </a>
+
+                            <button
+                                class="btn btn-sm btn-outline-danger btn-delete"
+                                data-id="${row.id}"
+                                data-name="${row.name}">
+
+                                <i class="ti ti-trash"></i>
+
+                            </button>
+
+                        </div>
+
+                        `;
+
+                    }
+
+                }
+
+            ],
+
+            drawCallback() {
+
+                if (window.ArtistBulk) {
+                    ArtistBulk.reset();
+                }
+
+            }
+
+        });
+
+        ArtistUtils.setTable(table);
+
+    }
+
+    return {
+
+        init
+
+    };
+
+})();
+</script>

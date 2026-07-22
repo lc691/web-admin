@@ -25,6 +25,9 @@ from app.music.services.channels.service import ChannelService
 
 router = APIRouter()
 
+# =====================================================
+# DETAIL
+# =====================================================
 
 @router.get("/{channel_id}")
 async def detail(
@@ -48,6 +51,9 @@ async def detail(
             detail=str(exc),
         )
 
+# =====================================================
+# CREATE
+# =====================================================
 
 @router.post("/create")
 async def create(
@@ -91,6 +97,9 @@ async def create(
             detail=str(exc),
         )
 
+# =====================================================
+# UPDATE
+# =====================================================
 
 @router.post("/{channel_id}/edit")
 async def update(
@@ -142,6 +151,9 @@ async def update(
             detail=str(exc),
         )
 
+# =====================================================
+# DELETE
+# =====================================================
 
 @router.post("/{channel_id}/delete")
 async def delete(

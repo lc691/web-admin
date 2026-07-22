@@ -30,19 +30,31 @@ class ChannelRepository:
                 COUNT(DISTINCT a.id) AS total_artists,
                 COUNT(DISTINCT s.id) AS total_songs,
 
-                COUNT(
-                    DISTINCT CASE
-                        WHEN s.youtube_url IS NOT NULL
-                        THEN s.id
-                    END
+                COUNT(DISTINCT s.id)
+                FILTER (
+                    WHERE s.status IN (
+                        'released',
+                        'topic',
+                        'live',
+                        'no_ads'
+                    )
                 ) AS uploaded_songs,
 
-                COUNT(
-                    DISTINCT CASE
-                        WHEN s.youtube_url IS NULL
-                        THEN s.id
-                    END
-                ) AS pending_songs
+                COUNT(DISTINCT s.id)
+                FILTER (
+                    WHERE s.status IN (
+                        'draft',
+                        'review',
+                        'approved',
+                        'scheduled',
+                        'unreleased'
+                    )
+                ) AS pending_songs,
+
+                COUNT(DISTINCT s.id)
+                FILTER (
+                    WHERE s.status = 'take_down'
+                ) AS take_down_songs
 
             FROM channels c
 

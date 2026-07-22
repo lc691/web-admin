@@ -1,0 +1,179 @@
+<div class="row row-deck row-cards mb-3">
+
+    <!-- ===================================================== -->
+    <!-- TOTAL ARTISTS -->
+    <!-- ===================================================== -->
+
+    <div class="col-sm-6 col-lg-3">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="subheader">
+
+                        Total Artist
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="stat-total-artists"
+                    class="h1 mb-3">
+
+                    {{ statistics.total_artists }}
+
+                </div>
+
+                <div class="d-flex mb-2">
+
+                    <div>
+
+                        Semua artist
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- TOTAL SONGS -->
+    <!-- ===================================================== -->
+
+    <div class="col-sm-6 col-lg-3">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="subheader">
+
+                        Total Lagu
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="stat-total-songs"
+                    class="h1 mb-3">
+
+                    {{ statistics.total_songs }}
+
+                </div>
+
+                <div class="d-flex mb-2">
+
+                    <div>
+
+                        Lagu dari seluruh artist
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- ACTIVE CHANNELS -->
+    <!-- ===================================================== -->
+
+    <div class="col-sm-6 col-lg-3">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="subheader">
+
+                        Channel Aktif
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="stat-active-channels"
+                    class="h1 mb-3">
+
+                    {{ statistics.active_channels }}
+
+                </div>
+
+                <div class="d-flex mb-2">
+
+                    <div>
+
+                        Memiliki artist
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- AVERAGE SONGS -->
+    <!-- ===================================================== -->
+
+    <div class="col-sm-6 col-lg-3">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="subheader">
+
+                        Rata-rata Lagu
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="stat-average-songs"
+                    class="h1 mb-3">
+
+                    {{ statistics.average_songs|default(0) }}
+
+                </div>
+
+                <div class="d-flex mb-2">
+
+                    <div>
+
+                        Lagu per artist
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

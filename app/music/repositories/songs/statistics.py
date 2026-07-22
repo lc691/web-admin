@@ -31,15 +31,15 @@ def get_statistics() -> SongStatistics:
                 COUNT(*) AS total,
 
                 COUNT(*) FILTER (
-                    WHERE status = 'Live'
+                    WHERE status = 'live'
                 ) AS live,
 
                 COUNT(*) FILTER (
-                    WHERE status = 'Review'
+                    WHERE status = 'review'
                 ) AS review,
 
                 COUNT(*) FILTER (
-                    WHERE status = 'Approved'
+                    WHERE status = 'approved'
                 ) AS approved
 
             FROM songs

@@ -1,0 +1,121 @@
+<script>
+"use strict";
+
+/* ==========================================================
+ * Artist Delete
+ * ========================================================== */
+
+const ArtistDelete = (() => {
+
+    let modal = null;
+
+    function init() {
+
+        modal = new bootstrap.Modal(
+            document.getElementById("modal-delete")
+        );
+
+        bindDeleteButtons();
+
+        document
+            .getElementById("btn-confirm-delete")
+            .addEventListener(
+                "click",
+                confirmDelete
+            );
+
+    }
+
+    function bindDeleteButtons() {
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                const button = event.target.closest(".btn-delete");
+
+                if (!button) {
+                    return;
+                }
+
+                open(
+                    button.dataset.id,
+                    button.dataset.name
+                );
+
+            }
+        );
+
+    }
+
+    function open(id, name) {
+
+        document.getElementById(
+            "delete-artist-id"
+        ).value = id;
+
+        document.getElementById(
+            "delete-artist-name"
+        ).textContent = name;
+
+        modal.show();
+
+    }
+
+    async function confirmDelete() {
+
+        const id = document.getElementById(
+            "delete-artist-id"
+        ).value;
+
+        const button = document.getElementById(
+            "btn-confirm-delete"
+        );
+
+        button.disabled = true;
+
+        try {
+
+            const result =
+                await ArtistUtils.request(
+                    `/api/artists/${id}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+            modal.hide();
+
+            ArtistUtils.showSuccess(
+                result.message ||
+                "Artist berhasil dihapus."
+            );
+
+            ArtistUtils.reloadTable();
+
+            if (window.ArtistStatistics) {
+                ArtistStatistics.load();
+            }
+
+        } catch (error) {
+
+            ArtistUtils.showError(
+                error.message
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+        }
+
+    }
+
+    return {
+
+        init
+
+    };
+
+})();
+</script>

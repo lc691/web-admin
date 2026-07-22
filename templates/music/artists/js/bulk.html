@@ -1,0 +1,192 @@
+<script>
+"use strict";
+
+/* ==========================================================
+ * Artist Bulk Delete
+ * ========================================================== */
+
+const ArtistBulk = (() => {
+
+    let modal = null;
+
+    function init() {
+
+        modal = new bootstrap.Modal(
+            document.getElementById("modal-bulk-delete")
+        );
+
+        bindEvents();
+
+    }
+
+    function bindEvents() {
+
+        // Select All
+        $(document).on("change", "#check-all", function () {
+
+            $(".row-check").prop(
+                "checked",
+                this.checked
+            );
+
+            updateSelected();
+
+        });
+
+        // Row Checkbox
+        $(document).on("change", ".row-check", function () {
+
+            const total =
+                $(".row-check").length;
+
+            const checked =
+                $(".row-check:checked").length;
+
+            $("#check-all").prop(
+                "checked",
+                total > 0 && total === checked
+            );
+
+            updateSelected();
+
+        });
+
+        // Bulk Delete Button
+        $(document).on("click", "#btn-bulk-delete", function () {
+
+            const ids = selectedIds();
+
+            if (!ids.length) {
+
+                ArtistUtils.showWarning(
+                    "Pilih minimal satu artist."
+                );
+
+                return;
+
+            }
+
+            $("#bulk-delete-count").text(
+                ids.length
+            );
+
+            modal.show();
+
+        });
+
+        // Confirm Delete
+        $("#btn-confirm-bulk-delete").on(
+            "click",
+            confirmDelete
+        );
+
+    }
+
+    async function confirmDelete() {
+
+        const ids = selectedIds();
+
+        if (!ids.length) {
+
+            modal.hide();
+
+            return;
+
+        }
+
+        const button = document.getElementById(
+            "btn-confirm-bulk-delete"
+        );
+
+        button.disabled = true;
+
+        try {
+
+            const result =
+                await ArtistUtils.request(
+                    "/api/artists/bulk",
+                    {
+                        method: "DELETE",
+                        body: JSON.stringify({
+                            ids
+                        })
+                    }
+                );
+
+            modal.hide();
+
+            ArtistUtils.showSuccess(
+                result.message ||
+                "Artist berhasil dihapus."
+            );
+
+            ArtistUtils.reloadTable();
+
+            if (window.ArtistStatistics) {
+                ArtistStatistics.load();
+            }
+
+        } catch (error) {
+
+            ArtistUtils.showError(
+                error.message
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+        }
+
+    }
+
+    function selectedIds() {
+
+        return $(".row-check:checked")
+            .map(function () {
+                return Number(this.value);
+            })
+            .get();
+
+    }
+
+    function updateSelected() {
+
+        const count =
+            selectedIds().length;
+
+        $("#selected-count").text(count);
+
+        $("#btn-bulk-delete").prop(
+            "disabled",
+            count === 0
+        );
+
+    }
+
+    function reset() {
+
+        $("#check-all").prop(
+            "checked",
+            false
+        );
+
+        $(".row-check").prop(
+            "checked",
+            false
+        );
+
+        updateSelected();
+
+    }
+
+    return {
+
+        init,
+        reset,
+        selectedIds
+
+    };
+
+})();
+</script>

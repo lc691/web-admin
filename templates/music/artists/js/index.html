@@ -1,0 +1,71 @@
+<script>
+"use strict";
+
+/* ==========================================================
+ * Artist Page
+ * ========================================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    // ==========================================
+    // DataTable
+    // ==========================================
+
+    ArtistTable.init();
+
+    // ==========================================
+    // Statistics
+    // ==========================================
+
+    ArtistStatistics.load();
+
+    // ==========================================
+    // Delete
+    // ==========================================
+
+    ArtistDelete.init();
+
+    // ==========================================
+    // Bulk Delete
+    // ==========================================
+
+    if (window.ArtistBulk) {
+        ArtistBulk.init();
+    }
+
+    // ==========================================
+    // Filter
+    // ==========================================
+
+    const filterChannel = document.getElementById("filter-channel");
+
+    if (filterChannel) {
+
+        filterChannel.addEventListener("change", () => {
+
+            ArtistUtils.reloadTable(true);
+
+        });
+
+    }
+
+    // ==========================================
+    // Refresh Button
+    // ==========================================
+
+    const refreshButton = document.getElementById("btn-refresh");
+
+    if (refreshButton) {
+
+        refreshButton.addEventListener("click", () => {
+
+            ArtistUtils.reloadTable();
+
+            ArtistStatistics.load();
+
+        });
+
+    }
+
+});
+</script>
