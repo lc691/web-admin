@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block meta_description %}
+Kelola akun SoundOn Channel
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================================================== -->
+<!-- PAGE HEADER -->
+<!-- ===================================================== -->
+
+<div class="page-header d-print-none mb-3">
+
+    <div class="container-xl">
+
+        <div class="row g-2 align-items-center">
+
+            <div class="col">
+
+                <div class="page-pretitle">
+
+                    Music Management
+
+                </div>
+
+                <h2 class="page-title">
+
+                    {{ title }}
+
+                </h2>
+
+            </div>
+
+            <div class="col-auto ms-auto d-print-none">
+
+                <div class="btn-list">
+
+                    <button
+                        id="btn-refresh"
+                        class="btn btn-outline-secondary">
+
+                        <i class="ti ti-refresh me-1"></i>
+
+                        Refresh
+
+                    </button>
+
+                    <a
+                        href="/channels/create"
+                        class="btn btn-primary">
+
+                        <i class="ti ti-plus me-1"></i>
+
+                        Tambah Channel
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- STATISTICS -->
+<!-- ===================================================== -->
+
+{% include "music/channels/partials/_statistics.html" %}
+
+<!-- ===================================================== -->
+<!-- TABLE -->
+<!-- ===================================================== -->
+
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h3 class="card-title">
+
+                    Daftar Channel
+
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                {% include "music/channels/partials/_table.html" %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- MODALS -->
+<!-- ===================================================== -->
+
+{% include "music/channels/partials/_modal_delete.html" %}
+{% include "music/channels/partials/_modal_bulk.html" %}
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{{ super() }}
+
+<!-- ===================================================== -->
+<!-- CHANNELS -->
+<!-- ===================================================== -->
+
+{% include "music/channels/js/utils.html" %}
+
+{% include "music/channels/js/statistics.html" %}
+{% include "music/channels/js/datatable.html" %}
+{% include "music/channels/js/delete.html" %}
+{% include "music/channels/js/bulk.html" %}
+
+{% include "music/channels/js/index.html" %}
+
+{% endblock %}

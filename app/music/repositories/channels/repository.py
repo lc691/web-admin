@@ -1,238 +1,272 @@
-from typing import Optional, List, Dict, Any
+"""
+Channel Repository
+"""
+
+from typing import Any
 
 
 class ChannelRepository:
-    def __init__(self, cursor):
-        self.cursor = cursor
+    """
+    Repository utama untuk tabel channels.
+    """
 
     # =====================================================
-    # SELECT
+    # READ
     # =====================================================
 
-    def find_all(
-        self,
-        search: Optional[str] = None,
-        limit: Optional[int] = None,
-        offset: Optional[int] = None
-    ) -> List[Dict[str, Any]]:
-        query = """
+    @staticmethod
+    def get_by_id(cursor, channel_id: int):
+        cursor.execute("""
             SELECT
                 c.id,
                 c.name,
-                c.youtube_url,
+                c.email,
+                c.password,
+                c.vermuk,
+                c.notes,
                 c.created_at,
+                c.updated_at,
+
                 COUNT(DISTINCT a.id) AS total_artists,
-                COUNT(s.id) AS total_songs,
-                COUNT(CASE WHEN s.status = 'Live' THEN 1 END) AS live_songs,
-                COUNT(CASE WHEN s.status = 'Approved' THEN 1 END) AS approved_songs,
-                COUNT(CASE WHEN s.status = 'Review' THEN 1 END) AS review_songs,
-                COUNT(CASE WHEN s.status = 'Take Down' THEN 1 END) AS takedown_songs,
-                COUNT(CASE WHEN s.status = 'Topic' THEN 1 END) AS topic_songs
+                COUNT(DISTINCT s.id) AS total_songs,
+
+                COUNT(
+                    DISTINCT CASE
+                        WHEN s.youtube_url IS NOT NULL
+                        THEN s.id
+                    END
+                ) AS uploaded_songs,
+
+                COUNT(
+                    DISTINCT CASE
+                        WHEN s.youtube_url IS NULL
+                        THEN s.id
+                    END
+                ) AS pending_songs
+
             FROM channels c
+
             LEFT JOIN artists a
                 ON a.channel_id = c.id
+
             LEFT JOIN songs s
                 ON s.artist_id = a.id
-        """
 
-        params = []
+            WHERE c.id = %s
 
-        if search:
-            query += " WHERE c.name ILIKE %s"
-            params.append(f"%{search}%")
-
-        query += """
             GROUP BY
                 c.id,
                 c.name,
-                c.youtube_url,
-                c.created_at
-            ORDER BY c.created_at DESC
-        """
+                c.email,
+                c.password,
+                c.vermuk,
+                c.notes,
+                c.created_at,
+                c.updated_at
+        """, (channel_id,))
 
-        if limit is not None:
-            query += " LIMIT %s"
-            params.append(limit)
+        row = cursor.fetchone()
 
-        if offset is not None:
-            query += " OFFSET %s"
-            params.append(offset)
+        return dict(row) if row else None
 
-        self.cursor.execute(query, params)
-        return self.cursor.fetchall()
+    @staticmethod
+    def get_by_name(cursor, name: str):
+        cursor.execute("""
+            SELECT *
+            FROM channels
+            WHERE LOWER(TRIM(name)) = LOWER(TRIM(%s))
+        """, (name,))
+        return cursor.fetchone()
 
-    def find_by_id(self, channel_id: int) -> Optional[Dict[str, Any]]:
-        self.cursor.execute(
-            """
+    @staticmethod
+    def get_by_email(cursor, email: str):
+        cursor.execute("""
+            SELECT *
+            FROM channels
+            WHERE email = %s
+        """, (email,))
+        return cursor.fetchone()
+
+    @staticmethod
+    def get_all(cursor):
+        cursor.execute("""
             SELECT
                 id,
                 name,
-                youtube_url,
-                created_at
+                email,
+                vermuk,
+                notes,
+                created_at,
+                updated_at
             FROM channels
-            WHERE id = %s
-            """,
-            (channel_id,),
-        )
-        return self.cursor.fetchone()
-
-    def find_by_name(self, name: str) -> Optional[Dict[str, Any]]:
-        self.cursor.execute(
-            """
-            SELECT
-                id,
-                name,
-                youtube_url
-            FROM channels
-            WHERE LOWER(name) = LOWER(%s)
-            """,
-            (name,),
-        )
-        return self.cursor.fetchone()
-
-    def exists_name(self, name: str, exclude_id: Optional[int] = None) -> bool:
-        query = """
-            SELECT id
-            FROM channels
-            WHERE LOWER(name) = LOWER(%s)
-        """
-
-        params = [name]
-
-        if exclude_id is not None:
-            query += " AND id != %s"
-            params.append(exclude_id)
-
-        query += " LIMIT 1"
-
-        self.cursor.execute(query, params)
-        return self.cursor.fetchone() is not None
-
-    def get_artists(self, channel_id: int) -> List[Dict[str, Any]]:
-        self.cursor.execute(
-            """
-            SELECT
-                a.id,
-                a.name,
-                COUNT(s.id) AS song_count,
-                COUNT(CASE WHEN s.status = 'Live' THEN 1 END) AS live_songs
-            FROM artists a
-            LEFT JOIN songs s
-                ON s.artist_id = a.id
-            WHERE a.channel_id = %s
-            GROUP BY
-                a.id,
-                a.name
-            ORDER BY a.name
-            """,
-            (channel_id,),
-        )
-
-        return self.cursor.fetchall()
-
-    def get_recent_songs(
-        self,
-        channel_id: int,
-        limit: int = 200
-    ) -> List[Dict[str, Any]]:
-        self.cursor.execute(
-            """
-            SELECT
-                s.id,
-                s.title,
-                s.status,
-                s.release_date,
-                s.created_at,
-                a.name AS artist_name
-            FROM songs s
-            JOIN artists a
-                ON a.id = s.artist_id
-            WHERE a.channel_id = %s
-            ORDER BY s.created_at DESC
-            LIMIT %s
-            """,
-            (channel_id, limit),
-        )
-
-        return self.cursor.fetchall()
+            ORDER BY name
+        """)
+        return cursor.fetchall()
 
     # =====================================================
-    # INSERT
+    # CREATE
     # =====================================================
 
-    def create(self, name: str, youtube_url: Optional[str]) -> int:
-        self.cursor.execute(
-            """
-            INSERT INTO channels (
+    @staticmethod
+    def create(
+        cursor,
+        *,
+        name: str,
+        email: str | None = None,
+        password: str | None = None,
+        vermuk: bool = False,
+        notes: str | None = None,
+    ):
+        cursor.execute("""
+            INSERT INTO channels
+            (
                 name,
-                youtube_url,
-                created_at
+                email,
+                password,
+                vermuk,
+                notes
             )
-            VALUES (
+            VALUES
+            (
                 %s,
                 %s,
-                CURRENT_TIMESTAMP
+                %s,
+                %s,
+                %s
             )
             RETURNING id
-            """,
-            (name, youtube_url),
-        )
+        """, (
+            name,
+            email,
+            password,
+            vermuk,
+            notes,
+        ))
 
-        return self.cursor.fetchone()["id"]
+        return cursor.fetchone()["id"]
 
     # =====================================================
     # UPDATE
     # =====================================================
 
+    @staticmethod
     def update(
-        self,
+        cursor,
         channel_id: int,
+        *,
         name: str,
-        youtube_url: Optional[str],
-    ) -> None:
-        self.cursor.execute(
-            """
+        email: str | None = None,
+        password: str | None = None,
+        vermuk: bool = False,
+        notes: str | None = None,
+    ) -> bool:
+
+        cursor.execute("""
             UPDATE channels
             SET
                 name = %s,
-                youtube_url = %s,
+                email = %s,
+                password = %s,
+                vermuk = %s,
+                notes = %s,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = %s
-            """,
-            (name, youtube_url, channel_id),
-        )
+        """, (
+            name,
+            email,
+            password,
+            vermuk,
+            notes,
+            channel_id,
+        ))
+
+        return cursor.rowcount > 0
 
     # =====================================================
     # DELETE
     # =====================================================
 
-    def delete_songs(self, channel_id: int) -> None:
-        self.cursor.execute(
-            """
-            DELETE FROM songs
-            WHERE artist_id IN (
-                SELECT id
-                FROM artists
-                WHERE channel_id = %s
-            )
-            """,
-            (channel_id,),
-        )
-
-    def delete_artists(self, channel_id: int) -> None:
-        self.cursor.execute(
-            """
-            DELETE FROM artists
-            WHERE channel_id = %s
-            """,
-            (channel_id,),
-        )
-
-    def delete(self, channel_id: int) -> None:
-        self.cursor.execute(
-            """
+    @staticmethod
+    def delete(cursor, channel_id: int) -> bool:
+        cursor.execute("""
             DELETE FROM channels
             WHERE id = %s
-            """,
-            (channel_id,),
-        )
+        """, (channel_id,))
+
+        return cursor.rowcount > 0
+
+    # =====================================================
+    # EXISTS
+    # =====================================================
+
+    @staticmethod
+    def exists(cursor, channel_id: int) -> bool:
+        cursor.execute("""
+            SELECT EXISTS(
+                SELECT 1
+                FROM channels
+                WHERE id = %s
+            )
+        """, (channel_id,))
+
+        return cursor.fetchone()[0]
+
+    @staticmethod
+    def exists_name(
+        cursor,
+        name: str,
+        exclude_id: int | None = None,
+    ) -> bool:
+
+        if exclude_id is None:
+            cursor.execute("""
+                SELECT EXISTS(
+                    SELECT 1
+                    FROM channels
+                    WHERE LOWER(TRIM(name)) = LOWER(TRIM(%s))
+                )
+            """, (name,))
+        else:
+            cursor.execute("""
+                SELECT EXISTS(
+                    SELECT 1
+                    FROM channels
+                    WHERE LOWER(TRIM(name)) = LOWER(TRIM(%s))
+                      AND id <> %s
+                )
+            """, (
+                name,
+                exclude_id,
+            ))
+
+        return cursor.fetchone()[0]
+
+    @staticmethod
+    def exists_email(
+        cursor,
+        email: str,
+        exclude_id: int | None = None,
+    ) -> bool:
+
+        if exclude_id is None:
+            cursor.execute("""
+                SELECT EXISTS(
+                    SELECT 1
+                    FROM channels
+                    WHERE email = %s
+                )
+            """, (email,))
+        else:
+            cursor.execute("""
+                SELECT EXISTS(
+                    SELECT 1
+                    FROM channels
+                    WHERE email = %s
+                      AND id <> %s
+                )
+            """, (
+                email,
+                exclude_id,
+            ))
+
+        return cursor.fetchone()[0]

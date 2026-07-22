@@ -1,0 +1,25 @@
+<script>
+    window.ChannelFormConfig = {
+
+        mode: "{{ mode }}",
+
+        isEdit: {{ "true" if mode == "edit" else "false" }},
+
+        channelId: {{ channel.id if channel else "null" }},
+
+        urls: {
+
+            create: "/api/channels/create",
+
+            update: {% if channel %}
+                "/api/channels/{{ channel.id }}/edit"
+            {% else %}
+                null
+            {% endif %},
+
+            back: "/channels"
+
+        }
+
+    };
+</script>

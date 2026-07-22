@@ -2,117 +2,73 @@
 Channel Bulk Repository
 """
 
-from typing import List
-from psycopg2.extras import execute_values
+from typing import Sequence
 
 
 class ChannelBulkRepository:
-    def __init__(self, cursor):
-        self.cursor = cursor
+    """
+    Repository untuk operasi bulk pada Channel.
+    """
 
-    # =====================================================
-    # BULK DELETE
-    # =====================================================
+    @staticmethod
+    def bulk_delete(cursor, ids: Sequence[int]) -> int:
+        """
+        Menghapus banyak channel sekaligus.
 
-    def delete_songs(self, channel_ids: List[int]) -> None:
-        """Delete all songs for given channel IDs."""
-        if not channel_ids:
-            return
-            
-        self.cursor.execute(
-            """
-            DELETE FROM songs
-            WHERE artist_id IN (
-                SELECT id
-                FROM artists
-                WHERE channel_id = ANY(%s)
-            )
-            """,
-            (channel_ids,),
-        )
+        Returns:
+            Jumlah data yang terhapus.
+        """
+        if not ids:
+            return 0
 
-    def delete_artists(self, channel_ids: List[int]) -> None:
-        """Delete all artists for given channel IDs."""
-        if not channel_ids:
-            return
-            
-        self.cursor.execute(
-            """
-            DELETE FROM artists
-            WHERE channel_id = ANY(%s)
-            """,
-            (channel_ids,),
-        )
-
-    def delete_channels(self, channel_ids: List[int]) -> None:
-        """Delete channels by IDs."""
-        if not channel_ids:
-            return
-            
-        self.cursor.execute(
-            """
+        cursor.execute("""
             DELETE FROM channels
             WHERE id = ANY(%s)
-            """,
-            (channel_ids,),
-        )
+        """, (list(ids),))
 
-    # =====================================================
-    # BULK EXISTS
-    # =====================================================
+        return cursor.rowcount
 
-    def count_existing(self, channel_ids: List[int]) -> int:
-        """Count how many of the given IDs exist."""
-        if not channel_ids:
+    @staticmethod
+    def bulk_update_vermuk(
+        cursor,
+        ids: Sequence[int],
+        vermuk: bool,
+    ) -> int:
+        """
+        Update status vermuk beberapa channel.
+
+        Returns:
+            Jumlah data yang diupdate.
+        """
+        if not ids:
             return 0
-            
-        self.cursor.execute(
-            """
-            SELECT COUNT(*) as count
-            FROM channels
+
+        cursor.execute("""
+            UPDATE channels
+            SET
+                vermuk = %s,
+                updated_at = CURRENT_TIMESTAMP
             WHERE id = ANY(%s)
-            """,
-            (channel_ids,),
-        )
+        """, (
+            vermuk,
+            list(ids),
+        ))
 
-        result = self.cursor.fetchone()
-        return result["count"] if result else 0
+        return cursor.rowcount
 
-    def get_existing_ids(self, channel_ids: List[int]) -> List[int]:
-        """Get list of existing channel IDs."""
-        if not channel_ids:
+    @staticmethod
+    def bulk_exists(cursor, ids: Sequence[int]) -> list[int]:
+        """
+        Mengembalikan daftar ID yang benar-benar ada di database.
+        """
+        if not ids:
             return []
-            
-        self.cursor.execute(
-            """
+
+        cursor.execute("""
             SELECT id
             FROM channels
             WHERE id = ANY(%s)
-            """,
-            (channel_ids,),
-        )
+            ORDER BY id
+        """, (list(ids),))
 
-        return [row["id"] for row in self.cursor.fetchall()]
-
-    # =====================================================
-    # BULK UPDATE
-    # =====================================================
-
-    def bulk_update_youtube(self, updates: List[tuple]) -> None:
-        """
-        Bulk update YouTube URLs.
-        updates: List of (youtube_url, id) tuples
-        """
-        if not updates:
-            return
-
-        execute_values(
-            self.cursor,
-            """
-            UPDATE channels
-            SET youtube_url = data.youtube_url
-            FROM (VALUES %s) AS data(youtube_url, id)
-            WHERE channels.id = data.id
-            """,
-            updates,
-        )
+        return [row[0] for row in cursor.fetchall()]

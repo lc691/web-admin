@@ -1,0 +1,456 @@
+[2026-07-22 12:50:38] [ERROR] [soundon] ❌ Rollback terjadi: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:50:38] [ERROR] [soundon] ❌ Gagal koneksi ke database: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:50:38] [ERROR] [soundon] Unhandled exception: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/songs/router.py", line 178, in statistics
+    return service.get_statistics()
+  File "/opt/web-admin/app/music/services/songs/service.py", line 181, in get_statistics
+    return get_song_statistics()
+  File "/opt/web-admin/app/music/services/songs/statistics.py", line 31, in get_song_statistics
+    statistics = get_statistics()
+  File "/opt/web-admin/app/music/repositories/songs/statistics.py", line 28, in get_statistics
+    cursor.execute(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InvalidTextRepresentation: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:51:38] [ERROR] [soundon] ❌ Rollback terjadi: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:51:38] [ERROR] [soundon] ❌ Gagal koneksi ke database: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:51:38] [ERROR] [soundon] Unhandled exception: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/songs/router.py", line 178, in statistics
+    return service.get_statistics()
+  File "/opt/web-admin/app/music/services/songs/service.py", line 181, in get_statistics
+    return get_song_statistics()
+  File "/opt/web-admin/app/music/services/songs/statistics.py", line 31, in get_song_statistics
+    statistics = get_statistics()
+  File "/opt/web-admin/app/music/repositories/songs/statistics.py", line 28, in get_statistics
+    cursor.execute(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InvalidTextRepresentation: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:54:38] [ERROR] [soundon] ❌ Rollback terjadi: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:54:38] [ERROR] [soundon] ❌ Gagal koneksi ke database: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:54:38] [ERROR] [soundon] Unhandled exception: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/songs/router.py", line 178, in statistics
+    return service.get_statistics()
+  File "/opt/web-admin/app/music/services/songs/service.py", line 181, in get_statistics
+    return get_song_statistics()
+  File "/opt/web-admin/app/music/services/songs/statistics.py", line 31, in get_song_statistics
+    statistics = get_statistics()
+  File "/opt/web-admin/app/music/repositories/songs/statistics.py", line 28, in get_statistics
+    cursor.execute(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InvalidTextRepresentation: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:58:38] [ERROR] [soundon] ❌ Rollback terjadi: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:58:38] [ERROR] [soundon] ❌ Gagal koneksi ke database: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 12:58:38] [ERROR] [soundon] Unhandled exception: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/songs/router.py", line 178, in statistics
+    return service.get_statistics()
+  File "/opt/web-admin/app/music/services/songs/service.py", line 181, in get_statistics
+    return get_song_statistics()
+  File "/opt/web-admin/app/music/services/songs/statistics.py", line 31, in get_song_statistics
+    statistics = get_statistics()
+  File "/opt/web-admin/app/music/repositories/songs/statistics.py", line 28, in get_statistics
+    cursor.execute(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InvalidTextRepresentation: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 13:00:38] [ERROR] [soundon] ❌ Rollback terjadi: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 13:00:38] [ERROR] [soundon] ❌ Gagal koneksi ke database: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 13:00:38] [ERROR] [soundon] Unhandled exception: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/songs/router.py", line 178, in statistics
+    return service.get_statistics()
+  File "/opt/web-admin/app/music/services/songs/service.py", line 181, in get_statistics
+    return get_song_statistics()
+  File "/opt/web-admin/app/music/services/songs/statistics.py", line 31, in get_song_statistics
+    statistics = get_statistics()
+  File "/opt/web-admin/app/music/repositories/songs/statistics.py", line 28, in get_statistics
+    cursor.execute(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InvalidTextRepresentation: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 13:01:38] [ERROR] [soundon] ❌ Rollback terjadi: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 13:01:38] [ERROR] [soundon] ❌ Gagal koneksi ke database: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+
+[2026-07-22 13:01:38] [ERROR] [soundon] Unhandled exception: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+Traceback (most recent call last):
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
+    response = await call_next(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
+    response = await f(request)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
+    raw_response = await run_endpoint_function(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
+    return await future
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "/opt/web-admin/app/music/songs/router.py", line 178, in statistics
+    return service.get_statistics()
+  File "/opt/web-admin/app/music/services/songs/service.py", line 181, in get_statistics
+    return get_song_statistics()
+  File "/opt/web-admin/app/music/services/songs/statistics.py", line 31, in get_song_statistics
+    statistics = get_statistics()
+  File "/opt/web-admin/app/music/repositories/songs/statistics.py", line 28, in get_statistics
+    cursor.execute(
+  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
+    return super().execute(query, vars)
+psycopg2.errors.InvalidTextRepresentation: invalid input value for enum release_status: "Live"
+LINE 6:                     WHERE status = 'Live'
+                                           ^
+

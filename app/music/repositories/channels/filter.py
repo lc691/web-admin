@@ -2,195 +2,141 @@
 Channel Filter Repository
 """
 
-from typing import Optional, List, Dict, Any, Tuple
+from psycopg2 import sql
 
 
 class ChannelFilterRepository:
-    def __init__(self, cursor):
-        self.cursor = cursor
+    SORTABLE_COLUMNS = {
+        "id": "c.id",
+        "name": "c.name",
+        "email": "c.email",
+        "created_at": "c.created_at",
+        "updated_at": "c.updated_at",
+        "artists": "total_artists",
+        "songs": "total_songs",
+    }
 
-    # =====================================================
-    # PRIVATE
-    # =====================================================
-
-    def _build_where(
-        self,
-        keyword: Optional[str],
-        has_youtube: Optional[bool],
-    ) -> Tuple[str, List[Any]]:
+    @classmethod
+    def apply(
+        cls,
+        cursor,
+        *,
+        keyword: str | None = None,
+        vermuk: bool | None = None,
+        order_by: str = "created_at",
+        order_dir: str = "desc",
+        start: int = 0,
+        length: int = 20,
+    ):
         where = []
-        params: List[Any] = []
+        params = {}
 
         if keyword:
-            keyword = f"%{keyword.strip()}%"
-            where.append(
-                "(c.name ILIKE %s OR c.youtube_url ILIKE %s)"
-            )
-            params.extend([keyword, keyword])
+            where.append("""
+                (
+                    c.name ILIKE %(keyword)s
+                    OR c.email ILIKE %(keyword)s
+                    OR COALESCE(c.notes,'') ILIKE %(keyword)s
+                )
+            """)
+            params["keyword"] = f"%{keyword}%"
 
-        if has_youtube is True:
-            where.append(
-                "c.youtube_url IS NOT NULL AND c.youtube_url <> ''"
-            )
+        if vermuk is not None:
+            where.append("c.vermuk = %(vermuk)s")
+            params["vermuk"] = vermuk
 
-        elif has_youtube is False:
-            where.append(
-                "(c.youtube_url IS NULL OR c.youtube_url = '')"
-            )
-
+        where_sql = ""
         if where:
-            return "WHERE " + " AND ".join(where), params
+            where_sql = "WHERE " + " AND ".join(where)
 
-        return "", params
-
-    def _build_having(
-        self,
-        has_artists: Optional[bool],
-        has_songs: Optional[bool],
-    ) -> str:
-        having = []
-
-        if has_artists is True:
-            having.append("COUNT(DISTINCT a.id) > 0")
-        elif has_artists is False:
-            having.append("COUNT(DISTINCT a.id) = 0")
-
-        if has_songs is True:
-            having.append("COUNT(s.id) > 0")
-        elif has_songs is False:
-            having.append("COUNT(s.id) = 0")
-
-        if having:
-            return "HAVING " + " AND ".join(having)
-
-        return ""
-
-    # =====================================================
-    # FILTER
-    # =====================================================
-
-    def apply(
-        self,
-        keyword: Optional[str] = None,
-        has_youtube: Optional[bool] = None,
-        has_artists: Optional[bool] = None,
-        has_songs: Optional[bool] = None,
-        limit: Optional[int] = None,
-        offset: Optional[int] = None,
-    ) -> List[Dict[str, Any]]:
-
-        where_sql, params = self._build_where(
-            keyword,
-            has_youtube,
+        order_column = cls.SORTABLE_COLUMNS.get(
+            order_by,
+            "c.created_at"
         )
 
-        having_sql = self._build_having(
-            has_artists,
-            has_songs,
+        order_direction = (
+            "ASC"
+            if str(order_dir).lower() == "asc"
+            else "DESC"
         )
 
         query = f"""
-            SELECT
-                c.id,
-                c.name,
-                c.youtube_url,
-                c.created_at,
+        SELECT
+            c.id,
+            c.name,
+            c.email,
+            c.vermuk,
+            c.notes,
+            c.created_at,
+            c.updated_at,
 
-                COUNT(DISTINCT a.id) AS total_artists,
-                COUNT(s.id) AS total_songs,
+            COUNT(DISTINCT a.id) AS total_artists,
+            COUNT(s.id)          AS total_songs
 
-                COUNT(*) FILTER (
-                    WHERE s.status = 'Released'
-                ) AS released_songs,
+        FROM channels c
 
-                COUNT(*) FILTER (
-                    WHERE s.status = 'Review'
-                ) AS review_songs,
+        LEFT JOIN artists a
+            ON a.channel_id = c.id
 
-                COUNT(*) FILTER (
-                    WHERE s.status = 'Rejected'
-                ) AS rejected_songs
+        LEFT JOIN songs s
+            ON s.artist_id = a.id
 
-            FROM channels c
+        {where_sql}
 
-            LEFT JOIN artists a
-                ON a.channel_id = c.id
+        GROUP BY c.id
 
-            LEFT JOIN songs s
-                ON s.artist_id = a.id
+        ORDER BY {order_column} {order_direction}
 
-            {where_sql}
-
-            GROUP BY
-                c.id,
-                c.name,
-                c.youtube_url,
-                c.created_at
-
-            {having_sql}
-
-            ORDER BY
-                c.name ASC
+        LIMIT %(limit)s
+        OFFSET %(offset)s
         """
 
-        if limit is not None:
-            query += " LIMIT %s"
-            params.append(limit)
+        params["limit"] = length
+        params["offset"] = start
 
-        if offset is not None:
-            query += " OFFSET %s"
-            params.append(offset)
+        cursor.execute(query, params)
 
-        self.cursor.execute(query, params)
-        return self.cursor.fetchall()
+        rows = cursor.fetchall()
 
-    # =====================================================
-    # COUNT
-    # =====================================================
+        return [dict(row) for row in rows]
 
+    @staticmethod
     def count_filtered(
-        self,
-        keyword: Optional[str] = None,
-        has_youtube: Optional[bool] = None,
-        has_artists: Optional[bool] = None,
-        has_songs: Optional[bool] = None,
+        cursor,
+        *,
+        keyword: str | None = None,
+        vermuk: bool | None = None,
     ) -> int:
 
-        where_sql, params = self._build_where(
-            keyword,
-            has_youtube,
-        )
+        where = []
+        params = {}
 
-        having_sql = self._build_having(
-            has_artists,
-            has_songs,
-        )
+        if keyword:
+            where.append("""
+                (
+                    name ILIKE %(keyword)s
+                    OR email ILIKE %(keyword)s
+                    OR COALESCE(notes,'') ILIKE %(keyword)s
+                )
+            """)
+            params["keyword"] = f"%{keyword}%"
+
+        if vermuk is not None:
+            where.append("vermuk = %(vermuk)s")
+            params["vermuk"] = vermuk
+
+        where_sql = ""
+        if where:
+            where_sql = "WHERE " + " AND ".join(where)
 
         query = f"""
-            SELECT COUNT(*)
-            FROM (
-
-                SELECT
-                    c.id
-
-                FROM channels c
-
-                LEFT JOIN artists a
-                    ON a.channel_id = c.id
-
-                LEFT JOIN songs s
-                    ON s.artist_id = a.id
-
-                {where_sql}
-
-                GROUP BY c.id
-
-                {having_sql}
-
-            ) AS filtered
+        SELECT COUNT(*)
+        FROM channels
+        {where_sql}
         """
 
-        self.cursor.execute(query, params)
+        cursor.execute(query, params)
 
-        result = self.cursor.fetchone()
-        return result["count"] if result else 0
+        row = cursor.fetchone()
+
+        return row[0] if row else 0

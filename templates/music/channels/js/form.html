@@ -1,0 +1,284 @@
+<script>
+    /**
+     * ============================================================
+     * Channel Form
+     * ============================================================
+     */
+
+    class ChannelForm {
+
+        /**
+         * =========================================================
+         * Constructor
+         * =========================================================
+         *
+         * Menginisialisasi konfigurasi, elemen form,
+         * kemudian menjalankan proses inisialisasi.
+         *
+         * @param {Object} config
+         */
+        constructor(config) {
+
+            this.config = config;
+
+            this.form = $("#channel-form");
+
+            this.btnSave = $("#btn-save");
+
+            this.name = $("#name");
+            this.email = $("#email");
+            this.password = $("#password");
+            this.vermuk = $("#vermuk");
+            this.notes = $("#notes");
+
+            this.init();
+
+        }
+
+        /**
+         * =========================================================
+         * Initialize
+         * =========================================================
+         *
+         * Mendaftarkan seluruh event pada halaman form.
+         */
+        init() {
+
+            this.bindSubmit();
+            this.bindPasswordToggle();
+
+        }
+
+        /**
+         * =========================================================
+         * Bind Submit Event
+         * =========================================================
+         *
+         * Menangani proses submit form.
+         */
+        bindSubmit() {
+
+            this.form.on("submit", (e) => {
+
+                e.preventDefault();
+
+                this.submit();
+
+            });
+
+        }
+
+        /**
+         * =========================================================
+         * Bind Password Toggle
+         * =========================================================
+         *
+         * Menampilkan atau menyembunyikan password.
+         */
+        bindPasswordToggle() {
+
+            $("#toggle-password").on("click", () => {
+
+                const visible =
+                    this.password.attr("type") === "text";
+
+                this.password.attr(
+                    "type",
+                    visible
+                        ? "password"
+                        : "text"
+                );
+
+                $("#toggle-password i").attr(
+                    "class",
+                    visible
+                        ? "ti ti-eye"
+                        : "ti ti-eye-off"
+                );
+
+            });
+
+        }
+
+        /**
+         * =========================================================
+         * Get Payload
+         * =========================================================
+         *
+         * Mengambil seluruh nilai form kemudian
+         * mengubahnya menjadi object JSON.
+         *
+         * @returns {Object}
+         */
+        getPayload() {
+
+            return {
+
+                name: this.name.val().trim(),
+
+                email: this.email.val().trim() || null,
+
+                password: this.password.val() || null,
+
+                vermuk: this.vermuk.is(":checked"),
+
+                notes: this.notes.val().trim() || null,
+
+            };
+
+        }
+
+        /**
+         * =========================================================
+         * Get Submit URL
+         * =========================================================
+         *
+         * Menentukan endpoint API berdasarkan mode
+         * create atau edit.
+         *
+         * @returns {string}
+         */
+        getSubmitUrl() {
+
+            return this.config.mode === "edit"
+                ? this.config.urls.update
+                : this.config.urls.create;
+
+        }
+
+        /**
+         * =========================================================
+         * Submit Form
+         * =========================================================
+         *
+         * Mengirim data ke server kemudian
+         * menampilkan notifikasi hasil proses.
+         */
+        async submit() {
+
+            this.btnSave.prop(
+                "disabled",
+                true
+            );
+
+            try {
+
+                const response = await fetch(
+
+                    this.getSubmitUrl(),
+
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+
+                        body: JSON.stringify(
+                            this.getPayload()
+                        ),
+
+                    }
+
+                );
+
+                const result =
+                    await response.json();
+
+                if (!response.ok) {
+
+                    throw new Error(
+
+                        result.detail ||
+                        result.message ||
+                        "Terjadi kesalahan."
+
+                    );
+
+                }
+
+                if (window.showToast) {
+
+                    showToast(
+
+                        result.message ||
+                        "Berhasil disimpan.",
+
+                        "success",
+
+                        "Berhasil"
+
+                    );
+
+                }
+
+                setTimeout(() => {
+
+                    location.href =
+                        this.config.urls.back;
+
+                }, 500);
+
+            }
+
+            catch (err) {
+
+                if (window.showToast) {
+
+                    showToast(
+
+                        err.message,
+
+                        "danger",
+
+                        "Error"
+
+                    );
+
+                }
+
+                else {
+
+                    alert(err.message);
+
+                }
+
+            }
+
+            finally {
+
+                this.btnSave.prop(
+                    "disabled",
+                    false
+                );
+
+            }
+
+        }
+
+    }
+
+    /**
+     * ============================================================
+     * Initialize Form
+     * ============================================================
+     *
+     * Membuat instance ChannelForm setelah
+     * halaman selesai dimuat.
+     */
+    document.addEventListener(
+
+        "DOMContentLoaded",
+
+        () => {
+
+            new ChannelForm(
+                window.ChannelFormConfig
+            );
+
+        }
+
+    );
+
+</script>

@@ -1,89 +1,105 @@
 """
-Channel Validation Services
+Channel Validator
 """
 
-import re
-from typing import Optional
-
-from fastapi import HTTPException
-
-MAX_CHANNEL_NAME_LENGTH = 255
-
-YOUTUBE_PATTERNS = (
-    r"^(https?://)?(www\.)?youtube\.com/.+$",
-    r"^(https?://)?m\.youtube\.com/.+$",
-    r"^(https?://)?youtu\.be/.+$",
-)
+from app.music.repositories.channels.repository import ChannelRepository
 
 
-def normalize_channel_name(name: str) -> str:
+class ChannelValidator:
     """
-    Normalize channel name by trimming and removing duplicate spaces.
+    Validasi business rule Channel.
     """
 
-    return " ".join(name.strip().split())
+    @staticmethod
+    def validate_name(name: str) -> str:
+        if name is None:
+            raise ValueError("Nama channel wajib diisi.")
 
+        name = name.strip()
 
-def validate_channel_name(name: str) -> str:
-    """
-    Validate channel name.
-    """
+        if not name:
+            raise ValueError("Nama channel wajib diisi.")
 
-    if name is None:
-        raise HTTPException(
-            status_code=400,
-            detail="Nama channel wajib diisi",
-        )
+        if len(name) > 255:
+            raise ValueError("Nama channel maksimal 255 karakter.")
 
-    name = normalize_channel_name(name)
+        return name
 
-    if not name:
-        raise HTTPException(
-            status_code=400,
-            detail="Nama channel wajib diisi",
-        )
+    @staticmethod
+    def validate_email(email: str | None) -> str | None:
+        if email is None:
+            return None
 
-    if len(name) > MAX_CHANNEL_NAME_LENGTH:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Nama channel maksimal {MAX_CHANNEL_NAME_LENGTH} karakter",
-        )
+        email = email.strip().lower()
 
-    return name
+        if not email:
+            return None
 
+        if len(email) > 255:
+            raise ValueError("Email maksimal 255 karakter.")
 
-def validate_channel_id(channel_id: int) -> int:
-    """
-    Validate channel id.
-    """
+        return email
 
-    if channel_id <= 0:
-        raise HTTPException(
-            status_code=400,
-            detail="ID channel tidak valid",
-        )
+    @staticmethod
+    def validate_notes(notes: str | None) -> str | None:
+        if notes is None:
+            return None
 
-    return channel_id
+        notes = notes.strip()
 
+        return notes or None
 
-def validate_youtube_url(url: Optional[str]) -> Optional[str]:
-    """
-    Validate YouTube URL.
-    """
+    @staticmethod
+    def validate_password(password: str | None) -> str | None:
+        if password is None:
+            return None
 
-    if url is None:
-        return None
+        password = password.strip()
 
-    url = url.strip()
+        return password or None
 
-    if not url:
-        return None
+    @classmethod
+    def validate_create(
+        cls,
+        cursor,
+        *,
+        name: str,
+        email: str | None,
+    ) -> None:
+        name = cls.validate_name(name)
+        email = cls.validate_email(email)
 
-    for pattern in YOUTUBE_PATTERNS:
-        if re.match(pattern, url, flags=re.IGNORECASE):
-            return url
+        if ChannelRepository.exists_name(cursor, name):
+            raise ValueError("Nama channel sudah digunakan.")
 
-    raise HTTPException(
-        status_code=400,
-        detail="URL YouTube tidak valid",
-    )
+        if email and ChannelRepository.exists_email(cursor, email):
+            raise ValueError("Email sudah digunakan.")
+
+    @classmethod
+    def validate_update(
+        cls,
+        cursor,
+        *,
+        channel_id: int,
+        name: str,
+        email: str | None,
+    ) -> None:
+        name = cls.validate_name(name)
+        email = cls.validate_email(email)
+
+        if not ChannelRepository.exists(cursor, channel_id):
+            raise ValueError("Channel tidak ditemukan.")
+
+        if ChannelRepository.exists_name(
+            cursor,
+            name,
+            exclude_id=channel_id,
+        ):
+            raise ValueError("Nama channel sudah digunakan.")
+
+        if email and ChannelRepository.exists_email(
+            cursor,
+            email,
+            exclude_id=channel_id,
+        ):
+            raise ValueError("Email sudah digunakan.")

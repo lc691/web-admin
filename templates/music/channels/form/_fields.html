@@ -1,0 +1,248 @@
+{% set is_edit = mode == "edit" %}
+{% set data = channel or {} %}
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+            Informasi Channel
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <input
+            id="channel-id"
+            type="hidden"
+            value="{{ data.id | default('') }}">
+
+        <div class="row">
+
+            <!-- ===================================================== -->
+            <!-- NAME -->
+            <!-- ===================================================== -->
+
+            <div class="col-md-6">
+
+                <div class="mb-3">
+
+                    <label
+                        for="name"
+                        class="form-label">
+
+                        Nama Channel
+                        <span class="text-danger">*</span>
+
+                    </label>
+
+                    <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        class="form-control"
+                        maxlength="100"
+                        required
+                        autofocus
+                        value="{{ data.name | default('') }}">
+
+                    <div class="form-hint">
+                        Nama channel harus unik.
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ===================================================== -->
+            <!-- EMAIL -->
+            <!-- ===================================================== -->
+
+            <div class="col-md-6">
+
+                <div class="mb-3">
+
+                    <label
+                        for="email"
+                        class="form-label">
+
+                        Email
+
+                    </label>
+
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        class="form-control"
+                        maxlength="150"
+                        value="{{ data.email | default('') }}">
+
+                    <div class="form-hint">
+                        Opsional.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <!-- ===================================================== -->
+            <!-- PASSWORD -->
+            <!-- ===================================================== -->
+
+            <div class="col-md-6">
+
+                <div class="mb-3">
+
+                    <label
+                        for="password"
+                        class="form-label">
+
+                        Password
+
+                    </label>
+
+                    <div class="input-group">
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            class="form-control"
+                            value="{{ data.password | default('') }}">
+
+                        <button
+                            id="toggle-password"
+                            class="btn btn-outline-secondary"
+                            type="button">
+
+                            <i class="ti ti-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                    <div class="form-hint">
+
+                        {% if is_edit %}
+                            Kosongkan jika password tidak diubah.
+                        {% else %}
+                            Password bersifat opsional.
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ===================================================== -->
+            <!-- STATUS -->
+            <!-- ===================================================== -->
+
+            <div class="col-md-6">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Status
+
+                    </label>
+
+                    <label class="form-check form-switch mt-2">
+
+                        <input
+                            id="vermuk"
+                            type="checkbox"
+                            class="form-check-input"
+                            {% if data.vermuk %}
+                            checked
+                            {% endif %}>
+
+                        <span class="form-check-label">
+
+                            Channel Vermuk
+
+                        </span>
+
+                    </label>
+
+                    <div class="form-hint">
+
+                        Aktifkan jika channel termasuk kategori Vermuk.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- NOTES -->
+        <!-- ===================================================== -->
+
+        <div class="mb-3">
+
+            <label
+                for="notes"
+                class="form-label">
+
+                Catatan
+
+            </label>
+
+            <textarea
+                id="notes"
+                name="notes"
+                rows="6"
+                class="form-control"
+                maxlength="1000">{{ data.notes | default('') }}</textarea>
+
+            <div class="form-hint">
+
+                Catatan internal (opsional).
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card-footer">
+
+        <div class="d-flex">
+
+            <a
+                href="/channels"
+                class="btn btn-outline-secondary">
+
+                <i class="ti ti-arrow-left me-1"></i>
+
+                Kembali
+
+            </a>
+
+            <button
+                id="btn-save"
+                type="submit"
+                class="btn btn-primary ms-auto">
+
+                <i class="ti ti-device-floppy me-1"></i>
+
+                {{ "Simpan Perubahan" if is_edit else "Simpan" }}
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

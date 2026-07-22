@@ -108,9 +108,9 @@ def get_routers() -> list:
     from app.music.channels.page import router as channels_page_router
     from app.music.channels.router import router as channels_api_router
     from app.music.artists import artists
-    from app.music.songs.page import router as songs_page_router
-    from app.music.songs.router import router as songs_api_router
-    from app.routes.channel_blacklists import router as blacklist_router
+    # from app.music.songs.page import router as songs_page_router
+    # from app.music.songs.router import router as songs_api_router
+    # from app.routes.channel_blacklists import router as blacklist_router
     
     # ================================
     # 8. JOKI / CATATAN
@@ -163,12 +163,12 @@ def get_routers() -> list:
         (platform_router, None, ["platform"]),
         
         # ===== SOUNDON =====
-        (artists.router, None, ["soundon", "artists"]),
         (channels_page_router, None, ["soundon", "channels"]),
         (channels_api_router, "/api", ["soundon", "channels"]),
-        (songs_page_router, None, ["soundon", "songs"]),
-        (songs_api_router, "/api", ["soundon", "songs"]),
-        (blacklist_router, None, ["soundon", "blacklist"]),
+        (artists.router, None, ["soundon", "artists"]),
+        # (songs_page_router, None, ["soundon", "songs"]),
+        # (songs_api_router, "/api", ["soundon", "songs"]),
+        # (blacklist_router, None, ["soundon", "blacklist"]),
         
         # ===== JOKI =====
         (joki_router, None, ["joki"]),

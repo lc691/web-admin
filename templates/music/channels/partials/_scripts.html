@@ -1,0 +1,38 @@
+<!-- ===================================================== -->
+<!-- CHANNELS JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<!-- Utilities -->
+{% include "music/channels/js/utils.js" %}
+<!-- <script src="{{ url_for('static', path='js/channels/utils.js') }}"></script> -->
+
+<!-- Components -->
+{% include "music/channels/js/statistics.js" %}
+<!-- <script src="{{ url_for('static', path='js/channels/statistics.js') }}"></script> -->
+
+{% include "music/channels/js/datatable.js" %}
+<!-- <script src="{{ url_for('static', path='js/channels/datatable.js') }}"></script> -->
+
+{% include "music/channels/js/delete.js" %}
+<!-- <script src="{{ url_for('static', path='js/channels/delete.js') }}"></script> -->
+
+{% include "music/channels/js/bulk.js" %}
+<!-- <script src="{{ url_for('static', path='js/channels/bulk.js') }}"></script> -->
+
+<!-- Page -->
+{% if request.url.path == "/channels" %}
+  {% include "music/channels/js/index.js" %}
+  <!-- <script src="{{ url_for('static', path='js/channels/index.js') }}"></script> -->
+
+{% elif request.url.path.endswith("/create") %}
+  {% include "music/channels/js/form.js" %}
+  <!-- <script src="{{ url_for('static', path='js/channels/form.js') }}"></script> -->
+
+{% elif request.url.path.endswith("/edit") %}
+  {% include "music/channels/js/form.js" %}
+  <!-- <script src="{{ url_for('static', path='js/channels/form.js') }}"></script> -->
+
+{% else %}
+  {% include "music/channels/js/detail.js" %}
+  <!-- <script src="{{ url_for('static', path='js/channels/detail.js') }}"></script> -->
+{% endif %}

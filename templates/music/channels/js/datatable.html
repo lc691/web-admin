@@ -1,0 +1,286 @@
+<script>
+/**
+ * ============================================================
+ * Channels DataTable
+ * ============================================================
+ */
+
+const ChannelTable = {
+
+    /**
+     * Instance DataTable
+     */
+    table: null,
+
+    /**
+     * Delay pencarian (reserved)
+     */
+    searchTimeout: null,
+
+    /**
+     * =========================================================
+     * Initialize
+     * =========================================================
+     *
+     * Membuat DataTable dan mendaftarkan seluruh event.
+     */
+    init() {
+
+        this.create();
+        this.bindEvents();
+
+    },
+
+    /**
+     * =========================================================
+     * Create DataTable
+     * =========================================================
+     *
+     * Menginisialisasi DataTables beserta konfigurasi
+     * server-side, kolom, AJAX, dan renderer.
+     */
+    create() {
+
+        this.table = $("#channels-table").DataTable({
+
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            searching: true,
+            ordering: true,
+            pageLength: 10,
+
+            ajax: {
+
+                url: "/api/channels/data",
+                type: "GET",
+
+                /**
+                 * Menambahkan parameter filter
+                 * sebelum request dikirim.
+                 */
+                data: function (d) {
+
+                    const status = $("#status").val();
+
+                    if (status === "vermuk") {
+                        d.vermuk = true;
+                    }
+                    else if (status === "normal") {
+                        d.vermuk = false;
+                    }
+                    else {
+                        delete d.vermuk;
+                    }
+
+                }
+
+            },
+
+            columns: [
+
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: (_, __, row) => `
+                        <input
+                            type="checkbox"
+                            class="form-check-input row-check"
+                            value="${row.id}">
+                    `
+                },
+
+                {
+                    data: "id"
+                },
+
+                {
+                    data: "name"
+                },
+
+                {
+                    data: "email",
+                    defaultContent: "-",
+                    render: data => data || "-"
+                },
+
+                {
+                    data: "total_artists",
+                    className: "text-center"
+                },
+
+                {
+                    data: "total_songs",
+                    className: "text-center"
+                },
+
+                {
+                    data: "vermuk",
+                    className: "text-center",
+                    render: vermuk => vermuk
+                        ? '<span class="badge bg-danger text-white">Vermuk</span>'
+                        : '<span class="badge bg-success text-white">Normal</span>'
+                },
+
+                {
+                    data: "updated_at",
+                    render: value => {
+
+                        if (!value) {
+                            return "-";
+                        }
+
+                        return new Date(value)
+                            .toLocaleString("id-ID");
+
+                    }
+                },
+
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    className: "text-center",
+                    render: (_, __, row) => `
+                        <div class="btn-list justify-content-center">
+
+                            <button
+                                class="btn btn-sm btn-primary btn-detail"
+                                data-id="${row.id}">
+                                <i class="ti ti-eye"></i>
+                            </button>
+
+                            <button
+                                class="btn btn-sm btn-primary btn-edit"
+                                data-id="${row.id}">
+                                <i class="ti ti-pencil"></i>
+                            </button>
+
+                            <button
+                                class="btn btn-sm btn-danger btn-delete"
+                                data-id="${row.id}">
+                                <i class="ti ti-trash"></i>
+                            </button>
+
+                        </div>
+                    `
+                }
+
+            ]
+
+        });
+
+    },
+
+    /**
+     * =========================================================
+     * Bind Events
+     * =========================================================
+     *
+     * Mendaftarkan seluruh event pada halaman
+     * DataTable.
+     */
+    bindEvents() {
+
+        /**
+         * Filter status.
+         */
+        $("#status").on("change", () => {
+
+            this.reload();
+
+        });
+
+        /**
+         * Pilih semua checkbox.
+         */
+        $("#check-all").on("change", function () {
+
+            $(".row-check").prop(
+                "checked",
+                this.checked
+            );
+
+            ChannelBulk.updateCounter();
+
+        });
+
+        /**
+         * Update jumlah data terpilih.
+         */
+        $(document).on("change", ".row-check", () => {
+
+            ChannelBulk.updateCounter();
+
+        });
+
+    },
+
+    /**
+     * =========================================================
+     * Reload Table
+     * =========================================================
+     *
+     * Memuat ulang data DataTable.
+     *
+     * @param {boolean} resetPaging
+     * Reset halaman ke page pertama.
+     */
+    reload(resetPaging = false) {
+
+        this.table.ajax.reload(
+            null,
+            resetPaging
+        );
+
+    },
+
+    /**
+     * =========================================================
+     * Get Selected IDs
+     * =========================================================
+     *
+     * Mengambil seluruh ID channel yang
+     * sedang dipilih.
+     *
+     * @returns {number[]}
+     */
+    selectedIds() {
+
+        return $(".row-check:checked")
+            .map(function () {
+
+                return Number(this.value);
+
+            })
+            .get();
+
+    },
+
+    /**
+     * =========================================================
+     * Clear Selection
+     * =========================================================
+     *
+     * Menghapus seluruh checkbox yang dipilih
+     * dan memperbarui Bulk Toolbar.
+     */
+    clearSelection() {
+
+        $("#check-all").prop(
+            "checked",
+            false
+        );
+
+        $(".row-check").prop(
+            "checked",
+            false
+        );
+
+        ChannelBulk.updateCounter();
+
+    }
+
+};
+</script>

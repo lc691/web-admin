@@ -1,0 +1,101 @@
+<script>
+    /**
+    * ============================================================
+    * Channels Statistics
+    * ============================================================
+    */
+
+    const ChannelStatistics = {
+
+        endpoint: "/api/channels/statistics",
+
+        /**
+        * Initialize
+        */
+        init() {
+
+            this.load();
+
+        },
+
+        /**
+        * Load statistics
+        */
+        async load() {
+
+            try {
+
+                const data = await ChannelUtils.request(this.endpoint);
+
+                this.render(data);
+
+            } catch (err) {
+
+                console.error(err);
+
+                ChannelUtils.error(
+                    err.message || "Gagal memuat statistik."
+                );
+
+            }
+
+        },
+
+        /**
+        * Refresh statistics
+        */
+        async refresh() {
+
+            await this.load();
+
+        },
+
+        /**
+        * Render statistics
+        */
+        render(data) {
+
+            this.setValue(
+                "stat-total-channels",
+                data.total_channels
+            );
+
+            this.setValue(
+                "stat-total-artists",
+                data.total_artists
+            );
+
+            this.setValue(
+                "stat-total-songs",
+                data.total_songs
+            );
+
+            this.setValue(
+                "stat-total-vermuk",
+                data.total_vermuk
+            );
+
+            this.setValue(
+                "stat-total-normal",
+                data.total_normal
+            );
+
+        },
+
+        /**
+        * Update element value
+        */
+        setValue(id, value) {
+
+            const el = document.getElementById(id);
+
+            if (!el) {
+                return;
+            }
+
+            el.textContent = ChannelUtils.number(value);
+
+        }
+
+    };
+</script>

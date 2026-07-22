@@ -1,0 +1,85 @@
+<script>
+    /**
+     * ============================================================
+     * Channels Page
+     * ============================================================
+     */
+
+    const ChannelsPage = {
+
+        /**
+         * =========================================================
+         * Initialize
+         * =========================================================
+         *
+         * Menginisialisasi seluruh komponen pada
+         * halaman Channels.
+         */
+        init() {
+
+            ChannelStatistics.init();
+            ChannelTable.init();
+            ChannelDelete.init();
+            ChannelBulk.init();
+
+            this.bindEvents();
+
+        },
+
+        /**
+         * =========================================================
+         * Bind Events
+         * =========================================================
+         *
+         * Mendaftarkan seluruh event pada halaman,
+         * seperti navigasi detail dan edit.
+         */
+        bindEvents() {
+
+            /**
+             * Buka halaman detail channel.
+             */
+            $(document).on("click", ".btn-detail", function () {
+
+                const id = $(this).data("id");
+
+                location.href = `/channels/${id}`;
+
+            });
+
+            /**
+             * Buka halaman edit channel.
+             */
+            $(document).on("click", ".btn-edit", function () {
+
+                const id = $(this).data("id");
+
+                location.href = `/channels/${id}/edit`;
+
+            });
+
+        }
+
+    };
+
+    /**
+     * ============================================================
+     * Initialize Page
+     * ============================================================
+     *
+     * Menjalankan inisialisasi halaman setelah
+     * seluruh dokumen selesai dimuat.
+     */
+    document.addEventListener(
+
+        "DOMContentLoaded",
+
+        () => {
+
+            ChannelsPage.init();
+
+        }
+
+    );
+
+</script>

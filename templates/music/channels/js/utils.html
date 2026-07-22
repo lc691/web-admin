@@ -1,0 +1,162 @@
+<script>
+/**
+* ============================================================
+* Channels Utilities
+* ============================================================
+*/
+    const ChannelUtils = {
+
+        /**
+         * Toast Notification
+         */
+        toast(message, type = "success") {
+
+            Swal.fire({
+                toast: true,
+                position: "top-end",
+                icon: type,
+                title: message,
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true
+            });
+
+        },
+
+        /**
+         * Error Notification
+         */
+        error(message) {
+
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: message
+            });
+
+        },
+
+        /**
+         * Success Notification
+         */
+        success(message) {
+
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil",
+                text: message
+            });
+
+        },
+
+        /**
+         * Confirm Dialog
+         */
+        async confirm(title, text, confirmText = "Ya") {
+
+            const result = await Swal.fire({
+
+                title,
+
+                text,
+
+                icon: "warning",
+
+                showCancelButton: true,
+
+                confirmButtonText: confirmText,
+
+                cancelButtonText: "Batal",
+
+                reverseButtons: true
+
+            });
+
+            return result.isConfirmed;
+
+        },
+
+        /**
+         * Format Number
+         */
+        number(value) {
+
+            return Number(value || 0).toLocaleString("id-ID");
+
+        },
+
+        /**
+         * Format Date
+         */
+        date(value) {
+
+            if (!value) return "-";
+
+            return new Date(value).toLocaleString("id-ID");
+
+        },
+
+        /**
+         * Escape HTML
+         */
+        escape(text) {
+
+            if (!text) return "";
+
+            return $("<div>")
+                .text(text)
+                .html();
+
+        },
+
+        /**
+         * Loading Button
+         */
+        loading(button, state = true) {
+
+            if (!button) return;
+
+            button.disabled = state;
+
+            if (state) {
+
+                button.dataset.original = button.innerHTML;
+
+                button.innerHTML = `
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Loading...
+                `;
+
+            } else {
+
+                button.innerHTML = button.dataset.original;
+
+            }
+
+        },
+
+        /**
+         * Fetch JSON Helper
+         */
+        async request(url, options = {}) {
+
+            const response = await fetch(url, {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                ...options
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw result;
+            }
+
+            return result;
+
+        }
+
+    };
+
+</script>

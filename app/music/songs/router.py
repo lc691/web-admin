@@ -24,6 +24,7 @@ from app.music.services.songs.search import build_response
 from app.music.services.usage import service as usage_service
 from app.music.services.usage.types import UsageMode
 from app.music.songs.schema import BulkUpdateStatusRequest
+
 router = APIRouter(
     prefix="/songs",
     tags=["Songs"],

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "music/channels/form/_header.html" %}
+
+<div class="page-body">
+    <div class="container-xl">
+
+        <form id="channel-form">
+
+            {% include "music/channels/form/_fields.html" %}
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{{ super() }}
+
+{% include "music/channels/form/_scripts.html" %}
+{% include "music/channels/js/form.html" %}
+
+{% endblock %}

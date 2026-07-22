@@ -1,0 +1,160 @@
+<script>
+    /**
+     * ============================================================
+     * Channels Bulk Actions
+     * ============================================================
+     */
+
+    const ChannelBulk = {
+
+        action: null,
+
+        /**
+         * Initialize
+         */
+        init() {
+
+            this.bindEvents();
+
+        },
+
+        /**
+         * Bind Events
+         */
+        bindEvents() {
+
+            $("#btnBulkDelete").on("click", () => {
+
+                this.show("delete");
+
+            });
+
+            $("#btnBulkVermuk").on("click", () => {
+
+                this.show("vermuk");
+
+            });
+
+            $("#confirmBulkBtn").on("click", () => {
+
+                this.execute();
+
+            });
+
+        },
+
+        /**
+         * Show Bulk Modal
+         */
+        show(action) {
+
+            const ids = ChannelTable.selectedIds();
+
+            if (ids.length === 0) {
+
+                ChannelUtils.toast(
+                    "Pilih minimal satu channel.",
+                    "warning"
+                );
+
+                return;
+
+            }
+
+            this.action = action;
+
+            $("#bulkActionText").text(
+                action === "delete"
+                    ? "menghapus"
+                    : "mengubah status menjadi Vermuk"
+            );
+
+            bootstrap.Modal
+                .getOrCreateInstance(
+                    document.getElementById("bulkModal")
+                )
+                .show();
+
+        },
+
+        /**
+         * Execute Bulk Action
+         */
+        async execute() {
+
+            const ids = ChannelTable.selectedIds();
+
+            if (ids.length === 0) {
+                return;
+            }
+
+            const button = document.getElementById(
+                "confirmBulkBtn"
+            );
+
+            try {
+
+                ChannelUtils.loading(button);
+
+                const endpoint =
+                    this.action === "delete"
+                        ? "/api/channels/bulk/delete"
+                        : "/api/channels/bulk/vermuk";
+
+                const result = await ChannelUtils.request(
+                    endpoint,
+                    {
+                        method: "POST",
+                        body: JSON.stringify({ ids })
+                    }
+                );
+
+                bootstrap.Modal
+                    .getInstance(
+                        document.getElementById("bulkModal")
+                    )
+                    ?.hide();
+
+                ChannelUtils.toast(
+                    result.message || "Bulk action berhasil."
+                );
+
+                ChannelTable.clearSelection();
+
+                ChannelTable.reload();
+
+                ChannelStatistics.refresh();
+
+            } catch (err) {
+
+                ChannelUtils.error(
+                    err.message || "Bulk action gagal."
+                );
+
+            } finally {
+
+                ChannelUtils.loading(button, false);
+
+            }
+
+        },
+
+        /**
+         * Update Selected Counter
+         */
+        updateCounter() {
+
+            const total = ChannelTable.selectedIds().length;
+
+            $("#selectedCount").text(total);
+
+            const disabled = total === 0;
+
+            $("#btnBulkDelete").prop("disabled", disabled);
+
+            $("#btnBulkVermuk").prop("disabled", disabled);
+
+        }
+
+    };
+</script>

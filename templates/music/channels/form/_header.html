@@ -1,0 +1,14 @@
+<h2 class="page-title">
+    {{ page_title }}
+</h2>
+
+<div class="text-secondary mt-1">
+    {{ page_description }}
+</div>
+
+{% if show_detail %}
+<a href="/channels/{{ channel.id }}" class="btn btn-info">
+    <i class="ti ti-eye me-1"></i>
+    Detail
+</a>
+{% endif %}

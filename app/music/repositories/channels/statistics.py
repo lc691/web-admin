@@ -1,105 +1,83 @@
+"""
+Channel Statistics Repository
+"""
+
+from psycopg2.extras import DictRow
+
+
 class ChannelStatisticsRepository:
-    def __init__(self, cursor):
-        self.cursor = cursor
+    """
+    Repository untuk statistik Channel.
+    """
 
-    # =====================================================
-    # OVERVIEW
-    # =====================================================
-
-    def overview(self):
-        self.cursor.execute(
-            """
+    @staticmethod
+    def summary(cursor) -> dict:
+        cursor.execute("""
             SELECT
-                COUNT(*) AS total_channels,
-                COUNT(DISTINCT a.id) AS total_artists,
-                COUNT(s.id) AS total_songs,
-                COUNT(CASE WHEN s.status = 'Live' THEN 1 END) AS live_songs,
-                COUNT(CASE WHEN s.status = 'Approved' THEN 1 END) AS approved_songs,
-                COUNT(CASE WHEN s.status = 'Review' THEN 1 END) AS review_songs,
-                COUNT(CASE WHEN s.status = 'Take Down' THEN 1 END) AS takedown_songs,
-                COUNT(CASE WHEN s.status = 'Topic' THEN 1 END) AS topic_songs
-            FROM channels c
-            LEFT JOIN artists a
-                ON a.channel_id = c.id
-            LEFT JOIN songs s
-                ON s.artist_id = a.id
-            """
-        )
+                COUNT(*)::INTEGER AS total_channels,
 
-        return self.cursor.fetchone()
+                COUNT(*) FILTER (
+                    WHERE vermuk = TRUE
+                )::INTEGER AS total_vermuk,
 
-    # =====================================================
-    # CHANNEL SUMMARY
-    # =====================================================
+                COUNT(*) FILTER (
+                    WHERE vermuk = FALSE
+                )::INTEGER AS total_normal,
 
-    def summary(self, channel_id: int):
-        self.cursor.execute(
-            """
-            SELECT
-                COUNT(DISTINCT a.id) AS total_artists,
-                COUNT(s.id) AS total_songs,
-                COUNT(CASE WHEN s.status = 'Live' THEN 1 END) AS live_songs,
-                COUNT(CASE WHEN s.status = 'Approved' THEN 1 END) AS approved_songs,
-                COUNT(CASE WHEN s.status = 'Review' THEN 1 END) AS review_songs,
-                COUNT(CASE WHEN s.status = 'Take Down' THEN 1 END) AS takedown_songs,
-                COUNT(CASE WHEN s.status = 'Topic' THEN 1 END) AS topic_songs
-            FROM channels c
-            LEFT JOIN artists a
-                ON a.channel_id = c.id
-            LEFT JOIN songs s
-                ON s.artist_id = a.id
-            WHERE c.id = %s
-            """,
-            (channel_id,),
-        )
+                (
+                    SELECT COUNT(*)
+                    FROM artists
+                )::INTEGER AS total_artists,
 
-        return self.cursor.fetchone()
+                (
+                    SELECT COUNT(*)
+                    FROM songs
+                )::INTEGER AS total_songs
+            FROM channels
+        """)
 
-    # =====================================================
-    # STATUS DISTRIBUTION
-    # =====================================================
+        row = cursor.fetchone()
 
-    def status_distribution(self, channel_id: int):
-        self.cursor.execute(
-            """
-            SELECT
-                s.status,
-                COUNT(*) AS total
-            FROM songs s
-            JOIN artists a
-                ON a.id = s.artist_id
-            WHERE a.channel_id = %s
-            GROUP BY s.status
-            ORDER BY s.status
-            """,
-            (channel_id,),
-        )
+        return dict(row)
 
-        return self.cursor.fetchall()
+    @staticmethod
+    def total_channels(cursor) -> int:
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM channels
+        """)
+        return cursor.fetchone()[0]
 
-    # =====================================================
-    # TOP CHANNELS
-    # =====================================================
+    @staticmethod
+    def total_artists(cursor) -> int:
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM artists
+        """)
+        return cursor.fetchone()[0]
 
-    def top_channels(self, limit: int = 10):
-        self.cursor.execute(
-            """
-            SELECT
-                c.id,
-                c.name,
-                COUNT(s.id) AS total_songs
-            FROM channels c
-            LEFT JOIN artists a
-                ON a.channel_id = c.id
-            LEFT JOIN songs s
-                ON s.artist_id = a.id
-            GROUP BY
-                c.id,
-                c.name
-            ORDER BY total_songs DESC, c.name
-            LIMIT %s
-            """,
-            (limit,),
-        )
+    @staticmethod
+    def total_songs(cursor) -> int:
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM songs
+        """)
+        return cursor.fetchone()[0]
 
-        return self.cursor.fetchall()
+    @staticmethod
+    def total_vermuk(cursor) -> int:
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM channels
+            WHERE vermuk = TRUE
+        """)
+        return cursor.fetchone()[0]
+
+    @staticmethod
+    def total_normal(cursor) -> int:
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM channels
+            WHERE vermuk = FALSE
+        """)
+        return cursor.fetchone()[0]
