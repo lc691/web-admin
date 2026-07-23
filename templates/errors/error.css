@@ -1,0 +1,112 @@
+/* =====================================================
+   ERROR PAGE STYLES
+   ===================================================== */
+
+.error-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--tblr-bg-surface);
+}
+
+.error-page .error-code {
+    font-size: 8rem;
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--tblr-primary), var(--tblr-primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.error-page .error-code.text-danger {
+    background: linear-gradient(135deg, var(--tblr-danger), var(--tblr-danger-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.error-page .error-code.text-warning {
+    background: linear-gradient(135deg, var(--tblr-warning), var(--tblr-warning-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.error-page .error-code.text-muted {
+    background: linear-gradient(135deg, var(--tblr-secondary), var(--tblr-secondary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.error-page .error-icon {
+    font-size: 6rem;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.error-page .error-details {
+    max-width: 600px;
+    margin: 1.5rem auto 0;
+    text-align: left;
+    background: var(--tblr-bg-surface-secondary);
+    border-radius: var(--tblr-border-radius);
+    padding: 1.5rem;
+    overflow: auto;
+}
+
+.error-page .error-details pre {
+    margin: 0;
+    font-size: 0.75rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: var(--tblr-danger);
+}
+
+/* Toast container */
+#toast-container {
+    z-index: 1050;
+}
+
+#toast-container .toast {
+    min-width: 250px;
+    max-width: 450px;
+    border-radius: var(--tblr-border-radius);
+    box-shadow: var(--tblr-shadow);
+}
+
+#toast-container .toast .toast-body {
+    padding: 0.75rem 1rem;
+}
+
+/* Error animations */
+@keyframes errorPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.error-pulse {
+    animation: errorPulse 2s ease-in-out infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .error-page .error-code {
+        font-size: 5rem;
+    }
+    
+    .error-page .error-icon {
+        font-size: 4rem;
+    }
+    
+    .error-page .error-details {
+        margin: 1rem 1rem 0;
+        padding: 1rem;
+    }
+}

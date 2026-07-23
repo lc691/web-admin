@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+Error - {{ status_code|default('Terjadi Kesalahan') }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container-xl d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
+
+    <div class="text-center">
+
+        <div class="display-1 text-{{ 'danger' if status_code >= 500 else 'warning' }} mb-3">
+
+            {{ status_code|default('!') }}
+
+        </div>
+
+        <div class="h1 mb-3">{{ title|default('Terjadi Kesalahan') }}</div>
+
+        <p class="text-muted mb-4">
+            {{ message|default('Maaf, terjadi kesalahan saat memproses permintaan Anda.') }}
+        </p>
+
+        <div class="d-flex gap-3 justify-content-center">
+
+            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+
+                <i class="ti ti-arrow-left me-1"></i>
+
+                Kembali
+
+            </a>
+
+            <a href="/" class="btn btn-primary">
+
+                <i class="ti ti-home me-1"></i>
+
+                Ke Dashboard
+
+            </a>
+
+        </div>
+
+        {% if error %}
+            <div class="mt-4 text-start bg-dark p-3 rounded" style="max-width: 600px; margin: 0 auto;">
+
+                <div class="text-muted small mb-2">
+                    <i class="ti ti-bug me-1"></i>
+                    Detail Error:
+                </div>
+
+                <pre class="text-danger small mb-0" style="white-space: pre-wrap; word-wrap: break-word;">{{ error }}</pre>
+
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

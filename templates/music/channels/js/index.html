@@ -1,85 +1,84 @@
+<!-- ===================================================== -->
+<!-- INDEX PAGE SCRIPTS -->
+<!-- ===================================================== -->
+
 <script>
-    /**
-     * ============================================================
-     * Channels Page
-     * ============================================================
-     */
 
-    const ChannelsPage = {
+    // Auto-refresh every 60 seconds
+    let autoRefreshInterval = null;
 
-        /**
-         * =========================================================
-         * Initialize
-         * =========================================================
-         *
-         * Menginisialisasi seluruh komponen pada
-         * halaman Channels.
-         */
-        init() {
-
-            ChannelStatistics.init();
-            ChannelTable.init();
-            ChannelDelete.init();
-            ChannelBulk.init();
-
-            this.bindEvents();
-
-        },
-
-        /**
-         * =========================================================
-         * Bind Events
-         * =========================================================
-         *
-         * Mendaftarkan seluruh event pada halaman,
-         * seperti navigasi detail dan edit.
-         */
-        bindEvents() {
-
-            /**
-             * Buka halaman detail channel.
-             */
-            $(document).on("click", ".btn-detail", function () {
-
-                const id = $(this).data("id");
-
-                location.href = `/channels/${id}`;
-
-            });
-
-            /**
-             * Buka halaman edit channel.
-             */
-            $(document).on("click", ".btn-edit", function () {
-
-                const id = $(this).data("id");
-
-                location.href = `/channels/${id}/edit`;
-
-            });
-
+    function startAutoRefresh() {
+        if (autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
         }
+        autoRefreshInterval = setInterval(() => {
+            if (!document.hidden) {
+                refreshTable();
+            }
+        }, 60000);
+    }
 
-    };
-
-    /**
-     * ============================================================
-     * Initialize Page
-     * ============================================================
-     *
-     * Menjalankan inisialisasi halaman setelah
-     * seluruh dokumen selesai dimuat.
-     */
-    document.addEventListener(
-
-        "DOMContentLoaded",
-
-        () => {
-
-            ChannelsPage.init();
-
+    function stopAutoRefresh() {
+        if (autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
+            autoRefreshInterval = null;
         }
+    }
 
-    );
+    document.addEventListener('DOMContentLoaded', function() {
+        // Start auto-refresh
+        startAutoRefresh();
+
+        // Stop auto-refresh when page is hidden
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                stopAutoRefresh();
+            } else {
+                startAutoRefresh();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+R or Cmd+R to refresh
+            if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                e.preventDefault();
+                refreshTable();
+            }
+            // Escape to close modals
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal.show');
+                modals.forEach(modal => {
+                    const instance = bootstrap.Modal.getInstance(modal);
+                    if (instance) {
+                        instance.hide();
+                    }
+                });
+            }
+        });
+
+        // Update stats periodically
+        setInterval(updateStatistics, 30000);
+
+        // Handle window resize for responsive table
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (channelsTable) {
+                    channelsTable.columns.adjust();
+                }
+            }, 250);
+        });
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        stopAutoRefresh();
+        if (channelsTable) {
+            channelsTable.destroy();
+            channelsTable = null;
+        }
+    });
 
 </script>

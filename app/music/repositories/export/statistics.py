@@ -78,7 +78,7 @@ def get_remaining_song_count(
             LEFT JOIN channel_blacklists cb
                 ON cb.channel_id = c.id
             WHERE
-                s.status = 'Live'
+                s.status = 'live'
                 AND u.song_id IS NULL
                 AND (
                     %s = 'normal'
@@ -128,7 +128,7 @@ def get_total_song_count(
             LEFT JOIN channel_blacklists cb
                 ON cb.channel_id = c.id
             WHERE
-                s.status = 'Live'
+                s.status = 'live'
                 AND (
                     %s = 'normal'
                     OR (

@@ -34,13 +34,13 @@ def get_available_songs(
     Return available songs for export.
 
     Mode:
-        normal     -> semua lagu Live
-        clean      -> Live tanpa channel blacklist
+        normal     -> semua lagu live
+        clean      -> live tanpa channel blacklist
         blacklist  -> hanya channel blacklist
     """
 
     conditions = [
-        "s.status = 'Live'",
+        "s.status = 'live'",
         "u.song_id IS NULL",
     ]
 

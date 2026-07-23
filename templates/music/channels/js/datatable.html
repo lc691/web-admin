@@ -1,286 +1,228 @@
+<!-- ===================================================== -->
+<!-- DATATABLE CONFIGURATION -->
+<!-- ===================================================== -->
+
 <script>
-/**
- * ============================================================
- * Channels DataTable
- * ============================================================
- */
 
-const ChannelTable = {
+    let channelsTable = null;
 
-    /**
-     * Instance DataTable
-     */
-    table: null,
-
-    /**
-     * Delay pencarian (reserved)
-     */
-    searchTimeout: null,
-
-    /**
-     * =========================================================
-     * Initialize
-     * =========================================================
-     *
-     * Membuat DataTable dan mendaftarkan seluruh event.
-     */
-    init() {
-
-        this.create();
-        this.bindEvents();
-
-    },
-
-    /**
-     * =========================================================
-     * Create DataTable
-     * =========================================================
-     *
-     * Menginisialisasi DataTables beserta konfigurasi
-     * server-side, kolom, AJAX, dan renderer.
-     */
-    create() {
-
-        this.table = $("#channels-table").DataTable({
-
+    function initDataTable() {
+        channelsTable = $('#channels-table').DataTable({
             processing: true,
             serverSide: true,
-            responsive: true,
-            searching: true,
-            ordering: true,
-            pageLength: 10,
-
             ajax: {
-
                 url: "/api/channels/data",
                 type: "GET",
-
-                /**
-                 * Menambahkan parameter filter
-                 * sebelum request dikirim.
-                 */
-                data: function (d) {
-
-                    const status = $("#status").val();
-
-                    if (status === "vermuk") {
-                        d.vermuk = true;
-                    }
-                    else if (status === "normal") {
-                        d.vermuk = false;
-                    }
-                    else {
-                        delete d.vermuk;
-                    }
-
+                data: function(d) {
+                    d.vermuk = $('#filter-vermuk').val();
+                    d.has_songs = $('#filter-has-songs').val();
+                    d.has_artists = $('#filter-has-artists').val();
                 }
-
             },
-
             columns: [
-
                 {
-                    data: null,
+                    data: 'id',
+                    render: function(data) {
+                        return `
+                            <input
+                                type="checkbox"
+                                class="form-check-input m-0 align-middle row-checkbox"
+                                value="${data}"
+                                onchange="updateBulkButtons()">
+                        `;
+                    },
                     orderable: false,
-                    searchable: false,
-                    render: (_, __, row) => `
-                        <input
-                            type="checkbox"
-                            class="form-check-input row-check"
-                            value="${row.id}">
-                    `
+                    searchable: false
                 },
-
+                { data: 'id' },
                 {
-                    data: "id"
-                },
-
-                {
-                    data: "name"
-                },
-
-                {
-                    data: "email",
-                    defaultContent: "-",
-                    render: data => data || "-"
-                },
-
-                {
-                    data: "total_artists",
-                    className: "text-center"
-                },
-
-                {
-                    data: "total_songs",
-                    className: "text-center"
-                },
-
-                {
-                    data: "vermuk",
-                    className: "text-center",
-                    render: vermuk => vermuk
-                        ? '<span class="badge bg-danger text-white">Vermuk</span>'
-                        : '<span class="badge bg-success text-white">Normal</span>'
-                },
-
-                {
-                    data: "updated_at",
-                    render: value => {
-
-                        if (!value) {
-                            return "-";
-                        }
-
-                        return new Date(value)
-                            .toLocaleString("id-ID");
-
+                    data: 'name',
+                    render: function(data, type, row) {
+                        return `<a href="/channels/${row.id}/detail" class="text-primary">${data}</a>`;
                     }
                 },
-
+                { data: 'email' },
+                {
+                    data: 'vermuk',
+                    render: function(data) {
+                        return data
+                            ? '<span class="badge bg-danger text-white">Vermuk</span>'
+                            : '<span class="badge bg-success text-white">Normal</span>';
+                    }
+                },
+                {
+                    data: 'total_artists',
+                    className: 'text-center',
+                    render: function(data) {
+                        return formatNumber(data || 0);
+                    }
+                },
+                {
+                    data: 'total_songs',
+                    className: 'text-center',
+                    render: function(data) {
+                        return formatNumber(data || 0);
+                    }
+                },
+                {
+                    data: 'uploaded_songs',
+                    className: 'text-center',
+                    render: function(data) {
+                        return formatNumber(data || 0);
+                    }
+                },
+                {
+                    data: 'created_at',
+                    render: function(data) {
+                        return formatDate(data);
+                    }
+                },
                 {
                     data: null,
                     orderable: false,
                     searchable: false,
-                    className: "text-center",
-                    render: (_, __, row) => `
-                        <div class="btn-list justify-content-center">
+                    render: function(data, type, row) {
+                        return `
+                            <div class="btn-group">
+                                <a
+                                    href="/channels/${row.id}"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    title="Detail">
+                                    <i class="ti ti-eye"></i>
+                                </a>
 
-                            <button
-                                class="btn btn-sm btn-primary btn-detail"
-                                data-id="${row.id}">
-                                <i class="ti ti-eye"></i>
-                            </button>
+                                <a
+                                    href="/channels/${row.id}/edit"
+                                    class="btn btn-sm btn-outline-primary"
+                                    title="Edit">
+                                    <i class="ti ti-edit"></i>
+                                </a>
 
-                            <button
-                                class="btn btn-sm btn-primary btn-edit"
-                                data-id="${row.id}">
-                                <i class="ti ti-pencil"></i>
-                            </button>
-
-                            <button
-                                class="btn btn-sm btn-danger btn-delete"
-                                data-id="${row.id}">
-                                <i class="ti ti-trash"></i>
-                            </button>
-
-                        </div>
-                    `
+                                <button
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="confirmDelete(${row.id}, '${row.name.replace(/'/g, "\\'")}')"
+                                    title="Hapus">
+                                    <i class="ti ti-trash"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                },
+            ],
+            order: [[1, 'asc']],
+            pageLength: 10,
+            lengthMenu: [10, 25, 50, 100],
+            language: {
+                processing: 'Memuat data...',
+                search: 'Cari:',
+                lengthMenu: 'Tampilkan _MENU_ data',
+                info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
+                infoEmpty: 'Tidak ada data',
+                infoFiltered: '(difilter dari _MAX_ total data)',
+                zeroRecords: 'Tidak ada data yang ditemukan',
+                paginate: {
+                    first: 'Pertama',
+                    last: 'Terakhir',
+                    next: 'Selanjutnya',
+                    previous: 'Sebelumnya'
                 }
-
-            ]
-
+            },
+            drawCallback: function() {
+                updateBulkButtons();
+            }
         });
-
-    },
-
-    /**
-     * =========================================================
-     * Bind Events
-     * =========================================================
-     *
-     * Mendaftarkan seluruh event pada halaman
-     * DataTable.
-     */
-    bindEvents() {
-
-        /**
-         * Filter status.
-         */
-        $("#status").on("change", () => {
-
-            this.reload();
-
-        });
-
-        /**
-         * Pilih semua checkbox.
-         */
-        $("#check-all").on("change", function () {
-
-            $(".row-check").prop(
-                "checked",
-                this.checked
-            );
-
-            ChannelBulk.updateCounter();
-
-        });
-
-        /**
-         * Update jumlah data terpilih.
-         */
-        $(document).on("change", ".row-check", () => {
-
-            ChannelBulk.updateCounter();
-
-        });
-
-    },
-
-    /**
-     * =========================================================
-     * Reload Table
-     * =========================================================
-     *
-     * Memuat ulang data DataTable.
-     *
-     * @param {boolean} resetPaging
-     * Reset halaman ke page pertama.
-     */
-    reload(resetPaging = false) {
-
-        this.table.ajax.reload(
-            null,
-            resetPaging
-        );
-
-    },
-
-    /**
-     * =========================================================
-     * Get Selected IDs
-     * =========================================================
-     *
-     * Mengambil seluruh ID channel yang
-     * sedang dipilih.
-     *
-     * @returns {number[]}
-     */
-    selectedIds() {
-
-        return $(".row-check:checked")
-            .map(function () {
-
-                return Number(this.value);
-
-            })
-            .get();
-
-    },
-
-    /**
-     * =========================================================
-     * Clear Selection
-     * =========================================================
-     *
-     * Menghapus seluruh checkbox yang dipilih
-     * dan memperbarui Bulk Toolbar.
-     */
-    clearSelection() {
-
-        $("#check-all").prop(
-            "checked",
-            false
-        );
-
-        $(".row-check").prop(
-            "checked",
-            false
-        );
-
-        ChannelBulk.updateCounter();
-
     }
 
-};
+    function refreshTable() {
+        if (channelsTable) {
+            channelsTable.ajax.reload(null, false);
+        }
+        updateStatistics();
+    }
+
+    function applyFilters() {
+        if (channelsTable) {
+            channelsTable.ajax.reload(null, false);
+        }
+    }
+
+    function resetFilters() {
+        document.getElementById('search-keyword').value = '';
+        document.getElementById('filter-vermuk').value = '';
+        document.getElementById('filter-has-songs').value = '';
+        document.getElementById('filter-has-artists').value = '';
+        applyFilters();
+    }
+
+    function toggleAllCheckboxes() {
+        const checked = document.getElementById('select-all').checked;
+        document.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.checked = checked;
+        });
+        updateBulkButtons();
+    }
+
+    function getSelectedIds() {
+        const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+        return Array.from(checkboxes).map(cb => parseInt(cb.value));
+    }
+
+    function updateBulkButtons() {
+        const selected = getSelectedIds();
+        const count = selected.length;
+
+        const deleteBtn = document.getElementById('btn-bulk-delete');
+        const vermukBtn = document.getElementById('btn-bulk-vermuk');
+
+        if (count > 0) {
+            deleteBtn.classList.remove('d-none');
+            vermukBtn.classList.remove('d-none');
+            document.getElementById('bulk-selected-count').textContent = count;
+        } else {
+            deleteBtn.classList.add('d-none');
+            vermukBtn.classList.add('d-none');
+        }
+    }
+
+    function exportData(format) {
+        const selected = getSelectedIds();
+        if (selected.length === 0) {
+            showToast('Pilih minimal satu channel untuk diexport', 'warning');
+            return;
+        }
+
+        const url = `/api/channels/bulk/export?format=${format}&include_stats=true`;
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(selected)
+        })
+        .then(res => res.blob())
+        .then(blob => {
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = `channels_export_${new Date().toISOString().split('T')[0]}.${format}`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
+            showToast(`Berhasil mengeksport ${selected.length} channel`, 'success');
+        })
+        .catch(err => {
+            showToast('Gagal mengeksport data: ' + err.message, 'error');
+        });
+    }
+
+    function exportSelected() {
+        document.getElementById('modal-bulk').querySelector('.btn-close').click();
+        exportData('csv');
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        initDataTable();
+        updateStatistics();
+    });
+
 </script>

@@ -42,13 +42,54 @@ Kelola akun SoundOn Channel
 
                     <button
                         id="btn-refresh"
-                        class="btn btn-outline-secondary">
+                        class="btn btn-outline-secondary"
+                        onclick="refreshTable()">
 
                         <i class="ti ti-refresh me-1"></i>
 
                         Refresh
 
                     </button>
+
+                    <div class="dropdown">
+
+                        <button
+                            class="btn btn-outline-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown">
+
+                            <i class="ti ti-file-export me-1"></i>
+
+                            Export
+
+                        </button>
+
+                        <div class="dropdown-menu">
+
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                onclick="exportData('csv')">
+
+                                <i class="ti ti-file-spreadsheet me-1"></i>
+
+                                Export CSV
+
+                            </a>
+
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                onclick="exportData('json')">
+
+                                <i class="ti ti-file-code me-1"></i>
+
+                                Export JSON
+
+                            </a>
+
+                        </div>
+
+                    </div>
 
                     <a
                         href="/channels/create"
@@ -77,6 +118,116 @@ Kelola akun SoundOn Channel
 {% include "music/channels/partials/_statistics.html" %}
 
 <!-- ===================================================== -->
+<!-- FILTERS -->
+<!-- ===================================================== -->
+
+<div class="row mb-3">
+
+    <div class="col-12">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+
+                                <i class="ti ti-search"></i>
+
+                            </span>
+
+                            <input
+                                type="text"
+                                id="search-keyword"
+                                class="form-control"
+                                placeholder="Cari channel..."
+                                onkeyup="applyFilters()">
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <select
+                            id="filter-vermuk"
+                            class="form-select"
+                            onchange="applyFilters()">
+
+                            <option value="">Semua Status</option>
+
+                            <option value="true">Vermuk</option>
+
+                            <option value="false">Normal</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <select
+                            id="filter-has-songs"
+                            class="form-select"
+                            onchange="applyFilters()">
+
+                            <option value="">Semua</option>
+
+                            <option value="true">Ada Lagu</option>
+
+                            <option value="false">Tidak Ada Lagu</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <select
+                            id="filter-has-artists"
+                            class="form-select"
+                            onchange="applyFilters()">
+
+                            <option value="">Semua</option>
+
+                            <option value="true">Ada Artist</option>
+
+                            <option value="false">Tidak Ada Artist</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button
+                            class="btn btn-outline-secondary w-100"
+                            onclick="resetFilters()">
+
+                            <i class="ti ti-rotate me-1"></i>
+
+                            Reset
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
 <!-- TABLE -->
 <!-- ===================================================== -->
 
@@ -93,6 +244,32 @@ Kelola akun SoundOn Channel
                     Daftar Channel
 
                 </h3>
+
+                <div class="card-actions">
+
+                    <button
+                        id="btn-bulk-delete"
+                        class="btn btn-danger btn-sm d-none"
+                        onclick="bulkDelete()">
+
+                        <i class="ti ti-trash me-1"></i>
+
+                        Hapus Terpilih
+
+                    </button>
+
+                    <button
+                        id="btn-bulk-vermuk"
+                        class="btn btn-warning btn-sm d-none"
+                        onclick="bulkVermuk()">
+
+                        <i class="ti ti-flag me-1"></i>
+
+                        Vermuk Terpilih
+
+                    </button>
+
+                </div>
 
             </div>
 
@@ -126,8 +303,8 @@ Kelola akun SoundOn Channel
 <!-- CHANNELS -->
 <!-- ===================================================== -->
 
+{% include "music/channels/partials/_scripts.html" %}
 {% include "music/channels/js/utils.html" %}
-
 {% include "music/channels/js/statistics.html" %}
 {% include "music/channels/js/datatable.html" %}
 {% include "music/channels/js/delete.html" %}

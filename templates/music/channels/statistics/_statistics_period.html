@@ -1,0 +1,120 @@
+<!-- ===================================================== -->
+<!-- PERIOD SELECTOR -->
+<!-- ===================================================== -->
+
+<div class="row mb-3">
+
+    <div class="col-12">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="row g-3 align-items-center">
+
+                    <div class="col-md-3">
+
+                        <label
+                            for="period-select"
+                            class="form-label mb-0">
+
+                            Periode
+
+                        </label>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <select
+                            id="period-select"
+                            class="form-select"
+                            onchange="changePeriod(this.value)">
+
+                            <option
+                                value="daily"
+                                {{ 'selected' if period == 'daily' else '' }}>
+
+                                Harian
+
+                            </option>
+
+                            <option
+                                value="weekly"
+                                {{ 'selected' if period == 'weekly' else '' }}>
+
+                                Mingguan
+
+                            </option>
+
+                            <option
+                                value="monthly"
+                                {{ 'selected' if period == 'monthly' else '' }}>
+
+                                Bulanan
+
+                            </option>
+
+                            <option
+                                value="yearly"
+                                {{ 'selected' if period == 'yearly' else '' }}>
+
+                                Tahunan
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <select
+                            id="detail-select"
+                            class="form-select"
+                            onchange="changeDetail(this.value)">
+
+                            <option
+                                value="simple"
+                                {{ 'selected' if not detailed else '' }}>
+
+                                Ringkasan
+
+                            </option>
+
+                            <option
+                                value="detailed"
+                                {{ 'selected' if detailed else '' }}>
+
+                                Detail
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-3 text-end">
+
+                        <span
+                            id="last-updated"
+                            class="text-muted small">
+
+                            <i class="ti ti-clock me-1"></i>
+
+                            Last updated:
+                            {{ now|format_datetime if now else '-' }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

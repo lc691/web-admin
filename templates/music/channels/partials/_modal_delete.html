@@ -1,6 +1,10 @@
+<!-- ===================================================== -->
+<!-- MODAL DELETE -->
+<!-- ===================================================== -->
+
 <div
-    class="modal modal-blur fade"
-    id="deleteModal"
+    class="modal fade"
+    id="modal-delete"
     tabindex="-1"
     aria-hidden="true">
 
@@ -12,62 +16,49 @@
 
                 <h5 class="modal-title">
 
-                    Hapus Channel
+                    <i class="ti ti-alert-triangle text-danger me-1"></i>
+
+                    Konfirmasi Hapus
 
                 </h5>
 
                 <button
                     type="button"
                     class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close">
+                    data-bs-dismiss="modal">
+
                 </button>
 
             </div>
 
             <div class="modal-body">
 
-                <div class="text-center">
+                <p>
 
-                    <div class="mb-3">
+                    Apakah Anda yakin ingin menghapus channel
 
-                        <span class="avatar avatar-xl bg-danger-lt">
+                    <strong id="delete-channel-name"></strong>?
 
-                            <i class="ti ti-trash fs-1"></i>
+                </p>
 
-                        </span>
+                <p class="text-muted small">
 
-                    </div>
+                    <i class="ti ti-info-circle me-1"></i>
 
-                    <h3 class="mb-2">
+                    Tindakan ini akan menghapus semua artist dan lagu yang terkait dengan channel ini.
 
-                        Konfirmasi Penghapusan
+                </p>
 
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-
-                        Apakah Anda yakin ingin menghapus channel ini?
-
-                    </p>
-
-                    <p class="text-danger mt-2 mb-0">
-
-                        <strong>
-                            Tindakan ini tidak dapat dibatalkan.
-                        </strong>
-
-                    </p>
-
-                </div>
+                <input
+                    type="hidden"
+                    id="delete-channel-id">
 
             </div>
 
             <div class="modal-footer">
 
                 <button
-                    type="button"
-                    class="btn btn-outline-secondary"
+                    class="btn btn-secondary"
                     data-bs-dismiss="modal">
 
                     Batal
@@ -75,8 +66,7 @@
                 </button>
 
                 <button
-                    id="confirmDeleteBtn"
-                    type="button"
+                    id="btn-confirm-delete"
                     class="btn btn-danger">
 
                     <i class="ti ti-trash me-1"></i>

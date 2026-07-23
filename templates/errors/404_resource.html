@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+404 - {{ resource|default('Resource') }} Tidak Ditemukan
+{% endblock %}
+
+{% block content %}
+
+<div class="container-xl d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
+
+    <div class="text-center">
+
+        <div class="display-1 text-muted mb-3">404</div>
+
+        <div class="h1 mb-3">{{ resource|default('Resource') }} Tidak Ditemukan</div>
+
+        <p class="text-muted mb-4">
+            Maaf, {{ resource|default('resource') }} yang Anda cari tidak dapat ditemukan.
+            {% if message %}
+                <br><span class="text-danger">{{ message }}</span>
+            {% endif %}
+        </p>
+
+        <div class="d-flex gap-3 justify-content-center">
+
+            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+
+                <i class="ti ti-arrow-left me-1"></i>
+
+                Kembali
+
+            </a>
+
+            <a href="/{{ module|default('') }}" class="btn btn-primary">
+
+                <i class="ti ti-list me-1"></i>
+
+                Lihat {{ resource|default('Resource') }}
+
+            </a>
+
+        </div>
+
+        {% if resource_id %}
+            <div class="mt-4 text-muted small">
+                <i class="ti ti-info-circle me-1"></i>
+                {{ resource|default('Resource') }} ID: {{ resource_id }}
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

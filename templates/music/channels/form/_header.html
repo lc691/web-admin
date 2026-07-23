@@ -1,14 +1,74 @@
-<h2 class="page-title">
-    {{ page_title }}
-</h2>
+<!-- ===================================================== -->
+<!-- FORM HEADER -->
+<!-- ===================================================== -->
 
-<div class="text-secondary mt-1">
-    {{ page_description }}
+<div class="mb-4">
+
+    <div class="alert alert-{{ 'warning' if mode == 'edit' else 'info' }}">
+
+        <i class="ti ti-{{ 'edit' if mode == 'edit' else 'plus' }} me-1"></i>
+
+        <strong>
+            {{ 'Edit Channel' if mode == 'edit' else 'Tambah Channel Baru' }}
+        </strong>
+
+        {% if mode == 'edit' %}
+
+            <span class="text-muted">
+                — Memperbarui informasi channel
+                <strong>{{ channel.name }}</strong>
+            </span>
+
+        {% else %}
+
+            <span class="text-muted">
+                — Isi form di bawah untuk menambahkan channel baru.
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    {% if mode == 'edit' %}
+
+        <div class="d-flex align-items-center mb-3">
+
+            <span
+                class="avatar avatar-lg me-3"
+                style="background-color: {{ channel.name|color_hash }};">
+
+                {{ channel.name[:1]|upper }}
+
+            </span>
+
+            <div>
+
+                <h3 class="mb-1">
+                    {{ channel.name }}
+                </h3>
+
+                <div class="text-muted">
+
+                    <i class="ti ti-mail me-1"></i>
+
+                    {{ channel.email or 'Tidak ada email' }}
+
+                </div>
+
+                <div class="mt-2">
+
+                    <span class="badge bg-{{ 'danger text-white' if channel.vermuk else 'secondary text-white' }}">
+
+                        {{ 'Vermuk' if channel.vermuk else 'Normal' }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
 </div>
-
-{% if show_detail %}
-<a href="/channels/{{ channel.id }}" class="btn btn-info">
-    <i class="ti ti-eye me-1"></i>
-    Detail
-</a>
-{% endif %}

@@ -1,25 +1,243 @@
+<!-- ===================================================== -->
+<!-- FORM SCRIPTS -->
+<!-- ===================================================== -->
+
 <script>
-    window.ChannelFormConfig = {
+document.addEventListener("DOMContentLoaded", () => {
 
-        mode: "{{ mode }}",
+    const form = document.getElementById("channel-form");
+    if (!form) return;
 
-        isEdit: {{ "true" if mode == "edit" else "false" }},
+    {% if mode == "edit" %}
 
-        channelId: {{ channel.id if channel else "null" }},
+    const draftKey = "channel_draft_{{ channel.id }}";
+    let autoSaveTimeout = null;
+    let lastToast = 0;
 
-        urls: {
+    // ==========================================
+    // Auto Save Draft
+    // ==========================================
 
-            create: "/api/channels/create",
+    form.querySelectorAll("input, textarea, select").forEach(input => {
+        input.addEventListener("input", () => {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(autoSaveDraft, 5000);
+        });
+    });
 
-            update: {% if channel %}
-                "/api/channels/{{ channel.id }}/edit"
-            {% else %}
-                null
-            {% endif %},
+    function autoSaveDraft() {
 
-            back: "/channels"
+        const formData = new FormData(form);
+        const data = {};
+
+        for (const [key, value] of formData.entries()) {
+
+            if (key === "_method") continue;
+
+            data[key] = value;
+        }
+
+        localStorage.setItem(draftKey, JSON.stringify({
+            data,
+            timestamp: new Date().toISOString()
+        }));
+
+        // Hindari toast terus-menerus
+        const now = Date.now();
+
+        if (now - lastToast > 30000) {
+            showToast("Draft tersimpan otomatis", "info");
+            lastToast = now;
+        }
+    }
+
+    // ==========================================
+    // Restore Draft
+    // ==========================================
+
+    const savedDraft = localStorage.getItem(draftKey);
+
+    if (savedDraft) {
+
+        try {
+
+            const draft = JSON.parse(savedDraft);
+
+            const age =
+                (Date.now() - new Date(draft.timestamp).getTime()) /
+                60000;
+
+            if (age < 30) {
+
+                Object.entries(draft.data).forEach(([key, value]) => {
+
+                    const input = form.querySelector(`[name="${key}"]`);
+
+                    if (!input) return;
+
+                    if (input.type === "radio") {
+
+                        const radio = form.querySelector(
+                            `[name="${key}"][value="${value}"]`
+                        );
+
+                        if (radio) radio.checked = true;
+
+                    } else {
+
+                        input.value = value;
+
+                    }
+
+                });
+
+                showToast("Draft berhasil dipulihkan", "info");
+
+            } else {
+
+                localStorage.removeItem(draftKey);
+
+            }
+
+        } catch {
+
+            localStorage.removeItem(draftKey);
 
         }
 
-    };
+    }
+
+    form.addEventListener("submit", () => {
+        localStorage.removeItem(draftKey);
+    });
+
+    {% endif %}
+
+    // ==========================================
+    // Validation
+    // ==========================================
+
+    form.addEventListener("submit", function (e) {
+
+        const name = form.querySelector('[name="name"]');
+
+        if (name && !name.value.trim()) {
+
+            e.preventDefault();
+
+            showToast("Nama channel wajib diisi", "error");
+
+            name.focus();
+
+            return;
+
+        }
+
+        const email = form.querySelector('[name="email"]');
+
+        if (email && email.value.trim()) {
+
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!regex.test(email.value.trim())) {
+
+                e.preventDefault();
+
+                showToast("Format email tidak valid", "error");
+
+                email.focus();
+
+                return;
+
+            }
+
+        }
+
+        const password = form.querySelector('[name="password"]');
+
+        if (
+            password &&
+            password.value.trim() &&
+            password.value.trim().length < 6
+        ) {
+
+            e.preventDefault();
+
+            showToast("Password minimal 6 karakter", "error");
+
+            password.focus();
+
+            return;
+
+        }
+
+        const submit = form.querySelector('button[type="submit"]');
+
+        if (submit) {
+
+            submit.disabled = true;
+
+            submit.innerHTML =
+                '<i class="ti ti-loader-2 ti-spin me-1"></i>Menyimpan...';
+
+        }
+
+    });
+
+    // ==========================================
+    // Password Toggle
+    // ==========================================
+
+    const passwordInput = form.querySelector('[name="password"]');
+
+    if (passwordInput) {
+
+        const wrapper = passwordInput.closest(".mb-3");
+
+        if (wrapper) {
+
+            wrapper.style.position = "relative";
+
+            const button = document.createElement("button");
+
+            button.type = "button";
+
+            button.className =
+                "btn btn-outline-secondary btn-sm position-absolute end-0 top-50 translate-middle-y me-2";
+
+            button.style.zIndex = "10";
+
+            button.innerHTML = '<i class="ti ti-eye"></i>';
+
+            button.addEventListener("click", () => {
+
+                const hidden = passwordInput.type === "password";
+
+                passwordInput.type = hidden ? "text" : "password";
+
+                button.innerHTML = hidden
+                    ? '<i class="ti ti-eye-off"></i>'
+                    : '<i class="ti ti-eye"></i>';
+
+            });
+
+            wrapper.appendChild(button);
+
+        }
+
+    }
+
+    // ==========================================
+    // Focus
+    // ==========================================
+
+    const firstInput = form.querySelector(
+        'input:not([type="hidden"]):not([type="radio"]), textarea'
+    );
+
+    if (firstInput) {
+        firstInput.focus();
+    }
+
+});
 </script>

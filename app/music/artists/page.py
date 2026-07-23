@@ -2,8 +2,9 @@
 Artist Page Router
 """
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
+from app.core.database import get_dict_cursor_dep
 
 from app.templates import templates
 from app.music.artists.presenter import ArtistPresenter
@@ -15,6 +16,28 @@ router = APIRouter(
 # =====================================================
 # LIST
 # =====================================================
+@router.get(
+    "/channels/{channel_id}/artists",
+    response_class=HTMLResponse,
+)
+def channel_artists(
+    request: Request,
+    channel_id: int,
+    db=Depends(get_dict_cursor_dep),
+):
+    cursor, _ = db
+
+    context = ArtistPresenter.channel(
+        cursor,
+        channel_id,
+    )
+
+    context["request"] = request
+
+    return templates.TemplateResponse(
+        "music/artists/index.html",
+        context,
+    )
 
 @router.get(
     "/artists",

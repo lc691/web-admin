@@ -153,6 +153,26 @@ class ArtistRepository:
         )
         return cursor.fetchall()
 
+    @staticmethod
+    def get_channel(
+        cursor,
+        channel_id: int,
+    ):
+        cursor.execute("""
+            SELECT
+                id,
+                name,
+                email,
+                vermuk,
+                notes,
+                created_at,
+                updated_at
+            FROM channels
+            WHERE id = %s
+        """, (channel_id,))
+
+        return cursor.fetchone()
+
     # =====================================================
     # CREATE
     # =====================================================

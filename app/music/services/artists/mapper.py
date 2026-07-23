@@ -167,3 +167,7 @@ class ArtistMapper:
             }
             for row in rows
         ]
+
+    @staticmethod
+    def channel(row):
+        return row

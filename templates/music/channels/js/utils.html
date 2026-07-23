@@ -1,162 +1,179 @@
 <script>
-/**
-* ============================================================
-* Channels Utilities
-* ============================================================
-*/
-    const ChannelUtils = {
+'use strict';
 
-        /**
-         * Toast Notification
-         */
-        toast(message, type = "success") {
+/* ==========================================================
+ * Utilities
+ * ========================================================== */
 
-            Swal.fire({
-                toast: true,
-                position: "top-end",
-                icon: type,
-                title: message,
-                showConfirmButton: false,
-                timer: 2500,
-                timerProgressBar: true
-            });
+window.formatNumber = function(value) {
 
-        },
+    return new Intl.NumberFormat('id-ID').format(
+        Number(value || 0)
+    );
 
-        /**
-         * Error Notification
-         */
-        error(message) {
+};
 
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: message
-            });
+window.formatPercentage = function(value, digits = 1) {
 
-        },
+    return `${Number(value || 0).toFixed(digits)}%`;
 
-        /**
-         * Success Notification
-         */
-        success(message) {
+};
 
-            Swal.fire({
-                icon: "success",
-                title: "Berhasil",
-                text: message
-            });
+window.formatDateTime = function(value) {
 
-        },
+    if (!value) {
+        return '-';
+    }
 
-        /**
-         * Confirm Dialog
-         */
-        async confirm(title, text, confirmText = "Ya") {
+    return new Date(value).toLocaleString('id-ID', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+    });
 
-            const result = await Swal.fire({
+};
 
-                title,
+window.setText = function(id, value) {
 
-                text,
+    const el = document.getElementById(id);
 
-                icon: "warning",
+    if (!el) {
+        return;
+    }
 
-                showCancelButton: true,
+    el.textContent = value;
 
-                confirmButtonText: confirmText,
+};
 
-                cancelButtonText: "Batal",
+window.setHTML = function(id, value) {
 
-                reverseButtons: true
+    const el = document.getElementById(id);
 
-            });
+    if (!el) {
+        return;
+    }
 
-            return result.isConfirmed;
+    el.innerHTML = value;
 
-        },
+};
 
-        /**
-         * Format Number
-         */
-        number(value) {
+window.setProgress = function(id, percent) {
 
-            return Number(value || 0).toLocaleString("id-ID");
+    const el = document.getElementById(id);
 
-        },
+    if (!el) {
+        return;
+    }
 
-        /**
-         * Format Date
-         */
-        date(value) {
+    el.style.width = `${percent}%`;
 
-            if (!value) return "-";
+};
 
-            return new Date(value).toLocaleString("id-ID");
+window.showLoading = function(id, message = 'Loading...') {
 
-        },
+    const el = document.getElementById(id);
 
-        /**
-         * Escape HTML
-         */
-        escape(text) {
+    if (!el) {
+        return;
+    }
 
-            if (!text) return "";
+    el.innerHTML = `
+        <div class="text-center py-5 text-muted">
+            <div class="spinner-border spinner-border-sm me-2"></div>
+            ${message}
+        </div>
+    `;
 
-            return $("<div>")
-                .text(text)
-                .html();
+};
 
-        },
+window.showError = function(id, message = 'Failed to load data') {
 
-        /**
-         * Loading Button
-         */
-        loading(button, state = true) {
+    const el = document.getElementById(id);
 
-            if (!button) return;
+    if (!el) {
+        return;
+    }
 
-            button.disabled = state;
+    el.innerHTML = `
+        <div class="alert alert-danger m-3 mb-0">
+            <i class="ti ti-alert-circle me-2"></i>
+            ${message}
+        </div>
+    `;
 
-            if (state) {
+};
 
-                button.dataset.original = button.innerHTML;
+/* ==========================================================
+ * Toast
+ * ========================================================== */
 
-                button.innerHTML = `
-                    <span class="spinner-border spinner-border-sm me-2"></span>
-                    Loading...
-                `;
+window.showToast = function(
+    message,
+    type = 'success',
+    title = 'Notification'
+) {
 
-            } else {
+    if (window.Tabler?.showToast) {
 
-                button.innerHTML = button.dataset.original;
+        Tabler.showToast({
+            type,
+            title,
+            message
+        });
 
-            }
+        return;
+    }
 
-        },
+    console.log(`[${type}] ${title}: ${message}`);
 
-        /**
-         * Fetch JSON Helper
-         */
-        async request(url, options = {}) {
+};
 
-            const response = await fetch(url, {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                ...options
-            });
+/* ==========================================================
+ * Charts
+ * ========================================================== */
 
-            const result = await response.json();
+window.destroyChart = function(chart) {
 
-            if (!response.ok) {
-                throw result;
-            }
+    if (chart && typeof chart.destroy === 'function') {
+        chart.destroy();
+    }
 
-            return result;
+    return null;
 
+};
+
+window.createChart = function(id, config) {
+
+    const canvas = document.getElementById(id);
+
+    if (!canvas) {
+        return null;
+    }
+
+    return new Chart(canvas, config);
+
+};
+
+/* ==========================================================
+ * Fetch Helper
+ * ========================================================== */
+
+window.fetchJSON = async function(url) {
+
+    const response = await fetch(url, {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
         }
+    });
 
-    };
+    if (!response.ok) {
 
+        throw new Error(
+            `HTTP ${response.status}`
+        );
+
+    }
+
+    return await response.json();
+
+};
 </script>

@@ -1,5 +1,13 @@
 """
-Channel Router
+Channel Router - Complete Implementation
+
+Main router untuk Channel dengan:
+- Page routes (Jinja2 templates)
+- API routes (JSON responses)
+- CRUD operations
+- Bulk operations
+- Statistics endpoints
+- DataTable endpoints
 """
 
 from fastapi import APIRouter
@@ -15,11 +23,14 @@ router = APIRouter(
     tags=["Channels"],
 )
 
-# Halaman (Jinja2)
+# Page routes (Jinja2 templates)
 router.include_router(page_router)
 
-# API
+# API routes (JSON responses)
 router.include_router(data_router)
 router.include_router(statistics_router)
 router.include_router(crud_router)
 router.include_router(bulk_router)
+
+# Export router
+__all__ = ['router']

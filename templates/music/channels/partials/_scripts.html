@@ -1,38 +1,125 @@
 <!-- ===================================================== -->
-<!-- CHANNELS JAVASCRIPT -->
+<!-- PARTIAL SCRIPTS -->
 <!-- ===================================================== -->
 
-<!-- Utilities -->
-{% include "music/channels/js/utils.js" %}
-<!-- <script src="{{ url_for('static', path='js/channels/utils.js') }}"></script> -->
+<script>
 
-<!-- Components -->
-{% include "music/channels/js/statistics.js" %}
-<!-- <script src="{{ url_for('static', path='js/channels/statistics.js') }}"></script> -->
+    // Base URL untuk API
+    const API_BASE = '/api/channels';
 
-{% include "music/channels/js/datatable.js" %}
-<!-- <script src="{{ url_for('static', path='js/channels/datatable.js') }}"></script> -->
+    // CSRF Token
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-{% include "music/channels/js/delete.js" %}
-<!-- <script src="{{ url_for('static', path='js/channels/delete.js') }}"></script> -->
+    // Helper untuk fetch dengan CSRF
+    function apiFetch(url, options = {}) {
+        return fetch(url, {
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrfToken,
+                ...(options.headers || {})
+            },
+            credentials: 'same-origin'
+        });
+    }
 
-{% include "music/channels/js/bulk.js" %}
-<!-- <script src="{{ url_for('static', path='js/channels/bulk.js') }}"></script> -->
+    // Format date
+    function formatDate(dateString) {
+        if (!dateString) return '-';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('id-ID', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
 
-<!-- Page -->
-{% if request.url.path == "/channels" %}
-  {% include "music/channels/js/index.js" %}
-  <!-- <script src="{{ url_for('static', path='js/channels/index.js') }}"></script> -->
+    // Format number
+    function formatNumber(num) {
+        return new Intl.NumberFormat('id-ID').format(num);
+    }
 
-{% elif request.url.path.endswith("/create") %}
-  {% include "music/channels/js/form.js" %}
-  <!-- <script src="{{ url_for('static', path='js/channels/form.js') }}"></script> -->
+    // Get status badge
+    function getStatusBadge(vermuk) {
+        if (vermuk) {
+            return '<span class="badge bg-danger">Vermuk</span>';
+        }
+        return '<span class="badge bg-secondary">Normal</span>';
+    }
 
-{% elif request.url.path.endswith("/edit") %}
-  {% include "music/channels/js/form.js" %}
-  <!-- <script src="{{ url_for('static', path='js/channels/form.js') }}"></script> -->
+    // Show toast notification
+    function showToast(message, type = 'success') {
+        const colors = {
+            success: 'bg-success text-white',
+            error: 'bg-danger text-white',
+            warning: 'bg-warning text-dark',
+            info: 'bg-info text-white'
+        };
 
-{% else %}
-  {% include "music/channels/js/detail.js" %}
-  <!-- <script src="{{ url_for('static', path='js/channels/detail.js') }}"></script> -->
-{% endif %}
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center ${colors[type] || colors.info} border-0`;
+        toast.role = 'alert';
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+
+        const container = document.getElementById('toast-container') || createToastContainer();
+        container.appendChild(toast);
+
+        const bsToast = new bootstrap.Toast(toast, { delay: 3000 });
+        bsToast.show();
+
+        setTimeout(() => toast.remove(), 3500);
+    }
+
+    function createToastContainer() {
+        const container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'position-fixed bottom-0 end-0 p-3';
+        container.style.zIndex = '1050';
+        document.body.appendChild(container);
+        return container;
+    }
+
+    // Show loading spinner
+    function showLoading(elementId) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            el.innerHTML = `
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Update statistics
+    function updateStatistics() {
+        fetch(`${API_BASE}/statistics/summary`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const stats = data.data;
+                    document.getElementById('stat-total-channels').textContent = stats.total_channels || 0;
+                    document.getElementById('stat-total-vermuk').textContent = stats.total_vermuk || 0;
+                    document.getElementById('stat-total-normal').textContent = stats.total_normal || 0;
+                    document.getElementById('stat-total-artists').textContent = stats.total_artists || 0;
+                    document.getElementById('stat-total-songs').textContent = stats.total_songs || 0;
+                    document.getElementById('stat-uploaded-songs').textContent = stats.uploaded_songs || 0;
+                    document.getElementById('stat-pending-songs').textContent = stats.pending_songs || 0;
+                    document.getElementById('stat-utilization-rate').textContent = stats.utilization_rate || 0;
+                    document.getElementById('stat-channels-with-songs').textContent = stats.channels_with_songs || 0;
+                    document.getElementById('stat-artists-with-songs').textContent = stats.artists_with_songs || 0;
+                }
+            })
+            .catch(err => console.error('Error updating statistics:', err));
+    }
+
+</script>

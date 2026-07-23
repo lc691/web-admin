@@ -95,6 +95,30 @@ class ArtistPresenter:
             "channels": ArtistService.get_channels(),
         }
 
+    @staticmethod
+    def channel(
+        cursor,
+        channel_id: int,
+    ):
+        """
+        Artist berdasarkan channel.
+        """
+
+        channel = ArtistService.get_channel(
+            cursor,
+            channel_id,
+        )
+
+        statistics = ArtistService.statistics(
+            channel_id=channel_id,
+        )
+
+        return {
+            "title": f'Artists - {channel["name"]}',
+            "channel": channel,
+            "statistics": statistics,
+        }
+
     # =====================================================
     # STATISTICS
     # =====================================================

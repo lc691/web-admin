@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+404 - Halaman Tidak Ditemukan
+{% endblock %}
+
+{% block content %}
+
+<div class="container-xl d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
+
+    <div class="text-center">
+
+        <div class="display-1 text-muted mb-3">404</div>
+
+        <div class="h1 mb-3">Halaman Tidak Ditemukan</div>
+
+        <p class="text-muted mb-4">
+            Maaf, halaman yang Anda cari tidak dapat ditemukan.
+            {% if message %}
+                <br><span class="text-danger">{{ message }}</span>
+            {% endif %}
+        </p>
+
+        <div class="d-flex gap-3 justify-content-center">
+
+            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+
+                <i class="ti ti-arrow-left me-1"></i>
+
+                Kembali
+
+            </a>
+
+            <a href="/" class="btn btn-primary">
+
+                <i class="ti ti-home me-1"></i>
+
+                Ke Dashboard
+
+            </a>
+
+        </div>
+
+        {% if resource %}
+            <div class="mt-4 text-muted small">
+                <i class="ti ti-info-circle me-1"></i>
+                Resource: {{ resource }} {% if resource_id %}(ID: {{ resource_id }}){% endif %}
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

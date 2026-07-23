@@ -1,0 +1,298 @@
+<!-- ===================================================== -->
+<!-- CHANNEL STATISTICS -->
+<!-- ===================================================== -->
+
+<div class="card mb-3">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+
+            <i class="ti ti-chart-bar me-1"></i>
+
+            Statistik Channel
+
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <!-- ============================================= -->
+        <!-- SUMMARY -->
+        <!-- ============================================= -->
+
+        <div class="row text-center">
+
+            <div class="col-md-4">
+
+                <div class="h2 mb-0">
+
+                    {{ channel.total_artists|default(0) }}
+
+                </div>
+
+                <div class="text-muted">
+
+                    Artists
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="h2 mb-0">
+
+                    {{ channel.total_songs|default(0) }}
+
+                </div>
+
+                <div class="text-muted">
+
+                    Songs
+
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="h2 mb-0">
+
+                    {{ channel.uploaded_songs|default(0) }}
+
+                    <span class="text-muted">/</span>
+
+                    <small class="text-muted">
+
+                        {{ channel.total_songs|default(0) }}
+
+                    </small>
+
+                </div>
+
+                <div class="text-muted">
+
+                    Uploaded
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- ============================================= -->
+        <!-- SONG STATUS -->
+        <!-- ============================================= -->
+
+        <h4 class="mb-3">
+
+            Song Status
+
+        </h4>
+
+        <div class="progress progress-separated mb-3">
+
+            {% for status, count in channel.status_breakdown.items() %}
+
+                {% if count > 0 %}
+
+                    {% set colors = {
+                        'released':'success',
+                        'unreleased':'warning',
+                        'scheduled':'info',
+                        'review':'primary',
+                        'approved':'success',
+                        'live':'success',
+                        'take_down':'danger',
+                        'topic':'cyan',
+                        'draft':'secondary',
+                        'no_ads':'dark'
+                    } %}
+
+                    <div
+                        class="progress-bar bg-{{ colors.get(status,'secondary') }}"
+                        style="width: {{ (count / channel.total_songs * 100)|round(1) if channel.total_songs else 0 }}%"
+                        title="{{ status }} : {{ count }}">
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+        <div class="mb-4">
+
+            {% for status, count in channel.status_breakdown.items() %}
+
+                {% if count > 0 %}
+
+                    {% set colors = {
+                        'released':'success text-white',
+                        'unreleased':'warning text-white',
+                        'scheduled':'info text-white',
+                        'review':'primary text-white',
+                        'approved':'warning text-white',
+                        'live':'success text-white',
+                        'take_down':'danger text-white',
+                        'topic':'cyan text-white',
+                        'draft':'secondary text-white',
+                        'no_ads':'dark text-white'
+                    } %}
+
+                    <span class="badge bg-{{ colors.get(status,'secondary text-white') }} me-1 mb-1">
+
+                        {{ status|replace('_',' ')|title }}
+
+                        ({{ count }})
+
+                    </span>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+        <!-- ============================================= -->
+        <!-- ACTIVITY -->
+        <!-- ============================================= -->
+
+        {% if activity %}
+
+        <hr>
+
+        <div class="row">
+
+            <div class="col-md-5">
+
+                <div class="text-muted mb-1">
+
+                    Activity Score
+
+                </div>
+
+                <div class="display-6">
+
+                    {{ activity.overall_score|round(1) }}%
+
+                </div>
+
+                <span class="badge bg-{{ {
+                    'Highly Active':'success',
+                    'Active':'primary',
+                    'Moderately Active':'info',
+                    'Low Activity':'warning',
+                    'Inactive':'secondary'
+                }.get(activity.level,'secondary') }}">
+
+                    {{ activity.level }}
+
+                </span>
+
+            </div>
+
+            <div class="col-md-7">
+
+                <div class="row">
+
+                    <div class="col-6 mb-3">
+
+                        <small class="text-muted">
+
+                            Recency
+
+                        </small>
+
+                        <div>
+
+                            {{ activity.recency_score|round(1) }}%
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-6 mb-3">
+
+                        <small class="text-muted">
+
+                            Consistency
+
+                        </small>
+
+                        <div>
+
+                            {{ activity.consistency_score|round(1) }}%
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <small class="text-muted">
+
+                            Engagement
+
+                        </small>
+
+                        <div>
+
+                            {{ activity.engagement_score|round(1) }}%
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <small class="text-muted">
+
+                            Growth
+
+                        </small>
+
+                        <div>
+
+                            {{ activity.growth_score|round(1) }}%
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="text-muted mt-3">
+
+                    <i class="ti ti-clock me-1"></i>
+
+                    {{ activity.last_activity|format_datetime if activity.last_activity else '-' }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <hr>
+
+        <div class="text-center text-muted py-4">
+
+            <i class="ti ti-chart-bar-off fs-1 d-block mb-2"></i>
+
+            Belum ada data aktivitas.
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>

@@ -1,7 +1,10 @@
-<div class="row row-deck row-cards mb-3">
+<!-- ===================================================== -->
+<!-- STATISTICS CARDS -->
+<!-- ===================================================== -->
 
-    <!-- Total Channels -->
-    <div class="col-sm-6 col-lg-2">
+<div class="row mb-3">
+
+    <div class="col-md-3 col-sm-6">
 
         <div class="card">
 
@@ -9,25 +12,66 @@
 
                 <div class="d-flex align-items-center">
 
-                    <div class="subheader">
-                        Channels
-                    </div>
+                    <div class="subheader">Total Channels</div>
 
-                    <div class="ms-auto">
+                    <div class="ms-auto lh-1">
 
-                        <span class="badge bg-primary-lt">
-                            <i class="ti ti-device-tv"></i>
-                        </span>
+                        <div class="dropdown">
+
+                            <a
+                                class="dropdown-toggle text-secondary"
+                                href="#"
+                                data-bs-toggle="dropdown">
+
+                                <i class="ti ti-dots-vertical"></i>
+
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end">
+
+                                <a class="dropdown-item" href="/channels/statistics">
+
+                                    <i class="ti ti-chart-bar me-1"></i>
+
+                                    Lihat Statistik
+
+                                </a>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                 </div>
 
-                <div
-                    id="stat-total-channels"
-                    class="h1 mb-0 mt-2">
+                <div class="h1 mb-3" id="stat-total-channels">
 
-                    -
+                    {{ stats.total_channels|default(0) }}
+
+                </div>
+
+                <div class="d-flex mb-2">
+
+                    <div class="text-muted">
+
+                        <i class="ti ti-flag me-1 text-danger"></i>
+
+                        Vermuk:
+
+                        <span id="stat-total-vermuk">{{ stats.total_vermuk|default(0) }}</span>
+
+                    </div>
+
+                    <div class="ms-auto text-muted">
+
+                        <i class="ti ti-flag me-1 text-secondary"></i>
+
+                        Normal:
+
+                        <span id="stat-total-normal">{{ stats.total_normal|default(0) }}</span>
+
+                    </div>
 
                 </div>
 
@@ -37,34 +81,31 @@
 
     </div>
 
-    <!-- Artists -->
-    <div class="col-sm-6 col-lg-2">
+    <div class="col-md-3 col-sm-6">
 
         <div class="card">
 
             <div class="card-body">
 
-                <div class="d-flex align-items-center">
+                <div class="subheader">Total Artists</div>
 
-                    <div class="subheader">
-                        Artists
-                    </div>
+                <div class="h1 mb-3" id="stat-total-artists">
 
-                    <div class="ms-auto">
-
-                        <span class="badge bg-azure-lt">
-                            <i class="ti ti-users"></i>
-                        </span>
-
-                    </div>
+                    {{ stats.total_artists|default(0) }}
 
                 </div>
 
-                <div
-                    id="stat-total-artists"
-                    class="h1 mb-0 mt-2">
+                <div class="d-flex mb-2">
 
-                    -
+                    <div class="text-muted">
+
+                        <span class="text-success">↑</span>
+
+                        <span id="stat-artists-with-songs">{{ stats.artists_with_songs|default(0) }}</span>
+
+                        <span class="text-muted">with songs</span>
+
+                    </div>
 
                 </div>
 
@@ -74,34 +115,41 @@
 
     </div>
 
-    <!-- Songs -->
-    <div class="col-sm-6 col-lg-2">
+    <div class="col-md-3 col-sm-6">
 
         <div class="card">
 
             <div class="card-body">
 
-                <div class="d-flex align-items-center">
+                <div class="subheader">Total Songs</div>
 
-                    <div class="subheader">
-                        Songs
-                    </div>
+                <div class="h1 mb-3" id="stat-total-songs">
 
-                    <div class="ms-auto">
-
-                        <span class="badge bg-green-lt">
-                            <i class="ti ti-music"></i>
-                        </span>
-
-                    </div>
+                    {{ stats.total_songs|default(0) }}
 
                 </div>
 
-                <div
-                    id="stat-total-songs"
-                    class="h1 mb-0 mt-2">
+                <div class="d-flex mb-2">
 
-                    -
+                    <div class="text-muted">
+
+                        <span class="text-success">●</span>
+
+                        Uploaded:
+
+                        <span id="stat-uploaded-songs">{{ stats.uploaded_songs|default(0) }}</span>
+
+                    </div>
+
+                    <div class="ms-auto text-muted">
+
+                        <span class="text-warning">●</span>
+
+                        Pending:
+
+                        <span id="stat-pending-songs">{{ stats.pending_songs|default(0) }}</span>
+
+                    </div>
 
                 </div>
 
@@ -111,71 +159,58 @@
 
     </div>
 
-    <!-- Vermuk -->
-    <div class="col-sm-6 col-lg-3">
+    <div class="col-md-3 col-sm-6">
 
         <div class="card">
 
             <div class="card-body">
 
-                <div class="d-flex align-items-center">
+                <div class="subheader">Utilization Rate</div>
 
-                    <div class="subheader">
-                        Vermuk
-                    </div>
+                <div class="h1 mb-3">
 
-                    <div class="ms-auto">
+                    <span id="stat-utilization-rate">
 
-                        <span class="badge bg-warning-lt">
-                            <i class="ti ti-shield-check"></i>
+                        {{ stats.utilization_rate|default(0) }}
+
+                    </span>%
+
+                </div>
+
+                <div class="d-flex mb-2">
+
+                    <div class="text-muted">
+
+                        <i class="ti ti-building me-1"></i>
+
+                        Active:
+
+                        <span id="stat-channels-with-songs">
+
+                            {{ stats.channels_with_songs|default(0) }}
+
+                        </span>
+
+                        /
+
+                        <span id="stat-total-channels-base">
+
+                            {{ stats.total_channels|default(0) }}
+
                         </span>
 
                     </div>
 
                 </div>
 
-                <div
-                    id="stat-total-vermuk"
-                    class="h1 mb-0 mt-2">
+                <div class="progress">
 
-                    -
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- Normal -->
-    <div class="col-sm-6 col-lg-3">
-
-        <div class="card">
-
-            <div class="card-body">
-
-                <div class="d-flex align-items-center">
-
-                    <div class="subheader">
-                        Normal
-                    </div>
-
-                    <div class="ms-auto">
-
-                        <span class="badge bg-secondary-lt">
-                            <i class="ti ti-circle-check"></i>
-                        </span>
+                    <div
+                        class="progress-bar bg-primary"
+                        style="width: {{ stats.utilization_rate|default(0) }}%"
+                        role="progressbar">
 
                     </div>
-
-                </div>
-
-                <div
-                    id="stat-total-normal"
-                    class="h1 mb-0 mt-2">
-
-                    -
 
                 </div>
 

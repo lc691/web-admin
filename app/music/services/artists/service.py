@@ -8,6 +8,7 @@ from app.music.repositories.artists.repository import ArtistRepository
 from app.music.repositories.artists.filter import ArtistFilterRepository
 from app.music.repositories.artists.statistics import ArtistStatisticsRepository
 from app.music.repositories.artists.bulk import ArtistBulkRepository
+from app.music.services.channels.service import ChannelService
 
 from app.music.services.artists.mapper import ArtistMapper
 from app.music.services.artists.validator import (
@@ -24,6 +25,7 @@ from app.music.services.artists.exceptions import (
     EmptySelectionError,
     InvalidArtistNameError,
     InvalidChannelError,
+    ChannelNotFoundError,
 )
 
 
@@ -182,6 +184,31 @@ class ArtistService:
                 rows = ArtistRepository.get_channels(cursor)
 
                 return ArtistMapper.channels(rows)
+
+        except Exception as exc:
+            raise ArtistDatabaseError(str(exc))
+
+    @staticmethod
+    def get_channel(
+        cursor,
+        channel_id: int,
+    ):
+        try:
+
+            row = ArtistRepository.get_channel(
+                cursor,
+                channel_id,
+            )
+
+            if not row:
+                raise ChannelNotFoundError(
+                    f"Channel dengan ID {channel_id} tidak ditemukan."
+                )
+
+            return ArtistMapper.channel(row)
+
+        except ChannelNotFoundError:
+            raise
 
         except Exception as exc:
             raise ArtistDatabaseError(str(exc))

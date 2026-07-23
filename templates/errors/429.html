@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+429 - Terlalu Banyak Permintaan
+{% endblock %}
+
+{% block content %}
+
+<div class="container-xl d-flex flex-column justify-content-center align-items-center" style="min-height: 70vh;">
+
+    <div class="text-center">
+
+        <div class="display-1 text-warning mb-3">429</div>
+
+        <div class="h1 mb-3">Terlalu Banyak Permintaan</div>
+
+        <p class="text-muted mb-4">
+            Maaf, Anda telah mengirim terlalu banyak permintaan dalam waktu singkat. Silakan tunggu beberapa saat sebelum mencoba lagi.
+            {% if message %}
+                <br><span class="text-warning">{{ message }}</span>
+            {% endif %}
+        </p>
+
+        <div class="d-flex gap-3 justify-content-center">
+
+            <a href="javascript:location.reload()" class="btn btn-outline-secondary">
+
+                <i class="ti ti-refresh me-1"></i>
+
+                Coba Lagi
+
+            </a>
+
+            <a href="/" class="btn btn-primary">
+
+                <i class="ti ti-home me-1"></i>
+
+                Ke Dashboard
+
+            </a>
+
+        </div>
+
+        {% if retry_after %}
+            <div class="mt-4 text-muted small">
+                <i class="ti ti-clock me-1"></i>
+                Coba lagi setelah {{ retry_after }} detik
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

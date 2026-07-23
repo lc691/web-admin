@@ -1,101 +1,332 @@
 <script>
-    /**
-    * ============================================================
-    * Channels Statistics
-    * ============================================================
-    */
+'use strict';
 
-    const ChannelStatistics = {
+/* ==========================================================
+ * State
+ * ========================================================== */
 
-        endpoint: "/api/channels/statistics",
+let statusChart = null;
+let growthChart = null;
 
-        /**
-        * Initialize
-        */
-        init() {
+/* ==========================================================
+ * Initialization
+ * ========================================================== */
 
-            this.load();
+document.addEventListener('DOMContentLoaded', () => {
+    loadStatistics();
+});
+
+/* ==========================================================
+ * Main Loader
+ * ========================================================== */
+
+async function loadStatistics() {
+
+    try {
+
+        const period =
+            document.getElementById('period-select')?.value || 'monthly';
+
+        const detail =
+            document.getElementById('detail-select')?.value || 'simple';
+
+        const response = await fetchJSON(
+            `/api/channels/statistics?period=${period}&detail=${detail}`
+        );
+
+        const stats = response.data;
+
+        console.log("Statistics:", stats);
+
+        if (!stats) {
+            throw new Error("Statistics data is empty.");
+        }
+
+        updateSummary(stats);
+        renderStatusChart(stats);
+        renderGrowthChart(stats);
+
+        if (detail === 'detailed') {
+            renderStatusBreakdown(stats);
+            renderTopChannels(stats);
+            renderTimeline(stats);
+        }
+
+        updateLastUpdated();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            'Failed to load statistics.',
+            'danger',
+            'Statistics'
+        );
+
+    }
+
+}
+
+/* ==========================================================
+ * Summary
+ * ========================================================== */
+
+function updateSummary(stats) {
+
+    setText(
+        'total-channels',
+        formatNumber(stats.total_channels ?? 0)
+    );
+
+    setText(
+        'active-channels',
+        formatNumber(stats.total_normal ?? 0)
+    );
+
+    setText(
+        'total-artists',
+        formatNumber(stats.total_artists ?? 0)
+    );
+
+    setText(
+        'total-songs',
+        formatNumber(stats.total_songs ?? 0)
+    );
+
+    setText(
+        'released-songs',
+        formatNumber(stats.uploaded_songs ?? 0)
+    );
+
+    const activeRate =
+        stats.total_channels > 0
+            ? (stats.total_normal / stats.total_channels) * 100
+            : 0;
+
+    setProgress(
+        'channels-progress',
+        activeRate
+    );
+
+    const releaseRate =
+        stats.total_songs > 0
+            ? (stats.uploaded_songs / stats.total_songs) * 100
+            : 0;
+
+    setText(
+        'release-rate',
+        formatPercentage(releaseRate)
+    );
+
+}
+
+/* ==========================================================
+ * Charts
+ * ========================================================== */
+
+function renderStatusChart(stats) {
+
+    statusChart = destroyChart(statusChart);
+
+    const canvas = document.getElementById('status-chart');
+
+    if (!canvas) {
+        return;
+    }
+
+    statusChart = createChart('status-chart', {
+
+        type: 'doughnut',
+
+        data: {
+
+            labels: [
+                'Normal',
+                'Vermuk'
+            ],
+
+            datasets: [{
+                data: [
+                    stats.total_normal ?? 0,
+                    stats.total_vermuk ?? 0
+                ]
+            }]
 
         },
 
-        /**
-        * Load statistics
-        */
-        async load() {
+        options: {
 
-            try {
-
-                const data = await ChannelUtils.request(this.endpoint);
-
-                this.render(data);
-
-            } catch (err) {
-
-                console.error(err);
-
-                ChannelUtils.error(
-                    err.message || "Gagal memuat statistik."
-                );
-
-            }
-
-        },
-
-        /**
-        * Refresh statistics
-        */
-        async refresh() {
-
-            await this.load();
-
-        },
-
-        /**
-        * Render statistics
-        */
-        render(data) {
-
-            this.setValue(
-                "stat-total-channels",
-                data.total_channels
-            );
-
-            this.setValue(
-                "stat-total-artists",
-                data.total_artists
-            );
-
-            this.setValue(
-                "stat-total-songs",
-                data.total_songs
-            );
-
-            this.setValue(
-                "stat-total-vermuk",
-                data.total_vermuk
-            );
-
-            this.setValue(
-                "stat-total-normal",
-                data.total_normal
-            );
-
-        },
-
-        /**
-        * Update element value
-        */
-        setValue(id, value) {
-
-            const el = document.getElementById(id);
-
-            if (!el) {
-                return;
-            }
-
-            el.textContent = ChannelUtils.number(value);
+            responsive: true,
+            maintainAspectRatio: false
 
         }
 
-    };
+    });
+
+}
+
+function renderGrowthChart(stats) {
+
+    growthChart = destroyChart(growthChart);
+
+    const canvas = document.getElementById('growth-chart');
+
+    if (!canvas) {
+        return;
+    }
+
+    growthChart = createChart('growth-chart', {
+
+        type: 'line',
+
+        data: {
+
+            labels: stats.growth_labels || [],
+
+            datasets: [{
+                label: 'Channels',
+                data: stats.growth_values || [],
+                tension: 0.3
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+            maintainAspectRatio: false
+
+        }
+
+    });
+
+}
+
+/* ==========================================================
+ * Detailed Views
+ * ========================================================== */
+
+function renderStatusBreakdown(stats) {
+
+    const body = document.getElementById(
+        'status-breakdown'
+    );
+
+    if (!body) {
+        return;
+    }
+
+    body.innerHTML = '';
+
+    (stats.status_breakdown || []).forEach(item => {
+
+        body.insertAdjacentHTML('beforeend', `
+            <tr>
+                <td>${item.label}</td>
+                <td class="text-end">${formatNumber(item.count)}</td>
+                <td class="text-end">${formatPercentage(item.percent)}</td>
+            </tr>
+        `);
+
+    });
+
+}
+
+function renderTopChannels(stats) {
+
+    const container =
+        document.getElementById('top-channels');
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = '';
+
+    (stats.top_channels || []).forEach(channel => {
+
+        container.insertAdjacentHTML('beforeend', `
+            <div class="list-group-item">
+                <div class="d-flex">
+                    <div class="flex-fill">
+                        <strong>${channel.name}</strong>
+                    </div>
+                    <div class="text-muted">
+                        ${formatNumber(channel.total_songs)}
+                    </div>
+                </div>
+            </div>
+        `);
+
+    });
+
+}
+
+function renderTimeline(stats) {
+
+    const container =
+        document.getElementById('activity-timeline');
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = '';
+
+    (stats.timeline || []).forEach(item => {
+
+        container.insertAdjacentHTML('beforeend', `
+            <div class="timeline-item">
+                <div class="timeline-point bg-primary"></div>
+                <div class="timeline-event">
+                    <div class="fw-bold">${item.title}</div>
+                    <div class="text-muted">${item.description}</div>
+                    <small class="text-secondary">${item.date}</small>
+                </div>
+            </div>
+        `);
+
+    });
+
+}
+
+/* ==========================================================
+ * Actions
+ * ========================================================== */
+
+function refreshStatistics() {
+    loadStatistics();
+}
+
+function changePeriod() {
+    loadStatistics();
+}
+
+function changeDetail() {
+    loadStatistics();
+}
+
+function exportStatistics(type) {
+
+    const period =
+        document.getElementById('period-select')?.value || 'monthly';
+
+    window.location =
+        `/api/channels/statistics/export?format=${type}&period=${period}`;
+
+}
+
+/* ==========================================================
+ * Footer
+ * ========================================================== */
+
+function updateLastUpdated() {
+
+    setText(
+        'last-updated',
+        `Last updated: ${formatDateTime(new Date())}`
+    );
+
+}
 </script>

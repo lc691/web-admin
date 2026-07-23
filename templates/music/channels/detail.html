@@ -1,135 +1,41 @@
 {% extends "base.html" %}
 
+{% block title %}
+{{ channel.name }} - Channel Detail
+{% endblock %}
+
 {% block content %}
 
-<div class="page-header d-print-none">
-    <div class="container-xl">
+{% include "music/channels/detail/_header.html" %}
 
-        <div class="row g-2 align-items-center">
+<div class="row">
 
-            <div class="col">
+    <div class="col-md-4">
 
-                <h2 class="page-title">
-                    {{ title }}
-                </h2>
-
-                <div class="text-secondary">
-                    {{ subtitle }}
-                </div>
-
-            </div>
-
-            <div class="col-auto ms-auto">
-
-                <div class="btn-list">
-
-                    <a
-                        href="/channels"
-                        class="btn">
-
-                        <i class="ti ti-arrow-left"></i>
-
-                        Kembali
-
-                    </a>
-
-                    <a
-                        href="/channels/{{ channel.id }}/edit"
-                        class="btn btn-primary">
-
-                        <i class="ti ti-pencil"></i>
-
-                        Edit
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
+        {% include "music/channels/detail/_info.html" %}
 
     </div>
-</div>
 
-<div class="page-body">
+    <div class="col-md-8">
 
-    <div class="container-xl">
+        {% include "music/channels/detail/_statistics.html" %}
 
-        <div class="card">
-
-            <div class="card-body">
-
-                <table class="table table-borderless">
-
-                    <tbody>
-
-                        <tr>
-                            <th width="180">Nama</th>
-                            <td>{{ channel.name }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Email</th>
-                            <td>{{ channel.email or "-" }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Status</th>
-                            <td>
-
-                                {% if channel.vermuk %}
-
-                                <span class="badge bg-danger">
-                                    Vermuk
-                                </span>
-
-                                {% else %}
-
-                                <span class="badge bg-success">
-                                    Normal
-                                </span>
-
-                                {% endif %}
-
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>Total Artist</th>
-                            <td>{{ channel.total_artists }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Total Song</th>
-                            <td>{{ channel.total_songs }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Catatan</th>
-                            <td>{{ channel.notes or "-" }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Dibuat</th>
-                            <td>{{ channel.created_at }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Diubah</th>
-                            <td>{{ channel.updated_at }}</td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
+        {% include "music/channels/detail/_top_artists.html" %}
 
     </div>
 
 </div>
+
+{% include "music/channels/partials/_modal_delete.html" %}
+
+{% endblock %}
+
+{% block scripts %}
+
+{{ super() }}
+
+{% include "music/channels/js/utils.html" %}
+{% include "music/channels/js/delete.html" %}
+{% include "music/channels/js/detail.html" %}
 
 {% endblock %}

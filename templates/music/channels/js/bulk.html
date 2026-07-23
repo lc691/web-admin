@@ -1,160 +1,96 @@
+<!-- ===================================================== -->
+<!-- BULK OPERATIONS HANDLER -->
+<!-- ===================================================== -->
+
 <script>
-    /**
-     * ============================================================
-     * Channels Bulk Actions
-     * ============================================================
-     */
 
-    const ChannelBulk = {
-
-        action: null,
-
-        /**
-         * Initialize
-         */
-        init() {
-
-            this.bindEvents();
-
-        },
-
-        /**
-         * Bind Events
-         */
-        bindEvents() {
-
-            $("#btnBulkDelete").on("click", () => {
-
-                this.show("delete");
-
-            });
-
-            $("#btnBulkVermuk").on("click", () => {
-
-                this.show("vermuk");
-
-            });
-
-            $("#confirmBulkBtn").on("click", () => {
-
-                this.execute();
-
-            });
-
-        },
-
-        /**
-         * Show Bulk Modal
-         */
-        show(action) {
-
-            const ids = ChannelTable.selectedIds();
-
-            if (ids.length === 0) {
-
-                ChannelUtils.toast(
-                    "Pilih minimal satu channel.",
-                    "warning"
-                );
-
-                return;
-
-            }
-
-            this.action = action;
-
-            $("#bulkActionText").text(
-                action === "delete"
-                    ? "menghapus"
-                    : "mengubah status menjadi Vermuk"
-            );
-
-            bootstrap.Modal
-                .getOrCreateInstance(
-                    document.getElementById("bulkModal")
-                )
-                .show();
-
-        },
-
-        /**
-         * Execute Bulk Action
-         */
-        async execute() {
-
-            const ids = ChannelTable.selectedIds();
-
-            if (ids.length === 0) {
-                return;
-            }
-
-            const button = document.getElementById(
-                "confirmBulkBtn"
-            );
-
-            try {
-
-                ChannelUtils.loading(button);
-
-                const endpoint =
-                    this.action === "delete"
-                        ? "/api/channels/bulk/delete"
-                        : "/api/channels/bulk/vermuk";
-
-                const result = await ChannelUtils.request(
-                    endpoint,
-                    {
-                        method: "POST",
-                        body: JSON.stringify({ ids })
-                    }
-                );
-
-                bootstrap.Modal
-                    .getInstance(
-                        document.getElementById("bulkModal")
-                    )
-                    ?.hide();
-
-                ChannelUtils.toast(
-                    result.message || "Bulk action berhasil."
-                );
-
-                ChannelTable.clearSelection();
-
-                ChannelTable.reload();
-
-                ChannelStatistics.refresh();
-
-            } catch (err) {
-
-                ChannelUtils.error(
-                    err.message || "Bulk action gagal."
-                );
-
-            } finally {
-
-                ChannelUtils.loading(button, false);
-
-            }
-
-        },
-
-        /**
-         * Update Selected Counter
-         */
-        updateCounter() {
-
-            const total = ChannelTable.selectedIds().length;
-
-            $("#selectedCount").text(total);
-
-            const disabled = total === 0;
-
-            $("#btnBulkDelete").prop("disabled", disabled);
-
-            $("#btnBulkVermuk").prop("disabled", disabled);
-
+    function bulkDelete() {
+        const selected = getSelectedIds();
+        if (selected.length === 0) {
+            showToast('Pilih minimal satu channel untuk dihapus', 'warning');
+            return;
         }
 
-    };
+        if (!confirm(`Yakin ingin menghapus ${selected.length} channel yang dipilih?`)) {
+            return;
+        }
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modal-bulk'));
+        if (modal) {
+            modal.hide();
+        }
+
+        showToast(`Menghapus ${selected.length} channel...`, 'info');
+
+        fetch(`${API_BASE}/bulk/delete`, {
+            method: 'POST',
+            body: JSON.stringify({
+                ids: selected,
+                validate_existence: true
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message || `${selected.length} channel berhasil dihapus`, 'success');
+                refreshTable();
+            } else {
+                showToast(data.message || 'Gagal menghapus channel', 'error');
+            }
+        })
+        .catch(err => {
+            showToast('Gagal menghapus channel: ' + err.message, 'error');
+        });
+    }
+
+    function bulkVermuk() {
+        document.getElementById('modal-bulk').querySelector('.btn-close').click();
+        // Show a sub-modal or prompt for action
+        if (confirm('Set semua channel yang dipilih sebagai Vermuk?')) {
+            bulkVermukSelected(true);
+        }
+    }
+
+    function bulkVermukSelected(vermuk) {
+        const selected = getSelectedIds();
+        if (selected.length === 0) {
+            showToast('Pilih minimal satu channel', 'warning');
+            return;
+        }
+
+        const action = vermuk ? 'Vermuk' : 'Normal';
+        showToast(`Mengupdate ${selected.length} channel ke ${action}...`, 'info');
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modal-bulk'));
+        if (modal) {
+            modal.hide();
+        }
+
+        fetch(`${API_BASE}/bulk/vermuk`, {
+            method: 'POST',
+            body: JSON.stringify({
+                ids: selected,
+                vermuk: vermuk,
+                validate_existence: true
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message || `${selected.length} channel berhasil diupdate`, 'success');
+                refreshTable();
+            } else {
+                showToast(data.message || 'Gagal mengupdate channel', 'error');
+            }
+        })
+        .catch(err => {
+            showToast('Gagal mengupdate channel: ' + err.message, 'error');
+        });
+    }
+
+    function bulkDeleteSelected() {
+        document.getElementById('modal-bulk').querySelector('.btn-close').click();
+        bulkDelete();
+    }
+
 </script>

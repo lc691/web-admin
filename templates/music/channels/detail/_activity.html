@@ -1,0 +1,191 @@
+<!-- ===================================================== -->
+<!-- CHANNEL ACTIVITY -->
+<!-- ===================================================== -->
+
+<div class="card mt-3">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+
+            <i class="ti ti-activity me-1"></i>
+
+            Channel Activity
+
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        {% if activity %}
+
+        <!-- ============================================= -->
+        <!-- SCORE -->
+        <!-- ============================================= -->
+
+        <div class="text-center mb-4">
+
+            <div class="display-5 fw-bold">
+
+                {{ activity.overall_score|round(1) }}%
+
+            </div>
+
+            <div class="mt-2">
+
+                {% set colors = {
+                    "Highly Active": "success",
+                    "Active": "primary",
+                    "Moderately Active": "info",
+                    "Low Activity": "warning",
+                    "Inactive": "secondary"
+                } %}
+
+                <span class="badge bg-{{ colors.get(activity.level, 'secondary') }}">
+
+                    {{ activity.level }}
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- ============================================= -->
+        <!-- METRICS -->
+        <!-- ============================================= -->
+
+        <div class="row g-3">
+
+            <div class="col-6">
+
+                <div class="card card-sm">
+
+                    <div class="card-body text-center">
+
+                        <div class="text-muted small">
+
+                            Recency
+
+                        </div>
+
+                        <div class="h3 mb-0">
+
+                            {{ activity.recency_score|round(1) }}%
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-6">
+
+                <div class="card card-sm">
+
+                    <div class="card-body text-center">
+
+                        <div class="text-muted small">
+
+                            Consistency
+
+                        </div>
+
+                        <div class="h3 mb-0">
+
+                            {{ activity.consistency_score|round(1) }}%
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-6">
+
+                <div class="card card-sm">
+
+                    <div class="card-body text-center">
+
+                        <div class="text-muted small">
+
+                            Engagement
+
+                        </div>
+
+                        <div class="h3 mb-0">
+
+                            {{ activity.engagement_score|round(1) }}%
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-6">
+
+                <div class="card card-sm">
+
+                    <div class="card-body text-center">
+
+                        <div class="text-muted small">
+
+                            Growth
+
+                        </div>
+
+                        <div class="h3 mb-0">
+
+                            {{ activity.growth_score|round(1) }}%
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+
+            <span class="text-muted">
+
+                Last Activity
+
+            </span>
+
+            <strong>
+
+                {{ activity.last_activity|format_datetime if activity.last_activity else "-" }}
+
+            </strong>
+
+        </div>
+
+        {% else %}
+
+        <div class="text-center py-5 text-muted">
+
+            <i class="ti ti-chart-bar-off fs-1 d-block mb-3"></i>
+
+            Belum ada data aktivitas channel.
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>

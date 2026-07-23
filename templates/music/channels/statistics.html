@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ title }} - Channel Statistics
+{% endblock %}
+
+{% block meta_description %}
+Statistik dan analisis channel SoundOn
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================================================== -->
+<!-- PAGE HEADER -->
+<!-- ===================================================== -->
+
+{% include "music/channels/statistics/_statistics_header.html" %}
+
+<!-- ===================================================== -->
+<!-- PERIOD SELECTOR -->
+<!-- ===================================================== -->
+
+{% include "music/channels/statistics/_statistics_period.html" %}
+
+<!-- ===================================================== -->
+<!-- SUMMARY -->
+<!-- ===================================================== -->
+
+{% include "music/channels/statistics/_statistics_summary.html" %}
+
+<!-- ===================================================== -->
+<!-- CHARTS -->
+<!-- ===================================================== -->
+
+{% include "music/channels/statistics/_statistics_charts.html" %}
+
+<!-- ===================================================== -->
+<!-- DETAIL -->
+<!-- ===================================================== -->
+
+{% if detailed %}
+
+    {% include "music/channels/statistics/_statistics_detail.html" %}
+    {% include "music/channels/statistics/_statistics_timeline.html" %}
+
+{% endif %}
+
+<!-- ===================================================== -->
+<!-- BREADCRUMB -->
+<!-- ===================================================== -->
+
+{% include "music/channels/statistics/_statistics_breadcrumb.html" %}
+
+{% endblock %}
+
+{% block scripts %}
+
+{{ super() }}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+{% include "music/channels/js/utils.html" %}
+{% include "music/channels/js/statistics.html" %}
+
+{% endblock %}

@@ -1,156 +1,54 @@
+<!-- ===================================================== -->
+<!-- DELETE HANDLER -->
+<!-- ===================================================== -->
+
 <script>
-    /**
-     * ============================================================
-     * Channels Delete
-     * ============================================================
-     */
 
-    const ChannelDelete = {
+    function confirmDelete(channelId, channelName) {
+        document.getElementById('delete-channel-id').value = channelId;
+        document.getElementById('delete-channel-name').textContent = channelName;
+        const modal = new bootstrap.Modal(document.getElementById('modal-delete'));
+        modal.show();
+    }
 
-        /**
-         * ID channel yang akan dihapus.
-         */
-        id: null,
+    function deleteChannel() {
+        const channelId = document.getElementById('delete-channel-id').value;
 
-        /**
-         * =========================================================
-         * Initialize
-         * =========================================================
-         *
-         * Mendaftarkan seluruh event pada fitur delete.
-         */
-        init() {
-
-            this.bindEvents();
-
-        },
-
-        /**
-         * =========================================================
-         * Bind Events
-         * =========================================================
-         *
-         * Mendaftarkan seluruh event yang berkaitan
-         * dengan proses penghapusan channel.
-         */
-        bindEvents() {
-
-            /**
-             * Klik tombol delete pada tabel.
-             */
-            $(document).on("click", ".btn-delete", (e) => {
-
-                this.show(
-                    $(e.currentTarget).data("id")
-                );
-
-            });
-
-            /**
-             * Klik tombol konfirmasi delete.
-             */
-            $("#confirmDeleteBtn").on("click", () => {
-
-                this.destroy();
-
-            });
-
-        },
-
-        /**
-         * =========================================================
-         * Show Delete Modal
-         * =========================================================
-         *
-         * Menampilkan modal konfirmasi penghapusan
-         * dan menyimpan ID channel yang dipilih.
-         *
-         * @param {number} id
-         * ID channel yang akan dihapus.
-         */
-        show(id) {
-
-            this.id = id;
-
-            const modal = bootstrap.Modal.getOrCreateInstance(
-                document.getElementById("deleteModal")
-            );
-
-            modal.show();
-
-        },
-
-        /**
-         * =========================================================
-         * Delete Channel
-         * =========================================================
-         *
-         * Mengirim permintaan penghapusan channel
-         * ke server kemudian memperbarui DataTable
-         * dan statistik setelah berhasil.
-         */
-        async destroy() {
-
-            if (!this.id) {
-                return;
-            }
-
-            const button = document.getElementById(
-                "confirmDeleteBtn"
-            );
-
-            try {
-
-                ChannelUtils.loading(button);
-
-                const result = await ChannelUtils.request(
-
-                    `/api/channels/${this.id}/delete`,
-
-                    {
-                        method: "POST"
-                    }
-
-                );
-
-                bootstrap.Modal
-                    .getInstance(
-                        document.getElementById("deleteModal")
-                    )
-                    ?.hide();
-
-                ChannelUtils.toast(
-                    result.message ||
-                    "Channel berhasil dihapus."
-                );
-
-                ChannelTable.reload();
-
-                ChannelStatistics.refresh();
-
-                this.id = null;
-
-            }
-
-            catch (err) {
-
-                ChannelUtils.error(
-                    err.message ||
-                    "Gagal menghapus channel."
-                );
-
-            }
-
-            finally {
-
-                ChannelUtils.loading(
-                    button,
-                    false
-                );
-
-            }
-
+        if (!channelId) {
+            showToast('ID channel tidak valid', 'error');
+            return;
         }
 
-    };
+        const btn = document.getElementById('btn-confirm-delete');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="ti ti-spinner ti-spin me-1"></i> Menghapus...';
+
+        fetch(`/api/channels/${channelId}`, {
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message || 'Channel berhasil dihapus', 'success');
+                document.getElementById('modal-delete').querySelector('.btn-close').click();
+                refreshTable();
+            } else {
+                showToast(data.message || 'Gagal menghapus channel', 'error');
+            }
+        })
+        .catch(err => {
+            showToast('Gagal menghapus channel: ' + err.message, 'error');
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        });
+    }
+
+    // Event listener untuk confirm delete
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('btn-confirm-delete').addEventListener('click', deleteChannel);
+    });
+
 </script>
