@@ -1,1530 +1,537 @@
-[2026-07-23 07:37:13] [INFO] [soundon] [Dashboard] Loaded Users=7038 Shows=4480
-[2026-07-23 07:37:13] [INFO] [soundon] [REQ DONE] path=/ ms=295.53 status=200
-[2026-07-23 07:37:20] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=15.2 status=200
-[2026-07-23 07:48:42] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 07:48:43] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 07:48:43] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 07:48:45] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 07:48:45] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 07:48:45] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 07:48:45] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 07:48:45] [INFO] [soundon] Mode debug: False
-[2026-07-23 07:48:45] [INFO] [soundon] Environment: production
-[2026-07-23 07:48:45] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 07:48:45] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 07:48:45] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 07:48:45] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 07:48:45] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 07:48:45] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 07:48:46] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 07:48:46] [INFO] [soundon] Mode debug: False
-[2026-07-23 07:48:46] [INFO] [soundon] Environment: production
-[2026-07-23 07:48:46] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 07:48:46] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 07:48:46] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 07:49:20] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 07:49:20] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=18.46 status=200
-[2026-07-23 07:57:27] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=22.4 status=200
-[2026-07-23 07:57:28] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 08:01:31] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 08:01:31] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 08:01:32] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 08:01:32] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 08:01:34] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 08:01:34] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 08:01:34] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 08:01:34] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 08:01:34] [INFO] [soundon] Mode debug: False
-[2026-07-23 08:01:34] [INFO] [soundon] Environment: production
-[2026-07-23 08:01:34] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 08:01:34] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 08:01:34] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 08:01:34] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 08:01:34] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 08:01:34] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 08:01:34] [INFO] [soundon] Mode debug: False
-[2026-07-23 08:01:34] [INFO] [soundon] Environment: production
-[2026-07-23 08:01:34] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 08:01:34] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 08:01:34] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 08:01:34] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 08:02:15] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 08:02:15] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=17.8 status=200
-[2026-07-23 08:02:16] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 08:02:27] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=3.05 status=200
-[2026-07-23 08:02:48] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=2.03 status=200
-[2026-07-23 08:03:22] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 08:03:22] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 08:03:23] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 08:03:23] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 08:03:25] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 08:03:25] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 08:03:25] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 08:03:25] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 08:03:25] [INFO] [soundon] Mode debug: False
-[2026-07-23 08:03:25] [INFO] [soundon] Environment: production
-[2026-07-23 08:03:25] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 08:03:25] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 08:03:25] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 08:03:25] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 08:03:25] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 08:03:25] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 08:03:25] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 08:03:25] [INFO] [soundon] Mode debug: False
-[2026-07-23 08:03:25] [INFO] [soundon] Environment: production
-[2026-07-23 08:03:25] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 08:03:26] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 08:03:26] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 08:03:30] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 08:03:30] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=23.81 status=200
-[2026-07-23 08:22:43] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 08:22:43] [INFO] [soundon] [Dashboard] Loaded Users=7041 Shows=4480
-[2026-07-23 08:22:43] [INFO] [soundon] [REQ DONE] path=/ ms=273.36 status=200
-[2026-07-23 08:22:43] [INFO] [soundon] [Dashboard] Loaded Users=7041 Shows=4480
-[2026-07-23 08:22:43] [INFO] [soundon] [REQ DONE] path=/ ms=253.27 status=200
-[2026-07-23 08:23:00] [INFO] [soundon] [REQ DONE] path=/songs ms=189.39 status=200
-[2026-07-23 08:23:01] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=33.8 status=200
-[2026-07-23 08:23:01] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=62.87 status=200
-[2026-07-23 08:23:01] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=150.57 status=200
-[2026-07-23 08:23:02] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=42.24 status=200
-[2026-07-23 08:23:02] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=49.54 status=200
-[2026-07-23 08:23:08] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=28.03 status=200
-[2026-07-23 08:23:46] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=28.33 status=200
-[2026-07-23 08:24:01] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=32.56 status=200
-[2026-07-23 08:24:44] [ERROR] [soundon] ❌ Rollback terjadi: invalid input value for enum release_status: "Live"
-LINE 15:                 s.status = 'Live'
-                                    ^
-
-[2026-07-23 08:24:44] [ERROR] [soundon] ❌ Gagal koneksi ke database: invalid input value for enum release_status: "Live"
-LINE 15:                 s.status = 'Live'
-                                    ^
-
-[2026-07-23 08:24:44] [ERROR] [soundon] Unhandled exception: invalid input value for enum release_status: "Live"
-LINE 15:                 s.status = 'Live'
-                                    ^
-Traceback (most recent call last):
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
-    with recv_stream, send_stream, collapse_excgroups():
-  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
-    self.gen.throw(typ, value, traceback)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
-    response = await self.dispatch_func(request, call_next)
-  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
-    response = await call_next(request)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
-    raise app_exc from app_exc.__cause__ or app_exc.__context__
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    await self.app(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
-    await route.handle(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
-    await self.app(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
-    response = await f(request)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
-    raw_response = await run_endpoint_function(
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
-    return await future
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
-    result = context.run(func, *args)
-  File "/opt/web-admin/app/music/songs/router.py", line 375, in export_playlist
-    text = export(
-  File "/opt/web-admin/app/music/services/export/service.py", line 108, in export
-    songs = create_new_batch(
-  File "/opt/web-admin/app/music/services/export/service.py", line 173, in create_new_batch
-    remaining = get_remaining_song_count(
-  File "/opt/web-admin/app/music/repositories/export/statistics.py", line 66, in get_remaining_song_count
-    cursor.execute(
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
-    return super().execute(query, vars)
-psycopg2.errors.InvalidTextRepresentation: invalid input value for enum release_status: "Live"
-LINE 15:                 s.status = 'Live'
-                                    ^
-
-[2026-07-23 08:26:40] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 08:26:40] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 08:26:42] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 08:26:42] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 08:26:44] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 08:26:44] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 08:26:44] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 08:26:44] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 08:26:44] [INFO] [soundon] Mode debug: False
-[2026-07-23 08:26:44] [INFO] [soundon] Environment: production
-[2026-07-23 08:26:44] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 08:26:44] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 08:26:44] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 08:26:44] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 08:26:44] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 08:26:44] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 08:26:44] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 08:26:44] [INFO] [soundon] Mode debug: False
-[2026-07-23 08:26:44] [INFO] [soundon] Environment: production
-[2026-07-23 08:26:44] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 08:26:44] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 08:26:44] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 08:26:44] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 08:26:44] [ERROR] [soundon] ❌ Rollback terjadi: invalid input value for enum release_status: "Live"
-LINE 18:         WHERE s.status = 'Live' AND u.song_id IS NULL
-                                  ^
-
-[2026-07-23 08:26:44] [ERROR] [soundon] ❌ Gagal koneksi ke database: invalid input value for enum release_status: "Live"
-LINE 18:         WHERE s.status = 'Live' AND u.song_id IS NULL
-                                  ^
-
-[2026-07-23 08:26:44] [ERROR] [soundon] Unhandled exception: invalid input value for enum release_status: "Live"
-LINE 18:         WHERE s.status = 'Live' AND u.song_id IS NULL
-                                  ^
-Traceback (most recent call last):
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
-    with recv_stream, send_stream, collapse_excgroups():
-  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
-    self.gen.throw(typ, value, traceback)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
-    response = await self.dispatch_func(request, call_next)
-  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
-    response = await call_next(request)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
-    raise app_exc from app_exc.__cause__ or app_exc.__context__
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    await self.app(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
-    await route.handle(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
-    await self.app(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
-    response = await f(request)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
-    raw_response = await run_endpoint_function(
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
-    return await future
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
-    result = context.run(func, *args)
-  File "/opt/web-admin/app/music/songs/router.py", line 375, in export_playlist
-    text = export(
-  File "/opt/web-admin/app/music/services/export/service.py", line 108, in export
-    songs = create_new_batch(
-  File "/opt/web-admin/app/music/services/export/service.py", line 180, in create_new_batch
-    songs = get_available_songs(
-  File "/opt/web-admin/app/music/repositories/export/songs.py", line 87, in get_available_songs
-    cursor.execute(sql, params)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/psycopg2/extras.py", line 146, in execute
-    return super().execute(query, vars)
-psycopg2.errors.InvalidTextRepresentation: invalid input value for enum release_status: "Live"
-LINE 18:         WHERE s.status = 'Live' AND u.song_id IS NULL
-                                  ^
-
-[2026-07-23 08:28:17] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 08:28:17] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 08:28:18] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 08:28:18] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 08:28:20] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 08:28:20] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 08:28:20] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 08:28:20] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 08:28:20] [INFO] [soundon] Mode debug: False
-[2026-07-23 08:28:20] [INFO] [soundon] Environment: production
-[2026-07-23 08:28:20] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 08:28:20] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 08:28:20] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 08:28:20] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 08:28:20] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 08:28:20] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 08:28:20] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 08:28:20] [INFO] [soundon] Mode debug: False
-[2026-07-23 08:28:20] [INFO] [soundon] Environment: production
-[2026-07-23 08:28:20] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 08:28:20] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 08:28:20] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 08:28:24] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 08:28:24] [INFO] [soundon] [REQ DONE] path=/api/songs/export/day/23 ms=360.49 status=200
-[2026-07-23 08:29:12] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 08:29:12] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=33.1 status=200
-[2026-07-23 08:29:13] [INFO] [soundon] [REQ DONE] path=/songs ms=252.78 status=200
-[2026-07-23 08:29:14] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=41.4 status=200
-[2026-07-23 08:29:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=49.65 status=200
-[2026-07-23 08:29:14] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=130.39 status=200
-[2026-07-23 08:29:15] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=30.14 status=200
-[2026-07-23 08:29:15] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=28.53 status=200
-[2026-07-23 08:29:17] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=35.01 status=200
-[2026-07-23 08:29:37] [INFO] [soundon] [REQ DONE] path=/api/songs/export/day/23 ms=77.65 status=200
-[2026-07-23 08:30:39] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=27.2 status=200
-[2026-07-23 08:30:39] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=27.5 status=200
-[2026-07-23 08:30:39] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=34.45 status=200
-[2026-07-23 08:30:57] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=34.22 status=200
-[2026-07-23 08:30:57] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=36.41 status=200
-[2026-07-23 08:31:11] [INFO] [soundon] [REQ DONE] path=/api/songs/usage ms=34.31 status=200
-[2026-07-23 08:31:11] [INFO] [soundon] [REQ DONE] path=/api/songs/usage/day/23 ms=113.0 status=200
-[2026-07-23 08:31:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=36.79 status=200
-[2026-07-23 08:31:26] [INFO] [soundon] [REQ DONE] path=/api/songs/usage/day/23 ms=73.3 status=200
-[2026-07-23 08:31:27] [INFO] [soundon] [REQ DONE] path=/api/songs/usage ms=35.28 status=200
-[2026-07-23 08:31:28] [INFO] [soundon] [REQ DONE] path=/api/songs/usage/day/22 ms=104.68 status=200
-[2026-07-23 08:31:34] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=44.06 status=200
-[2026-07-23 08:31:34] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=40.95 status=200
-[2026-07-23 08:31:36] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=32.27 status=200
-[2026-07-23 08:31:43] [INFO] [soundon] [REQ DONE] path=/api/songs/export/day/23 ms=376.06 status=200
-[2026-07-23 08:31:46] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=30.9 status=200
-[2026-07-23 08:31:46] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=26.33 status=200
-[2026-07-23 08:32:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=31.55 status=200
-[2026-07-23 08:33:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=33.05 status=200
-[2026-07-23 08:34:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=31.77 status=200
-[2026-07-23 08:35:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.36 status=200
-[2026-07-23 08:36:16] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=39.85 status=200
-[2026-07-23 08:37:12] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=39.8 status=200
-[2026-07-23 08:37:12] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=30.86 status=200
-[2026-07-23 08:37:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.0 status=200
-[2026-07-23 08:37:14] [INFO] [soundon] [REQ DONE] path=/api/songs/usage ms=26.11 status=200
-[2026-07-23 08:37:15] [INFO] [soundon] [REQ DONE] path=/api/songs/usage/day/23 ms=93.4 status=200
-[2026-07-23 08:38:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=29.98 status=200
-[2026-07-23 08:39:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=23.94 status=200
-[2026-07-23 08:39:16] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=24.26 status=200
-[2026-07-23 08:40:15] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=27.75 status=200
-[2026-07-23 08:41:16] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=31.62 status=200
-[2026-07-23 08:42:16] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=26.83 status=200
-[2026-07-23 08:43:18] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=31.0 status=200
-[2026-07-23 08:44:19] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=27.08 status=200
-[2026-07-23 08:45:19] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=24.97 status=200
-[2026-07-23 08:46:21] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=42.55 status=200
-[2026-07-23 08:47:21] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=33.11 status=200
-[2026-07-23 08:48:23] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=40.72 status=200
-[2026-07-23 08:48:31] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
-[2026-07-23 08:49:24] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.44 status=200
-[2026-07-23 08:50:24] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=25.86 status=200
-[2026-07-23 08:51:26] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.88 status=200
-[2026-07-23 08:52:26] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=33.27 status=200
-[2026-07-23 08:53:28] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=28.45 status=200
-[2026-07-23 08:54:29] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=37.17 status=200
-[2026-07-23 08:55:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=31.1 status=200
-[2026-07-23 08:56:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=35.15 status=200
-[2026-07-23 08:57:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=43.29 status=200
-[2026-07-23 08:58:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=37.08 status=200
-[2026-07-23 08:59:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=42.36 status=200
-[2026-07-23 09:00:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.33 status=200
-[2026-07-23 09:01:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=29.59 status=200
-[2026-07-23 09:02:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.62 status=200
-[2026-07-23 09:03:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.86 status=200
-[2026-07-23 09:04:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.19 status=200
-[2026-07-23 09:05:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=30.45 status=200
-[2026-07-23 09:06:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=31.05 status=200
-[2026-07-23 09:07:14] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=34.03 status=200
-[2026-07-23 09:07:29] [INFO] [soundon] [REQ DONE] path=/channels ms=152.4 status=200
-[2026-07-23 09:07:29] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.91 status=200
-[2026-07-23 09:07:30] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=48.48 status=200
-[2026-07-23 09:07:39] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=32.88 status=200
-[2026-07-23 09:07:41] [INFO] [soundon] [REQ DONE] path=/channels/24/detail ms=3.06 status=404
-[2026-07-23 09:07:59] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=51.15 status=200
-[2026-07-23 09:08:29] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=50.52 status=200
-[2026-07-23 09:08:40] [INFO] [soundon] [REQ DONE] path=/channels ms=57.6 status=200
-[2026-07-23 09:08:41] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=39.14 status=200
-[2026-07-23 09:08:41] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=50.95 status=200
-[2026-07-23 09:08:49] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=38.1 status=200
-[2026-07-23 09:08:56] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=43.25 status=200
-[2026-07-23 09:08:57] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=40.28 status=200
-[2026-07-23 09:08:58] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=37.77 status=200
-[2026-07-23 09:09:00] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=49.22 status=200
-[2026-07-23 09:09:02] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=70.04 status=200
-[2026-07-23 09:09:02] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=58.85 status=200
-[2026-07-23 09:09:03] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=44.84 status=200
-[2026-07-23 09:09:11] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=31.92 status=200
-[2026-07-23 09:09:21] [INFO] [soundon] [REQ DONE] path=/channels/1/edit ms=108.19 status=500
-[2026-07-23 09:09:32] [INFO] [soundon] [REQ DONE] path=/api/channels/1/edit ms=3.11 status=404
-[2026-07-23 09:13:06] [WARNING] [soundon] [AUTH] No token found for path=/wp/wp-login.php
-[2026-07-23 09:13:06] [WARNING] [soundon] [AUTH] No token found for path=/wp/wp-login.php
-[2026-07-23 09:34:38] [WARNING] [soundon] [AUTH] No token found for path=/.env
-[2026-07-23 09:39:40] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
-[2026-07-23 10:20:35] [WARNING] [soundon] [AUTH] No token found for path=/
-[2026-07-23 10:51:19] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
-[2026-07-23 11:07:08] [WARNING] [soundon] [AUTH] No token found for path=/
-[2026-07-23 11:37:48] [WARNING] [soundon] [AUTH] No token found for path=/wp-login.php
-[2026-07-23 11:37:48] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
-[2026-07-23 11:37:48] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/
-[2026-07-23 12:51:19] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
-[2026-07-23 13:46:41] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
-[2026-07-23 14:17:07] [WARNING] [soundon] [AUTH] No token found for path=/
-[2026-07-23 14:44:33] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
-[2026-07-23 15:48:22] [INFO] [soundon] Login attempt: admin | IP: 104.23.175.60
-[2026-07-23 15:48:22] [INFO] [soundon] Login success: admin | IP: 104.23.175.60 | Remember: False
-[2026-07-23 15:48:23] [INFO] [soundon] [Dashboard] Loaded Users=7054 Shows=4480
-[2026-07-23 15:48:23] [INFO] [soundon] [REQ DONE] path=/ ms=292.02 status=200
-[2026-07-23 15:48:47] [INFO] [soundon] [REQ DONE] path=/channels ms=136.67 status=200
-[2026-07-23 15:48:47] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=32.77 status=200
-[2026-07-23 15:48:47] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=35.02 status=200
-[2026-07-23 15:49:06] [INFO] [soundon] [REQ DONE] path=/channels/33/detail ms=3.51 status=404
-[2026-07-23 15:53:07] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
-[2026-07-23 15:53:07] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
-[2026-07-23 15:53:22] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=101.26 status=500
-[2026-07-23 15:53:53] [INFO] [soundon] [REQ DONE] path=/api/channels/33 ms=33.16 status=200
-[2026-07-23 15:54:43] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 15:54:43] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 15:54:45] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 15:54:45] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 15:54:47] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 15:54:47] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 15:54:47] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 15:54:47] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 15:54:47] [INFO] [soundon] Mode debug: False
-[2026-07-23 15:54:47] [INFO] [soundon] Environment: production
-[2026-07-23 15:54:47] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 15:54:47] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 15:54:47] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 15:54:47] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 15:54:47] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 15:54:47] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 15:54:47] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 15:54:47] [INFO] [soundon] Mode debug: False
-[2026-07-23 15:54:47] [INFO] [soundon] Environment: production
-[2026-07-23 15:54:47] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 15:54:47] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 15:54:47] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 15:54:55] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 15:54:55] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=40.58 status=200
-[2026-07-23 15:54:57] [INFO] [soundon] [REQ DONE] path=/channels ms=144.73 status=200
-[2026-07-23 15:54:59] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 15:54:59] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=30.88 status=200
-[2026-07-23 15:54:59] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=46.36 status=200
-[2026-07-23 15:55:02] [INFO] [soundon] [REQ DONE] path=/api/channels/33 ms=45.97 status=200
-[2026-07-23 15:57:56] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 15:57:56] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 15:57:57] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 15:57:58] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 15:57:59] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 15:57:59] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 15:57:59] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 15:57:59] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 15:57:59] [INFO] [soundon] Mode debug: False
-[2026-07-23 15:57:59] [INFO] [soundon] Environment: production
-[2026-07-23 15:57:59] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 15:57:59] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 15:57:59] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 15:57:59] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 15:57:59] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 15:57:59] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 15:58:00] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 15:58:00] [INFO] [soundon] Mode debug: False
-[2026-07-23 15:58:00] [INFO] [soundon] Environment: production
-[2026-07-23 15:58:00] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 15:58:00] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 15:58:00] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 15:58:18] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 15:58:18] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=36.5 status=200
-[2026-07-23 15:58:19] [INFO] [soundon] [REQ DONE] path=/channels ms=163.26 status=200
-[2026-07-23 15:58:19] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=147.83 status=200
-[2026-07-23 15:58:21] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 15:58:21] [INFO] [soundon] [REQ DONE] path=/channels ms=150.82 status=200
-[2026-07-23 15:58:22] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=38.47 status=200
-[2026-07-23 15:58:22] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=37.09 status=200
-[2026-07-23 15:58:23] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=84.4 status=500
-[2026-07-23 16:04:38] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:04:38] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:04:39] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:04:39] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:04:41] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:04:41] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:04:41] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:04:41] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:04:41] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:04:41] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:04:41] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:04:41] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:04:41] [INFO] [soundon] Environment: production
-[2026-07-23 16:04:41] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:04:41] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:04:41] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:04:41] [INFO] [soundon] Environment: production
-[2026-07-23 16:04:41] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:04:41] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:04:41] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:04:41] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:04:41] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:06:28] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:06:29] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=204.98 status=500
-[2026-07-23 16:06:30] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=68.84 status=500
-[2026-07-23 16:06:33] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:06:33] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=146.33 status=500
-[2026-07-23 16:06:40] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=36.75 status=200
-[2026-07-23 16:06:41] [INFO] [soundon] [REQ DONE] path=/channels ms=77.23 status=200
-[2026-07-23 16:06:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=40.26 status=200
-[2026-07-23 16:06:42] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=53.64 status=200
-[2026-07-23 16:06:48] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.35 status=200
-[2026-07-23 16:06:48] [INFO] [soundon] [REQ DONE] path=/channels ms=86.85 status=200
-[2026-07-23 16:06:48] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=68.11 status=200
-[2026-07-23 16:06:51] [INFO] [soundon] [REQ DONE] path=/channels ms=45.26 status=200
-[2026-07-23 16:06:52] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.11 status=200
-[2026-07-23 16:06:52] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=35.37 status=200
-[2026-07-23 16:06:57] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=78.27 status=500
-[2026-07-23 16:09:13] [WARNING] [soundon] [AUTH] No token found for path=/
-[2026-07-23 16:10:44] [WARNING] [soundon] [AUTH] No token found for path=/
-[2026-07-23 16:10:44] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=81.2 status=500
-[2026-07-23 16:14:46] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:14:46] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:14:47] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:14:47] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:14:49] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:14:49] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:14:49] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:14:49] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:14:49] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:14:49] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:14:49] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:14:49] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:14:49] [INFO] [soundon] Environment: production
-[2026-07-23 16:14:49] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:14:49] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:14:49] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:14:49] [INFO] [soundon] Environment: production
-[2026-07-23 16:14:49] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:14:49] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:14:49] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:14:49] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:14:49] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:14:51] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:14:51] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=191.62 status=500
-[2026-07-23 16:14:53] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:14:53] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=174.96 status=500
-[2026-07-23 16:16:01] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:16:01] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:16:02] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:16:02] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:16:04] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:16:04] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:16:04] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:16:04] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:16:04] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:16:04] [INFO] [soundon] Environment: production
-[2026-07-23 16:16:04] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:16:04] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:16:04] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:16:04] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:16:04] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:16:04] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:16:04] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:16:04] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:16:04] [INFO] [soundon] Environment: production
-[2026-07-23 16:16:04] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:16:04] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:16:04] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:16:05] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:16:05] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=161.75 status=500
-[2026-07-23 16:16:53] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:16:53] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:16:54] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:16:54] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:16:56] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:16:56] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:16:56] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:16:56] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:16:56] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:16:56] [INFO] [soundon] Environment: production
-[2026-07-23 16:16:56] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:16:56] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:16:56] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:16:56] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:16:56] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:16:56] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:16:56] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:16:56] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:16:56] [INFO] [soundon] Environment: production
-[2026-07-23 16:16:56] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:16:56] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:16:56] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:17:00] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:17:00] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=170.81 status=200
-[2026-07-23 16:17:00] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:17:00] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=41.52 status=200
-[2026-07-23 16:20:51] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=114.89 status=200
-[2026-07-23 16:20:51] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=35.94 status=200
-[2026-07-23 16:21:34] [INFO] [soundon] [REQ DONE] path=/channels/33 ms=184.44 status=200
-[2026-07-23 16:21:35] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=34.99 status=200
-[2026-07-23 16:21:39] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=91.78 status=500
-[2026-07-23 16:33:13] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:33:13] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:33:14] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:33:14] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:33:16] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:33:16] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:33:16] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:33:16] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:33:16] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:33:16] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:33:16] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:33:16] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:33:16] [INFO] [soundon] Environment: production
-[2026-07-23 16:33:16] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:33:16] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:33:16] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:33:16] [INFO] [soundon] Environment: production
-[2026-07-23 16:33:16] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:33:16] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:33:16] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:33:16] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:33:16] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:33:25] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:33:25] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=163.16 status=200
-[2026-07-23 16:33:41] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:34:43] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=83.56 status=200
-[2026-07-23 16:35:05] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=187.39 status=200
-[2026-07-23 16:35:06] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=49.19 status=200
-[2026-07-23 16:35:19] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=78.59 status=200
-[2026-07-23 16:35:44] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=70.82 status=200
-[2026-07-23 16:35:46] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=60.88 status=200
-[2026-07-23 16:36:20] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=61.28 status=200
-[2026-07-23 16:36:29] [INFO] [soundon] [REQ DONE] path=/channels ms=74.28 status=200
-[2026-07-23 16:36:30] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=36.83 status=200
-[2026-07-23 16:36:30] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=38.71 status=200
-[2026-07-23 16:36:33] [INFO] [soundon] [REQ DONE] path=/channels/33/edit ms=60.37 status=200
-[2026-07-23 16:37:00] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=33.04 status=200
-[2026-07-23 16:37:09] [INFO] [soundon] [REQ DONE] path=/channels ms=48.35 status=200
-[2026-07-23 16:37:09] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=54.11 status=200
-[2026-07-23 16:37:09] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=56.78 status=200
-[2026-07-23 16:37:11] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=41.56 status=200
-[2026-07-23 16:37:13] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=39.71 status=200
-[2026-07-23 16:37:15] [INFO] [soundon] [REQ DONE] path=/channels/2/edit ms=54.17 status=200
-[2026-07-23 16:39:34] [INFO] [soundon] [REQ DONE] path=/channels/2/songs ms=3.64 status=404
-[2026-07-23 16:39:39] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=37.37 status=200
-[2026-07-23 16:39:48] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=35.53 status=200
-[2026-07-23 16:39:51] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=35.16 status=200
-[2026-07-23 16:39:53] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=33.94 status=200
-[2026-07-23 16:40:09] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=32.53 status=200
-[2026-07-23 16:40:38] [INFO] [soundon] [REQ DONE] path=/channels ms=46.55 status=200
-[2026-07-23 16:40:39] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=33.19 status=200
-[2026-07-23 16:40:39] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.75 status=200
-[2026-07-23 16:40:43] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=103.22 status=200
-[2026-07-23 16:40:43] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=27.24 status=200
-[2026-07-23 16:41:25] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=94.9 status=200
-[2026-07-23 16:41:25] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=28.52 status=200
-[2026-07-23 16:42:28] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=90.37 status=200
-[2026-07-23 16:42:29] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=49.48 status=200
-[2026-07-23 16:43:20] [INFO] [soundon] [REQ DONE] path=/channels/2/artists ms=5.42 status=404
-[2026-07-23 16:57:17] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:57:17] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 16:57:19] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:57:19] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 16:57:20] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:57:20] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:57:20] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:57:21] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:57:21] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:57:21] [INFO] [soundon] Environment: production
-[2026-07-23 16:57:21] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:57:21] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:57:21] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:57:21] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 16:57:21] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 16:57:21] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 16:57:21] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 16:57:21] [INFO] [soundon] Mode debug: False
-[2026-07-23 16:57:21] [INFO] [soundon] Environment: production
-[2026-07-23 16:57:21] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 16:57:21] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 16:57:21] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 16:57:24] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:57:24] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=185.98 status=500
-[2026-07-23 16:59:30] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=64.78 status=200
-[2026-07-23 16:59:33] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 16:59:33] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=30.0 status=200
-[2026-07-23 17:00:27] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=72.6 status=200
-[2026-07-23 17:00:27] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=28.03 status=200
-[2026-07-23 17:01:53] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=171.43 status=200
-[2026-07-23 17:01:53] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=27.14 status=200
-[2026-07-23 17:02:09] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=85.96 status=200
-[2026-07-23 17:02:19] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=28.12 status=200
-[2026-07-23 17:02:55] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=75.99 status=200
-[2026-07-23 17:02:56] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=32.15 status=200
-[2026-07-23 17:04:05] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=82.32 status=200
-[2026-07-23 17:04:06] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=35.75 status=200
-[2026-07-23 17:04:17] [INFO] [soundon] [REQ DONE] path=/channels ms=72.89 status=200
-[2026-07-23 17:04:17] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.51 status=200
-[2026-07-23 17:04:17] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=40.55 status=200
-[2026-07-23 17:04:22] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=78.19 status=200
-[2026-07-23 17:04:22] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=26.11 status=200
-[2026-07-23 17:04:28] [INFO] [soundon] [REQ DONE] path=/channels/2 ms=54.1 status=200
-[2026-07-23 17:04:28] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=29.38 status=200
-[2026-07-23 17:04:32] [INFO] [soundon] [REQ DONE] path=/channels/4 ms=73.49 status=200
-[2026-07-23 17:04:32] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=27.81 status=200
-[2026-07-23 17:04:39] [INFO] [soundon] [REQ DONE] path=/channels/1/edit ms=79.76 status=200
-[2026-07-23 17:04:49] [INFO] [soundon] [REQ DONE] path=/channels ms=76.01 status=200
-[2026-07-23 17:04:49] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.61 status=200
-[2026-07-23 17:04:49] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=33.84 status=200
-[2026-07-23 17:04:58] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=63.5 status=200
-[2026-07-23 17:04:58] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=32.55 status=200
-[2026-07-23 17:05:05] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=3.11 status=404
-[2026-07-23 17:25:51] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=82.44 status=200
-[2026-07-23 17:26:01] [INFO] [soundon] [REQ DONE] path=/channels ms=60.98 status=200
-[2026-07-23 17:26:01] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=38.48 status=200
-[2026-07-23 17:26:01] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=50.43 status=200
-[2026-07-23 17:26:05] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=71.63 status=200
-[2026-07-23 17:26:12] [INFO] [soundon] [REQ DONE] path=/artists ms=102.5 status=200
-[2026-07-23 17:26:12] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=28.24 status=200
-[2026-07-23 17:26:12] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=36.65 status=200
-[2026-07-23 17:27:00] [INFO] [soundon] [REQ DONE] path=/artists/1 ms=84.58 status=200
-[2026-07-23 17:27:04] [INFO] [soundon] [REQ DONE] path=/artists/1 ms=74.37 status=200
-[2026-07-23 17:28:04] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 17:28:04] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 17:28:06] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 17:28:06] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 17:28:08] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 17:28:08] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 17:28:08] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 17:28:08] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 17:28:08] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 17:28:08] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 17:28:08] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 17:28:08] [INFO] [soundon] Mode debug: False
-[2026-07-23 17:28:08] [INFO] [soundon] Environment: production
-[2026-07-23 17:28:08] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 17:28:08] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 17:28:08] [INFO] [soundon] Mode debug: False
-[2026-07-23 17:28:08] [INFO] [soundon] Environment: production
-[2026-07-23 17:28:08] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 17:28:08] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 17:28:08] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 17:28:08] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 17:28:08] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 17:28:09] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 17:28:09] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=45.82 status=200
-[2026-07-23 17:28:11] [INFO] [soundon] [REQ DONE] path=/artists ms=159.76 status=200
-[2026-07-23 17:28:14] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 17:28:14] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=39.99 status=200
-[2026-07-23 17:28:14] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=31.71 status=200
-[2026-07-23 17:28:16] [INFO] [soundon] [REQ DONE] path=/artists/1 ms=75.63 status=200
-[2026-07-23 17:28:19] [INFO] [soundon] [REQ DONE] path=/artists/1 ms=82.33 status=200
-[2026-07-23 17:29:13] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=34.06 status=200
-[2026-07-23 17:29:15] [INFO] [soundon] [REQ DONE] path=/channels ms=73.24 status=200
-[2026-07-23 17:29:15] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.85 status=200
-[2026-07-23 17:29:15] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=33.15 status=200
-[2026-07-23 17:29:17] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=99.46 status=200
-[2026-07-23 17:29:18] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=31.98 status=200
-[2026-07-23 17:29:26] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=2.28 status=404
-[2026-07-23 17:29:39] [INFO] [soundon] [REQ DONE] path=/channels/3/detail ms=2.36 status=404
-[2026-07-23 17:29:43] [INFO] [soundon] [REQ DONE] path=/channels/1/detail ms=2.21 status=404
-[2026-07-23 17:29:45] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.88 status=200
-[2026-07-23 17:29:48] [INFO] [soundon] [REQ DONE] path=/channels/1/detail ms=2.55 status=404
-[2026-07-23 17:29:53] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=179.87 status=200
-[2026-07-23 17:29:53] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=30.13 status=200
-[2026-07-23 17:30:15] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=25.67 status=200
-[2026-07-23 17:30:45] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.04 status=200
-[2026-07-23 17:30:46] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('path', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'statistics'}]
-[2026-07-23 17:30:46] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('path', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'statistics'}]
-[2026-07-23 17:30:46] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=26.14 status=422
-[2026-07-23 17:30:50] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=35.34 status=200
-[2026-07-23 17:31:21] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.07 status=200
-[2026-07-23 17:31:42] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('path', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'statistics'}]
-[2026-07-23 17:31:42] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('path', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'statistics'}]
-[2026-07-23 17:31:42] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=22.28 status=422
-[2026-07-23 17:31:53] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=28.95 status=200
-[2026-07-23 17:32:57] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=33.78 status=200
-[2026-07-23 17:32:57] [INFO] [soundon] [REQ DONE] path=/channels ms=100.28 status=200
-[2026-07-23 17:32:58] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.82 status=200
-[2026-07-23 17:32:58] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=31.52 status=200
-[2026-07-23 17:33:28] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=32.3 status=200
-[2026-07-23 17:33:35] [ERROR] [soundon] ❌ Rollback terjadi: [{'type': 'int_parsing', 'loc': ('path', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'statistics'}]
-[2026-07-23 17:33:35] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('path', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'statistics'}]
-[2026-07-23 17:33:35] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=23.73 status=422
-[2026-07-23 17:36:57] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 17:36:57] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 17:36:58] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 17:36:58] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 17:37:00] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 17:37:00] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 17:37:00] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 17:37:00] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 17:37:00] [INFO] [soundon] Mode debug: False
-[2026-07-23 17:37:00] [INFO] [soundon] Environment: production
-[2026-07-23 17:37:00] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 17:37:00] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 17:37:00] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 17:37:00] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 17:37:00] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 17:37:00] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 17:37:00] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 17:37:00] [INFO] [soundon] Mode debug: False
-[2026-07-23 17:37:00] [INFO] [soundon] Environment: production
-[2026-07-23 17:37:00] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 17:37:00] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 17:37:00] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 17:37:02] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 17:37:02] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=174.88 status=500
-[2026-07-23 17:37:54] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 17:37:54] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=34.61 status=200
-[2026-07-23 17:37:56] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=163.68 status=200
-[2026-07-23 17:37:57] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=33.83 status=200
-[2026-07-23 17:38:03] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=2.47 status=404
-[2026-07-23 17:49:20] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
-[2026-07-23 17:49:21] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
-[2026-07-23 18:01:18] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:01:18] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:01:19] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:01:19] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:01:21] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:01:21] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:01:21] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:01:21] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:01:21] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:01:21] [INFO] [soundon] Environment: production
-[2026-07-23 18:01:21] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:01:21] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:01:21] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:01:21] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:01:21] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:01:21] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:01:21] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:01:21] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:01:21] [INFO] [soundon] Environment: production
-[2026-07-23 18:01:21] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:01:21] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:01:21] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:01:27] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:01:27] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=193.85 status=200
-[2026-07-23 18:01:27] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:01:28] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=35.0 status=200
-[2026-07-23 18:01:30] [ERROR] [soundon] ❌ Rollback terjadi: ArtistService.statistics() got multiple values for argument 'channel_id'
-[2026-07-23 18:01:30] [ERROR] [soundon] Unhandled exception: ArtistService.statistics() got multiple values for argument 'channel_id'
-Traceback (most recent call last):
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
-    with recv_stream, send_stream, collapse_excgroups():
-  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
-    self.gen.throw(typ, value, traceback)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
-    response = await self.dispatch_func(request, call_next)
-  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
-    response = await call_next(request)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
-    raise app_exc from app_exc.__cause__ or app_exc.__context__
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    await self.app(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
-    await route.handle(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
-    await self.app(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
-    response = await f(request)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
-    raw_response = await run_endpoint_function(
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
-    return await future
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
-    result = context.run(func, *args)
-  File "/opt/web-admin/app/music/artists/page.py", line 30, in channel_artists
-    context = ArtistPresenter.channel(
-  File "/opt/web-admin/app/music/artists/presenter.py", line 112, in channel
-    statistics = ArtistService.statistics(
-TypeError: ArtistService.statistics() got multiple values for argument 'channel_id'
-[2026-07-23 18:05:25] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:05:25] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:05:26] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:05:26] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:05:28] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:05:28] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:05:28] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:05:28] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:05:28] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:05:28] [INFO] [soundon] Environment: production
-[2026-07-23 18:05:28] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:05:28] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:05:28] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:05:28] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:05:28] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:05:28] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:05:28] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:05:28] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:05:28] [INFO] [soundon] Environment: production
-[2026-07-23 18:05:28] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:05:28] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:05:28] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:05:48] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:05:48] [ERROR] [soundon] ❌ Rollback terjadi: ArtistService.statistics() got multiple values for argument 'channel_id'
-[2026-07-23 18:05:48] [ERROR] [soundon] Unhandled exception: ArtistService.statistics() got multiple values for argument 'channel_id'
-Traceback (most recent call last):
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 191, in __call__
-    with recv_stream, send_stream, collapse_excgroups():
-  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
-    self.gen.throw(typ, value, traceback)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_utils.py", line 85, in collapse_excgroups
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 193, in __call__
-    response = await self.dispatch_func(request, call_next)
-  File "/opt/web-admin/app/core/middleware.py", line 92, in auth_middleware
-    response = await call_next(request)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 168, in call_next
-    raise app_exc from app_exc.__cause__ or app_exc.__context__
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/base.py", line 144, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    await self.app(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 736, in app
-    await route.handle(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/routing.py", line 290, in handle
-    await self.app(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 119, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 105, in app
-    response = await f(request)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 385, in app
-    raw_response = await run_endpoint_function(
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/fastapi/routing.py", line 286, in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/starlette/concurrency.py", line 32, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/to_thread.py", line 61, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 2525, in run_sync_in_worker_thread
-    return await future
-  File "/opt/web-admin/.venv/lib/python3.10/site-packages/anyio/_backends/_asyncio.py", line 986, in run
-    result = context.run(func, *args)
-  File "/opt/web-admin/app/music/artists/page.py", line 30, in channel_artists
-    context = ArtistPresenter.channel(
-  File "/opt/web-admin/app/music/artists/presenter.py", line 112, in channel
-    statistics = ArtistService.statistics(
-TypeError: ArtistService.statistics() got multiple values for argument 'channel_id'
-[2026-07-23 18:08:37] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:08:37] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:08:38] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:08:38] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:08:40] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:08:40] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:08:40] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:08:40] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:08:40] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:08:40] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:08:40] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:08:40] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:08:40] [INFO] [soundon] Environment: production
-[2026-07-23 18:08:40] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:08:40] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:08:40] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:08:40] [INFO] [soundon] Environment: production
-[2026-07-23 18:08:40] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:08:40] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:08:40] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:08:40] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:08:40] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:08:40] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:08:41] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=176.5 status=200
-[2026-07-23 18:08:41] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:08:41] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=31.4 status=200
-[2026-07-23 18:08:41] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=32.42 status=200
-[2026-07-23 18:09:38] [INFO] [soundon] [REQ DONE] path=/artists ms=68.32 status=200
-[2026-07-23 18:09:38] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=32.25 status=200
-[2026-07-23 18:09:38] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=33.07 status=200
-[2026-07-23 18:09:45] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=41.11 status=200
-[2026-07-23 18:09:49] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=42.3 status=200
-[2026-07-23 18:11:08] [INFO] [soundon] [REQ DONE] path=/channels ms=156.71 status=200
-[2026-07-23 18:11:08] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.31 status=200
-[2026-07-23 18:11:08] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=41.58 status=200
-[2026-07-23 18:11:13] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=37.29 status=200
-[2026-07-23 18:11:14] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=34.22 status=200
-[2026-07-23 18:11:17] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=35.19 status=200
-[2026-07-23 18:11:20] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=39.56 status=200
-[2026-07-23 18:11:26] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=35.17 status=200
-[2026-07-23 18:11:28] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=42.19 status=200
-[2026-07-23 18:11:33] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=37.69 status=200
-[2026-07-23 18:11:38] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.41 status=200
-[2026-07-23 18:11:43] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=147.11 status=200
-[2026-07-23 18:11:44] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=35.85 status=200
-[2026-07-23 18:12:21] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=70.33 status=200
-[2026-07-23 18:12:21] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=30.99 status=200
-[2026-07-23 18:12:21] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=39.55 status=200
-[2026-07-23 18:12:32] [INFO] [soundon] [REQ DONE] path=/channels/1/edit ms=82.39 status=200
-[2026-07-23 18:12:36] [INFO] [soundon] [REQ DONE] path=/channels/1/songs ms=3.38 status=404
-[2026-07-23 18:12:56] [INFO] [soundon] [REQ DONE] path=/channels ms=49.83 status=200
-[2026-07-23 18:12:56] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.64 status=200
-[2026-07-23 18:12:56] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=35.31 status=200
-[2026-07-23 18:12:59] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=60.89 status=500
-[2026-07-23 18:13:27] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.22 status=200
-[2026-07-23 18:13:57] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.96 status=200
-[2026-07-23 18:13:59] [WARNING] [soundon] [AUTH] No token found for path=/.vscode/sftp.json
-[2026-07-23 18:14:01] [WARNING] [soundon] [AUTH] No token found for path=/sftp-config.json
-[2026-07-23 18:14:27] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.12 status=200
-[2026-07-23 18:14:57] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=36.14 status=200
-[2026-07-23 18:15:23] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=70.53 status=500
-[2026-07-23 18:17:14] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=67.21 status=500
-[2026-07-23 18:19:04] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:19:04] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:19:05] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:19:05] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:19:07] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:19:07] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:19:07] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:19:07] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:19:07] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:19:07] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:19:07] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:19:07] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:19:07] [INFO] [soundon] Environment: production
-[2026-07-23 18:19:07] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:19:07] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:19:07] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:19:07] [INFO] [soundon] Environment: production
-[2026-07-23 18:19:07] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:19:07] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:19:07] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:19:07] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:19:07] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:19:09] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:19:09] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=159.71 status=200
-[2026-07-23 18:19:10] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:19:10] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=31.85 status=200
-[2026-07-23 18:19:10] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-channels ms=46.55 status=200
-[2026-07-23 18:19:10] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/status-breakdown ms=52.15 status=200
-[2026-07-23 18:19:10] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/daily ms=72.89 status=200
-[2026-07-23 18:20:38] [INFO] [soundon] [REQ DONE] path=/channels ms=161.09 status=200
-[2026-07-23 18:20:38] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=32.14 status=200
-[2026-07-23 18:20:38] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=34.37 status=200
-[2026-07-23 18:20:50] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=83.34 status=200
-[2026-07-23 18:20:50] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=36.44 status=200
-[2026-07-23 18:20:50] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/daily ms=53.2 status=200
-[2026-07-23 18:20:50] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/status-breakdown ms=51.98 status=200
-[2026-07-23 18:20:50] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-channels ms=61.82 status=200
-[2026-07-23 18:24:12] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:24:12] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:24:13] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:24:13] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:24:15] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:24:15] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:24:15] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:24:15] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:24:15] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:24:15] [INFO] [soundon] Environment: production
-[2026-07-23 18:24:15] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:24:15] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:24:15] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:24:15] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:24:15] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:24:15] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:24:15] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:24:15] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:24:15] [INFO] [soundon] Environment: production
-[2026-07-23 18:24:15] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:24:15] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:24:15] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:24:16] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:24:16] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=154.87 status=200
-[2026-07-23 18:24:17] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:24:18] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-channels ms=72.84 status=200
-[2026-07-23 18:24:18] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=61.67 status=200
-[2026-07-23 18:24:18] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/status-breakdown ms=60.14 status=200
-[2026-07-23 18:24:18] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/daily ms=68.05 status=200
-[2026-07-23 18:25:22] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:25:22] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:25:23] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:25:23] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:25:25] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:25:25] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:25:25] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:25:25] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:25:25] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:25:25] [INFO] [soundon] Environment: production
-[2026-07-23 18:25:25] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:25:25] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:25:25] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:25:25] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:25:25] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:25:25] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:25:25] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:25:25] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:25:25] [INFO] [soundon] Environment: production
-[2026-07-23 18:25:25] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:25:25] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:25:25] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:25:27] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:25:28] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=163.0 status=200
-[2026-07-23 18:25:28] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:26:04] [INFO] [soundon] [REQ DONE] path=/channels ms=68.6 status=200
-[2026-07-23 18:26:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/daily ms=33.27 status=200
-[2026-07-23 18:26:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=37.41 status=200
-[2026-07-23 18:26:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/status-breakdown ms=37.55 status=200
-[2026-07-23 18:26:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.71 status=200
-[2026-07-23 18:26:05] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=33.39 status=200
-[2026-07-23 18:26:12] [INFO] [soundon] [REQ DONE] path=/channels ms=44.72 status=200
-[2026-07-23 18:26:13] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/status-breakdown ms=47.5 status=200
-[2026-07-23 18:26:13] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=51.84 status=200
-[2026-07-23 18:26:13] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/daily ms=57.67 status=200
-[2026-07-23 18:26:13] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=80.6 status=200
-[2026-07-23 18:26:13] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=66.56 status=200
-[2026-07-23 18:26:17] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=150.45 status=200
-[2026-07-23 18:27:45] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:27:45] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:27:46] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:27:46] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:27:48] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:27:48] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:27:48] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:27:48] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:27:48] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:27:48] [INFO] [soundon] Environment: production
-[2026-07-23 18:27:48] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:27:48] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:27:48] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:27:48] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:27:48] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:27:48] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:27:48] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:27:48] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:27:48] [INFO] [soundon] Environment: production
-[2026-07-23 18:27:48] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:27:48] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:27:48] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:27:51] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:27:51] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=153.36 status=200
-[2026-07-23 18:27:53] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:27:53] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=30.41 status=200
-[2026-07-23 18:27:53] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-channels ms=45.79 status=200
-[2026-07-23 18:27:53] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/daily ms=65.06 status=200
-[2026-07-23 18:27:53] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/status-breakdown ms=62.19 status=200
-[2026-07-23 18:33:24] [WARNING] [soundon] [AUTH] No token found for path=/.env
-[2026-07-23 18:41:56] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:41:56] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:41:58] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:41:58] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:41:59] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:41:59] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:41:59] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:41:59] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:41:59] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:41:59] [INFO] [soundon] Environment: production
-[2026-07-23 18:41:59] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:41:59] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:41:59] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:41:59] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:41:59] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:41:59] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:41:59] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:41:59] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:41:59] [INFO] [soundon] Environment: production
-[2026-07-23 18:41:59] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:41:59] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:41:59] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:42:00] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:42:00] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:42:00] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/status-breakdown ms=42.18 status=200
-[2026-07-23 18:42:00] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=89.98 status=200
-[2026-07-23 18:42:00] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/daily ms=94.17 status=200
-[2026-07-23 18:42:03] [INFO] [soundon] [REQ DONE] path=/channels ms=144.24 status=200
-[2026-07-23 18:42:03] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=26.11 status=200
-[2026-07-23 18:42:03] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=34.97 status=200
-[2026-07-23 18:42:04] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=43.55 status=200
-[2026-07-23 18:42:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=31.21 status=200
-[2026-07-23 18:42:05] [INFO] [soundon] [REQ DONE] path=/channels ms=46.4 status=200
-[2026-07-23 18:42:05] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=36.28 status=200
-[2026-07-23 18:42:07] [INFO] [soundon] [REQ DONE] path=/channels ms=161.97 status=200
-[2026-07-23 18:42:07] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=35.5 status=200
-[2026-07-23 18:42:07] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=39.38 status=200
-[2026-07-23 18:42:07] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=55.45 status=200
-[2026-07-23 18:42:15] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=81.61 status=500
-[2026-07-23 18:46:16] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:46:16] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:46:17] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:46:17] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:46:18] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:46:18] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:46:18] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:46:18] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:46:18] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:46:18] [INFO] [soundon] Environment: production
-[2026-07-23 18:46:18] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:46:19] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:46:19] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:46:19] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:46:19] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:46:19] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:46:19] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:46:19] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:46:19] [INFO] [soundon] Environment: production
-[2026-07-23 18:46:19] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:46:19] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:46:19] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:46:20] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:46:20] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=156.46 status=200
-[2026-07-23 18:46:22] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:46:22] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=139.8 status=200
-[2026-07-23 18:46:22] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=27.53 status=200
-[2026-07-23 18:46:26] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=50.06 status=200
-[2026-07-23 18:46:26] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=26.02 status=200
-[2026-07-23 18:46:45] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:46:45] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:46:46] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:46:46] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:46:47] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:46:47] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:46:47] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:46:47] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:46:47] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:46:47] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:46:47] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:46:47] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:46:47] [INFO] [soundon] Environment: production
-[2026-07-23 18:46:47] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:46:47] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:46:47] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:46:47] [INFO] [soundon] Environment: production
-[2026-07-23 18:46:47] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:46:47] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:46:47] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:46:47] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:46:47] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:46:47] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:46:47] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=129.14 status=200
-[2026-07-23 18:46:49] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=47.88 status=200
-[2026-07-23 18:46:49] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=25.79 status=200
-[2026-07-23 18:46:53] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=49.86 status=200
-[2026-07-23 18:46:53] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=28.81 status=200
-[2026-07-23 18:46:56] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:51:13] [INFO] [soundon] [REQ DONE] path=//api/channels/statistics ms=2.39 status=404
-[2026-07-23 18:51:17] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=27.19 status=200
-[2026-07-23 18:56:25] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:56:25] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:56:26] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:56:26] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:56:28] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:56:28] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:56:28] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:56:28] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:56:28] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:56:28] [INFO] [soundon] Environment: production
-[2026-07-23 18:56:28] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:56:28] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:56:28] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:56:28] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:56:28] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:56:28] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:56:28] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:56:28] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:56:28] [INFO] [soundon] Environment: production
-[2026-07-23 18:56:28] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:56:28] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:56:28] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:57:38] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:57:38] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 18:57:39] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:57:39] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 18:57:41] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:57:41] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:57:41] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:57:41] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:57:41] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:57:41] [INFO] [soundon] Environment: production
-[2026-07-23 18:57:41] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:57:41] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 18:57:41] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 18:57:41] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 18:57:41] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:57:41] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:57:41] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 18:57:41] [INFO] [soundon] Mode debug: False
-[2026-07-23 18:57:41] [INFO] [soundon] Environment: production
-[2026-07-23 18:57:41] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 18:57:41] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 18:57:41] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 18:57:51] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 18:57:51] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=31.54 status=200
-[2026-07-23 19:00:07] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 19:00:07] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 19:00:08] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 19:00:08] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 19:00:10] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 19:00:10] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 19:00:10] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 19:00:10] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 19:00:10] [INFO] [soundon] Mode debug: False
-[2026-07-23 19:00:10] [INFO] [soundon] Environment: production
-[2026-07-23 19:00:10] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 19:00:10] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 19:00:10] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 19:00:10] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 19:00:10] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 19:00:10] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 19:00:10] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 19:00:10] [INFO] [soundon] Mode debug: False
-[2026-07-23 19:00:10] [INFO] [soundon] Environment: production
-[2026-07-23 19:00:10] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 19:00:10] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 19:00:10] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 19:00:15] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 19:00:15] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=36.24 status=200
-[2026-07-23 19:00:20] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=148.56 status=200
-[2026-07-23 19:00:22] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=65.88 status=200
-[2026-07-23 19:00:22] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=29.52 status=200
-[2026-07-23 19:00:25] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=67.26 status=200
-[2026-07-23 19:00:31] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 19:00:44] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=156.78 status=200
-[2026-07-23 19:00:44] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=34.09 status=200
-[2026-07-23 19:00:56] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=56.92 status=200
-[2026-07-23 19:00:56] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=33.14 status=200
-[2026-07-23 19:01:21] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=59.79 status=200
-[2026-07-23 19:01:23] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=26.85 status=200
-[2026-07-23 19:07:12] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 19:07:12] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 19:07:14] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 19:07:14] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 19:07:15] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 19:07:15] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 19:07:15] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 19:07:15] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 19:07:15] [INFO] [soundon] Mode debug: False
-[2026-07-23 19:07:15] [INFO] [soundon] Environment: production
-[2026-07-23 19:07:15] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 19:07:15] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 19:07:15] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 19:07:15] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 19:07:15] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 19:07:15] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 19:07:15] [INFO] [soundon] Mode debug: False
-[2026-07-23 19:07:15] [INFO] [soundon] Environment: production
-[2026-07-23 19:07:15] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 19:07:15] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 19:07:15] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 19:07:15] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 19:07:17] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 19:07:17] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=149.01 status=200
-[2026-07-23 19:07:18] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 19:07:20] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=27.32 status=200
-[2026-07-23 19:11:07] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 19:11:07] [INFO] [soundon] 🛑 Mematikan SoundON Admin
-[2026-07-23 19:11:09] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 19:11:10] [INFO] [soundon] ✅ Middleware setup completed
-[2026-07-23 19:11:12] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 19:11:12] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 19:11:12] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 19:11:12] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 19:11:12] [INFO] [soundon] Mode debug: False
-[2026-07-23 19:11:12] [INFO] [soundon] Environment: production
-[2026-07-23 19:11:12] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 19:11:12] [INFO] [soundon] ✅ Registered 33 routers
-[2026-07-23 19:11:12] [INFO] [soundon] ✅ All routers registered successfully
-[2026-07-23 19:11:12] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
-[2026-07-23 19:11:12] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 19:11:12] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 19:11:12] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
-[2026-07-23 19:11:12] [INFO] [soundon] Mode debug: False
-[2026-07-23 19:11:12] [INFO] [soundon] Environment: production
-[2026-07-23 19:11:12] [INFO] [soundon] Cookie autentikasi: auth_session
-[2026-07-23 19:11:12] [INFO] [soundon] ✅ Database connection test successful
-[2026-07-23 19:11:12] [INFO] [soundon] ✅ Database connected successfully
-[2026-07-23 19:11:13] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 19:11:13] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=144.97 status=200
-[2026-07-23 19:11:14] [INFO] [soundon] ✅ Security policy loaded successfully
-[2026-07-23 19:11:14] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=28.45 status=200
-[2026-07-23 19:11:25] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=29.31 status=200
-[2026-07-23 19:11:27] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=29.1 status=200
-[2026-07-23 19:11:29] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=34.09 status=200
-[2026-07-23 19:11:31] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=25.93 status=200
-[2026-07-23 19:11:32] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=26.39 status=200
-[2026-07-23 19:12:04] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=29.79 status=200
-[2026-07-23 19:12:06] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=37.7 status=200
-[2026-07-23 19:12:08] [INFO] [soundon] [REQ DONE] path=/channels ms=82.45 status=200
-[2026-07-23 19:12:08] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=31.36 status=200
-[2026-07-23 19:12:09] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=57.76 status=200
-[2026-07-23 19:12:09] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=58.43 status=200
-[2026-07-23 19:12:11] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=50.17 status=200
-[2026-07-23 19:12:11] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=30.51 status=200
-[2026-07-23 19:12:21] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=27.1 status=200
-[2026-07-23 19:12:23] [INFO] [soundon] [Dashboard] Loaded Users=7059 Shows=4480
-[2026-07-23 19:12:23] [INFO] [soundon] [REQ DONE] path=/ ms=176.56 status=200
-[2026-07-23 19:12:26] [INFO] [soundon] [REQ DONE] path=/channels ms=42.33 status=200
-[2026-07-23 19:12:26] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=28.53 status=200
-[2026-07-23 19:12:26] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=37.55 status=200
-[2026-07-23 19:12:26] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=41.93 status=200
-[2026-07-23 19:12:29] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=114.8 status=200
-[2026-07-23 19:12:29] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=29.25 status=200
-[2026-07-23 19:12:32] [INFO] [soundon] [REQ DONE] path=/channels ms=44.31 status=200
-[2026-07-23 19:12:33] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=56.21 status=200
-[2026-07-23 19:12:33] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=45.08 status=200
-[2026-07-23 19:12:33] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=54.3 status=200
-[2026-07-23 19:12:35] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=170.27 status=200
-[2026-07-23 19:12:35] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=26.64 status=200
-[2026-07-23 19:13:53] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=83.86 status=200
-[2026-07-23 19:13:53] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=24.76 status=200
-[2026-07-23 19:13:53] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=30.27 status=200
-[2026-07-23 19:13:59] [INFO] [soundon] [REQ DONE] path=/channels ms=41.67 status=200
-[2026-07-23 19:13:59] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=31.19 status=200
-[2026-07-23 19:13:59] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=37.07 status=200
-[2026-07-23 19:13:59] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=34.36 status=200
-[2026-07-23 19:14:07] [INFO] [soundon] [REQ DONE] path=/channels/1/detail ms=2.34 status=404
-[2026-07-23 19:14:16] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=56.57 status=200
-[2026-07-23 19:14:16] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=27.01 status=200
-[2026-07-23 19:14:21] [INFO] [soundon] [REQ DONE] path=/channels/1/detail ms=2.54 status=404
-[2026-07-23 19:14:34] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.04 status=200
-[2026-07-23 19:14:43] [INFO] [soundon] [REQ DONE] path=/channels/1/detail ms=2.34 status=404
-[2026-07-23 19:14:54] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=59.37 status=200
-[2026-07-23 19:14:54] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=29.61 status=200
-[2026-07-23 19:15:00] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=97.17 status=200
-[2026-07-23 19:15:00] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=33.2 status=200
-[2026-07-23 19:15:00] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=27.35 status=200
-[2026-07-23 19:15:11] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=31.49 status=200
-[2026-07-23 19:15:31] [INFO] [soundon] [REQ DONE] path=/songs ms=174.99 status=200
-[2026-07-23 19:15:31] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=29.96 status=200
-[2026-07-23 19:15:31] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=62.76 status=200
-[2026-07-23 19:15:32] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=122.17 status=200
-[2026-07-23 19:15:34] [INFO] [soundon] [REQ DONE] path=/channels ms=68.34 status=200
-[2026-07-23 19:15:35] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=26.35 status=200
-[2026-07-23 19:15:35] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.9 status=200
-[2026-07-23 19:15:35] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=32.83 status=200
-[2026-07-23 19:15:51] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=40.46 status=200
-[2026-07-23 19:15:52] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=34.38 status=200
-[2026-07-23 19:15:54] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=34.73 status=200
-[2026-07-23 19:15:54] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=37.24 status=200
-[2026-07-23 19:15:54] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=45.43 status=200
-[2026-07-23 19:15:54] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=38.66 status=200
-[2026-07-23 19:15:59] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=36.41 status=200
-[2026-07-23 19:16:00] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=37.79 status=200
-[2026-07-23 19:16:01] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=35.01 status=200
-[2026-07-23 19:16:01] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=38.28 status=200
-[2026-07-23 19:16:01] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=48.62 status=200
-[2026-07-23 19:16:02] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=62.17 status=200
-[2026-07-23 19:16:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=35.26 status=200
-[2026-07-23 19:16:09] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=43.26 status=200
-[2026-07-23 19:16:14] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=33.31 status=200
-[2026-07-23 19:16:17] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=33.37 status=200
-[2026-07-23 19:16:35] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=38.41 status=200
-[2026-07-23 19:17:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.88 status=200
-[2026-07-23 19:17:35] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.23 status=200
-[2026-07-23 19:18:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=32.88 status=200
-[2026-07-23 19:18:35] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=32.74 status=200
-[2026-07-23 19:19:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=33.74 status=200
-[2026-07-23 19:19:35] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.68 status=200
-[2026-07-23 19:20:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.49 status=200
-[2026-07-23 19:20:35] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.33 status=200
-[2026-07-23 19:21:36] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.24 status=200
-[2026-07-23 19:21:55] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
-[2026-07-23 19:21:55] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
-[2026-07-23 19:22:37] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.33 status=200
-[2026-07-23 19:23:38] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.54 status=200
-[2026-07-23 19:24:39] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.18 status=200
-[2026-07-23 19:25:40] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.96 status=200
-[2026-07-23 19:26:41] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.73 status=200
-[2026-07-23 19:27:44] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.47 status=200
-[2026-07-23 19:28:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.44 status=200
-[2026-07-23 19:29:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=42.85 status=200
-[2026-07-23 19:30:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=36.54 status=200
-[2026-07-23 19:31:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.73 status=200
-[2026-07-23 19:32:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.5 status=200
-[2026-07-23 19:33:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.64 status=200
-[2026-07-23 19:34:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.78 status=200
-[2026-07-23 19:35:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.34 status=200
-[2026-07-23 19:36:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.12 status=200
-[2026-07-23 19:37:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.66 status=200
-[2026-07-23 19:38:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.85 status=200
-[2026-07-23 19:39:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=31.7 status=200
-[2026-07-23 19:40:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=38.8 status=200
-[2026-07-23 19:41:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=30.32 status=200
-[2026-07-23 19:42:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=31.06 status=200
-[2026-07-23 19:43:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.57 status=200
-[2026-07-23 19:44:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.67 status=200
-[2026-07-23 19:45:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.16 status=200
-[2026-07-23 19:46:43] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=31.41 status=200
-[2026-07-23 19:47:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.33 status=200
-[2026-07-23 19:48:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.06 status=200
-[2026-07-23 19:49:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.9 status=200
-[2026-07-23 19:50:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=33.11 status=200
-[2026-07-23 19:51:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=39.75 status=200
-[2026-07-23 19:52:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=30.43 status=200
-[2026-07-23 19:53:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.5 status=200
-[2026-07-23 19:54:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=32.45 status=200
-[2026-07-23 19:55:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=27.42 status=200
-[2026-07-23 19:56:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=29.47 status=200
-[2026-07-23 19:57:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.92 status=200
-[2026-07-23 19:58:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.09 status=200
-[2026-07-23 19:59:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.0 status=200
-[2026-07-23 20:00:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.94 status=200
-[2026-07-23 20:01:43] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=31.84 status=200
-[2026-07-23 20:02:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=34.02 status=200
-[2026-07-23 20:03:41] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
-[2026-07-23 20:03:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.06 status=200
-[2026-07-23 20:04:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=36.74 status=200
-[2026-07-23 20:05:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=36.9 status=200
-[2026-07-23 20:06:42] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=28.13 status=200
-[2026-07-23 20:07:16] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=26.57 status=200
-[2026-07-23 20:07:27] [INFO] [soundon] [REQ DONE] path=/channels/statistics ms=55.43 status=200
-[2026-07-23 20:07:27] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=30.3 status=200
+[2026-07-24 07:20:17] [WARNING] [soundon] [AUTH] No token found for path=/.env.backup
+[2026-07-24 07:20:19] [WARNING] [soundon] [AUTH] No token found for path=/.env.save
+[2026-07-24 07:20:20] [WARNING] [soundon] [AUTH] No token found for path=/.env.bak
+[2026-07-24 07:20:21] [WARNING] [soundon] [AUTH] No token found for path=/.env.production
+[2026-07-24 07:20:23] [WARNING] [soundon] [AUTH] No token found for path=/.envrc
+[2026-07-24 07:20:24] [WARNING] [soundon] [AUTH] No token found for path=/config/.env
+[2026-07-24 07:21:18] [WARNING] [soundon] [AUTH] No token found for path=/songs/youtube-generator
+[2026-07-24 07:21:20] [INFO] [soundon] [Dashboard] Loaded Users=7073 Shows=4480
+[2026-07-24 07:21:20] [INFO] [soundon] [REQ DONE] path=/ ms=153.76 status=200
+[2026-07-24 07:21:24] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=14.11 status=200
+[2026-07-24 07:30:44] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 07:30:48] [WARNING] [soundon] [AUTH] No token found for path=/PL-1466-160526/
+[2026-07-24 07:34:29] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 07:45:02] [INFO] [soundon] [Dashboard] Loaded Users=7073 Shows=4480
+[2026-07-24 07:45:02] [INFO] [soundon] [REQ DONE] path=/ ms=153.64 status=200
+[2026-07-24 07:45:07] [INFO] [soundon] [REQ DONE] path=/songs ms=125.63 status=200
+[2026-07-24 07:45:07] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=11.04 status=200
+[2026-07-24 07:45:07] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.2 status=200
+[2026-07-24 07:45:11] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=6.23 status=200
+[2026-07-24 07:46:01] [INFO] [soundon] [REQ DONE] path=/api/songs/export/day/24 ms=122.03 status=200
+[2026-07-24 07:46:03] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=4.72 status=200
+[2026-07-24 07:46:03] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=4.04 status=200
+[2026-07-24 07:46:07] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.42 status=200
+[2026-07-24 07:47:08] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.36 status=200
+[2026-07-24 07:48:08] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.34 status=200
+[2026-07-24 07:49:08] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.98 status=200
+[2026-07-24 07:51:08] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.41 status=200
+[2026-07-24 07:53:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.81 status=200
+[2026-07-24 07:54:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=5.4 status=200
+[2026-07-24 07:55:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.99 status=200
+[2026-07-24 07:56:08] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.72 status=200
+[2026-07-24 07:58:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.41 status=200
+[2026-07-24 07:59:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.67 status=200
+[2026-07-24 08:00:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.99 status=200
+[2026-07-24 08:01:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=5.69 status=200
+[2026-07-24 08:02:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.37 status=200
+[2026-07-24 08:04:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=11.6 status=200
+[2026-07-24 08:05:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.87 status=200
+[2026-07-24 08:08:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.27 status=200
+[2026-07-24 08:11:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=6.83 status=200
+[2026-07-24 08:11:43] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 08:13:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.99 status=200
+[2026-07-24 08:41:11] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 08:42:57] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-24 09:04:05] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 09:04:06] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 09:04:06] [WARNING] [soundon] [AUTH] No token found for path=/xmlrpc.php
+[2026-07-24 09:04:06] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 09:04:07] [WARNING] [soundon] [AUTH] No token found for path=/web/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:07] [WARNING] [soundon] [AUTH] No token found for path=/wordpress/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:07] [WARNING] [soundon] [AUTH] No token found for path=/website/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:07] [WARNING] [soundon] [AUTH] No token found for path=/wp/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:07] [WARNING] [soundon] [AUTH] No token found for path=/news/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:08] [WARNING] [soundon] [AUTH] No token found for path=/wp1/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:08] [WARNING] [soundon] [AUTH] No token found for path=/test/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:09] [WARNING] [soundon] [AUTH] No token found for path=/site/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:09] [WARNING] [soundon] [AUTH] No token found for path=/cms/wp-includes/wlwmanifest.xml
+[2026-07-24 09:17:56] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-24 09:17:58] [WARNING] [soundon] [AUTH] No token found for path=/aws-ses.json
+[2026-07-24 09:17:59] [WARNING] [soundon] [AUTH] No token found for path=/.stripe/
+[2026-07-24 09:18:00] [WARNING] [soundon] [AUTH] No token found for path=/.env.save
+[2026-07-24 09:18:01] [WARNING] [soundon] [AUTH] No token found for path=/backend/.env
+[2026-07-24 09:18:01] [WARNING] [soundon] [AUTH] No token found for path=/test.php
+[2026-07-24 09:18:02] [WARNING] [soundon] [AUTH] No token found for path=/.env.backup
+[2026-07-24 09:18:02] [WARNING] [soundon] [AUTH] No token found for path=/.env.tmp
+[2026-07-24 09:18:03] [WARNING] [soundon] [AUTH] No token found for path=/.env.php.bak
+[2026-07-24 09:18:03] [WARNING] [soundon] [AUTH] No token found for path=/.env.php
+[2026-07-24 09:18:05] [WARNING] [soundon] [AUTH] No token found for path=/config.json.save
+[2026-07-24 09:18:05] [WARNING] [soundon] [AUTH] No token found for path=/.git/config
+[2026-07-24 09:18:06] [WARNING] [soundon] [AUTH] No token found for path=/config.php
+[2026-07-24 09:18:06] [WARNING] [soundon] [AUTH] No token found for path=/config.php.bak
+[2026-07-24 09:18:07] [WARNING] [soundon] [AUTH] No token found for path=/config.js
+[2026-07-24 09:18:07] [WARNING] [soundon] [AUTH] No token found for path=/aws-config.js
+[2026-07-24 09:18:08] [WARNING] [soundon] [AUTH] No token found for path=/aws.config.js
+[2026-07-24 09:18:08] [WARNING] [soundon] [AUTH] No token found for path=/phpinfo.php
+[2026-07-24 10:28:48] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-24 10:32:42] [WARNING] [soundon] [AUTH] No token found for path=/.git/config
+[2026-07-24 10:32:45] [WARNING] [soundon] [AUTH] No token found for path=/.env.development
+[2026-07-24 10:32:46] [WARNING] [soundon] [AUTH] No token found for path=/.env.test
+[2026-07-24 10:32:47] [WARNING] [soundon] [AUTH] No token found for path=/.env.bak
+[2026-07-24 10:32:47] [WARNING] [soundon] [AUTH] No token found for path=/.env.backup
+[2026-07-24 10:32:48] [WARNING] [soundon] [AUTH] No token found for path=/.env.save
+[2026-07-24 10:32:49] [WARNING] [soundon] [AUTH] No token found for path=/.env.old
+[2026-07-24 10:32:50] [WARNING] [soundon] [AUTH] No token found for path=/.env.example
+[2026-07-24 10:32:51] [WARNING] [soundon] [AUTH] No token found for path=/.env.prod
+[2026-07-24 10:32:51] [WARNING] [soundon] [AUTH] No token found for path=/.env.stage
+[2026-07-24 10:32:52] [WARNING] [soundon] [AUTH] No token found for path=/.env.docker
+[2026-07-24 10:32:57] [WARNING] [soundon] [AUTH] No token found for path=/.env~
+[2026-07-24 10:32:57] [WARNING] [soundon] [AUTH] No token found for path=/.env1
+[2026-07-24 10:32:59] [WARNING] [soundon] [AUTH] No token found for path=/.env.txt
+[2026-07-24 10:32:59] [WARNING] [soundon] [AUTH] No token found for path=/.env.json
+[2026-07-24 10:33:02] [WARNING] [soundon] [AUTH] No token found for path=/api/.env
+[2026-07-24 10:33:02] [WARNING] [soundon] [AUTH] No token found for path=/web/.env
+[2026-07-24 10:33:03] [WARNING] [soundon] [AUTH] No token found for path=/site/.env
+[2026-07-24 10:33:04] [WARNING] [soundon] [AUTH] No token found for path=/admin/.env
+[2026-07-24 10:33:06] [WARNING] [soundon] [AUTH] No token found for path=/core/.env
+[2026-07-24 10:33:08] [WARNING] [soundon] [AUTH] No token found for path=/application/.env
+[2026-07-24 10:33:13] [WARNING] [soundon] [AUTH] No token found for path=/releases/.env
+[2026-07-24 10:33:14] [WARNING] [soundon] [AUTH] No token found for path=/deploy/.env
+[2026-07-24 10:33:15] [WARNING] [soundon] [AUTH] No token found for path=/public_html/.env
+[2026-07-24 10:33:17] [WARNING] [soundon] [AUTH] No token found for path=/html/.env
+[2026-07-24 10:33:17] [WARNING] [soundon] [AUTH] No token found for path=/live/.env
+[2026-07-24 10:33:18] [WARNING] [soundon] [AUTH] No token found for path=/prod/.env
+[2026-07-24 10:33:18] [WARNING] [soundon] [AUTH] No token found for path=/dev/.env
+[2026-07-24 10:33:21] [WARNING] [soundon] [AUTH] No token found for path=/wordpress/.env
+[2026-07-24 10:33:22] [WARNING] [soundon] [AUTH] No token found for path=/cms/.env
+[2026-07-24 10:33:25] [WARNING] [soundon] [AUTH] No token found for path=/prestashop/.env
+[2026-07-24 10:33:27] [WARNING] [soundon] [AUTH] No token found for path=/zend/.env
+[2026-07-24 10:33:27] [WARNING] [soundon] [AUTH] No token found for path=/yii/.env
+[2026-07-24 10:33:28] [WARNING] [soundon] [AUTH] No token found for path=/laravel5/.env
+[2026-07-24 10:33:30] [WARNING] [soundon] [AUTH] No token found for path=/api/v1/.env
+[2026-07-24 10:33:31] [WARNING] [soundon] [AUTH] No token found for path=/rest/.env
+[2026-07-24 10:33:32] [WARNING] [soundon] [AUTH] No token found for path=/microservice/.env
+[2026-07-24 10:33:33] [WARNING] [soundon] [AUTH] No token found for path=/service/.env
+[2026-07-24 10:33:34] [WARNING] [soundon] [AUTH] No token found for path=/api/staging/.env
+[2026-07-24 10:33:38] [WARNING] [soundon] [AUTH] No token found for path=/bin/.env
+[2026-07-24 10:33:39] [WARNING] [soundon] [AUTH] No token found for path=/sbin/.env
+[2026-07-24 10:33:40] [WARNING] [soundon] [AUTH] No token found for path=/portal/.env
+[2026-07-24 10:33:45] [WARNING] [soundon] [AUTH] No token found for path=/project/.env
+[2026-07-24 10:33:46] [WARNING] [soundon] [AUTH] No token found for path=/control-panel/.env
+[2026-07-24 10:33:47] [WARNING] [soundon] [AUTH] No token found for path=/user-panel/.env
+[2026-07-24 10:33:47] [WARNING] [soundon] [AUTH] No token found for path=/node/.env
+[2026-07-24 10:33:49] [WARNING] [soundon] [AUTH] No token found for path=/next/.env
+[2026-07-24 10:33:49] [WARNING] [soundon] [AUTH] No token found for path=/nuxt/.env
+[2026-07-24 10:33:50] [WARNING] [soundon] [AUTH] No token found for path=/nest/.env
+[2026-07-24 10:33:50] [WARNING] [soundon] [AUTH] No token found for path=/react/.env
+[2026-07-24 10:33:51] [WARNING] [soundon] [AUTH] No token found for path=/vue/.env
+[2026-07-24 10:33:51] [WARNING] [soundon] [AUTH] No token found for path=/angular/.env
+[2026-07-24 10:33:52] [WARNING] [soundon] [AUTH] No token found for path=/svelte/.env
+[2026-07-24 10:33:53] [WARNING] [soundon] [AUTH] No token found for path=/backup/.env
+[2026-07-24 10:33:53] [WARNING] [soundon] [AUTH] No token found for path=/backups/.env
+[2026-07-24 10:33:54] [WARNING] [soundon] [AUTH] No token found for path=/old/.env
+[2026-07-24 10:33:55] [WARNING] [soundon] [AUTH] No token found for path=/temp/.env
+[2026-07-24 10:33:55] [WARNING] [soundon] [AUTH] No token found for path=/lab/.env
+[2026-07-24 10:33:56] [WARNING] [soundon] [AUTH] No token found for path=/cronlab/.env
+[2026-07-24 10:33:57] [WARNING] [soundon] [AUTH] No token found for path=/cron/.env
+[2026-07-24 10:33:58] [WARNING] [soundon] [AUTH] No token found for path=/psnlink/.env
+[2026-07-24 10:34:01] [WARNING] [soundon] [AUTH] No token found for path=/cache/.env
+[2026-07-24 10:34:04] [WARNING] [soundon] [AUTH] No token found for path=/smtp/.env
+[2026-07-24 10:34:07] [WARNING] [soundon] [AUTH] No token found for path=/ses/.env
+[2026-07-24 10:34:08] [WARNING] [soundon] [AUTH] No token found for path=/sendgrid/.env
+[2026-07-24 10:34:09] [WARNING] [soundon] [AUTH] No token found for path=/sparkpost/.env
+[2026-07-24 10:34:09] [WARNING] [soundon] [AUTH] No token found for path=/postmark/.env
+[2026-07-24 10:34:10] [WARNING] [soundon] [AUTH] No token found for path=/mailgun/.env
+[2026-07-24 10:34:11] [WARNING] [soundon] [AUTH] No token found for path=/mailjet/.env
+[2026-07-24 10:34:14] [WARNING] [soundon] [AUTH] No token found for path=/gcp/.env
+[2026-07-24 10:34:14] [WARNING] [soundon] [AUTH] No token found for path=/cloud/.env
+[2026-07-24 10:34:15] [WARNING] [soundon] [AUTH] No token found for path=/infrastructure/.env
+[2026-07-24 10:34:18] [WARNING] [soundon] [AUTH] No token found for path=/ansible/.env
+[2026-07-24 10:34:20] [WARNING] [soundon] [AUTH] No token found for path=/jenkins/.env
+[2026-07-24 10:34:20] [WARNING] [soundon] [AUTH] No token found for path=/gitlab/.env
+[2026-07-24 10:34:21] [WARNING] [soundon] [AUTH] No token found for path=/actions/.env
+[2026-07-24 10:34:22] [WARNING] [soundon] [AUTH] No token found for path=/circleci/.env
+[2026-07-24 10:34:22] [WARNING] [soundon] [AUTH] No token found for path=/travis/.env
+[2026-07-24 10:34:23] [WARNING] [soundon] [AUTH] No token found for path=/mysql/.env
+[2026-07-24 10:34:24] [WARNING] [soundon] [AUTH] No token found for path=/postgres/.env
+[2026-07-24 10:34:25] [WARNING] [soundon] [AUTH] No token found for path=/elasticsearch/.env
+[2026-07-24 10:34:26] [WARNING] [soundon] [AUTH] No token found for path=/kafka/.env
+[2026-07-24 10:34:28] [WARNING] [soundon] [AUTH] No token found for path=/job/.env
+[2026-07-24 10:34:31] [WARNING] [soundon] [AUTH] No token found for path=/uat/.env
+[2026-07-24 10:34:33] [WARNING] [soundon] [AUTH] No token found for path=/phpinfo.php
+[2026-07-24 10:34:34] [WARNING] [soundon] [AUTH] No token found for path=/info.php
+[2026-07-24 10:34:36] [WARNING] [soundon] [AUTH] No token found for path=/pi.php
+[2026-07-24 10:34:40] [WARNING] [soundon] [AUTH] No token found for path=/test/phpinfo.php
+[2026-07-24 10:34:41] [WARNING] [soundon] [AUTH] No token found for path=/old/phpinfo.php
+[2026-07-24 10:34:41] [WARNING] [soundon] [AUTH] No token found for path=/tmp/phpinfo.php
+[2026-07-24 10:34:42] [WARNING] [soundon] [AUTH] No token found for path=/public/phpinfo.php
+[2026-07-24 10:34:45] [WARNING] [soundon] [AUTH] No token found for path=/old_phpinfo.php
+[2026-07-24 10:34:46] [WARNING] [soundon] [AUTH] No token found for path=/_profiler/phpinfo
+[2026-07-24 10:34:47] [WARNING] [soundon] [AUTH] No token found for path=/_environment
+[2026-07-24 10:34:49] [WARNING] [soundon] [AUTH] No token found for path=/hosting/phpinfo.php
+[2026-07-24 10:34:50] [WARNING] [soundon] [AUTH] No token found for path=/smtp/phpinfo.php
+[2026-07-24 10:34:51] [WARNING] [soundon] [AUTH] No token found for path=/phpinfo.php.bak
+[2026-07-24 10:34:53] [WARNING] [soundon] [AUTH] No token found for path=/phpinfo.php.save
+[2026-07-24 10:34:54] [WARNING] [soundon] [AUTH] No token found for path=/staging/phpinfo.php
+[2026-07-24 10:34:56] [WARNING] [soundon] [AUTH] No token found for path=/preview/phpinfo.php
+[2026-07-24 10:34:57] [WARNING] [soundon] [AUTH] No token found for path=/www/phpinfo.php
+[2026-07-24 10:34:58] [WARNING] [soundon] [AUTH] No token found for path=/public_html/phpinfo.php
+[2026-07-24 10:34:58] [WARNING] [soundon] [AUTH] No token found for path=/site/phpinfo.php
+[2026-07-24 10:35:00] [WARNING] [soundon] [AUTH] No token found for path=/core/phpinfo.php
+[2026-07-24 10:35:03] [WARNING] [soundon] [AUTH] No token found for path=/gcp-credentials.json
+[2026-07-24 10:35:04] [WARNING] [soundon] [AUTH] No token found for path=/gcp-sa.json
+[2026-07-24 10:35:06] [WARNING] [soundon] [AUTH] No token found for path=/google-key.json
+[2026-07-24 10:35:06] [WARNING] [soundon] [AUTH] No token found for path=/.config/gcloud/application_default_credentials.json
+[2026-07-24 10:35:08] [WARNING] [soundon] [AUTH] No token found for path=/firebase-adminsdk.json
+[2026-07-24 10:35:09] [WARNING] [soundon] [AUTH] No token found for path=/firebase-key.json
+[2026-07-24 11:00:48] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 12:02:51] [WARNING] [soundon] [AUTH] No token found for path=/.git/config
+[2026-07-24 12:06:04] [WARNING] [soundon] [AUTH] No token found for path=/.git/config
+[2026-07-24 12:14:14] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 12:28:27] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 13:11:40] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 13:27:48] [WARNING] [soundon] [AUTH] No token found for path=/.env.development
+[2026-07-24 13:27:49] [WARNING] [soundon] [AUTH] No token found for path=/.git/HEAD
+[2026-07-24 13:27:49] [WARNING] [soundon] [AUTH] No token found for path=/api/.env
+[2026-07-24 13:27:50] [WARNING] [soundon] [AUTH] No token found for path=/config.json
+[2026-07-24 13:27:50] [WARNING] [soundon] [AUTH] No token found for path=/.aws/credentials
+[2026-07-24 13:27:51] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-24 13:27:51] [WARNING] [soundon] [AUTH] No token found for path=/env
+[2026-07-24 14:04:21] [INFO] [soundon] Login attempt: admin | IP: 172.70.142.17
+[2026-07-24 14:04:21] [INFO] [soundon] Login success: admin | IP: 172.70.142.17 | Remember: False
+[2026-07-24 14:04:28] [INFO] [soundon] [REQ DONE] path=/channel-blacklists ms=39.72 status=200
+[2026-07-24 14:04:31] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=13.7 status=200
+[2026-07-24 14:04:42] [INFO] [soundon] [REQ DONE] path=/artists ms=54.99 status=500
+[2026-07-24 14:04:44] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=19.65 status=200
+[2026-07-24 14:04:46] [INFO] [soundon] [REQ DONE] path=/channels/1/edit ms=27.77 status=500
+[2026-07-24 14:04:58] [INFO] [soundon] [REQ DONE] path=/channels ms=56.99 status=200
+[2026-07-24 14:04:58] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=6.09 status=200
+[2026-07-24 14:05:34] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=28.23 status=500
+[2026-07-24 14:27:40] [INFO] [soundon] [REQ DONE] path=/songs/youtube-generator ms=6.27 status=200
+[2026-07-24 14:33:08] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 14:33:09] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 14:33:09] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 14:33:12] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 14:33:12] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 14:33:12] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 14:33:12] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 14:33:12] [INFO] [soundon] Mode debug: False
+[2026-07-24 14:33:12] [INFO] [soundon] Environment: production
+[2026-07-24 14:33:12] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 14:33:12] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 14:33:12] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 14:33:12] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 14:33:12] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 14:33:12] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 14:33:12] [INFO] [soundon] Mode debug: False
+[2026-07-24 14:33:12] [INFO] [soundon] Environment: production
+[2026-07-24 14:33:12] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 14:33:12] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 14:33:12] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 14:33:12] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=225.85 status=500
+[2026-07-24 14:33:42] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 14:33:42] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=229.5 status=500
+[2026-07-24 14:38:20] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-24 14:46:15] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=62.6 status=500
+[2026-07-24 14:49:58] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 14:49:58] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 14:50:00] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 14:50:00] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 14:50:03] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 14:50:03] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 14:50:03] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 14:50:03] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 14:50:03] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 14:50:03] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 14:50:03] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 14:50:03] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 14:50:03] [INFO] [soundon] Mode debug: False
+[2026-07-24 14:50:03] [INFO] [soundon] Environment: production
+[2026-07-24 14:50:03] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 14:50:03] [INFO] [soundon] Mode debug: False
+[2026-07-24 14:50:03] [INFO] [soundon] Environment: production
+[2026-07-24 14:50:03] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 14:50:03] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 14:50:03] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 14:50:03] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 14:50:03] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=254.67 status=200
+[2026-07-24 14:50:05] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=7.81 status=200
+[2026-07-24 14:50:08] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 14:50:08] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=162.66 status=200
+[2026-07-24 14:50:08] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=11.59 status=200
+[2026-07-24 14:50:08] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=13.69 status=200
+[2026-07-24 14:50:08] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=7.93 status=200
+[2026-07-24 14:50:14] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=11.45 status=200
+[2026-07-24 14:50:16] [INFO] [soundon] [REQ DONE] path=/channels/1/edit ms=56.37 status=200
+[2026-07-24 14:50:27] [INFO] [soundon] [REQ DONE] path=/channels ms=50.43 status=200
+[2026-07-24 14:50:27] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=4.14 status=200
+[2026-07-24 14:50:27] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=3.88 status=200
+[2026-07-24 14:50:27] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=11.73 status=200
+[2026-07-24 14:50:34] [INFO] [soundon] [REQ DONE] path=/artists ms=83.61 status=500
+[2026-07-24 14:55:12] [INFO] [soundon] [REQ DONE] path=/channels ms=83.42 status=200
+[2026-07-24 14:55:12] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=5.89 status=200
+[2026-07-24 14:55:12] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=4.06 status=200
+[2026-07-24 14:55:12] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=19.71 status=200
+[2026-07-24 14:55:16] [INFO] [soundon] [REQ DONE] path=/channels/1/edit ms=32.8 status=200
+[2026-07-24 14:55:18] [INFO] [soundon] [REQ DONE] path=/channels/1/songs ms=3.46 status=404
+[2026-07-24 14:55:21] [INFO] [soundon] [REQ DONE] path=/channels/1/detail ms=2.28 status=404
+[2026-07-24 14:55:24] [INFO] [soundon] [REQ DONE] path=/channels ms=21.16 status=200
+[2026-07-24 14:55:24] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=5.75 status=200
+[2026-07-24 14:55:24] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=5.63 status=200
+[2026-07-24 14:55:24] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=12.33 status=200
+[2026-07-24 14:55:27] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=36.92 status=200
+[2026-07-24 14:55:27] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=7.02 status=200
+[2026-07-24 14:55:31] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=49.82 status=200
+[2026-07-24 14:55:31] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=9.39 status=200
+[2026-07-24 14:55:31] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=14.65 status=200
+[2026-07-24 14:55:31] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=12.29 status=200
+[2026-07-24 14:56:02] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=12.6 status=200
+[2026-07-24 14:56:32] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=9.43 status=200
+[2026-07-24 14:57:02] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=13.55 status=200
+[2026-07-24 14:57:32] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=11.38 status=200
+[2026-07-24 14:58:02] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=11.26 status=200
+[2026-07-24 14:58:06] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 14:58:06] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 14:58:07] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 14:58:07] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 14:58:10] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 14:58:10] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 14:58:10] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 14:58:10] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 14:58:10] [INFO] [soundon] Mode debug: False
+[2026-07-24 14:58:10] [INFO] [soundon] Environment: production
+[2026-07-24 14:58:10] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 14:58:10] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 14:58:10] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 14:58:10] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 14:58:10] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 14:58:10] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 14:58:10] [INFO] [soundon] Mode debug: False
+[2026-07-24 14:58:10] [INFO] [soundon] Environment: production
+[2026-07-24 14:58:10] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 14:58:10] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 14:58:10] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 14:58:10] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=179.85 status=200
+[2026-07-24 14:58:14] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=11.23 status=200
+[2026-07-24 14:58:14] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 14:58:14] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=9.68 status=200
+[2026-07-24 14:58:14] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=8.55 status=200
+[2026-07-24 14:58:21] [INFO] [soundon] [REQ DONE] path=/artists ms=57.09 status=500
+[2026-07-24 14:59:28] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 14:59:28] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 14:59:29] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 14:59:29] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 14:59:31] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 14:59:31] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 14:59:31] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 14:59:31] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 14:59:31] [INFO] [soundon] Mode debug: False
+[2026-07-24 14:59:31] [INFO] [soundon] Environment: production
+[2026-07-24 14:59:31] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 14:59:31] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 14:59:31] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 14:59:31] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 14:59:31] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 14:59:31] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 14:59:31] [INFO] [soundon] Mode debug: False
+[2026-07-24 14:59:31] [INFO] [soundon] Environment: production
+[2026-07-24 14:59:31] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 14:59:31] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 14:59:32] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 14:59:32] [INFO] [soundon] [REQ DONE] path=/artists ms=146.94 status=200
+[2026-07-24 14:59:33] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=10.42 status=200
+[2026-07-24 14:59:33] [WARNING] [soundon] Validation error: [{'type': 'int_parsing', 'loc': ('query', 'channel_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}]
+[2026-07-24 14:59:33] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=3.13 status=422
+[2026-07-24 14:59:33] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 14:59:33] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=7.14 status=200
+[2026-07-24 15:00:04] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=29.54 status=200
+[2026-07-24 15:00:35] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=19.88 status=200
+[2026-07-24 15:01:04] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=13.57 status=200
+[2026-07-24 15:01:20] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:01:20] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:01:22] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:01:22] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:01:24] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:01:24] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:01:24] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:01:24] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:01:24] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:01:24] [INFO] [soundon] Environment: production
+[2026-07-24 15:01:24] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:01:24] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:01:24] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:01:24] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:01:24] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:01:24] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:01:24] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:01:24] [INFO] [soundon] Environment: production
+[2026-07-24 15:01:24] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:01:24] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:01:25] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 15:01:25] [INFO] [soundon] [REQ DONE] path=/artists ms=158.73 status=200
+[2026-07-24 15:01:27] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 15:01:27] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=14.11 status=200
+[2026-07-24 15:01:27] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=5.39 status=200
+[2026-07-24 15:01:27] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=30.06 status=200
+[2026-07-24 15:01:37] [INFO] [soundon] [REQ DONE] path=/channels ms=199.75 status=200
+[2026-07-24 15:01:37] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=5.46 status=200
+[2026-07-24 15:01:37] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=4.79 status=200
+[2026-07-24 15:01:37] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=13.41 status=200
+[2026-07-24 15:01:40] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=89.43 status=200
+[2026-07-24 15:01:41] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/top-artists ms=6.84 status=200
+[2026-07-24 15:01:43] [INFO] [soundon] [REQ DONE] path=/channels/1/artists ms=82.24 status=200
+[2026-07-24 15:01:43] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=11.12 status=200
+[2026-07-24 15:01:43] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=11.55 status=200
+[2026-07-24 15:01:43] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=4.65 status=200
+[2026-07-24 15:01:52] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=11.4 status=200
+[2026-07-24 15:01:54] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=8.21 status=200
+[2026-07-24 15:01:56] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=10.19 status=200
+[2026-07-24 15:02:06] [INFO] [soundon] [REQ DONE] path=/artists/242 ms=10.1 status=200
+[2026-07-24 15:02:13] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=7.88 status=200
+[2026-07-24 15:02:21] [INFO] [soundon] [REQ DONE] path=/artists ms=35.54 status=200
+[2026-07-24 15:02:21] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=8.39 status=200
+[2026-07-24 15:02:21] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=15.57 status=200
+[2026-07-24 15:02:21] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=25.09 status=200
+[2026-07-24 15:02:26] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=9.43 status=200
+[2026-07-24 15:05:52] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:05:52] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:05:53] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:05:53] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:05:55] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:05:55] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:05:55] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:05:55] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:05:55] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:05:55] [INFO] [soundon] Environment: production
+[2026-07-24 15:05:55] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:05:55] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:05:55] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:05:55] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:05:55] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:05:55] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:05:55] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:05:55] [INFO] [soundon] Environment: production
+[2026-07-24 15:05:55] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:05:55] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:05:57] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 15:05:57] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=161.52 status=500
+[2026-07-24 15:09:52] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:09:52] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:09:53] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:09:53] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:09:55] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:09:55] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:09:55] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:09:55] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:09:55] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:09:55] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:09:55] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:09:55] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:09:55] [INFO] [soundon] Environment: production
+[2026-07-24 15:09:55] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:09:55] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:09:55] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:09:55] [INFO] [soundon] Environment: production
+[2026-07-24 15:09:55] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:09:55] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:09:55] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:09:59] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 15:09:59] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=187.04 status=500
+[2026-07-24 15:12:50] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 15:12:51] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=136.33 status=200
+[2026-07-24 15:14:54] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=49.36 status=200
+[2026-07-24 15:15:09] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:15:09] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:15:10] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:15:10] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:15:12] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:15:12] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:15:12] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:15:12] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:15:12] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:15:12] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:15:12] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:15:12] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:15:12] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:15:12] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:15:12] [INFO] [soundon] Environment: production
+[2026-07-24 15:15:12] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:15:12] [INFO] [soundon] Environment: production
+[2026-07-24 15:15:12] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:15:13] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:15:13] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:15:13] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 15:15:13] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=137.14 status=200
+[2026-07-24 15:15:33] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-24 15:15:34] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 15:15:34] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-24 15:15:46] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=28.0 status=200
+[2026-07-24 15:15:48] [INFO] [soundon] [REQ DONE] path=/artists ms=74.15 status=200
+[2026-07-24 15:15:48] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=10.37 status=200
+[2026-07-24 15:15:48] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=19.52 status=200
+[2026-07-24 15:15:48] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=4.56 status=200
+[2026-07-24 15:15:53] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=118.47 status=200
+[2026-07-24 15:16:03] [INFO] [soundon] [REQ DONE] path=/artists/89/songs ms=3.44 status=404
+[2026-07-24 15:16:13] [INFO] [soundon] [REQ DONE] path=/artists/219/edit ms=38.34 status=500
+[2026-07-24 15:16:19] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=10.36 status=200
+[2026-07-24 15:16:48] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=10.45 status=200
+[2026-07-24 15:16:54] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:16:54] [INFO] [soundon] 🛑 Mematikan SoundON Admin
+[2026-07-24 15:16:56] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:16:57] [INFO] [soundon] ✅ Middleware setup completed
+[2026-07-24 15:16:59] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:16:59] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:16:59] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:16:59] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:16:59] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:16:59] [INFO] [soundon] Environment: production
+[2026-07-24 15:16:59] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:16:59] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:16:59] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 15:16:59] [INFO] [soundon] ✅ Registered 33 routers
+[2026-07-24 15:16:59] [INFO] [soundon] ✅ All routers registered successfully
+[2026-07-24 15:16:59] [INFO] [soundon] 📦 File statis dipasang di: /opt/web-admin/static
+[2026-07-24 15:16:59] [INFO] [soundon] 🚀 Menjalankan SoundON Admin v0.1.0
+[2026-07-24 15:16:59] [INFO] [soundon] Mode debug: False
+[2026-07-24 15:16:59] [INFO] [soundon] Environment: production
+[2026-07-24 15:16:59] [INFO] [soundon] Cookie autentikasi: auth_session
+[2026-07-24 15:16:59] [INFO] [soundon] ✅ Database connected successfully
+[2026-07-24 15:16:59] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=125.68 status=200
+[2026-07-24 15:17:01] [INFO] [soundon] ✅ Security policy loaded successfully
+[2026-07-24 15:17:02] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=204.59 status=200
+[2026-07-24 15:19:10] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=58.35 status=200
+[2026-07-24 15:19:31] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=52.85 status=200
+[2026-07-24 15:21:19] [INFO] [soundon] [REQ DONE] path=/artists ms=66.15 status=200
+[2026-07-24 15:21:19] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=10.31 status=200
+[2026-07-24 15:21:19] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=21.29 status=200
+[2026-07-24 15:21:19] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=26.48 status=200
+[2026-07-24 15:21:23] [INFO] [soundon] [REQ DONE] path=/artists/219/edit ms=40.57 status=500
+[2026-07-24 15:21:27] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=28.01 status=200
+[2026-07-24 15:21:30] [INFO] [soundon] [REQ DONE] path=/artists/219/songs ms=4.57 status=404
+[2026-07-24 15:21:49] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=10.34 status=200
+[2026-07-24 15:21:50] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=52.19 status=200
+[2026-07-24 15:23:26] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=28.89 status=200
+[2026-07-24 15:23:31] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=21.79 status=200
+[2026-07-24 15:23:36] [INFO] [soundon] [REQ DONE] path=/artists/89 ms=27.93 status=200
+[2026-07-24 15:23:41] [INFO] [soundon] [REQ DONE] path=/artists/89/edit ms=29.4 status=500
+[2026-07-24 15:23:57] [INFO] [soundon] [REQ DONE] path=/artists/89 ms=25.43 status=200
+[2026-07-24 15:24:01] [INFO] [soundon] [REQ DONE] path=/artists/386 ms=40.62 status=200
+[2026-07-24 15:24:04] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=10.47 status=200
+[2026-07-24 15:24:31] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=8.67 status=200
+[2026-07-24 15:25:01] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=13.54 status=200
+[2026-07-24 15:25:11] [INFO] [soundon] [REQ DONE] path=/songs ms=130.88 status=200
+[2026-07-24 15:25:12] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.77 status=200
+[2026-07-24 15:25:12] [INFO] [soundon] [REQ DONE] path=/api/songs/data ms=14.27 status=200
+[2026-07-24 15:25:12] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=40.74 status=200
+[2026-07-24 15:26:12] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.79 status=200
+[2026-07-24 15:26:30] [INFO] [soundon] [REQ DONE] path=/channels ms=74.68 status=200
+[2026-07-24 15:26:30] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=10.63 status=200
+[2026-07-24 15:26:30] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=5.02 status=200
+[2026-07-24 15:26:31] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=12.59 status=200
+[2026-07-24 15:26:33] [INFO] [soundon] [REQ DONE] path=/artists ms=40.59 status=200
+[2026-07-24 15:26:33] [INFO] [soundon] [REQ DONE] path=/api/artists/statistics ms=14.39 status=200
+[2026-07-24 15:26:33] [INFO] [soundon] [REQ DONE] path=/api/artists/channels ms=16.34 status=200
+[2026-07-24 15:26:33] [INFO] [soundon] [REQ DONE] path=/api/artists/data ms=29.26 status=200
+[2026-07-24 15:26:36] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=93.5 status=500
+[2026-07-24 15:28:14] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-24 15:37:57] [INFO] [soundon] [REQ DONE] path=/artists/219 ms=115.19 status=500

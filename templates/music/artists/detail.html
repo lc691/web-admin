@@ -1,0 +1,726 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block meta_description %}{{ subtitle }}{% endblock %}
+
+{% block content %}
+
+<!-- ===================================================== -->
+<!-- PAGE HEADER -->
+<!-- ===================================================== -->
+
+<div class="page-header d-print-none mb-3">
+    <div class="container-xl">
+        <div class="row align-items-center">
+
+            <div class="col">
+                <div class="page-pretitle">
+                    Artist
+                </div>
+
+                <h2 class="page-title">
+                    <span class="avatar avatar-sm me-2" style="background-color: {{ artist.name|color_hash }}">
+                        {{ artist.name[0]|upper }}
+                    </span>
+                    {{ artist.name }}
+                </h2>
+
+                <div class="text-secondary">
+                    {{ subtitle }}
+                    {% if artist.channel_name %}
+                        <span class="mx-1">•</span>
+                        <i class="ti ti-building me-1"></i>
+                        <a href="/channels/{{ artist.channel_id }}/artists" class="text-secondary">
+                            {{ artist.channel_name }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <div class="btn-list">
+
+                    <a href="/artists"
+                       class="btn btn-outline-secondary">
+                        <i class="ti ti-arrow-left me-1"></i>
+                        Kembali
+                    </a>
+
+                    {% if can_edit %}
+                    <a href="/artists/{{ artist.id }}/edit"
+                       class="btn btn-primary">
+                        <i class="ti ti-edit me-1"></i>
+                        Edit
+                    </a>
+                    {% endif %}
+
+                    <button
+                        class="btn btn-outline-danger"
+                        onclick="confirmDelete({{ artist.id }}, '{{ artist.name }}')">
+                        <i class="ti ti-trash me-1"></i>
+                        Hapus
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- BREADCRUMB -->
+<!-- ===================================================== -->
+
+<nav aria-label="breadcrumb" class="container-xl mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="/artists">Artists</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            {{ artist.name }}
+        </li>
+    </ol>
+</nav>
+
+<!-- ===================================================== -->
+<!-- MAIN CONTENT -->
+<!-- ===================================================== -->
+
+<div class="container-xl">
+
+    {% if error %}
+
+    <div class="alert alert-danger">
+        <i class="ti ti-alert-circle me-1"></i>
+        {{ error }}
+    </div>
+
+    {% else %}
+
+    <div class="row">
+
+        <!-- ===================================================== -->
+        <!-- LEFT COLUMN - INFO -->
+        <!-- ===================================================== -->
+
+        <div class="col-lg-4">
+
+            <!-- Profile Card -->
+            <div class="card">
+
+                <div class="card-body text-center">
+
+                    <span class="avatar avatar-xl mb-3" style="background-color: {{ artist.name|color_hash }}">
+                        {{ artist.name[0]|upper }}
+                    </span>
+
+                    <h3 class="mb-1">
+                        {{ artist.name }}
+                    </h3>
+
+                    {% if artist.channel_name %}
+                        <div class="text-secondary">
+                            <i class="ti ti-building me-1"></i>
+                            {{ artist.channel_name }}
+                        </div>
+                    {% endif %}
+
+                    <div class="mt-2">
+                        <span class="badge bg-{{ 'success' if artist.song_count > 0 else 'secondary' }}">
+                            <i class="ti ti-{{ 'music' if artist.song_count > 0 else 'music-off' }} me-1"></i>
+                            {{ 'Active' if artist.song_count > 0 else 'Inactive' }}
+                        </span>
+                        {% if artist.channel_vermuk %}
+                            <span class="badge bg-danger">
+                                <i class="ti ti-flag me-1"></i>
+                                Vermuk
+                            </span>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Info Card -->
+            <div class="card mt-3">
+
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="ti ti-info-circle me-1"></i>
+                        Informasi
+                    </h3>
+                </div>
+
+                <table class="table card-table table-vcenter">
+
+                    <tr>
+                        <th width="35%">ID</th>
+                        <td><code>#{{ artist.id }}</code></td>
+                    </tr>
+
+                    <tr>
+                        <th>Nama</th>
+                        <td>{{ artist.name }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Channel</th>
+                        <td>
+                            {% if artist.channel_name %}
+                                <a href="/channels/{{ artist.channel_id }}/artists" class="text-primary">
+                                    {{ artist.channel_name }}
+                                </a>
+                            {% else %}
+                                <span class="text-secondary">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Total Songs</th>
+                        <td>
+                            <span class="fw-bold">{{ artist.song_count|default(0)|format_number }}</span>
+                            {% if artist.song_count > 0 %}
+                                <span class="text-secondary small">
+                                    ({{ artist.uploaded_songs|default(0)|format_number }} uploaded)
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Upload Rate</th>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold me-2">{{ artist.upload_rate|default(0)|round(1) }}%</span>
+                                <div class="progress flex-grow-1" style="height: 6px;">
+                                    <div class="progress-bar bg-{{ 'success' if artist.upload_rate|default(0) >= 70 else 'warning' if artist.upload_rate|default(0) >= 40 else 'danger' }}"
+                                         style="width: {{ artist.upload_rate|default(0) }}%"
+                                         role="progressbar">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Dibuat</th>
+                        <td>{{ artist.created_at|format_datetime if artist.created_at else '-' }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Diupdate</th>
+                        <td>{{ artist.updated_at|format_datetime if artist.updated_at else '-' }}</td>
+                    </tr>
+
+                    {% if artist.days_active %}
+                        <tr>
+                            <th>Days Active</th>
+                            <td>{{ artist.days_active|format_number }} days</td>
+                        </tr>
+                    {% endif %}
+
+                </table>
+
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card mt-3">
+
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="ti ti-bolt me-1"></i>
+                        Actions
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="d-grid gap-2">
+
+                        <a href="/artists/{{ artist.id }}/edit" class="btn btn-primary">
+                            <i class="ti ti-edit me-1"></i>
+                            Edit Artist
+                        </a>
+
+                        <a href="/songs/create?artist_id={{ artist.id }}" class="btn btn-success">
+                            <i class="ti ti-plus me-1"></i>
+                            Tambah Lagu
+                        </a>
+
+                        {% if artist.song_count > 0 %}
+                            <a href="/songs?artist_id={{ artist.id }}" class="btn btn-outline-secondary">
+                                <i class="ti ti-list me-1"></i>
+                                Lihat Semua Lagu
+                            </a>
+                        {% endif %}
+
+                        <button class="btn btn-outline-danger" onclick="confirmDelete({{ artist.id }}, '{{ artist.name }}')">
+                            <i class="ti ti-trash me-1"></i>
+                            Hapus Artist
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================================================== -->
+        <!-- RIGHT COLUMN - STATS & SONGS -->
+        <!-- ===================================================== -->
+
+        <div class="col-lg-8">
+
+            <!-- ===================================================== -->
+            <!-- STATISTICS CARDS -->
+            <!-- ===================================================== -->
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-center">
+
+                                <span class="bg-primary text-white avatar me-3">
+                                    <i class="ti ti-music"></i>
+                                </span>
+
+                                <div>
+
+                                    <div class="text-secondary">
+                                        Total Songs
+                                    </div>
+
+                                    <div class="h2 mb-0">
+                                        {{ artist.song_count|default(0)|format_number }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-center">
+
+                                <span class="bg-success text-white avatar me-3">
+                                    <i class="ti ti-check"></i>
+                                </span>
+
+                                <div>
+
+                                    <div class="text-secondary">
+                                        Uploaded Songs
+                                    </div>
+
+                                    <div class="h2 mb-0">
+                                        {{ artist.uploaded_songs|default(0)|format_number }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-center">
+
+                                <span class="bg-warning text-white avatar me-3">
+                                    <i class="ti ti-clock"></i>
+                                </span>
+
+                                <div>
+
+                                    <div class="text-secondary">
+                                        Pending Songs
+                                    </div>
+
+                                    <div class="h2 mb-0">
+                                        {{ artist.pending_songs|default(0)|format_number }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-center">
+
+                                <span class="bg-danger text-white avatar me-3">
+                                    <i class="ti ti-ban"></i>
+                                </span>
+
+                                <div>
+
+                                    <div class="text-secondary">
+                                        Takedown Songs
+                                    </div>
+
+                                    <div class="h2 mb-0">
+                                        {{ artist.takedown_songs|default(0)|format_number }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ===================================================== -->
+            <!-- SONG STATUS BREAKDOWN -->
+            <!-- ===================================================== -->
+
+            {% if statistics.song_status and statistics.song_status|length > 0 %}
+
+            <div class="card mt-3">
+
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="ti ti-pie-chart me-1"></i>
+                        Status Lagu
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div style="height: 250px;">
+                        <canvas id="status-chart"></canvas>
+                    </div>
+
+                    <div class="mt-3">
+
+                        <div class="table-responsive">
+
+                            <table class="table table-sm table-vcenter">
+
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th class="text-end">Total</th>
+                                        <th class="text-end">Percentage</th>
+                                        <th>Progress</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for status in statistics.song_status %}
+                                        <tr>
+                                            <td>
+                                                <span class="badge bg-{{ status_color(status.status) }}">
+                                                    {{ status.status|replace('_', ' ')|title }}
+                                                </span>
+                                            </td>
+                                            <td class="text-end">{{ status.total|format_number }}</td>
+                                            <td class="text-end">{{ status.percentage|default(0)|round(1) }}%</td>
+                                            <td style="min-width: 100px;">
+                                                <div class="progress" style="height: 6px;">
+                                                    <div class="progress-bar bg-{{ status_color(status.status) }}"
+                                                         style="width: {{ status.percentage|default(0) }}%"
+                                                         role="progressbar">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+            <!-- ===================================================== -->
+            <!-- SONGS LIST -->
+            <!-- ===================================================== -->
+
+            {% if artist.songs %}
+
+            <div class="card mt-3">
+
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="ti ti-list me-1"></i>
+                        Daftar Lagu
+                    </h3>
+                    <div class="card-actions">
+                        <span class="badge bg-secondary">
+                            {{ artist.songs|length }} songs
+                        </span>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table table-vcenter table-hover">
+
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Release Date</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for song in artist.songs %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>
+                                    <a href="/songs/{{ song.id }}" class="text-primary">
+                                        {{ song.title }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{ status_color(song.status) }}">
+                                        {{ song.status|replace('_', ' ')|title }}
+                                    </span>
+                                </td>
+                                <td>{{ song.release_date|format_date if song.release_date else '-' }}</td>
+                                <td class="text-end">
+                                    <a href="/songs/{{ song.id }}"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        <i class="ti ti-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty mt-4">
+
+                <div class="empty-img">
+                    <i class="ti ti-music-off" style="font-size:70px;"></i>
+                </div>
+
+                <p class="empty-title">
+                    Belum ada lagu
+                </p>
+
+                <p class="empty-subtitle text-secondary">
+                    Artist ini belum memiliki lagu.
+                </p>
+
+                <div class="empty-action">
+                    <a href="/songs/create?artist_id={{ artist.id }}" class="btn btn-primary">
+                        <i class="ti ti-plus me-1"></i>
+                        Tambah Lagu
+                    </a>
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<!-- ===================================================== -->
+<!-- MODALS -->
+<!-- ===================================================== -->
+
+{% include "music/artists/partials/_modal_delete.html" %}
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{{ super() }}
+
+<!-- ===================================================== -->
+<!-- CHART.JS -->
+<!-- ===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+</script>
+
+<!-- ===================================================== -->
+<!-- SCRIPTS -->
+<!-- ===================================================== -->
+
+{% include "music/artists/js/utils.html" %}
+{% include "music/artists/js/delete.html" %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // =====================================================
+        // STATUS CHART
+        // =====================================================
+
+        {% if statistics.song_status and statistics.song_status|length > 0 %}
+
+            const canvas = document.getElementById('status-chart');
+
+            if (canvas) {
+
+                const ctx = canvas.getContext('2d');
+
+                const statusData = {{ statistics.song_status|tojson_custom|safe }};
+
+                const labels = statusData.map(item =>
+                    item.status.replace(/_/g, ' ').toUpperCase()
+                );
+
+                const values = statusData.map(item => parseFloat(item.total) || 0);
+
+                const colorMap = {
+                    'released': '#2ecc71',
+                    'unreleased': '#f39c12',
+                    'scheduled': '#3498db',
+                    'review': '#9b59b6',
+                    'approved': '#27ae60',
+                    'live': '#e74c3c',
+                    'take_down': '#c0392b',
+                    'topic': '#1abc9c',
+                    'draft': '#95a5a6',
+                    'no_ads': '#2c3e50'
+                };
+
+                const colors = statusData.map(item =>
+                    colorMap[item.status] || '#95a5a6'
+                );
+
+                const total = values.reduce((a, b) => a + b, 0);
+
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: colors,
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    padding: 10,
+                                    usePointStyle: true,
+                                    pointStyle: 'circle',
+                                    font: { size: 11 }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.parsed;
+                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                        return `${context.label}: ${formatNumber(value)} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            }
+
+        {% endif %}
+
+        // =====================================================
+        // KEYBOARD SHORTCUTS
+        // =====================================================
+
+        document.addEventListener('keydown', function(e) {
+            // E - Edit
+            if (e.key === 'e' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                const input = document.activeElement;
+                if (input && (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT')) {
+                    return;
+                }
+                window.location.href = '/artists/{{ artist.id }}/edit';
+            }
+            // Delete key - Confirm delete
+            if (e.key === 'Delete' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                const input = document.activeElement;
+                if (input && (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT')) {
+                    return;
+                }
+                confirmDelete({{ artist.id }}, '{{ artist.name }}');
+            }
+        });
+
+        console.log('Artist detail page loaded');
+
+    });
+</script>
+
+{% endblock %}

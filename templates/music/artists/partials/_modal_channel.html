@@ -1,0 +1,36 @@
+<!-- ===================================================== -->
+<!-- MODAL UPDATE CHANNEL -->
+<!-- ===================================================== -->
+
+<div class="modal fade" id="modal-channel" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="ti ti-arrows-transfer text-warning me-1"></i>
+                    Pindah Channel
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Pilih channel baru untuk <strong id="channel-artist-count">0</strong> artist.</p>
+                <div class="mb-3">
+                    <label class="form-label">Channel Tujuan</label>
+                    <select id="channel-select" class="form-select">
+                        <option value="">Pilih Channel...</option>
+                        {% for channel in channels %}
+                            <option value="{{ channel.id }}">{{ channel.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="hidden" id="channel-artist-ids">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button id="btn-confirm-channel" class="btn btn-warning">
+                    <i class="ti ti-arrows-transfer me-1"></i> Pindahkan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

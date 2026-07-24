@@ -1,179 +1,80 @@
-<div class="row row-deck row-cards mb-3">
+<!-- ===================================================== -->
+<!-- STATISTICS CARDS -->
+<!-- ===================================================== -->
 
-    <!-- ===================================================== -->
-    <!-- TOTAL ARTISTS -->
-    <!-- ===================================================== -->
-
-    <div class="col-sm-6 col-lg-3">
-
+<div class="row mb-3">
+    <div class="col-md-3 col-sm-6">
         <div class="card">
-
             <div class="card-body">
-
-                <div class="d-flex align-items-center">
-
-                    <div class="subheader">
-
-                        Total Artist
-
-                    </div>
-
+                <div class="subheader">Total Artists</div>
+                <div class="h1 mb-3" id="stat-total-artists">
+                    {{ statistics.total_artists|default(0)|format_number }}
                 </div>
-
-                <div
-                    id="stat-total-artists"
-                    class="h1 mb-3">
-
-                    {{ statistics.total_artists }}
-
-                </div>
-
                 <div class="d-flex mb-2">
-
-                    <div>
-
-                        Semua artist
-
+                    <div class="text-muted">
+                        <i class="ti ti-users me-1 text-primary"></i>
+                        With songs: <span id="stat-artists-with-songs">{{ statistics.artists_with_songs|default(0)|format_number }}</span>
                     </div>
-
+                    <div class="ms-auto text-muted">
+                        <i class="ti ti-users me-1 text-secondary"></i>
+                        No songs: <span id="stat-artists-without-songs">{{ statistics.artists_without_songs|default(0)|format_number }}</span>
+                    </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-    <!-- ===================================================== -->
-    <!-- TOTAL SONGS -->
-    <!-- ===================================================== -->
-
-    <div class="col-sm-6 col-lg-3">
-
+    <div class="col-md-3 col-sm-6">
         <div class="card">
-
             <div class="card-body">
-
-                <div class="d-flex align-items-center">
-
-                    <div class="subheader">
-
-                        Total Lagu
-
-                    </div>
-
+                <div class="subheader">Total Songs</div>
+                <div class="h1 mb-3" id="stat-total-songs">
+                    {{ statistics.total_songs|default(0)|format_number }}
                 </div>
-
-                <div
-                    id="stat-total-songs"
-                    class="h1 mb-3">
-
-                    {{ statistics.total_songs }}
-
-                </div>
-
                 <div class="d-flex mb-2">
-
-                    <div>
-
-                        Lagu dari seluruh artist
-
+                    <div class="text-muted">
+                        <i class="ti ti-music me-1 text-success"></i>
+                        Avg per artist: <strong id="stat-avg-songs">{{ statistics.avg_songs_per_artist|default(0)|round(1) }}</strong>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-    <!-- ===================================================== -->
-    <!-- ACTIVE CHANNELS -->
-    <!-- ===================================================== -->
-
-    <div class="col-sm-6 col-lg-3">
-
+    <div class="col-md-3 col-sm-6">
         <div class="card">
-
             <div class="card-body">
-
-                <div class="d-flex align-items-center">
-
-                    <div class="subheader">
-
-                        Channel Aktif
-
-                    </div>
-
+                <div class="subheader">Active Channels</div>
+                <div class="h1 mb-3" id="stat-active-channels">
+                    {{ statistics.active_channels|default(0)|format_number }}
                 </div>
-
-                <div
-                    id="stat-active-channels"
-                    class="h1 mb-3">
-
-                    {{ statistics.active_channels }}
-
-                </div>
-
                 <div class="d-flex mb-2">
-
-                    <div>
-
-                        Memiliki artist
-
+                    <div class="text-muted">
+                        <i class="ti ti-building me-1 text-info"></i>
+                        Channels with artists
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-    <!-- ===================================================== -->
-    <!-- AVERAGE SONGS -->
-    <!-- ===================================================== -->
-
-    <div class="col-sm-6 col-lg-3">
-
+    <div class="col-md-3 col-sm-6">
         <div class="card">
-
             <div class="card-body">
-
-                <div class="d-flex align-items-center">
-
-                    <div class="subheader">
-
-                        Rata-rata Lagu
-
-                    </div>
-
+                <div class="subheader">Utilization Rate</div>
+                <div class="h1 mb-3" id="stat-utilization-rate">
+                    {{ statistics.utilization_rate|default(0)|round(1) }}%
                 </div>
-
-                <div
-                    id="stat-average-songs"
-                    class="h1 mb-3">
-
-                    {{ statistics.average_songs|default(0) }}
-
-                </div>
-
                 <div class="d-flex mb-2">
-
-                    <div>
-
-                        Lagu per artist
-
+                    <div class="text-muted">
+                        <i class="ti ti-percent me-1 text-warning"></i>
+                        Artists with songs
                     </div>
-
                 </div>
-
+                <div class="progress">
+                    <div class="progress-bar bg-{{ 'success' if statistics.utilization_rate|default(0) >= 70 else 'warning' if statistics.utilization_rate|default(0) >= 40 else 'danger' }}" style="width: {{ statistics.utilization_rate|default(0) }}%" role="progressbar"></div>
+                </div>
             </div>
-
         </div>
-
     </div>
-
 </div>

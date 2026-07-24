@@ -16,6 +16,7 @@ from starlette.status import HTTP_302_FOUND
 
 from app.core.database import get_dict_cursor_dep
 from app.music.channels.presenter import ChannelPresenter
+from app.music.channels.artists_presenter import ChannelArtistsPresenter
 from app.music.services.channels.exceptions import (
     ChannelNotFoundError,
     ChannelError,
@@ -313,7 +314,28 @@ async def edit(
             status_code=500,
         )
 
+@router.get(
+    "/channels/{channel_id}/artists",
+    response_class=HTMLResponse,
+)
+async def artists(
+    request: Request,
+    channel_id: int,
+    db=Depends(get_dict_cursor_dep),
+):
+    cursor, _ = db
 
+    context = ChannelArtistsPresenter.page(
+        cursor,
+        channel_id,
+    )
+
+    context["request"] = request
+
+    return templates.TemplateResponse(
+        "music/artists/index.html",
+        context,
+    )
 # =====================================================
 # CHANNEL ACTIVITY
 # =====================================================

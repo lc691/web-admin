@@ -39,23 +39,26 @@ class ChannelRepository:
     # =====================================================
     
     @staticmethod
-    def get_by_id(cursor, channel_id: int) -> Optional[Dict[str, Any]]:
+    def get_by_id(
+        cursor,
+        channel_id: int,
+    ) -> Optional[Dict[str, Any]]:
         """
-        Get channel by ID with statistics using subqueries (optimized).
-        
-        Keuntungan menggunakan subquery:
-        - Menghindari Cartesian product dari JOIN
-        - Lebih cepat untuk channel dengan banyak data
-        - Query plan lebih efisien
-        
+        Get channel by ID beserta statistik.
+
         Args:
             cursor: Database cursor
-            channel_id: ID channel yang dicari
-            
+            channel_id: Channel ID
+
         Returns:
-            Dict channel dengan statistik atau None jika tidak ditemukan
+            Dict channel atau None jika tidak ditemukan.
         """
         try:
+            logger.debug(
+                "Getting channel ID=%s",
+                channel_id,
+            )
+
             cursor.execute("""
                 SELECT
                     c.id,
@@ -66,67 +69,89 @@ class ChannelRepository:
                     c.notes,
                     c.created_at,
                     c.updated_at,
-                    
-                    -- Total artists di channel ini
-                    COALESCE(
-                        (SELECT COUNT(*) 
-                         FROM artists 
-                         WHERE channel_id = c.id),
-                        0
+
+                    -- ==========================================
+                    -- TOTAL ARTISTS
+                    -- ==========================================
+
+                    (
+                        SELECT COUNT(*)
+                        FROM artists a
+                        WHERE a.channel_id = c.id
                     ) AS total_artists,
-                    
-                    -- Total songs di semua artists channel ini
-                    COALESCE(
-                        (SELECT COUNT(*) 
-                         FROM songs s 
-                         INNER JOIN artists a ON s.artist_id = a.id 
-                         WHERE a.channel_id = c.id),
-                        0
+
+                    -- ==========================================
+                    -- TOTAL SONGS
+                    -- ==========================================
+
+                    (
+                        SELECT COUNT(*)
+                        FROM songs s
+                        JOIN artists a
+                            ON a.id = s.artist_id
+                        WHERE a.channel_id = c.id
                     ) AS total_songs,
-                    
-                    -- Songs yang sudah di-upload (released/topic/live/no_ads)
-                    COALESCE(
-                        (SELECT COUNT(*) 
-                         FROM songs s 
-                         INNER JOIN artists a ON s.artist_id = a.id 
-                         WHERE a.channel_id = c.id 
-                           AND s.status = ANY(%s::release_status[])),
-                        0
+
+                    -- ==========================================
+                    -- UPLOADED
+                    -- ==========================================
+
+                    (
+                        SELECT COUNT(*)
+                        FROM songs s
+                        JOIN artists a
+                            ON a.id = s.artist_id
+                        WHERE a.channel_id = c.id
+                        AND s.status = ANY(%s::release_status[])
                     ) AS uploaded_songs,
-                    
-                    -- Songs yang pending (draft/review/approved/scheduled/unreleased)
-                    COALESCE(
-                        (SELECT COUNT(*) 
-                         FROM songs s 
-                         INNER JOIN artists a ON s.artist_id = a.id 
-                         WHERE a.channel_id = c.id 
-                           AND s.status = ANY(%s::release_status[])),
-                        0
+
+                    -- ==========================================
+                    -- PENDING
+                    -- ==========================================
+
+                    (
+                        SELECT COUNT(*)
+                        FROM songs s
+                        JOIN artists a
+                            ON a.id = s.artist_id
+                        WHERE a.channel_id = c.id
+                        AND s.status = ANY(%s::release_status[])
                     ) AS pending_songs,
-                    
-                    -- Songs yang take_down
-                    COALESCE(
-                        (SELECT COUNT(*) 
-                         FROM songs s 
-                         INNER JOIN artists a ON s.artist_id = a.id 
-                         WHERE a.channel_id = c.id 
-                           AND s.status = ANY(%s::release_status[])),
-                        0
+
+                    -- ==========================================
+                    -- TAKE DOWN
+                    -- ==========================================
+
+                    (
+                        SELECT COUNT(*)
+                        FROM songs s
+                        JOIN artists a
+                            ON a.id = s.artist_id
+                        WHERE a.channel_id = c.id
+                        AND s.status = ANY(%s::release_status[])
                     ) AS take_down_songs,
-                    
-                    -- Breakdown per status (untuk detail lebih lanjut)
+
+                    -- ==========================================
+                    -- STATUS BREAKDOWN
+                    -- ==========================================
+
                     COALESCE(
-                        (SELECT jsonb_object_agg(status, count)
-                         FROM (
-                             SELECT s.status, COUNT(*) as count
-                             FROM songs s
-                             INNER JOIN artists a ON s.artist_id = a.id
-                             WHERE a.channel_id = c.id
-                             GROUP BY s.status
-                         ) status_counts),
+                        (
+                            SELECT jsonb_object_agg(status, total)
+                            FROM (
+                                SELECT
+                                    s.status,
+                                    COUNT(*) AS total
+                                FROM songs s
+                                JOIN artists a
+                                    ON a.id = s.artist_id
+                                WHERE a.channel_id = c.id
+                                GROUP BY s.status
+                            ) x
+                        ),
                         '{}'::jsonb
                     ) AS status_breakdown
-                    
+
                 FROM channels c
                 WHERE c.id = %s
             """, (
@@ -135,12 +160,16 @@ class ChannelRepository:
                 list(ChannelRepository.TAKEDOWN_STATUS),
                 channel_id,
             ))
-            
+
             row = cursor.fetchone()
+
             return dict(row) if row else None
-            
-        except Exception as e:
-            logger.error(f"Error getting channel by ID {channel_id}: {e}")
+
+        except Exception:
+            logger.exception(
+                "Failed to get channel ID=%s",
+                channel_id,
+            )
             raise
     
     @staticmethod

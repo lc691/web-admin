@@ -1,121 +1,53 @@
+<!-- ===================================================== -->
+<!-- DELETE HANDLER -->
+<!-- ===================================================== -->
+
 <script>
-"use strict";
-
-/* ==========================================================
- * Artist Delete
- * ========================================================== */
-
-const ArtistDelete = (() => {
-
-    let modal = null;
-
-    function init() {
-
-        modal = new bootstrap.Modal(
-            document.getElementById("modal-delete")
-        );
-
-        bindDeleteButtons();
-
-        document
-            .getElementById("btn-confirm-delete")
-            .addEventListener(
-                "click",
-                confirmDelete
-            );
-
-    }
-
-    function bindDeleteButtons() {
-
-        document.addEventListener(
-            "click",
-            function (event) {
-
-                const button = event.target.closest(".btn-delete");
-
-                if (!button) {
-                    return;
-                }
-
-                open(
-                    button.dataset.id,
-                    button.dataset.name
-                );
-
-            }
-        );
-
-    }
-
-    function open(id, name) {
-
-        document.getElementById(
-            "delete-artist-id"
-        ).value = id;
-
-        document.getElementById(
-            "delete-artist-name"
-        ).textContent = name;
-
+    function confirmDelete(artistId, artistName) {
+        document.getElementById('delete-artist-id').value = artistId;
+        document.getElementById('delete-artist-name').textContent = artistName;
+        document.getElementById('delete-force').checked = false;
+        const modal = new bootstrap.Modal(document.getElementById('modal-delete'));
         modal.show();
-
     }
 
-    async function confirmDelete() {
+    function deleteArtist() {
+        const artistId = document.getElementById('delete-artist-id').value;
+        const force = document.getElementById('delete-force').checked;
 
-        const id = document.getElementById(
-            "delete-artist-id"
-        ).value;
-
-        const button = document.getElementById(
-            "btn-confirm-delete"
-        );
-
-        button.disabled = true;
-
-        try {
-
-            const result =
-                await ArtistUtils.request(
-                    `/api/artists/${id}`,
-                    {
-                        method: "DELETE"
-                    }
-                );
-
-            modal.hide();
-
-            ArtistUtils.showSuccess(
-                result.message ||
-                "Artist berhasil dihapus."
-            );
-
-            ArtistUtils.reloadTable();
-
-            if (window.ArtistStatistics) {
-                ArtistStatistics.load();
-            }
-
-        } catch (error) {
-
-            ArtistUtils.showError(
-                error.message
-            );
-
-        } finally {
-
-            button.disabled = false;
-
+        if (!artistId) {
+            showToast('ID artist tidak valid', 'error');
+            return;
         }
 
+        const btn = document.getElementById('btn-confirm-delete');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="ti ti-spinner ti-spin me-1"></i> Menghapus...';
+
+        const url = `/api/artists/${artistId}${force ? '?force=true' : ''}`;
+
+        fetch(url, { method: 'DELETE' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message || 'Artist berhasil dihapus', 'success');
+                    document.getElementById('modal-delete').querySelector('.btn-close').click();
+                    refreshTable();
+                } else {
+                    showToast(data.message || 'Gagal menghapus artist', 'error');
+                }
+            })
+            .catch(err => {
+                showToast('Gagal menghapus artist: ' + err.message, 'error');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            });
     }
 
-    return {
-
-        init
-
-    };
-
-})();
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('btn-confirm-delete').addEventListener('click', deleteArtist);
+    });
 </script>

@@ -1,12 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %}
-{{ title }}
-{% endblock %}
-
-{% block meta_description %}
-Kelola Artist Music
-{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block meta_description %}Kelola Artist Music{% endblock %}
 
 {% block content %}
 
@@ -15,59 +10,38 @@ Kelola Artist Music
 <!-- ===================================================== -->
 
 <div class="page-header d-print-none mb-3">
-
     <div class="container-xl">
-
         <div class="row g-2 align-items-center">
-
             <div class="col">
-
-                <div class="page-pretitle">
-
-                    Music Management
-
-                </div>
-
+                <div class="page-pretitle">Music Management</div>
                 <h2 class="page-title">
-
+                    <i class="ti ti-microphone me-2"></i>
                     {{ title }}
-
                 </h2>
-
             </div>
-
             <div class="col-auto ms-auto d-print-none">
-
                 <div class="btn-list">
-
-                    <button
-                        id="btn-refresh"
-                        class="btn btn-outline-secondary">
-
-                        <i class="ti ti-refresh me-1"></i>
-
-                        Refresh
-
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="ti ti-filter me-1"></i> Channel
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-channel="" onclick="filterByChannel('')">Semua Channel</a>
+                            {% for channel in channels %}
+                                <a class="dropdown-item" href="#" data-channel="{{ channel.id }}" onclick="filterByChannel({{ channel.id }})">{{ channel.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button id="btn-refresh" class="btn btn-outline-secondary" onclick="refreshTable()">
+                        <i class="ti ti-refresh me-1"></i> Refresh
                     </button>
-
-                    <a
-                        href="/artists/create"
-                        class="btn btn-primary">
-
-                        <i class="ti ti-plus me-1"></i>
-
-                        Tambah Artist
-
+                    <a href="/artists/create" class="btn btn-primary">
+                        <i class="ti ti-plus me-1"></i> Tambah Artist
                     </a>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 <!-- ===================================================== -->
@@ -77,35 +51,87 @@ Kelola Artist Music
 {% include "music/artists/partials/_statistics.html" %}
 
 <!-- ===================================================== -->
+<!-- FILTERS -->
+<!-- ===================================================== -->
+
+<!-- FILTERS -->
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="ti ti-search"></i></span>
+                            <input type="text" id="search-keyword" class="form-control" placeholder="Cari artist..." onkeyup="applyFilters()">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="filter-channel" class="form-select" onchange="applyFilters()">
+                            <option value="">Semua Channel</option>
+                            {% for channel in channels %}
+                                <option value="{{ channel.id }}">{{ channel.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="filter-has-songs" class="form-select" onchange="applyFilters()">
+                            <option value="">Semua Artist</option>
+                            <option value="true">Ada Lagu</option>
+                            <option value="false">Tidak Ada Lagu</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filter-status" class="form-select" onchange="applyFilters()">
+                            <option value="">Semua Status Lagu</option>
+                            <optgroup label="Status Lagu">
+                                <option value="draft">📝 Draft</option>
+                                <option value="review">👁️ Review</option>
+                                <option value="approved">✅ Approved</option>
+                                <option value="scheduled">📅 Scheduled</option>
+                                <option value="unreleased">⏳ Unreleased</option>
+                                <option value="released">🚀 Released</option>
+                                <option value="live">🔴 Live</option>
+                                <option value="topic">📺 Topic</option>
+                                <option value="no_ads">🚫 No Ads</option>
+                                <option value="take_down">🗑️ Take Down</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-secondary w-100" onclick="resetFilters()">
+                            <i class="ti ti-rotate me-1"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================================================== -->
 <!-- TABLE -->
 <!-- ===================================================== -->
 
 <div class="row">
-
     <div class="col-12">
-
         <div class="card">
-
             <div class="card-header">
-
-                <h3 class="card-title">
-
-                    Daftar Artist
-
-                </h3>
-
+                <h3 class="card-title">Daftar Artist</h3>
+                <div class="card-actions">
+                    <button id="btn-bulk-delete" class="btn btn-danger btn-sm d-none" onclick="bulkDelete()">
+                        <i class="ti ti-trash me-1"></i> Hapus Terpilih
+                    </button>
+                    <button id="btn-bulk-channel" class="btn btn-warning btn-sm d-none" onclick="bulkUpdateChannel()">
+                        <i class="ti ti-arrows-transfer me-1"></i> Pindah Channel
+                    </button>
+                </div>
             </div>
-
             <div class="card-body">
-
                 {% include "music/artists/partials/_table.html" %}
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 <!-- ===================================================== -->
@@ -114,25 +140,23 @@ Kelola Artist Music
 
 {% include "music/artists/partials/_modal_delete.html" %}
 {% include "music/artists/partials/_modal_bulk.html" %}
+{% include "music/artists/partials/_modal_channel.html" %}
 
 {% endblock %}
 
-
 {% block scripts %}
-
 {{ super() }}
 
-<!-- ===================================================== -->
-<!-- ARTISTS -->
-<!-- ===================================================== -->
+<script>
+    const CHANNEL_ID = {% if channel is defined %}{{ channel.id }}{% else %}null{% endif %};
+</script>
 
 {% include "music/artists/js/utils.html" %}
-
 {% include "music/artists/js/statistics.html" %}
 {% include "music/artists/js/datatable.html" %}
 {% include "music/artists/js/delete.html" %}
 {% include "music/artists/js/bulk.html" %}
-
+{% include "music/artists/js/channel.html" %}
 {% include "music/artists/js/index.html" %}
 
 {% endblock %}

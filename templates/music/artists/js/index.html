@@ -1,71 +1,52 @@
+<!-- ===================================================== -->
+<!-- INDEX PAGE SCRIPTS -->
+<!-- ===================================================== -->
+
 <script>
-"use strict";
+    let autoRefreshInterval = null;
 
-/* ==========================================================
- * Artist Page
- * ========================================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    // ==========================================
-    // DataTable
-    // ==========================================
-
-    ArtistTable.init();
-
-    // ==========================================
-    // Statistics
-    // ==========================================
-
-    ArtistStatistics.load();
-
-    // ==========================================
-    // Delete
-    // ==========================================
-
-    ArtistDelete.init();
-
-    // ==========================================
-    // Bulk Delete
-    // ==========================================
-
-    if (window.ArtistBulk) {
-        ArtistBulk.init();
+    function startAutoRefresh() {
+        if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+        autoRefreshInterval = setInterval(() => {
+            if (!document.hidden) refreshTable();
+        }, 60000);
     }
 
-    // ==========================================
-    // Filter
-    // ==========================================
-
-    const filterChannel = document.getElementById("filter-channel");
-
-    if (filterChannel) {
-
-        filterChannel.addEventListener("change", () => {
-
-            ArtistUtils.reloadTable(true);
-
-        });
-
+    function stopAutoRefresh() {
+        if (autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
+            autoRefreshInterval = null;
+        }
     }
 
-    // ==========================================
-    // Refresh Button
-    // ==========================================
-
-    const refreshButton = document.getElementById("btn-refresh");
-
-    if (refreshButton) {
-
-        refreshButton.addEventListener("click", () => {
-
-            ArtistUtils.reloadTable();
-
-            ArtistStatistics.load();
-
-        });
-
+    function exportData(format) {
+        const channelId = document.getElementById('filter-channel')?.value || '';
+        window.location.href = `/api/artists/export?channel_id=${channelId}&format=${format}`;
     }
 
-});
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+            e.preventDefault();
+            refreshTable();
+        }
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal.show').forEach(modal => {
+                const instance = bootstrap.Modal.getInstance(modal);
+                if (instance) instance.hide();
+            });
+        }
+    });
+
+    window.addEventListener('beforeunload', function() {
+        stopAutoRefresh();
+        if (artistsTable) {
+            artistsTable.destroy();
+            artistsTable = null;
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        startAutoRefresh();
+        console.log('Artist page initialized');
+    });
 </script>

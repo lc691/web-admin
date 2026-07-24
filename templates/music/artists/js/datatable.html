@@ -1,223 +1,463 @@
+<!-- ===================================================== -->
+<!-- DATATABLE CONFIGURATION -->
+<!-- ===================================================== -->
+
 <script>
-"use strict";
+    let artistsTable = null;
 
-/* ==========================================================
- * Artist DataTable
- * ========================================================== */
+    // =====================================================
+    // STATUS CONFIGURATION (untuk SONG, bukan Artist)
+    // =====================================================
 
-const ArtistTable = (() => {
+    const SONG_STATUS_STYLES = {
+        "draft": {
+            "badge": "bg-secondary text-white",
+            "icon": "ti ti-pencil",
+            "label": "Draft",
+            "description": "Masih dalam tahap pengerjaan"
+        },
+        "review": {
+            "badge": "bg-warning text-white",
+            "icon": "ti ti-eye",
+            "label": "Review",
+            "description": "Sedang dalam proses review"
+        },
+        "approved": {
+            "badge": "bg-info text-white",
+            "icon": "ti ti-circle-check",
+            "label": "Approved",
+            "description": "Sudah disetujui"
+        },
+        "scheduled": {
+            "badge": "bg-primary text-white",
+            "icon": "ti ti-calendar-event",
+            "label": "Scheduled",
+            "description": "Dijadwalkan untuk rilis"
+        },
+        "unreleased": {
+            "badge": "bg-indigo text-white",
+            "icon": "ti ti-clock",
+            "label": "Unreleased",
+            "description": "Belum dirilis"
+        },
+        "released": {
+            "badge": "bg-success text-white",
+            "icon": "ti ti-check",
+            "label": "Released",
+            "description": "Sudah dirilis"
+        },
+        "live": {
+            "badge": "bg-green text-white",
+            "icon": "ti ti-player-play",
+            "label": "Live",
+            "description": "Sedang tayang / live"
+        },
+        "topic": {
+            "badge": "bg-cyan text-white",
+            "icon": "ti ti-brand-youtube",
+            "label": "Topic",
+            "description": "Konten topic / tema"
+        },
+        "no_ads": {
+            "badge": "bg-orange text-white",
+            "icon": "ti ti-ad-off",
+            "label": "No Ads",
+            "description": "Tanpa iklan"
+        },
+        "take_down": {
+            "badge": "bg-danger text-white",
+            "icon": "ti ti-trash",
+            "label": "Take Down",
+            "description": "Kena takedown / dihapus"
+        }
+    };
 
-    let table = null;
+    function getSongStatusStyle(status) {
+        return SONG_STATUS_STYLES[status] || {
+            "badge": "bg-secondary text-white",
+            "icon": "ti ti-question-mark",
+            "label": status || "Unknown",
+            "description": "Status tidak dikenal"
+        };
+    }
 
-    function init() {
+    const ARTIST_STATUS_STYLES = {
+        empty: {
+            badge: "bg-secondary-lt",
+            icon: "ti ti-circle",
+            label: "Empty"
+        },
+        pending: {
+            badge: "bg-warning-lt",
+            icon: "ti ti-clock",
+            label: "Pending"
+        },
+        uploaded: {
+            badge: "bg-success-lt",
+            icon: "ti ti-check",
+            label: "Uploaded"
+        },
+        mixed: {
+            badge: "bg-primary-lt",
+            icon: "ti ti-stack",
+            label: "Mixed"
+        },
+        take_down: {
+            badge: "bg-danger-lt",
+            icon: "ti ti-trash",
+            label: "Take Down"
+        }
+    };
 
-        table = $("#artists-table").DataTable({
+    function getArtistStatusStyle(status) {
+        return ARTIST_STATUS_STYLES[status] || ARTIST_STATUS_STYLES.empty;
+    }
 
+    function initDataTable() {
+        console.log("initDataTable called");
+
+        artistsTable = $('#artists-table').DataTable({
             processing: true,
             serverSide: true,
             responsive: true,
             autoWidth: false,
-            pageLength: 25,
-            order: [[2, "asc"]],
 
             ajax: {
-                url: "/api/artists/data",
+                url: '/api/artists/data',
+                type: 'GET',
+                data: function(d) {
 
-                data: function (d) {
-                    return {
+                    const params = {
                         draw: d.draw,
                         start: d.start,
                         length: d.length,
                         search: d.search.value,
                         order_column: d.order[0].column,
                         order_dir: d.order[0].dir,
-                        channel_id: $("#filter-channel").val()
                     };
+
+                    // Channel dari halaman /channels/{id}/artists
+                    if (typeof CHANNEL_ID !== "undefined" &&
+                        CHANNEL_ID !== null &&
+                        CHANNEL_ID !== "") {
+                        params.channel_id = CHANNEL_ID;
+                    }
+
+                    // Channel dari filter halaman /artists
+                    const filterChannel = document.getElementById("filter-channel")?.value;
+                    if (filterChannel) {
+                        params.channel_id = filterChannel;
+                    }
+
+                    const hasSongs = document.getElementById("filter-has-songs")?.value;
+                    if (hasSongs !== "") {
+                        params.has_songs = hasSongs === "true";
+                    }
+
+                    const status = document.getElementById("filter-status")?.value;
+                    if (status) {
+                        params.status = status;
+                    }
+
+                    return params;
+                },
+                dataSrc: function(json) {
+                    console.log("Response data:", json);
+                    return json.data || [];
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                    console.error("Response:", xhr.responseText);
+                    showToast('Gagal memuat data: ' + error, 'error');
                 }
             },
 
             columns: [
-
-                // ==========================================
-                // CHECKBOX
-                // ==========================================
-
+                // Checkbox
                 {
                     data: "id",
                     orderable: false,
                     searchable: false,
-                    width: "30px",
-
-                    render(id) {
-
-                        return `
-                            <input
-                                class="form-check-input row-check"
-                                type="checkbox"
-                                value="${id}">
-                        `;
-
-                    }
-
+                    className: "text-center",
+                    render: data => `
+                        <input type="checkbox" class="form-check-input row-checkbox" value="${data}" onchange="updateBulkButtons()">
+                    `
                 },
-
-                // ==========================================
-                // NO
-                // ==========================================
-
-                {
-                    data: null,
-                    searchable: false,
-                    orderable: false,
-
-                    render(data, type, row, meta) {
-
-                        return meta.settings._iDisplayStart +
-                            meta.row +
-                            1;
-
-                    }
-
-                },
-
-                // ==========================================
-                // ARTIST
-                // ==========================================
-
+                // Artist
                 {
                     data: "name",
-
-                    render(data, type, row) {
-
+                    name: "name",
+                    render: function(data, type, row) {
+                        const avatar = (data || "?").charAt(0).toUpperCase();
                         return `
-                            <div class="fw-semibold">
-                                ${data}
+                            <div class="d-flex align-items-center">
+                                <span class="avatar avatar-sm me-3">${avatar}</span>
+                                <div>
+                                    <a href="/artists/${row.id}" class="text-reset fw-semibold">${data}</a>
+                                    <div class="text-secondary">ID #${row.id}</div>
+                                </div>
                             </div>
                         `;
-
                     }
-
                 },
-
-                // ==========================================
-                // CHANNEL
-                // ==========================================
-
+                // Channel
                 {
-                    data: "channel_name",
-
-                    defaultContent: "-"
-
+                    data: null,
+                    render: function(data, type, row) {
+                        return `
+                            <div>
+                                ${row.channel_name || '-'}
+                                ${row.channel_vermuk
+                                    ? '<span class="badge bg-danger-lt ms-1" data-bs-toggle="tooltip" title="Channel Vermuk">VERMUK</span>'
+                                    : '<span class="badge bg-blue-lt ms-1" data-bs-toggle="tooltip" title="Channel Normal">NORMAL</span>'
+                                }
+                            </div>
+                        `;
+                    }
                 },
-
-                // ==========================================
-                // SONG COUNT
-                // ==========================================
-
+                // Status - ARTIST STATUS
                 {
-                    data: "song_count",
+                    data: "song_status",
                     className: "text-center",
+                    render: function(data, type, row) {
 
-                    render(value) {
+                        console.log("song_status =", data, typeof data);
+                        console.log(row);
+
+                        const style = getSongStatusStyle(data);
 
                         return `
-                            <span class="badge bg-blue-lt">
-                                ${ArtistUtils.formatNumber(value)}
+                            <span class="badge ${style.badge}">
+                                <i class="${style.icon} me-1"></i>${style.label}
                             </span>
                         `;
-
                     }
-
                 },
-
-                // ==========================================
-                // CREATED
-                // ==========================================
-
+                // Songs - DENGAN TOOLTIP
                 {
-                    data: "created_at",
+                    data: null,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        const total = row.song_count || 0;
+                        const uploaded = row.uploaded_songs || 0;
+                        const pending = row.pending_songs || 0;
+                        const takedown = row.takedown_songs || 0;
 
-                    render(value) {
-
-                        if (!value) return "-";
-
-                        return new Date(value)
-                            .toLocaleDateString("id-ID");
-
+                        return `
+                            <div class="d-flex justify-content-center flex-wrap gap-1">
+                                <span class="badge bg-primary-lt" 
+                                      data-bs-toggle="tooltip" 
+                                      title="Total lagu: ${total}">
+                                    ${total}
+                                </span>
+                                <span class="badge bg-success-lt" 
+                                      data-bs-toggle="tooltip" 
+                                      title="Sudah diupload: ${uploaded}">
+                                    ${uploaded}
+                                </span>
+                                <span class="badge bg-warning-lt" 
+                                      data-bs-toggle="tooltip" 
+                                      title="Pending upload: ${pending}">
+                                    ${pending}
+                                </span>
+                                <span class="badge bg-danger-lt" 
+                                      data-bs-toggle="tooltip" 
+                                      title="Take down: ${takedown}">
+                                    ${takedown}
+                                </span>
+                            </div>
+                        `;
                     }
-
                 },
-
-                // ==========================================
-                // ACTION
-                // ==========================================
-
+                // Progress - DENGAN TOOLTIP
                 {
                     data: null,
                     orderable: false,
-                    searchable: false,
-                    className: "text-end",
-
-                    render(data, type, row) {
+                    render: function(data, type, row) {
+                        const total = row.song_count || 0;
+                        const uploaded = row.uploaded_songs || 0;
+                        const percent = total ? Math.round(uploaded * 100 / total) : 0;
+                        const color = percent === 100 ? "bg-success" : percent >= 50 ? "bg-warning" : "bg-danger";
 
                         return `
-
-                        <div class="btn-list justify-content-end">
-
-                            <a
-                                href="/artists/${row.id}"
-                                class="btn btn-sm btn-outline-primary">
-
-                                <i class="ti ti-eye"></i>
-
-                            </a>
-
-                            <a
-                                href="/artists/${row.id}/edit"
-                                class="btn btn-sm btn-outline-warning">
-
-                                <i class="ti ti-edit"></i>
-
-                            </a>
-
-                            <button
-                                class="btn btn-sm btn-outline-danger btn-delete"
-                                data-id="${row.id}"
-                                data-name="${row.name}">
-
-                                <i class="ti ti-trash"></i>
-
-                            </button>
-
-                        </div>
-
+                            <div class="progress progress-xs">
+                                <div class="progress-bar ${color}" 
+                                     style="width:${percent}%"
+                                     data-bs-toggle="tooltip"
+                                     title="${percent}% selesai (${uploaded}/${total})">
+                                </div>
+                            </div>
+                            <div class="small text-secondary mt-1">${uploaded} / ${total} (${percent}%)</div>
                         `;
-
                     }
-
+                },
+                // Last Song
+                {
+                    data: "last_song_date",
+                    render: data => data ? formatDate(data) : '<span class="text-secondary">-</span>'
+                },
+                // Updated
+                {
+                    data: "updated_at",
+                    render: data => formatDate(data)
+                },
+                // Actions
+                {
+                    data: "id",
+                    searchable: false,
+                    className: "text-end",
+                    render: function(data, type, row) {
+                        return `
+                            <div class="dropdown">
+                                <button class="btn btn-icon" data-bs-toggle="dropdown">
+                                    <i class="ti ti-dots-vertical"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="/artists/${row.id}">
+                                        <i class="ti ti-eye me-2"></i>Detail
+                                    </a>
+                                    <a class="dropdown-item" href="/artists/${row.id}/songs">
+                                        <i class="ti ti-music me-2"></i>Songs
+                                    </a>
+                                    <a class="dropdown-item" href="/artists/${row.id}/edit">
+                                        <i class="ti ti-edit me-2"></i>Edit
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <button class="dropdown-item text-danger" onclick="confirmDelete(${row.id}, '${(row.name || '').replace(/'/g, "\\'")}')">
+                                        <i class="ti ti-trash me-2"></i>Delete
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }
                 }
-
             ],
 
-            drawCallback() {
+            order: [[1, 'asc']],
+            pageLength: 25,
+            lengthMenu: [10, 25, 50, 100],
 
-                if (window.ArtistBulk) {
-                    ArtistBulk.reset();
+            language: {
+                processing: 'Memuat data...',
+                search: 'Cari:',
+                lengthMenu: 'Tampilkan _MENU_ data',
+                info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
+                infoEmpty: 'Tidak ada data',
+                infoFiltered: '(difilter dari _MAX_ total data)',
+                zeroRecords: `
+                    <div class="text-center py-5">
+                        <img src="/static/img/scaling-ratio-svgrepo-com.svg"
+                            width="180"
+                            class="mb-3">
+
+                        <h4>Tidak ada hasil</h4>
+
+                        <p class="text-muted mb-0">
+                            Tidak ada data yang cocok dengan pencarian Anda.
+                        </p>
+                    </div>
+                    `,
+                paginate: {
+                    first: 'Pertama',
+                    last: 'Terakhir',
+                    next: 'Selanjutnya',
+                    previous: 'Sebelumnya'
                 }
+            },
 
+            drawCallback: function() {
+                updateBulkButtons();
+                enableTooltips();
             }
-
         });
 
-        ArtistUtils.setTable(table);
-
+        console.log("artistsTable =", artistsTable);
     }
 
-    return {
+    // =====================================================
+    // FUNGSI TOOLTIP
+    // =====================================================
 
-        init
+    function enableTooltips() {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        if (tooltipTriggerList.length > 0) {
+            tooltipTriggerList.forEach(tooltipTriggerEl => {
+                if (!tooltipTriggerEl._tooltip) {
+                    new bootstrap.Tooltip(tooltipTriggerEl, {
+                        placement: 'top',
+                        trigger: 'hover',
+                        delay: { show: 200, hide: 100 }
+                    });
+                }
+            });
+        }
+    }
 
-    };
+    // =====================================================
+    // FUNGSI TAMBAHAN
+    // =====================================================
 
-})();
+    function refreshTable() {
+        if (artistsTable) {
+            artistsTable.ajax.reload(null, false);
+            updateStatistics();
+        }
+    }
+
+    function toggleAllCheckboxes() {
+        const selectAll = document.getElementById('select-all');
+        const checkboxes = document.querySelectorAll('.row-checkbox');
+        checkboxes.forEach(cb => cb.checked = selectAll.checked);
+        updateBulkButtons();
+    }
+
+    function updateBulkButtons() {
+        const selected = document.querySelectorAll('.row-checkbox:checked').length;
+        const btnDelete = document.getElementById('btn-bulk-delete');
+        const btnChannel = document.getElementById('btn-bulk-channel');
+        const bulkCount = document.getElementById('bulk-selected-count');
+
+        if (selected > 0) {
+            btnDelete.classList.remove('d-none');
+            btnChannel.classList.remove('d-none');
+            if (bulkCount) bulkCount.textContent = selected;
+        } else {
+            btnDelete.classList.add('d-none');
+            btnChannel.classList.add('d-none');
+            if (bulkCount) bulkCount.textContent = '0';
+        }
+    }
+
+    function applyFilters() {
+        if (artistsTable) {
+            artistsTable.ajax.reload();
+        }
+    }
+
+    function resetFilters() {
+        document.getElementById('filter-channel').value = '';
+        document.getElementById('filter-has-songs').value = '';
+        document.getElementById('filter-status').value = '';
+        document.getElementById('search-keyword').value = '';
+        if (artistsTable) {
+            artistsTable.search('').columns().search('').draw();
+        }
+    }
+
+    function filterByChannel(channelId) {
+        const select = document.getElementById('filter-channel');
+        if (select) {
+            select.value = channelId;
+            applyFilters();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof $ !== 'undefined' && $.fn.DataTable) {
+            initDataTable();
+            updateStatistics();
+        } else {
+            console.error('jQuery atau DataTable tidak ditemukan!');
+        }
+    });
 </script>

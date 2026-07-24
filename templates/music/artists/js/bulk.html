@@ -1,192 +1,143 @@
+<!-- ===================================================== -->
+<!-- BULK OPERATIONS HANDLER -->
+<!-- ===================================================== -->
+
 <script>
-"use strict";
-
-/* ==========================================================
- * Artist Bulk Delete
- * ========================================================== */
-
-const ArtistBulk = (() => {
-
-    let modal = null;
-
-    function init() {
-
-        modal = new bootstrap.Modal(
-            document.getElementById("modal-bulk-delete")
-        );
-
-        bindEvents();
-
-    }
-
-    function bindEvents() {
-
-        // Select All
-        $(document).on("change", "#check-all", function () {
-
-            $(".row-check").prop(
-                "checked",
-                this.checked
-            );
-
-            updateSelected();
-
-        });
-
-        // Row Checkbox
-        $(document).on("change", ".row-check", function () {
-
-            const total =
-                $(".row-check").length;
-
-            const checked =
-                $(".row-check:checked").length;
-
-            $("#check-all").prop(
-                "checked",
-                total > 0 && total === checked
-            );
-
-            updateSelected();
-
-        });
-
-        // Bulk Delete Button
-        $(document).on("click", "#btn-bulk-delete", function () {
-
-            const ids = selectedIds();
-
-            if (!ids.length) {
-
-                ArtistUtils.showWarning(
-                    "Pilih minimal satu artist."
-                );
-
-                return;
-
-            }
-
-            $("#bulk-delete-count").text(
-                ids.length
-            );
-
-            modal.show();
-
-        });
-
-        // Confirm Delete
-        $("#btn-confirm-bulk-delete").on(
-            "click",
-            confirmDelete
-        );
-
-    }
-
-    async function confirmDelete() {
-
-        const ids = selectedIds();
-
-        if (!ids.length) {
-
-            modal.hide();
-
+    function bulkDelete() {
+        const selected = getSelectedIds();
+        if (selected.length === 0) {
+            showToast('Pilih minimal satu artist untuk dihapus', 'warning');
             return;
-
         }
 
-        const button = document.getElementById(
-            "btn-confirm-bulk-delete"
-        );
+        if (!confirm(`Yakin ingin menghapus ${selected.length} artist yang dipilih?`)) return;
 
-        button.disabled = true;
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modal-bulk'));
+        if (modal) modal.hide();
 
-        try {
+        showToast(`Menghapus ${selected.length} artist...`, 'info');
 
-            const result =
-                await ArtistUtils.request(
-                    "/api/artists/bulk",
-                    {
-                        method: "DELETE",
-                        body: JSON.stringify({
-                            ids
-                        })
-                    }
-                );
-
-            modal.hide();
-
-            ArtistUtils.showSuccess(
-                result.message ||
-                "Artist berhasil dihapus."
-            );
-
-            ArtistUtils.reloadTable();
-
-            if (window.ArtistStatistics) {
-                ArtistStatistics.load();
+        apiFetch('/api/artists/bulk', {
+            method: 'DELETE',
+            body: JSON.stringify({ ids: selected, force: false })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message || `${selected.length} artist berhasil dihapus`, 'success');
+                refreshTable();
+            } else {
+                showToast(data.message || 'Gagal menghapus artist', 'error');
             }
+        })
+        .catch(err => {
+            showToast('Gagal menghapus artist: ' + err.message, 'error');
+        });
+    }
 
-        } catch (error) {
+    function bulkDeleteSelected() {
+        document.getElementById('modal-bulk').querySelector('.btn-close').click();
+        bulkDelete();
+    }
 
-            ArtistUtils.showError(
-                error.message
-            );
-
-        } finally {
-
-            button.disabled = false;
-
+    function bulkUpdateChannelSelected() {
+        const selected = getSelectedIds();
+        if (selected.length === 0) {
+            showToast('Pilih minimal satu artist', 'warning');
+            return;
         }
 
+        document.getElementById('channel-artist-ids').value = JSON.stringify(selected);
+        document.getElementById('channel-artist-count').textContent = selected.length;
+        document.getElementById('channel-select').value = '';
+
+        document.getElementById('modal-bulk').querySelector('.btn-close').click();
+        const modal = new bootstrap.Modal(document.getElementById('modal-channel'));
+        modal.show();
     }
 
-    function selectedIds() {
+    function bulkUpdateChannel() {
+        const selected = getSelectedIds();
+        if (selected.length === 0) {
+            showToast('Pilih minimal satu artist', 'warning');
+            return;
+        }
 
-        return $(".row-check:checked")
-            .map(function () {
-                return Number(this.value);
-            })
-            .get();
+        document.getElementById('channel-artist-ids').value = JSON.stringify(selected);
+        document.getElementById('channel-artist-count').textContent = selected.length;
+        document.getElementById('channel-select').value = '';
 
+        const modal = new bootstrap.Modal(document.getElementById('modal-channel'));
+        modal.show();
     }
 
-    function updateSelected() {
+    function confirmBulkUpdateChannel() {
+        const artistIds = JSON.parse(document.getElementById('channel-artist-ids').value || '[]');
+        const channelId = document.getElementById('channel-select').value;
 
-        const count =
-            selectedIds().length;
+        if (!channelId) {
+            showToast('Pilih channel tujuan', 'warning');
+            return;
+        }
 
-        $("#selected-count").text(count);
+        if (artistIds.length === 0) {
+            showToast('Tidak ada artist yang dipilih', 'error');
+            return;
+        }
 
-        $("#btn-bulk-delete").prop(
-            "disabled",
-            count === 0
-        );
+        document.getElementById('modal-channel').querySelector('.btn-close').click();
 
+        showToast(`Memindahkan ${artistIds.length} artist ke channel baru...`, 'info');
+
+        apiFetch('/api/artists/bulk/update-channel', {
+            method: 'POST',
+            body: JSON.stringify({ ids: artistIds, channel_id: parseInt(channelId) })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message || `${artistIds.length} artist berhasil dipindahkan`, 'success');
+                refreshTable();
+            } else {
+                showToast(data.message || 'Gagal memindahkan artist', 'error');
+            }
+        })
+        .catch(err => {
+            showToast('Gagal memindahkan artist: ' + err.message, 'error');
+        });
     }
 
-    function reset() {
+    function bulkExportSelected() {
+        const selected = getSelectedIds();
+        if (selected.length === 0) {
+            showToast('Pilih minimal satu artist untuk diexport', 'warning');
+            return;
+        }
 
-        $("#check-all").prop(
-            "checked",
-            false
-        );
+        document.getElementById('modal-bulk').querySelector('.btn-close').click();
 
-        $(".row-check").prop(
-            "checked",
-            false
-        );
-
-        updateSelected();
-
+        apiFetch('/api/artists/bulk/export?format=csv&include_stats=true', {
+            method: 'POST',
+            body: JSON.stringify(selected)
+        })
+        .then(res => res.blob())
+        .then(blob => {
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = `artists_export_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
+            showToast(`Berhasil mengexport ${selected.length} artist`, 'success');
+        })
+        .catch(err => {
+            showToast('Gagal mengexport data: ' + err.message, 'error');
+        });
     }
 
-    return {
-
-        init,
-        reset,
-        selectedIds
-
-    };
-
-})();
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('btn-confirm-channel').addEventListener('click', confirmBulkUpdateChannel);
+    });
 </script>

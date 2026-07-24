@@ -426,66 +426,96 @@ class ChannelService:
     # GET / DETAIL
     # =====================================================
     
+
     @staticmethod
     def get_by_id(
         cursor,
         channel_id: int,
         include_stats: bool = True,
-        include_activity: bool = False
+        include_activity: bool = False,
     ) -> Dict[str, Any]:
         """
-        Get channel by ID with optional enrichment.
-        
+        Get channel by ID.
+
         Args:
             cursor: Database cursor
             channel_id: Channel ID
-            include_stats: Include statistics (artists, songs counts)
-            include_activity: Include activity scoring
-            
+            include_stats: Include statistics
+            include_activity: Include activity information
+
         Returns:
-            Dict with channel data
-            
+            Channel data
+
         Raises:
-            ChannelNotFoundError: If channel not found
-            ChannelError: For other errors
+            ChannelNotFoundError:
+                Jika channel tidak ditemukan.
+
+            ChannelError:
+                Jika terjadi kesalahan lain.
         """
         try:
-            logger.debug(f"Getting channel ID={channel_id}")
-            
-            # Get channel
-            channel = ChannelRepository.get_by_id(cursor, channel_id)
-            
+            logger.debug("Getting channel ID=%s", channel_id)
+
+            # ==========================================
+            # GET CHANNEL
+            # ==========================================
+
+            channel = ChannelRepository.get_by_id(
+                cursor,
+                channel_id,
+            )
+
             if channel is None:
-                raise ChannelNotFoundError(channel_id=channel_id)
-            
-            # Convert to DTO
+                raise ChannelNotFoundError(
+                    channel_id=channel_id,
+                )
+
+            # ==========================================
+            # MAP DATABASE -> DTO
+            # ==========================================
+
             result = ChannelMapper.from_db_to_dto(channel)
-            
-            # Enrich with activity if requested
+
+            # ==========================================
+            # OPTIONAL ACTIVITY
+            # ==========================================
+
             if include_activity:
                 try:
-                    activity_data = ChannelStatisticsRepository.get_channel_activity_score(
-                        cursor, channel_id
+                    activity = (
+                        ChannelStatisticsRepository.get_channel_activity_score(
+                            cursor,
+                            channel_id,
+                        )
                     )
-                    if activity_data:
-                        result = ChannelMapper.enrich_with_activity(result, activity_data)
-                except Exception as e:
-                    logger.warning(f"Failed to get activity data for channel {channel_id}: {e}")
-            
-            return ChannelMapper.to_response(
-                data=result,
-                status_code=200,
-                message="Channel retrieved successfully"
+
+                    if activity:
+                        result = ChannelMapper.enrich_with_activity(
+                            result,
+                            activity,
+                        )
+
+                except Exception as exc:
+                    logger.warning(
+                        "Failed to load activity for channel %s: %s",
+                        channel_id,
+                        exc,
+                    )
+
+            return result
+
+        except ChannelNotFoundError:
+            raise
+
+        except Exception as exc:
+            logger.exception(
+                "Failed to get channel ID=%s",
+                channel_id,
             )
-            
-        except ChannelNotFoundError as e:
-            return ChannelMapper.to_error_response(
-                error=str(e),
-                status_code=404
-            )
-        except Exception as e:
-            logger.error(f"Error getting channel {channel_id}: {e}")
-            raise ChannelError(f"Failed to get channel: {str(e)}")
+
+            raise ChannelError(
+                f"Failed to get channel: {exc}"
+            ) from exc
     
     @staticmethod
     def get_by_name(

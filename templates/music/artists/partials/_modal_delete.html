@@ -1,113 +1,38 @@
-<div
-    class="modal modal-blur fade"
-    id="modal-delete"
-    tabindex="-1"
-    aria-hidden="true">
+<!-- ===================================================== -->
+<!-- MODAL DELETE -->
+<!-- ===================================================== -->
 
+<div class="modal fade" id="modal-delete" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered">
-
         <div class="modal-content">
-
-            <!-- ===================================================== -->
-            <!-- HEADER -->
-            <!-- ===================================================== -->
-
             <div class="modal-header">
-
                 <h5 class="modal-title">
-
-                    Hapus Artist
-
+                    <i class="ti ti-alert-triangle text-danger me-1"></i>
+                    Konfirmasi Hapus
                 </h5>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close">
-
-                </button>
-
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-
-            <!-- ===================================================== -->
-            <!-- BODY -->
-            <!-- ===================================================== -->
-
             <div class="modal-body">
-
-                <div class="text-center">
-
-                    <span class="avatar avatar-xl bg-red-lt mb-3">
-
-                        <i class="ti ti-trash fs-1 text-danger"></i>
-
-                    </span>
-
-                    <h3>
-
-                        Yakin ingin menghapus artist ini?
-
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-
-                        Artist
-
-                        <strong id="delete-artist-name">
-
-                            -
-
-                        </strong>
-
-                        akan dihapus secara permanen.
-
-                    </p>
-
-                    <p class="text-danger small mt-3 mb-0">
-
-                        Tindakan ini tidak dapat dibatalkan.
-
-                    </p>
-
+                <p>Apakah Anda yakin ingin menghapus artist <strong id="delete-artist-name"></strong>?</p>
+                <p class="text-muted small">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Artist dengan lagu tidak dapat dihapus.
+                </p>
+                <input type="hidden" id="delete-artist-id">
+                <div class="form-check mt-2">
+                    <input type="checkbox" id="delete-force" class="form-check-input">
+                    <label class="form-check-label text-danger" for="delete-force">
+                        <i class="ti ti-alert-triangle me-1"></i>
+                        Paksa hapus (termasuk lagu)
+                    </label>
                 </div>
-
             </div>
-
-            <!-- ===================================================== -->
-            <!-- FOOTER -->
-            <!-- ===================================================== -->
-
             <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn btn-outline-secondary"
-                    data-bs-dismiss="modal">
-
-                    Batal
-
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button id="btn-confirm-delete" class="btn btn-danger">
+                    <i class="ti ti-trash me-1"></i> Hapus
                 </button>
-
-                <button
-                    id="btn-confirm-delete"
-                    type="button"
-                    class="btn btn-danger">
-
-                    <i class="ti ti-trash me-1"></i>
-
-                    Hapus
-
-                </button>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
-
-<input
-    type="hidden"
-    id="delete-artist-id">

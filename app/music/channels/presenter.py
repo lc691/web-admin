@@ -220,53 +220,51 @@ class ChannelPresenter:
     ) -> Dict[str, Any]:
         """
         Presenter untuk halaman edit channel.
-        
-        Args:
-            cursor: Database cursor
-            channel_id: Channel ID
-            
-        Returns:
-            Context for edit page
-            
-        Raises:
-            ChannelNotFoundError: If channel not found
         """
         try:
-            # Get channel detail
-            result = ChannelService.get_detail(cursor, channel_id)
-            
-            if not result.get('success'):
-                raise ChannelNotFoundError(channel_id=channel_id)
-            
-            channel = result.get('data', {})
-            
+            channel = ChannelService.get_by_id(
+                cursor=cursor,
+                channel_id=channel_id,
+            )
+
             context = {
                 **cls.base(),
                 "page": "form",
                 "mode": "edit",
                 "title": "Edit Channel",
-                "subtitle": f"Perbarui informasi channel: {channel.get('name', '')}",
+                "subtitle": f"Perbarui informasi channel: {channel.name}",
                 "channel": channel,
                 "is_edit": True,
                 "form_action": f"/admin/channels/{channel_id}",
                 "form_method": "PUT",
                 "button_text": "Update Channel",
             }
-            
-            # Add breadcrumb
+
             context = cls.with_breadcrumb(context, [
-                {"label": "Dashboard", "url": "/admin/dashboard"},
-                {"label": "Channels", "url": "/admin/channels"},
-                {"label": f"Edit: {channel.get('name', '')}", "url": "#", "active": True},
+                {
+                    "label": "Dashboard",
+                    "url": "/admin/dashboard",
+                },
+                {
+                    "label": "Channels",
+                    "url": "/admin/channels",
+                },
+                {
+                    "label": f"Edit: {channel.name}",
+                    "url": "#",
+                    "active": True,
+                },
             ])
-            
+
             return context
-            
-        except ChannelNotFoundError as e:
-            logger.error(f"Channel not found for edit: {channel_id}")
+
+        except ChannelNotFoundError:
             raise
-        except Exception as e:
-            logger.error(f"Error editing channel {channel_id}: {e}")
+
+        except Exception:
+            logger.exception(
+                f"Error editing channel {channel_id}"
+            )
             raise
     
     # =====================================================
@@ -281,48 +279,48 @@ class ChannelPresenter:
     ) -> Dict[str, Any]:
         """
         Presenter untuk halaman detail channel.
-        
-        Args:
-            cursor: Database cursor
-            channel_id: Channel ID
-            
-        Returns:
-            Context for detail page
-            
-        Raises:
-            ChannelNotFoundError: If channel not found
         """
         try:
-            # Get channel detail with stats
-            result = ChannelService.get_detail(cursor, channel_id)
-            
-            if not result.get('success'):
-                raise ChannelNotFoundError(channel_id=channel_id)
-            
-            channel = result.get('data', {})
-            
-            # Get activity score
+            channel = ChannelService.get_by_id(
+                cursor=cursor,
+                channel_id=channel_id,
+            )
+
             activity = None
             try:
-                activity_result = ChannelService.get_activity_score(cursor, channel_id)
-                if activity_result.get('success'):
-                    activity = activity_result.get('data')
+                result = ChannelService.get_activity_score(
+                    cursor=cursor,
+                    channel_id=channel_id,
+                )
+
+                if isinstance(result, dict) and result.get("success"):
+                    activity = result.get("data")
+                else:
+                    activity = result
+
             except Exception as e:
                 logger.warning(f"Error getting activity score: {e}")
-            
-            # Get status breakdown
+
+
             status_breakdown = None
             try:
-                status_result = ChannelService.get_status_breakdown(cursor, channel_id)
-                if status_result.get('success'):
-                    status_breakdown = status_result.get('data')
+                result = ChannelService.get_status_breakdown(
+                    cursor=cursor,
+                    channel_id=channel_id,
+                )
+
+                if isinstance(result, dict) and result.get("success"):
+                    status_breakdown = result.get("data")
+                else:
+                    status_breakdown = result
+
             except Exception as e:
                 logger.warning(f"Error getting status breakdown: {e}")
-            
+
             context = {
                 **cls.base(),
                 "page": "detail",
-                "title": channel.get('name', 'Channel Detail'),
+                "title": channel.name,
                 "subtitle": "Informasi Lengkap Channel",
                 "channel": channel,
                 "activity": activity,
@@ -330,23 +328,33 @@ class ChannelPresenter:
                 "can_edit": True,
                 "can_delete": True,
             }
-            
-            # Add breadcrumb
+
             context = cls.with_breadcrumb(context, [
-                {"label": "Dashboard", "url": "/admin/dashboard"},
-                {"label": "Channels", "url": "/admin/channels"},
-                {"label": channel.get('name', 'Detail'), "url": "#", "active": True},
+                {
+                    "label": "Dashboard",
+                    "url": "/admin/dashboard",
+                },
+                {
+                    "label": "Channels",
+                    "url": "/admin/channels",
+                },
+                {
+                    "label": channel.name,
+                    "url": "#",
+                    "active": True,
+                },
             ])
-            
+
             return context
-            
-        except ChannelNotFoundError as e:
-            logger.error(f"Channel not found for detail: {channel_id}")
+
+        except ChannelNotFoundError:
             raise
+
         except Exception as e:
-            logger.error(f"Error getting channel detail {channel_id}: {e}")
-            raise
-    
+            logger.exception(
+                f"Error getting channel detail {channel_id}"
+            )
+
     # =====================================================
     # STATISTICS
     # =====================================================

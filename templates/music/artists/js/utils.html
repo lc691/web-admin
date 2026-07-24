@@ -1,109 +1,113 @@
+<!-- ===================================================== -->
+<!-- UTILITY FUNCTIONS -->
+<!-- ===================================================== -->
+
 <script>
-"use strict";
+    // Toast notification
+    function showToast(message, type = 'success') {
+        const colors = {
+            success: 'bg-success text-white',
+            error: 'bg-danger text-white',
+            warning: 'bg-warning text-dark',
+            info: 'bg-info text-white'
+        };
 
-/* ==========================================================
- * Artist Utils
- * ========================================================== */
+        let container = document.getElementById('toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'position-fixed bottom-0 end-0 p-3';
+            container.style.zIndex = '1050';
+            document.body.appendChild(container);
+        }
 
-const ArtistUtils = (() => {
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center ${colors[type] || colors.info} border-0`;
+        toast.role = 'alert';
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
 
-    const API = "/api/artists";
+        container.appendChild(toast);
+        const bsToast = new bootstrap.Toast(toast, { delay: 5000 });
+        bsToast.show();
 
-    let table = null;
-
-    function setTable(instance) {
-        table = instance;
+        setTimeout(() => {
+            if (toast.parentNode) toast.remove();
+        }, 5500);
     }
 
-    function getTable() {
-        return table;
-    }
-
-    function reloadTable(resetPaging = false) {
-        if (table) {
-            table.ajax.reload(null, resetPaging);
+    // Format number
+    function formatNumber(value, decimals = 0) {
+        if (value === null || value === undefined) return '0';
+        try {
+            const num = parseFloat(value);
+            if (isNaN(num)) return '0';
+            if (decimals === 0) return num.toLocaleString('id-ID');
+            return num.toLocaleString('id-ID', {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            });
+        } catch (e) {
+            return String(value);
         }
     }
 
-    function showSuccess(message) {
-
-        if (window.showToast) {
-            showToast(message, "success", "Berhasil");
-            return;
+    // Format date
+    function formatDate(dateString) {
+        if (!dateString) return '-';
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return '-';
+            return date.toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (e) {
+            return '-';
         }
-
-        alert(message);
     }
 
-    function showError(message) {
-
-        if (window.showToast) {
-            showToast(message, "danger", "Gagal");
-            return;
-        }
-
-        alert(message);
+    // Get CSRF token
+    function getCsrfToken() {
+        return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
     }
 
-    function showWarning(message) {
-
-        if (window.showToast) {
-            showToast(message, "warning", "Peringatan");
-            return;
-        }
-
-        alert(message);
-    }
-
-    async function request(url, options = {}) {
-
-        const response = await fetch(url, {
+    // API fetch with CSRF
+    function apiFetch(url, options = {}) {
+        return fetch(url, {
+            ...options,
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken(),
                 ...(options.headers || {})
             },
-            ...options
+            credentials: 'same-origin'
         });
+    }
 
-        let data = {};
+    // Get selected IDs
+    function getSelectedIds() {
+        const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+        return Array.from(checkboxes).map(cb => parseInt(cb.value));
+    }
 
-        try {
-            data = await response.json();
-        } catch (_) {}
+    // =====================================================
+    // FUNGSI TAMBAHAN
+    // =====================================================
 
-        if (!response.ok) {
-            throw new Error(
-                data.message ||
-                "Terjadi kesalahan."
-            );
+    // Refresh table (akan di-override oleh datatable)
+    function refreshTable() {
+        if (typeof artistsTable !== 'undefined' && artistsTable) {
+            artistsTable.ajax.reload(null, false);
+        } else {
+            location.reload();
         }
-
-        return data;
     }
-
-    function formatNumber(value) {
-
-        return Number(value || 0).toLocaleString("id-ID");
-
-    }
-
-    return {
-
-        API,
-
-        setTable,
-        getTable,
-        reloadTable,
-
-        request,
-
-        showSuccess,
-        showError,
-        showWarning,
-
-        formatNumber
-
-    };
-
-})();
 </script>

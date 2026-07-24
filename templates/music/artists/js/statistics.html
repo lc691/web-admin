@@ -1,77 +1,31 @@
+<!-- ===================================================== -->
+<!-- STATISTICS SCRIPTS -->
+<!-- ===================================================== -->
+
 <script>
-"use strict";
-
-/* ==========================================================
- * Artist Statistics
- * ========================================================== */
-
-const ArtistStatistics = (() => {
-
-    async function load() {
-
+    async function updateStatistics() {
         try {
+            const channelId = document.getElementById('filter-channel')?.value;
+            let url = '/api/artists/statistics';
+            if (channelId) url += `?channel_id=${channelId}`;
 
-            const data = await ArtistUtils.request(
-                "/api/artists/statistics"
-            );
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-            update(data);
+            const json = await response.json();
+            const stats = json.data ?? json;
 
+            document.getElementById('stat-total-artists').textContent = formatNumber(stats.total_artists ?? 0);
+            document.getElementById('stat-total-songs').textContent = formatNumber(stats.total_songs ?? 0);
+            document.getElementById('stat-active-channels').textContent = formatNumber(stats.active_channels ?? 0);
+            document.getElementById('stat-artists-with-songs').textContent = formatNumber(stats.artists_with_songs ?? 0);
+            document.getElementById('stat-artists-without-songs').textContent = formatNumber(stats.artists_without_songs ?? 0);
+            document.getElementById('stat-avg-songs').textContent = Number(stats.avg_songs_per_artist ?? 0).toFixed(1);
         } catch (error) {
-
-            console.error(error);
-
-            ArtistUtils.showError(
-                error.message
-            );
-
+            console.error("Error updating statistics:", error);
         }
-
     }
 
-    function update(data) {
-
-        setValue(
-            "stat-total-artists",
-            data.total_artists
-        );
-
-        setValue(
-            "stat-total-songs",
-            data.total_songs
-        );
-
-        setValue(
-            "stat-active-channels",
-            data.active_channels
-        );
-
-        setValue(
-            "stat-artists-without-songs",
-            data.artists_without_songs
-        );
-
-    }
-
-    function setValue(id, value) {
-
-        const element = document.getElementById(id);
-
-        if (!element) {
-            return;
-        }
-
-        element.textContent =
-            ArtistUtils.formatNumber(value);
-
-    }
-
-    return {
-
-        load,
-        update
-
-    };
-
-})();
+    // Update statistics every 30 seconds
+    setInterval(updateStatistics, 30000);
 </script>

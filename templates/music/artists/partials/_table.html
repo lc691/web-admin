@@ -1,132 +1,22 @@
-<div class="table-responsive">
-
-    <table
-        id="artists-table"
-        class="table table-vcenter table-striped card-table">
-
-        <thead>
-
-            <tr>
-
-                <!-- ===================================================== -->
-                <!-- CHECKBOX -->
-                <!-- ===================================================== -->
-
-                <th class="w-1">
-
-                    <input
-                        id="check-all"
-                        type="checkbox"
-                        class="form-check-input">
-
-                </th>
-
-                <!-- ===================================================== -->
-                <!-- NO -->
-                <!-- ===================================================== -->
-
-                <th class="w-1">
-
-                    No
-
-                </th>
-
-                <!-- ===================================================== -->
-                <!-- ARTIST -->
-                <!-- ===================================================== -->
-
-                <th>
-
-                    Artist
-
-                </th>
-
-                <!-- ===================================================== -->
-                <!-- CHANNEL -->
-                <!-- ===================================================== -->
-
-                <th>
-
-                    Channel
-
-                </th>
-
-                <!-- ===================================================== -->
-                <!-- SONGS -->
-                <!-- ===================================================== -->
-
-                <th class="text-center">
-
-                    Lagu
-
-                </th>
-
-                <!-- ===================================================== -->
-                <!-- CREATED -->
-                <!-- ===================================================== -->
-
-                <th>
-
-                    Dibuat
-
-                </th>
-
-                <!-- ===================================================== -->
-                <!-- ACTION -->
-                <!-- ===================================================== -->
-
-                <th class="text-end">
-
-                    Aksi
-
-                </th>
-
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            <!-- DataTables -->
-
-        </tbody>
-
-    </table>
-
-</div>
-
 <!-- ===================================================== -->
-<!-- BULK ACTION -->
+<!-- ARTISTS TABLE -->
 <!-- ===================================================== -->
 
-<div
-    id="bulk-actions"
-    class="mt-3 d-none">
-
-    <div class="d-flex justify-content-between align-items-center">
-
-        <span>
-
-            <strong id="selected-count">
-
-                0
-
-            </strong>
-
-            artist dipilih
-
-        </span>
-
-        <button
-            id="btn-bulk-delete"
-            class="btn btn-danger">
-
-            <i class="ti ti-trash me-1"></i>
-
-            Hapus Terpilih
-
-        </button>
-
-    </div>
-
-</div>
+<table id="artists-table" class="table table-hover table-vcenter card-table">
+    <thead>
+        <tr>
+            <th class="w-1">
+                <input type="checkbox" id="select-all" class="form-check-input m-0 align-middle" onchange="toggleAllCheckboxes()">
+            </th>
+            <th>Artist</th>
+            <th>Channel</th>
+            <th class="text-center" width="120">Status</th>
+            <th class="text-center" width="120">Songs</th>
+            <th class="text-center" width="170">Progress</th>
+            <th width="140">Last Song</th>
+            <th width="140">Updated</th>
+            <th class="text-end" width="70">Actions</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

@@ -1,109 +1,49 @@
-<div
-    class="modal modal-blur fade"
-    id="modal-bulk-delete"
-    tabindex="-1"
-    aria-hidden="true">
+<!-- ===================================================== -->
+<!-- MODAL BULK OPERATIONS -->
+<!-- ===================================================== -->
 
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-
+<div class="modal fade" id="modal-bulk" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-
-            <!-- ===================================================== -->
-            <!-- HEADER -->
-            <!-- ===================================================== -->
-
             <div class="modal-header">
-
                 <h5 class="modal-title">
-
-                    Hapus Artist Terpilih
-
+                    <i class="ti ti-layers text-warning me-1"></i>
+                    Operasi Massal
                 </h5>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close">
-
-                </button>
-
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-
-            <!-- ===================================================== -->
-            <!-- BODY -->
-            <!-- ===================================================== -->
-
             <div class="modal-body">
-
-                <div class="text-center">
-
-                    <span class="avatar avatar-xl bg-red-lt mb-3">
-
-                        <i class="ti ti-trash fs-1 text-danger"></i>
-
-                    </span>
-
-                    <h3>
-
-                        Hapus artist yang dipilih?
-
-                    </h3>
-
-                    <p class="text-secondary mb-0">
-
-                        Anda akan menghapus
-
-                        <strong id="bulk-delete-count">
-
-                            0
-
-                        </strong>
-
-                        artist secara permanen.
-
-                    </p>
-
-                    <p class="text-danger small mt-3 mb-0">
-
-                        Data yang sudah dihapus tidak dapat dikembalikan.
-
-                    </p>
-
+                <div class="alert alert-info">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Anda telah memilih <strong id="bulk-selected-count">0</strong> artist untuk operasi massal.
                 </div>
-
+                <div class="list-group">
+                    <button class="list-group-item list-group-item-action d-flex align-items-center" onclick="bulkDeleteSelected()">
+                        <i class="ti ti-trash text-danger me-2"></i>
+                        <div>
+                            <div class="fw-bold">Hapus Terpilih</div>
+                            <div class="text-muted small">Menghapus semua artist yang dipilih</div>
+                        </div>
+                    </button>
+                    <button class="list-group-item list-group-item-action d-flex align-items-center" onclick="bulkUpdateChannelSelected()">
+                        <i class="ti ti-arrows-transfer text-warning me-2"></i>
+                        <div>
+                            <div class="fw-bold">Pindah Channel</div>
+                            <div class="text-muted small">Memindahkan artist yang dipilih ke channel lain</div>
+                        </div>
+                    </button>
+                    <button class="list-group-item list-group-item-action d-flex align-items-center" onclick="bulkExportSelected()">
+                        <i class="ti ti-file-export text-success me-2"></i>
+                        <div>
+                            <div class="fw-bold">Export Terpilih</div>
+                            <div class="text-muted small">Mengekspor data artist yang dipilih</div>
+                        </div>
+                    </button>
+                </div>
             </div>
-
-            <!-- ===================================================== -->
-            <!-- FOOTER -->
-            <!-- ===================================================== -->
-
             <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn btn-outline-secondary"
-                    data-bs-dismiss="modal">
-
-                    Batal
-
-                </button>
-
-                <button
-                    id="btn-confirm-bulk-delete"
-                    type="button"
-                    class="btn btn-danger">
-
-                    <i class="ti ti-trash me-1"></i>
-
-                    Hapus Semua
-
-                </button>
-
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
             </div>
-
         </div>
-
     </div>
-
 </div>

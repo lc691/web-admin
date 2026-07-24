@@ -829,3 +829,9 @@ class ChannelMapper:
             response['details'] = details
         
         return response
+
+
+    def __getitem__(self, key):
+        if hasattr(self, key):
+            return getattr(self, key)
+        raise KeyError(key)

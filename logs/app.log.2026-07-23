@@ -1,0 +1,251 @@
+[2026-07-24 07:20:16] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-24 07:20:18] [WARNING] [soundon] [AUTH] No token found for path=/.env.old
+[2026-07-24 07:20:20] [WARNING] [soundon] [AUTH] No token found for path=/.env.prod
+[2026-07-24 07:20:22] [WARNING] [soundon] [AUTH] No token found for path=/.env.staging
+[2026-07-24 07:20:23] [WARNING] [soundon] [AUTH] No token found for path=/.env.local
+[2026-07-24 07:20:24] [WARNING] [soundon] [AUTH] No token found for path=/env
+[2026-07-24 07:20:25] [WARNING] [soundon] [AUTH] No token found for path=/app/.env
+[2026-07-24 07:21:19] [INFO] [soundon] Login attempt: admin | IP: 172.70.92.146
+[2026-07-24 07:21:20] [INFO] [soundon] Login success: admin | IP: 172.70.92.146 | Remember: False
+[2026-07-24 07:30:49] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 07:34:18] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 07:36:44] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-24 07:45:03] [INFO] [soundon] [Dashboard] Loaded Users=7073 Shows=4480
+[2026-07-24 07:45:03] [INFO] [soundon] [REQ DONE] path=/ ms=223.03 status=200
+[2026-07-24 07:45:07] [INFO] [soundon] [REQ DONE] path=/api/songs/filters ms=31.1 status=200
+[2026-07-24 07:45:11] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=5.83 status=200
+[2026-07-24 07:45:14] [INFO] [soundon] [REQ DONE] path=/api/songs/export/status ms=5.02 status=200
+[2026-07-24 07:50:08] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=9.04 status=200
+[2026-07-24 07:52:09] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.62 status=200
+[2026-07-24 07:57:09] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.45 status=200
+[2026-07-24 08:03:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=13.25 status=200
+[2026-07-24 08:06:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.02 status=200
+[2026-07-24 08:07:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.7 status=200
+[2026-07-24 08:09:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.64 status=200
+[2026-07-24 08:10:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=3.53 status=200
+[2026-07-24 08:11:37] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 08:11:40] [WARNING] [soundon] [AUTH] No token found for path=/PL-1466-160526/
+[2026-07-24 08:12:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.13 status=200
+[2026-07-24 08:14:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.18 status=200
+[2026-07-24 08:15:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.27 status=200
+[2026-07-24 08:16:10] [INFO] [soundon] [REQ DONE] path=/api/songs/statistics ms=4.36 status=200
+[2026-07-24 08:39:16] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-24 08:39:17] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 08:41:06] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 08:41:09] [WARNING] [soundon] [AUTH] No token found for path=/PL-1466-160526/
+[2026-07-24 09:04:06] [WARNING] [soundon] [AUTH] No token found for path=/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:06] [WARNING] [soundon] [AUTH] No token found for path=/blog/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:08] [WARNING] [soundon] [AUTH] No token found for path=/2018/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:08] [WARNING] [soundon] [AUTH] No token found for path=/2019/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:08] [WARNING] [soundon] [AUTH] No token found for path=/shop/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:08] [WARNING] [soundon] [AUTH] No token found for path=/media/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:09] [WARNING] [soundon] [AUTH] No token found for path=/wp2/wp-includes/wlwmanifest.xml
+[2026-07-24 09:04:09] [WARNING] [soundon] [AUTH] No token found for path=/sito/wp-includes/wlwmanifest.xml
+[2026-07-24 09:17:55] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 09:17:56] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-24 09:17:57] [WARNING] [soundon] [AUTH] No token found for path=//.env
+[2026-07-24 09:17:57] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 09:17:57] [WARNING] [soundon] [AUTH] No token found for path=/.aws/credentials
+[2026-07-24 09:17:58] [WARNING] [soundon] [AUTH] No token found for path=/api/.env
+[2026-07-24 09:17:58] [WARNING] [soundon] [AUTH] No token found for path=/.env.bak
+[2026-07-24 09:17:59] [WARNING] [soundon] [AUTH] No token found for path=/stripe/.env
+[2026-07-24 09:18:00] [WARNING] [soundon] [AUTH] No token found for path=/.env.aws
+[2026-07-24 09:18:00] [WARNING] [soundon] [AUTH] No token found for path=/.env.local
+[2026-07-24 09:18:02] [WARNING] [soundon] [AUTH] No token found for path=/.env.old
+[2026-07-24 09:18:04] [WARNING] [soundon] [AUTH] No token found for path=/.env.txt
+[2026-07-24 09:18:04] [WARNING] [soundon] [AUTH] No token found for path=/.env.prod
+[2026-07-24 09:18:04] [WARNING] [soundon] [AUTH] No token found for path=/.env.dev
+[2026-07-24 09:59:20] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-24 10:32:42] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 10:32:43] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 10:32:43] [WARNING] [soundon] [AUTH] No token found for path=/.env
+[2026-07-24 10:32:44] [WARNING] [soundon] [AUTH] No token found for path=/.env.local
+[2026-07-24 10:32:44] [WARNING] [soundon] [AUTH] No token found for path=/.env.production
+[2026-07-24 10:32:45] [WARNING] [soundon] [AUTH] No token found for path=/.env.staging
+[2026-07-24 10:32:46] [WARNING] [soundon] [AUTH] No token found for path=/.env.remote
+[2026-07-24 10:32:49] [WARNING] [soundon] [AUTH] No token found for path=/.env.sample
+[2026-07-24 10:32:50] [WARNING] [soundon] [AUTH] No token found for path=/.env.dev
+[2026-07-24 10:32:52] [WARNING] [soundon] [AUTH] No token found for path=/.env.ci
+[2026-07-24 10:32:54] [WARNING] [soundon] [AUTH] No token found for path=/.env.live
+[2026-07-24 10:32:55] [WARNING] [soundon] [AUTH] No token found for path=/.env.preprod
+[2026-07-24 10:32:55] [WARNING] [soundon] [AUTH] No token found for path=/.env.uat
+[2026-07-24 10:32:56] [WARNING] [soundon] [AUTH] No token found for path=/.env.dist
+[2026-07-24 10:32:56] [WARNING] [soundon] [AUTH] No token found for path=/.env.swp
+[2026-07-24 10:32:58] [WARNING] [soundon] [AUTH] No token found for path=/.env2
+[2026-07-24 10:32:58] [WARNING] [soundon] [AUTH] No token found for path=/.env_copy
+[2026-07-24 10:33:00] [WARNING] [soundon] [AUTH] No token found for path=/.env.yaml
+[2026-07-24 10:33:00] [WARNING] [soundon] [AUTH] No token found for path=/.env.yml
+[2026-07-24 10:33:01] [WARNING] [soundon] [AUTH] No token found for path=/app/.env
+[2026-07-24 10:33:01] [WARNING] [soundon] [AUTH] No token found for path=/apps/.env
+[2026-07-24 10:33:03] [WARNING] [soundon] [AUTH] No token found for path=/public/.env
+[2026-07-24 10:33:04] [WARNING] [soundon] [AUTH] No token found for path=/backend/.env
+[2026-07-24 10:33:05] [WARNING] [soundon] [AUTH] No token found for path=/server/.env
+[2026-07-24 10:33:05] [WARNING] [soundon] [AUTH] No token found for path=/frontend/.env
+[2026-07-24 10:33:06] [WARNING] [soundon] [AUTH] No token found for path=/src/.env
+[2026-07-24 10:33:07] [WARNING] [soundon] [AUTH] No token found for path=/core/app/.env
+[2026-07-24 10:33:07] [WARNING] [soundon] [AUTH] No token found for path=/config/.env
+[2026-07-24 10:33:08] [WARNING] [soundon] [AUTH] No token found for path=/private/.env
+[2026-07-24 10:33:09] [WARNING] [soundon] [AUTH] No token found for path=/bootstrap/.env
+[2026-07-24 10:33:09] [WARNING] [soundon] [AUTH] No token found for path=/database/.env
+[2026-07-24 10:33:10] [WARNING] [soundon] [AUTH] No token found for path=/storage/.env
+[2026-07-24 10:33:10] [WARNING] [soundon] [AUTH] No token found for path=/var/www/.env
+[2026-07-24 10:33:11] [WARNING] [soundon] [AUTH] No token found for path=/var/www/html/.env
+[2026-07-24 10:33:11] [WARNING] [soundon] [AUTH] No token found for path=/current/.env
+[2026-07-24 10:33:12] [WARNING] [soundon] [AUTH] No token found for path=/release/.env
+[2026-07-24 10:33:13] [WARNING] [soundon] [AUTH] No token found for path=/shared/.env
+[2026-07-24 10:33:14] [WARNING] [soundon] [AUTH] No token found for path=/build/.env
+[2026-07-24 10:33:15] [WARNING] [soundon] [AUTH] No token found for path=/dist/.env
+[2026-07-24 10:33:16] [WARNING] [soundon] [AUTH] No token found for path=/htdocs/.env
+[2026-07-24 10:33:16] [WARNING] [soundon] [AUTH] No token found for path=/www/.env
+[2026-07-24 10:33:19] [WARNING] [soundon] [AUTH] No token found for path=/staging/.env
+[2026-07-24 10:33:20] [WARNING] [soundon] [AUTH] No token found for path=/opt/.env
+[2026-07-24 10:33:20] [WARNING] [soundon] [AUTH] No token found for path=/laravel/.env
+[2026-07-24 10:33:21] [WARNING] [soundon] [AUTH] No token found for path=/symfony/.env
+[2026-07-24 10:33:22] [WARNING] [soundon] [AUTH] No token found for path=/wp/.env
+[2026-07-24 10:33:23] [WARNING] [soundon] [AUTH] No token found for path=/drupal/.env
+[2026-07-24 10:33:23] [WARNING] [soundon] [AUTH] No token found for path=/joomla/.env
+[2026-07-24 10:33:24] [WARNING] [soundon] [AUTH] No token found for path=/magento/.env
+[2026-07-24 10:33:25] [WARNING] [soundon] [AUTH] No token found for path=/shopify/.env
+[2026-07-24 10:33:26] [WARNING] [soundon] [AUTH] No token found for path=/codeigniter/.env
+[2026-07-24 10:33:26] [WARNING] [soundon] [AUTH] No token found for path=/cakephp/.env
+[2026-07-24 10:33:28] [WARNING] [soundon] [AUTH] No token found for path=/v1/.env
+[2026-07-24 10:33:29] [WARNING] [soundon] [AUTH] No token found for path=/v2/.env
+[2026-07-24 10:33:30] [WARNING] [soundon] [AUTH] No token found for path=/v3/.env
+[2026-07-24 10:33:30] [WARNING] [soundon] [AUTH] No token found for path=/api/v2/.env
+[2026-07-24 10:33:31] [WARNING] [soundon] [AUTH] No token found for path=/graphql/.env
+[2026-07-24 10:33:32] [WARNING] [soundon] [AUTH] No token found for path=/gateway/.env
+[2026-07-24 10:33:33] [WARNING] [soundon] [AUTH] No token found for path=/api/v3/.env
+[2026-07-24 10:33:34] [WARNING] [soundon] [AUTH] No token found for path=/api/dev/.env
+[2026-07-24 10:33:34] [WARNING] [soundon] [AUTH] No token found for path=/vendor/.env
+[2026-07-24 10:33:35] [WARNING] [soundon] [AUTH] No token found for path=/lib/.env
+[2026-07-24 10:33:35] [WARNING] [soundon] [AUTH] No token found for path=/resources/.env
+[2026-07-24 10:33:36] [WARNING] [soundon] [AUTH] No token found for path=/uploads/.env
+[2026-07-24 10:33:37] [WARNING] [soundon] [AUTH] No token found for path=/internal/.env
+[2026-07-24 10:33:37] [WARNING] [soundon] [AUTH] No token found for path=/tools/.env
+[2026-07-24 10:33:38] [WARNING] [soundon] [AUTH] No token found for path=/scripts/.env
+[2026-07-24 10:33:40] [WARNING] [soundon] [AUTH] No token found for path=/local/.env
+[2026-07-24 10:33:41] [WARNING] [soundon] [AUTH] No token found for path=/dashboard/.env
+[2026-07-24 10:33:41] [WARNING] [soundon] [AUTH] No token found for path=/panel/.env
+[2026-07-24 10:33:42] [WARNING] [soundon] [AUTH] No token found for path=/crm/.env
+[2026-07-24 10:33:42] [WARNING] [soundon] [AUTH] No token found for path=/erp/.env
+[2026-07-24 10:33:43] [WARNING] [soundon] [AUTH] No token found for path=/shop/.env
+[2026-07-24 10:33:43] [WARNING] [soundon] [AUTH] No token found for path=/store/.env
+[2026-07-24 10:33:44] [WARNING] [soundon] [AUTH] No token found for path=/saas/.env
+[2026-07-24 10:33:44] [WARNING] [soundon] [AUTH] No token found for path=/client/.env
+[2026-07-24 10:33:46] [WARNING] [soundon] [AUTH] No token found for path=/admin-panel/.env
+[2026-07-24 10:33:48] [WARNING] [soundon] [AUTH] No token found for path=/express/.env
+[2026-07-24 10:33:52] [WARNING] [soundon] [AUTH] No token found for path=/vite/.env
+[2026-07-24 10:33:54] [WARNING] [soundon] [AUTH] No token found for path=/tmp/.env
+[2026-07-24 10:33:57] [WARNING] [soundon] [AUTH] No token found for path=/en/.env
+[2026-07-24 10:33:58] [WARNING] [soundon] [AUTH] No token found for path=/administrator/.env
+[2026-07-24 10:33:59] [WARNING] [soundon] [AUTH] No token found for path=/exapi/.env
+[2026-07-24 10:33:59] [WARNING] [soundon] [AUTH] No token found for path=/sitemaps/.env
+[2026-07-24 10:34:00] [WARNING] [soundon] [AUTH] No token found for path=/.env.backup1
+[2026-07-24 10:34:00] [WARNING] [soundon] [AUTH] No token found for path=/.env.backup2
+[2026-07-24 10:34:01] [WARNING] [soundon] [AUTH] No token found for path=/logs/.env
+[2026-07-24 10:34:02] [WARNING] [soundon] [AUTH] No token found for path=/mailer/.env
+[2026-07-24 10:34:02] [WARNING] [soundon] [AUTH] No token found for path=/mail/.env
+[2026-07-24 10:34:03] [WARNING] [soundon] [AUTH] No token found for path=/email/.env
+[2026-07-24 10:34:04] [WARNING] [soundon] [AUTH] No token found for path=/mailing/.env
+[2026-07-24 10:34:05] [WARNING] [soundon] [AUTH] No token found for path=/notifications/.env
+[2026-07-24 10:34:05] [WARNING] [soundon] [AUTH] No token found for path=/notify/.env
+[2026-07-24 10:34:06] [WARNING] [soundon] [AUTH] No token found for path=/sender/.env
+[2026-07-24 10:34:06] [WARNING] [soundon] [AUTH] No token found for path=/campaign/.env
+[2026-07-24 10:34:07] [WARNING] [soundon] [AUTH] No token found for path=/newsletter/.env
+[2026-07-24 10:34:10] [WARNING] [soundon] [AUTH] No token found for path=/mandrill/.env
+[2026-07-24 10:34:11] [WARNING] [soundon] [AUTH] No token found for path=/brevo/.env
+[2026-07-24 10:34:12] [WARNING] [soundon] [AUTH] No token found for path=/transactional/.env
+[2026-07-24 10:34:12] [WARNING] [soundon] [AUTH] No token found for path=/bulk/.env
+[2026-07-24 10:34:13] [WARNING] [soundon] [AUTH] No token found for path=/aws/.env
+[2026-07-24 10:34:13] [WARNING] [soundon] [AUTH] No token found for path=/azure/.env
+[2026-07-24 10:34:15] [WARNING] [soundon] [AUTH] No token found for path=/docker/.env
+[2026-07-24 10:34:16] [WARNING] [soundon] [AUTH] No token found for path=/k8s/.env
+[2026-07-24 10:34:16] [WARNING] [soundon] [AUTH] No token found for path=/kubernetes/.env
+[2026-07-24 10:34:17] [WARNING] [soundon] [AUTH] No token found for path=/terraform/.env
+[2026-07-24 10:34:18] [WARNING] [soundon] [AUTH] No token found for path=/.git/.env
+[2026-07-24 10:34:19] [WARNING] [soundon] [AUTH] No token found for path=/ci/.env
+[2026-07-24 10:34:19] [WARNING] [soundon] [AUTH] No token found for path=/cd/.env
+[2026-07-24 10:34:21] [WARNING] [soundon] [AUTH] No token found for path=/github/.env
+[2026-07-24 10:34:23] [WARNING] [soundon] [AUTH] No token found for path=/buildkite/.env
+[2026-07-24 10:34:24] [WARNING] [soundon] [AUTH] No token found for path=/mongodb/.env
+[2026-07-24 10:34:25] [WARNING] [soundon] [AUTH] No token found for path=/redis/.env
+[2026-07-24 10:34:26] [WARNING] [soundon] [AUTH] No token found for path=/rabbitmq/.env
+[2026-07-24 10:34:27] [WARNING] [soundon] [AUTH] No token found for path=/queue/.env
+[2026-07-24 10:34:27] [WARNING] [soundon] [AUTH] No token found for path=/worker/.env
+[2026-07-24 10:34:29] [WARNING] [soundon] [AUTH] No token found for path=/test/.env
+[2026-07-24 10:34:29] [WARNING] [soundon] [AUTH] No token found for path=/qa/.env
+[2026-07-24 10:34:30] [WARNING] [soundon] [AUTH] No token found for path=/preview/.env
+[2026-07-24 10:34:30] [WARNING] [soundon] [AUTH] No token found for path=/beta/.env
+[2026-07-24 10:34:31] [WARNING] [soundon] [AUTH] No token found for path=/stage/.env
+[2026-07-24 10:34:32] [WARNING] [soundon] [AUTH] No token found for path=/development/.env
+[2026-07-24 10:34:32] [WARNING] [soundon] [AUTH] No token found for path=/production/.env
+[2026-07-24 10:34:33] [WARNING] [soundon] [AUTH] No token found for path=/config/app/.env
+[2026-07-24 10:34:34] [WARNING] [soundon] [AUTH] No token found for path=/php.php
+[2026-07-24 10:34:35] [WARNING] [soundon] [AUTH] No token found for path=/i.php
+[2026-07-24 10:34:36] [WARNING] [soundon] [AUTH] No token found for path=/pinfo.php
+[2026-07-24 10:34:37] [WARNING] [soundon] [AUTH] No token found for path=/test.php
+[2026-07-24 10:34:37] [WARNING] [soundon] [AUTH] No token found for path=/phpinfo
+[2026-07-24 10:34:38] [WARNING] [soundon] [AUTH] No token found for path=/p.php
+[2026-07-24 10:34:39] [WARNING] [soundon] [AUTH] No token found for path=/debug.php
+[2026-07-24 10:34:39] [WARNING] [soundon] [AUTH] No token found for path=/admin/phpinfo.php
+[2026-07-24 10:34:40] [WARNING] [soundon] [AUTH] No token found for path=/dev/phpinfo.php
+[2026-07-24 10:34:43] [WARNING] [soundon] [AUTH] No token found for path=/info
+[2026-07-24 10:34:43] [WARNING] [soundon] [AUTH] No token found for path=/php-info.php
+[2026-07-24 10:34:44] [WARNING] [soundon] [AUTH] No token found for path=/phpversion.php
+[2026-07-24 10:34:44] [WARNING] [soundon] [AUTH] No token found for path=/_phpinfo.php
+[2026-07-24 10:34:45] [WARNING] [soundon] [AUTH] No token found for path=/server-info.php
+[2026-07-24 10:34:46] [WARNING] [soundon] [AUTH] No token found for path=/server-status.php
+[2026-07-24 10:34:48] [WARNING] [soundon] [AUTH] No token found for path=/webroot/index.php/_environment
+[2026-07-24 10:34:48] [WARNING] [soundon] [AUTH] No token found for path=/mail/phpinfo.php
+[2026-07-24 10:34:49] [WARNING] [soundon] [AUTH] No token found for path=/cpanel/phpinfo.php
+[2026-07-24 10:34:50] [WARNING] [soundon] [AUTH] No token found for path=/webmail/phpinfo.php
+[2026-07-24 10:34:52] [WARNING] [soundon] [AUTH] No token found for path=/phpinfo.php.old
+[2026-07-24 10:34:52] [WARNING] [soundon] [AUTH] No token found for path=/phpinfo.php~
+[2026-07-24 10:34:53] [WARNING] [soundon] [AUTH] No token found for path=/info.php.bak
+[2026-07-24 10:34:54] [WARNING] [soundon] [AUTH] No token found for path=/beta/phpinfo.php
+[2026-07-24 10:34:55] [WARNING] [soundon] [AUTH] No token found for path=/uat/phpinfo.php
+[2026-07-24 10:34:56] [WARNING] [soundon] [AUTH] No token found for path=/qa/phpinfo.php
+[2026-07-24 10:34:57] [WARNING] [soundon] [AUTH] No token found for path=/htdocs/phpinfo.php
+[2026-07-24 10:34:59] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/phpinfo.php
+[2026-07-24 10:35:00] [WARNING] [soundon] [AUTH] No token found for path=/administrator/phpinfo.php
+[2026-07-24 10:35:01] [WARNING] [soundon] [AUTH] No token found for path=/includes/phpinfo.php
+[2026-07-24 10:35:01] [WARNING] [soundon] [AUTH] No token found for path=/service-account.json
+[2026-07-24 10:35:02] [WARNING] [soundon] [AUTH] No token found for path=/sa.json
+[2026-07-24 10:35:03] [WARNING] [soundon] [AUTH] No token found for path=/gcp-key.json
+[2026-07-24 10:35:05] [WARNING] [soundon] [AUTH] No token found for path=/credentials.json
+[2026-07-24 10:35:05] [WARNING] [soundon] [AUTH] No token found for path=/google-credentials.json
+[2026-07-24 10:35:07] [WARNING] [soundon] [AUTH] No token found for path=/application_default_credentials.json
+[2026-07-24 10:35:07] [WARNING] [soundon] [AUTH] No token found for path=/key.json
+[2026-07-24 10:35:08] [WARNING] [soundon] [AUTH] No token found for path=/keyfile.json
+[2026-07-24 10:42:33] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 10:44:12] [WARNING] [soundon] [AUTH] No token found for path=/wp-login.php
+[2026-07-24 10:44:12] [WARNING] [soundon] [AUTH] No token found for path=/wp-admin/
+[2026-07-24 11:00:49] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 12:14:16] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 12:41:01] [WARNING] [soundon] [AUTH] No token found for path=/robots.txt
+[2026-07-24 12:41:02] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-24 13:09:29] [WARNING] [soundon] [AUTH] No token found for path=/sitemap.xml
+[2026-07-24 13:27:46] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 13:27:46] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 13:27:47] [WARNING] [soundon] [AUTH] No token found for path=/
+[2026-07-24 13:27:48] [WARNING] [soundon] [AUTH] No token found for path=/.env.production
+[2026-07-24 13:27:49] [WARNING] [soundon] [AUTH] No token found for path=/backend/.env
+[2026-07-24 13:27:51] [WARNING] [soundon] [AUTH] No token found for path=/.env.local
+[2026-07-24 13:27:51] [WARNING] [soundon] [AUTH] No token found for path=/.git/config
+[2026-07-24 14:04:22] [INFO] [soundon] [Dashboard] Loaded Users=7078 Shows=4480
+[2026-07-24 14:04:22] [INFO] [soundon] [REQ DONE] path=/ ms=125.27 status=200
+[2026-07-24 14:04:25] [INFO] [soundon] [REQ DONE] path=/artists ms=59.73 status=500
+[2026-07-24 14:04:30] [INFO] [soundon] [REQ DONE] path=/channels ms=70.53 status=200
+[2026-07-24 14:04:30] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=10.67 status=200
+[2026-07-24 14:04:30] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=6.01 status=200
+[2026-07-24 14:04:34] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=29.06 status=500
+[2026-07-24 14:04:41] [INFO] [soundon] [REQ DONE] path=/channel-blacklists ms=36.11 status=200
+[2026-07-24 14:04:44] [INFO] [soundon] [REQ DONE] path=/channels ms=22.12 status=200
+[2026-07-24 14:04:44] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=12.29 status=200
+[2026-07-24 14:04:44] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics ms=14.28 status=200
+[2026-07-24 14:04:55] [INFO] [soundon] [REQ DONE] path=/artists ms=53.8 status=500
+[2026-07-24 14:04:58] [INFO] [soundon] [REQ DONE] path=/api/channels/data ms=13.32 status=200
+[2026-07-24 14:04:58] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=13.79 status=200
+[2026-07-24 14:05:28] [INFO] [soundon] [REQ DONE] path=/api/channels/statistics/summary ms=5.19 status=200
+[2026-07-24 14:07:52] [INFO] [soundon] [REQ DONE] path=/channels/1 ms=26.51 status=500
+[2026-07-24 14:33:08] [INFO] [soundon] 🛑 Mematikan SoundON Admin
